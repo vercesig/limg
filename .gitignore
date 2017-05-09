@@ -1,0 +1,64 @@
+# ignore all bin directories
+# matches "bin" in any subfolder
+bin/
+# ignore all target directories
+target/
+# ignore Eclipse settings
+.project
+.classpath
+.settings
+# ignore all files ending with ~
+*~
+# ignore metadata directories
+.metadata
+# ignore DS_Store and files starting with ._ (for Mac)
+.DS_Store
+
+# ignore editor temporary files
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# Java annotation processor (APT)
+.factorypath
+
+# Code Recommenders
+.recommenders/
+
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+# Gradle files
+.gradle
+/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
