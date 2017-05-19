@@ -2,7 +2,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.HashMap;
 
-public class ResourceSet {
+public class ResourceSet implements Comparable {
 	
 	HashMap<String, Integer> resourceSet;
 	
@@ -24,4 +24,10 @@ public class ResourceSet {
     		this.resourceSet.put(resourceName, prevValue + quantity);
     	}
     }
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

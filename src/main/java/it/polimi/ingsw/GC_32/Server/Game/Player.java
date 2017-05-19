@@ -52,6 +52,10 @@ public class Player {
 	public int getServants() {
 		return this.resources.getResouce("SERVANTS");
 	}
+	
+	public ResourceSet getResources(){
+		return this.resources;
+	}
 
     public void addEffect(Effect e){
         this.effectList.add(e);

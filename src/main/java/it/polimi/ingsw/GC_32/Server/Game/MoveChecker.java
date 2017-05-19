@@ -9,18 +9,20 @@ public class MoveChecker{
 
     public static boolean checkMove(Board b, Player p, Action a){
         boolean cando = true;
-        for( Effect e : p.effectList ){
+        for( Effect e : p.getEffectList() ){
             if(! e.apply(b,p,a) ){
-                cando = false;
-                break;
+                return false;
             }
         }
 
-        if( a.resourceCost < p.resources && cando ){
-            for( Effect e : p.effectList ){
-                e.apply(b,p,a);
-            }
-            p.resource -= a.resourceCost;
+        if( a.cost.compareTo(p.getResources()) > 0 && cando ){
+        	return true;
+            //for( Effect e : p.getEffectList() ){
+            //    e.apply(b,p,a);
+            //}
+            //p.resource -= a.resourceCost;
+        } else {
+        	return false;
         }
     }
 
