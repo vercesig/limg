@@ -1,21 +1,23 @@
-package it.polimi.ingsw.GC_32.Game;
+package it.polimi.ingsw.GC_32.Game.Card;
 
-import java.util.HashMap;
+import java.util.List;
+
+import it.polimi.ingsw.GC_32.Game.ResourceSet;
 
 public class DevelopmentCard extends Card{
 
-	private HashMap<Integer, Resource> cost;
+	private List<ResourceSet> cost;
 	private int period;
 	private CardType type;
 	
-	public DevelopmentCard(String name, HashMap<Integer, Resource> cost, int period, CardType type){
+	public DevelopmentCard(String name, List<ResourceSet> cost, int period, CardType type){
 		super(name);
 		this.cost = cost;
 		this.period = period;
 		this.type = type;
 	}
 	
-	public HashMap<Integer, Resource> getCost(){
+	public List<ResourceSet> getCost(){
 		return this.cost;
 	}
 	

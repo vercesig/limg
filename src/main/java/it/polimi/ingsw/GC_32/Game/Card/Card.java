@@ -1,6 +1,8 @@
-package it.polimi.ingsw.GC_32.Game;
+package it.polimi.ingsw.GC_32.Game.Card;
 
 import java.util.ArrayList;
+
+import it.polimi.ingsw.GC_32.Game.Player;
 import it.polimi.ingsw.GC_32.Game.Effect.Effect;
 
 public class Card {

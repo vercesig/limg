@@ -1,6 +1,6 @@
 package it.polimi.ingsw.GC_32.Game.Board;
 
-import it.polimi.ingsw.GC_32.Game.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Game.Card.DevelopmentCard;
 
 public class TowerLayer {
 

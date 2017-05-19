@@ -2,17 +2,11 @@ package it.polimi.ingsw.GC_32.Game.Board;
 
 import java.util.LinkedList;
 
-import it.polimi.ingsw.GC_32.Game.Card;
 import it.polimi.ingsw.GC_32.Game.Player;
-import it.polimi.ingsw.GC_32.Game.Resource;
+import it.polimi.ingsw.GC_32.Game.Card.Card;
 
 public class PersonalBoard {
-
-	private Resource wood;
-	private Resource stone;
-	private Resource coins;
-	private Resource servants;
-	private final PersonalBonusTile personalBonusTile;
+	//private final PersonalBonusTile personalBonusTile;
 	private final Player owner;
 	
 	private LinkedList<Card> ventureCards;
@@ -22,12 +16,9 @@ public class PersonalBoard {
 	
 	
 	public PersonalBoard(Player owner){
-		
 		this.owner = owner;
 		
-		this.resources = new Resource();
-		
-		this.personalBonusTile = new PersonalBonusTile();
+		//this.personalBonusTile = new PersonalBonusTile();
 		
 		this.ventureCards = new LinkedList<Card>();
 		this.characterCards = new LinkedList<Card>();
@@ -36,25 +27,11 @@ public class PersonalBoard {
 		
 	}
 
-	public Resource getWoodQuantity() {
-		return this.wood;
-	}
 
-	public Resource getStoneQuantity() {
-		return this.stone;
-	}
-
-	public Resource getCoins() {
-		return this.coins;
-	}
-
-	public Resource getServants() {
-		return this.servants;
-	}
 	
-	public PersonalBonusTile getPersonalBonusTile(){
+/*	public PersonalBonusTile getPersonalBonusTile(){
 		return this.personalBonusTile;
-	}
+	}*/
 	
 	public LinkedList<Card> getVentureCards(){
 		return this.ventureCards;

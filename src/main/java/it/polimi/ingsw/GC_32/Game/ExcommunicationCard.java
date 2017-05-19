@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32.Game;
 
+import it.polimi.ingsw.GC_32.Game.Card.Card;
+
 public class ExcommunicationCard extends Card{
 
 	private int period;

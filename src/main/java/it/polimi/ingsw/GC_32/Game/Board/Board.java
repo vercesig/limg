@@ -2,8 +2,9 @@ package it.polimi.ingsw.GC_32.Game.Board;
 
 import java.util.ArrayList;
 
-import it.polimi.ingsw.GC_32.Game.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Game.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Game.Player;
+import it.polimi.ingsw.GC_32.Game.Card.DevelopmentCard;
 
 public class Board {
 
@@ -14,18 +15,14 @@ public class Board {
 	private HarvestRegion harvestRegion;
 	private CouncilRegion councilRegion;
 	
-	private Deck ventureCardDeck;
-	private Deck characterCardDeck;
-	private Deck buildingCardDeck;
-	private Deck territoryCardDeck;
+	private Deck<DevelopmentCard> ventureCardDeck;
+	private Deck<DevelopmentCard> characterCardDeck;
+	private Deck<DevelopmentCard> buildingCardDeck;
+	private Deck<DevelopmentCard> territoryCardDeck;
 	
 	private ExcommunicationCard[] excommunicationCards;
 	
 	private ArrayList<Player> players;
-	
-	private int blackDiceValue = 0;
-	private int orangeDiceValue = 0;
-	private int whiteDiceValue = 0;
 	
 	
 	private Board(){

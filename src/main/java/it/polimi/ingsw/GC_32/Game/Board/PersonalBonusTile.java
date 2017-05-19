@@ -1,19 +1,19 @@
 package it.polimi.ingsw.GC_32.Game.Board;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.GC_32.Game.Effect.Effect;
 
 public class PersonalBonusTile {
 	
-	private ArrayList<String> personalBonus; 
+	private Effect personalBonus; 
 	private boolean flagGameRule; // flag for the type of game rule: STANDARD or ADVANCED 
 	
-	public PersonalBonusTile(ArrayList <String> personalBonus, boolean flagGameRule){
+	public PersonalBonusTile(Effect personalBonus, boolean flagGameRule){
 		
 		this.personalBonus = personalBonus;
 		this.flagGameRule = flagGameRule;
 	}
 	
-	public ArrayList<String> getPersonalBonus(){
+	public Effect getPersonalBonus(){
 		return this.personalBonus;
 	} 
 	
