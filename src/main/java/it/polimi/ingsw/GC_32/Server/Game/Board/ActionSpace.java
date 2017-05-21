@@ -12,13 +12,16 @@ public class ActionSpace{
 	private int actionValue;
 	private ArrayList<FamilyMember> occupants;
 	private boolean single;
+	private final int regionID;
+	private final int actionSpaceID;
 	
-	private ActionSpace(ResourceSet bonus, int actionValue, boolean single){
-		super();
+	private ActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
 		this.bonus = bonus;
 		this.actionValue = actionValue;
 		this.occupants = new ArrayList<FamilyMember>();
 		this.single = single;
+		this.actionSpaceID = actionSpaceID;
+		this.regionID = regionID;
 	}
 	
 	public static ActionSpace create(ResourceSet bonus, int actionValue, boolean single){
@@ -33,16 +36,24 @@ public class ActionSpace{
 		return this.bonus;
 	}
 	
+	public int getRegionID(){
+		return this.regionID;
+	}
+	
+	public int getActionSpaceID(){
+		return this.actionSpaceID;
+	}
+	
+	public int getActionValue(){
+		return this.actionValue;
+	}
+	
 	public ArrayList<Player> getPlayers(){
 		ArrayList<Player> tmp = new ArrayList<Player>();
 		for(FamilyMember familyMember : occupants){
 			tmp.add(familyMember.getOwner());
 		}
 		return tmp;
-	}
-	
-	public int getActionValue(){
-		return this.actionValue;
 	}
 	
 	public boolean addFamilyMember(FamilyMember familyMember){
@@ -53,8 +64,8 @@ public class ActionSpace{
 		return true;
 	}
 	
-	public void removeFamilyMember(){
-		
+	public void removeFamilyMember(FamilyMember familyMember){
+		this.occupants.remove(familyMember);
 	}
 	
 	public boolean isBusy(){

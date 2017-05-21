@@ -7,10 +7,15 @@ public class TowerRegion {
 
 	private TowerLayer[] towerLayers;
 	private boolean towerBusy;
+	private final int regionID;
 	
-	public TowerRegion(){
+	public TowerRegion(int regionID, int numberOfLayers){
+		this.regionID = regionID;
 		this.towerBusy = false;
-		this.towerLayers = new TowerLayer[4]; //rendere livelli scalabili
+		this.towerLayers = new TowerLayer[numberOfLayers];
+		for(int i=0; i<numberOfLayers; i++){
+			this.towerLayers[i] = TowerLayer.create(this.regionID,i);
+		}
 	}
 	
 	public boolean isTowerBusy(){
