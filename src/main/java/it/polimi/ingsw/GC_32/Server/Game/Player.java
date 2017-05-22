@@ -6,20 +6,23 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 
 public class Player {
-	private PersonalBoard personalBoard;
+	//private PersonalBoard personalBoard; NON IN USO DALLA DEMO
 	private final String name;
-    private List<Effect> effectList;
+    //private List<Effect> effectList; NON IN USO DALLA DEMO
+    //private List<FamilyMember> familyList; NON IN USO DALLA DEMO
 	private ResourceSet resources;
 	
 	public Player(String name){
-		this.personalBoard = new PersonalBoard(this);
+	//	this.personalBoard = new PersonalBoard(this);
 		this.name = name;
+	//	this.familyList = new List();
+		
 		this.resources = new ResourceSet();
 	}
 	
-	public PersonalBoard getPersonalBoard(){
-		return this.personalBoard;
-	}
+/*	public PersonalBoard getPersonalBoard(){
+		return this.personalBogetTowerRegionID();
+	}*/
 	
 	public String getName(){
 		return this.name;
@@ -57,11 +60,12 @@ public class Player {
 		return this.resources;
 	}
 
-    public void addEffect(Effect e){
+   /* public void addEffect(Effect e){
         this.effectList.add(e);
     }
 
     public List<Effect> getEffectList(){
         return this.effectList;
-    }
+    }*/
+ 
 }

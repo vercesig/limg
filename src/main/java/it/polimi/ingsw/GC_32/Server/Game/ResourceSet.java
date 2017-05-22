@@ -22,12 +22,19 @@ public class ResourceSet implements Comparable {
     	if(this.resourceSet.containsKey(resourceName)){
     		int prevValue = this.resourceSet.get(resourceName);
     		this.resourceSet.put(resourceName, prevValue + quantity);
-    	}
+    	}else 
+    		setResource(resourceName, quantity);
     }
-
+    
+    // print usata per Test del codice
+    public void print(){
+    	System.out.print(resourceSet.toString());
+    }
+    
 	@Override
 	public int compareTo(Object arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 }
+

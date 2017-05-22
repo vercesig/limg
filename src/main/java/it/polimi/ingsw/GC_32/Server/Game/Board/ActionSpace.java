@@ -15,7 +15,7 @@ public class ActionSpace{
 	private final int regionID;
 	private final int actionSpaceID;
 	
-	private ActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
+	public ActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
 		this.bonus = bonus;
 		this.actionValue = actionValue;
 		this.occupants = new ArrayList<FamilyMember>();
@@ -24,9 +24,9 @@ public class ActionSpace{
 		this.regionID = regionID;
 	}
 	
-	public static ActionSpace create(ResourceSet bonus, int actionValue, boolean single){
+	/*public static ActionSpace create(ResourceSet bonus, int actionValue, boolean single){
 		return new ActionSpace(bonus,actionValue,single);
-	}
+	}*/
 	
 	public boolean isSingleActionSpace(){
 		return this.single;
@@ -75,4 +75,8 @@ public class ActionSpace{
 		return false;
 	}
 	
+	// print per Test
+	public void print(){
+		System.out.print("[" + actionSpaceID + " ]" + "*" + actionValue + " ");
+	}
 }

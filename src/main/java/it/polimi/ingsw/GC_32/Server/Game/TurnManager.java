@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 
+// non in uso dalla Demo
 public class TurnManager {
 	
 	private static TurnManager instance;
@@ -53,19 +54,19 @@ public class TurnManager {
 		diceRoll();
 	}
 	
-	public void actionPhase(){
+	/*public void actionPhase(){
 		for(Player p : board.getTurnOrderTrack().getPlayerOrder()){
 			performAction(p);
 		}
-	}
+	}*/
 	public void vaticanReportPhase(){
 		checkExcommunication();
 	}
 	
-	public void roundEnd(){
+/*	public void roundEnd(){
 		flushBoard();
 		updateTurnOrder();
-	}
+	}*/
 	
 	/**
 	 * start up

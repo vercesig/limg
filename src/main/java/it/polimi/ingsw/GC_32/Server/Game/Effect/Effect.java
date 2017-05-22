@@ -6,5 +6,5 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
 @FunctionalInterface
 public interface Effect{
-	Boolean apply(Board b, Player p, Action a);
+	boolean apply(Board b, Player p, Action a);
 }

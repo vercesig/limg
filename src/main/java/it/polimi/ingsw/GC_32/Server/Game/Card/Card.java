@@ -9,14 +9,14 @@ public class Card {
 
 	private final String name;
 	private boolean onTheGame;
-	private ArrayList<Effect> instantEffects;
-	private ArrayList<Effect> permanentEffects;
+	private ArrayList<String> instantEffects;
+	private ArrayList<String> permanentEffects;
 	
 	
 	public Card(String name){
 		this.name = name;
-		this.instantEffects = new ArrayList<Effect>();
-		this.permanentEffects = new ArrayList<Effect>();
+		this.instantEffects = new ArrayList<String>();
+		this.permanentEffects = new ArrayList<String>();
 		this.onTheGame = false;
 	}
 		

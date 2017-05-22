@@ -1,6 +1,12 @@
-package Model;
+/*//package Model;
+
+	//QUESTA CLASSE NON E' IN USO NELLA DEMO
 
 import java.util.ArrayList;
+
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class Game {
 
@@ -97,3 +103,4 @@ public class Game {
 	}
 	
 }
+*/

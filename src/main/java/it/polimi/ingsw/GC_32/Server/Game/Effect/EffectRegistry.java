@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class EffectRegistry{
 
@@ -17,11 +18,12 @@ public class EffectRegistry{
         return instance;
     }
 
-    private void registerEffect(String effectCode, Effect effect){
+    public void registerEffect(String effectCode, Effect effect){ // MESSO PUBLIC
         this.registry.put(effectCode, effect);
     }
 
-    private Effect getEffect(String effectCode){
+    public Effect getEffect(String effectCode){	// MESSO PUBLIC
         return this.registry.get(effectCode);
     }
+
 }
