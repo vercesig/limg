@@ -10,11 +10,14 @@ public class Player {
 	private final String name;
     private List<Effect> effectList;
 	private ResourceSet resources;
+	private PersonalBonusTile personalBonusTile;
+	private FamilyMember[] familyMemberList;
 	
 	public Player(String name){
 		this.personalBoard = new PersonalBoard(this);
 		this.name = name;
 		this.resources = new ResourceSet();
+		this.familyMemberList = new FamilyMember[3];
 	}
 	
 	public PersonalBoard getPersonalBoard(){
@@ -57,11 +60,15 @@ public class Player {
 		return this.resources;
 	}
 
-    public void addEffect(Effect e){
+    public void addEffect(String e){
         this.effectList.add(e);
     }
 
-    public List<Effect> getEffectList(){
+    public List<String> getEffectList(){
         return this.effectList;
+    }
+    
+    public FamilyMember[] getFamilyMember(){
+    	return this.familyMemberList;
     }
 }

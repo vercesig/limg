@@ -9,8 +9,8 @@ public class Card {
 
 	private final String name;
 	private boolean onTheGame;
-	private ArrayList<String> instantEffects;  // Stringhe degli opcode degli effetti da recuperare dalla registry
-	private ArrayList<String> permanentEffects; // Stringhe degli opcode degli effetti da recuperare dalla registry
+	private ArrayList<Effect> instantEffects;
+	private ArrayList<Effect> permanentEffects; 
 	
 	
 	public Card(String name){
@@ -35,5 +35,14 @@ public class Card {
 	public void activatePermanentEffect(){
 		
 	}
+	
+	public void addInstantEffect(Effect e){
+		this.instantEffects.add(e);
+	}
+	
+	public void addPermanentEffect(Effect e){
+		this.permanentEffects.add(e);
+	}
+	
 		
 }

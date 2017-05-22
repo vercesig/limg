@@ -38,12 +38,6 @@ public class Deck<T> {
 			shuffledDeck.add(this.deck.get(randomNumber));
 			this.deck.remove(randomNumber);
 		}
-		
-		StringBuilder tmp = new StringBuilder();
-		for(T e : shuffledDeck){
-			tmp.append(e.toString());
-		}
-		
 		deck = shuffledDeck;
 	}
 	

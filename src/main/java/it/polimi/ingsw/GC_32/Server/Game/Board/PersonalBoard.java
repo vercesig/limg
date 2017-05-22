@@ -7,20 +7,13 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.CardType;
 import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 
 public class PersonalBoard {
-	//private final PersonalBonusTile personalBonusTile;
-	private final Player owner;
-	
+
 	private LinkedList<Card> ventureCards;
 	private LinkedList<Card> characterCards;
 	private LinkedList<Card> territoryCards;
 	private LinkedList<Card> buildingCards;
 	
-	
-	public PersonalBoard(Player owner){
-		this.owner = owner;
-		
-		//this.personalBonusTile = new PersonalBonusTile();
-		
+	public PersonalBoard(){
 		this.ventureCards = new LinkedList<Card>();
 		this.characterCards = new LinkedList<Card>();
 		this.territoryCards = new LinkedList<Card>();
@@ -28,12 +21,6 @@ public class PersonalBoard {
 		
 	}
 
-
-	
-/*	public PersonalBonusTile getPersonalBonusTile(){
-		return this.personalBonusTile;
-	}*/
-	
 	public LinkedList<Card> getVentureCards(){
 		return this.ventureCards;
 	}

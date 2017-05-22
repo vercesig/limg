@@ -8,11 +8,9 @@ public class FamilyMember{
 	private DiceColor diceColor;
 	private int actionValue = 0;
 	private ActionSpace position;
-	private Player owner;
 	
-	public FamilyMember(Player owner){
+	public FamilyMember(){
 		this.position = null;
-		this.owner = owner;
 	}
 	
 	public ActionSpace getPosition(){
@@ -34,10 +32,6 @@ public class FamilyMember{
 	public void setActionValue(int diceValue){
 		
 		this.actionValue = diceValue;
-	}
-
-	public Player getOwner() {
-		return this.owner;
 	}
 
 }

@@ -4,21 +4,12 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 
 public class TurnManager {
 	
-	private static TurnManager instance;
-	
 	private int turnID;
 	private Board board;
 	
-	private TurnManager(Board board){
+	public TurnManager(Board board){
 		this.turnID = 0;
 		this.board = board;
-	}
-	
-	public static TurnManager newTurnManager(Board board){
-		if(instance==null){
-			return new TurnManager(board);
-		}
-		return instance;
 	}
 	
 	public int getTurnID(){

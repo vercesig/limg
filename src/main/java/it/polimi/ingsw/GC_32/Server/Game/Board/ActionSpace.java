@@ -10,7 +10,7 @@ public class ActionSpace{
 
 	private ResourceSet bonus;
 	private int actionValue;
-	private ArrayList<FamilyMember> occupants;
+	private ArrayList<Player> occupants;
 	private boolean single;
 	private final int regionID;
 	private final int actionSpaceID;
