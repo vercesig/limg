@@ -8,7 +8,7 @@ public class TowerLayer {
 	private ActionSpace actionSpace;
 	
 	private TowerLayer(int regionID, int actionSpaceID){
-		this.actionSpace = new ActionSpace(regionID,actionSpaceID);
+		this.actionSpace = new ActionSpace(null, 0, false, regionID, actionSpaceID);
 	}
 	
 	public static TowerLayer create(int regionID, int actionSpaceID){

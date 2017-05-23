@@ -25,7 +25,7 @@ public class TowerRegion {
 	public boolean canIPlaceFamilyMember(Player player){
 		// c'è già un familiare del mio stesso colore sulla torre
 		for(TowerLayer level : towerLayers){
-			if(level.getActionSpace().getPlayers().get(0).getColor() == player.getColor()){ //poco elegante, da rivedere...
+			if(level.getActionSpace().getPlayers().get(0).getUUID() == player.getUUID()){
 				return false;
 			}
 		}

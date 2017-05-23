@@ -45,7 +45,7 @@ public class TurnManager {
 	}
 	
 	public void actionPhase(){
-		for(Player p : board.getTurnOrderTrack().getPlayerOrder()){
+		for(Player p : this.board.getPlayerOrder()){
 			performAction(p);
 		}
 	}
@@ -54,7 +54,7 @@ public class TurnManager {
 	}
 	
 	public void roundEnd(){
-		flushBoard();
+		this.board.flushBoard();
 		updateTurnOrder();
 	}
 	

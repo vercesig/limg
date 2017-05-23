@@ -1,25 +1,33 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.List;
+import java.util.UUID;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 
 public class Player {
 	private PersonalBoard personalBoard;
 	private final String name;
     private List<Effect> effectList;
 	private ResourceSet resources;
-	private PersonalBonusTile personalBonusTile;
+	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
+	private String uuid;
 	
 	public Player(String name){
-		this.personalBoard = new PersonalBoard(this);
+		this.personalBoard = new PersonalBoard();
 		this.name = name;
 		this.resources = new ResourceSet();
 		this.familyMemberList = new FamilyMember[3];
+		this.uuid = UUID.randomUUID().toString();
 	}
 	
+	public String getUUID() {
+		return uuid;
+	}
+
 	public PersonalBoard getPersonalBoard(){
 		return this.personalBoard;
 	}
@@ -60,11 +68,15 @@ public class Player {
 		return this.resources;
 	}
 
-    public void addEffect(String e){
+    public void addEffect(Effect e){
         this.effectList.add(e);
     }
+    
+    public void addEffect(String s){
+    	this.effectList.add(EffectRegistry.getInstance().getEffect(s));
+    }
 
-    public List<String> getEffectList(){
+    public List<Effect> getEffectList(){
         return this.effectList;
     }
     

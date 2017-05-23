@@ -15,8 +15,8 @@ public class Card {
 	
 	public Card(String name){
 		this.name = name;
-		this.instantEffects = new ArrayList<String>();
-		this.permanentEffects = new ArrayList<String>();
+		this.instantEffects = new ArrayList<Effect>();
+		this.permanentEffects = new ArrayList<Effect>();
 		this.onTheGame = false;
 	}
 		

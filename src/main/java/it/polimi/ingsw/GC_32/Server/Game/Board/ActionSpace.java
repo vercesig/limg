@@ -10,22 +10,18 @@ public class ActionSpace{
 
 	private ResourceSet bonus;
 	private int actionValue;
-	private ArrayList<Player> occupants;
+	private ArrayList<FamilyMember> occupants;
 	private boolean single;
 	private final int regionID;
 	private final int actionSpaceID;
 	
-	private ActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
+	public ActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
 		this.bonus = bonus;
 		this.actionValue = actionValue;
 		this.occupants = new ArrayList<FamilyMember>();
 		this.single = single;
 		this.actionSpaceID = actionSpaceID;
 		this.regionID = regionID;
-	}
-	
-	public static ActionSpace create(ResourceSet bonus, int actionValue, boolean single){
-		return new ActionSpace(bonus,actionValue,single);
 	}
 	
 	public boolean isSingleActionSpace(){

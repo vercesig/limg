@@ -17,11 +17,11 @@ public class EffectRegistry{
         return instance;
     }
 
-    private void registerEffect(String effectCode, Effect effect){
+    protected void registerEffect(String effectCode, Effect effect){
         this.registry.put(effectCode, effect);
     }
 
-    private Effect getEffect(String effectCode){
+    public Effect getEffect(String effectCode){
         return this.registry.get(effectCode);
     }
 }

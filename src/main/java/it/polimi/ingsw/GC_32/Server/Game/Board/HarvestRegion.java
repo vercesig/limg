@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
+import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
 public class HarvestRegion {
 
@@ -9,8 +10,8 @@ public class HarvestRegion {
 	
 	public HarvestRegion(int regionID){
 		this.regionID = regionID;
-		this.singleActionSpace = ActionSpace.create(null, 0, true, regionID, 0);
-		this.multipleActionSpace = ActionSpace.create(null, 0, false, regionID, 0);
+		this.singleActionSpace = new ActionSpace(new ResourceSet(), 0, true, regionID, 0);
+		this.multipleActionSpace = new ActionSpace(new ResourceSet(), 0, false, regionID, 0);
 	}
 	
 	public ActionSpace getSingleActionSpace(){		

@@ -1,14 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
-import java.util.ArrayList;
-
-import Model.CouncilRegion;
-import Model.HarvestRegion;
-import Model.ProductionRegion;
-import Model.TowerRegion;
-import it.polimi.ingsw.GC_32.Server.Game.ExcommunicationCard;
+import java.util.List;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 
 
@@ -44,6 +37,10 @@ public class Board {
 	
 	public void flushBoard(){
 		
+	}
+
+	public List<Player> getPlayerOrder() {
+		return null;
 	}
 	
 }
