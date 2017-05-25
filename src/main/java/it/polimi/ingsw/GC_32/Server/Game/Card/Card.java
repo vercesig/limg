@@ -43,6 +43,5 @@ public class Card {
 	public void addPermanentEffect(Effect e){
 		this.permanentEffects.add(e);
 	}
-	
 		
 }

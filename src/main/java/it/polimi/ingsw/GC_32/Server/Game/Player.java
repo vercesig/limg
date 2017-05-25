@@ -21,13 +21,16 @@ public class Player {
 		this.name = name;
 		this.resources = new ResourceSet();
 		this.familyMemberList = new FamilyMember[3];
+		for(FamilyMember f : familyMemberList){
+			f = new FamilyMember(this);
+		}
 		this.uuid = UUID.randomUUID().toString();
 	}
 	
 	public String getUUID() {
 		return uuid;
 	}
-
+	
 	public PersonalBoard getPersonalBoard(){
 		return this.personalBoard;
 	}

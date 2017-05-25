@@ -10,6 +10,10 @@ public class ResourceSet implements Comparable {
     	this.resourceSet = new HashMap<String, Integer>();
     }
     
+    public HashMap<String, Integer> getResourceSet(){
+    	return this.resourceSet;
+    }
+    
     public int getResouce(String resourceName){
     	return this.resourceSet.getOrDefault(resourceName, 0);
     }
@@ -24,10 +28,25 @@ public class ResourceSet implements Comparable {
     		this.resourceSet.put(resourceName, prevValue + quantity);
     	}
     }
+    
+    public void addResource(ResourceSet resource){
+    	for(String type : resource.getResourceSet().keySet()){
+    		this.resourceSet.put(type, resource.getResouce(type)+resourceSet.get(type));
+    	}
+    }
 
 	@Override
 	public int compareTo(Object arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public String toString(){
+		StringBuilder tmp = new StringBuilder();
+		for(String name : resourceSet.keySet()){
+			tmp.append(name+" :"+resourceSet.get(name).toString()+"\n");
+		}
+		return new String(tmp);
+	}
+	
 }

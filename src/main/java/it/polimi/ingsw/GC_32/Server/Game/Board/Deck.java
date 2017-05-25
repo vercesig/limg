@@ -15,6 +15,10 @@ public class Deck<T> {
 		
 	private ArrayList<T> deck;
 	
+	public Deck(){
+		this.deck = new ArrayList<T>();
+	}
+	
 	public Deck(List<T> elements){
 		this.deck = new ArrayList<T>();
 		for(T e : elements){
@@ -112,8 +116,14 @@ public class Deck<T> {
 		c.shuffleDeck();
 		System.out.println(c.toString());
 		System.out.println("pesco elemento in cima al mazzo :" +c.drawElement().toString());
+		System.out.println("pesco elemento in cima al mazzo :" +c.drawElement().toString());
 		System.out.println("pesco i primi 5 elementi in cima al mazzo :" +c.drawManyElements(5).toString());
 		System.out.println("pesco elemento casuale :" +c.drawRandomElement().toString());
+
+
+		Deck<Integer> d = new Deck();
+		Deck<Integer> f = new Deck();
+		System.out.println(f.composeDeck(c,d).toString());
 		
 		
 	}

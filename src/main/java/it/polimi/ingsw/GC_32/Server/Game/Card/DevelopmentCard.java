@@ -7,9 +7,9 @@ public class DevelopmentCard extends Card{
 
 	private ResourceSet cost;
 	private int period;
-	private CardType type;
+	private String type;
 	
-	public DevelopmentCard(String name, ResourceSet cost, int period, CardType type){
+	public DevelopmentCard(String name, ResourceSet cost, int period, String type){
 		super(name);
 		this.cost = cost;
 		this.period = period;
@@ -24,8 +24,14 @@ public class DevelopmentCard extends Card{
 		return this.period;
 	}
 	
-	public CardType getType(){
+	public String getType(){
 		return this.type;
 	}
 
+	public String toString(){
+		StringBuilder tmp = new StringBuilder();
+		tmp.append("name: "+this.getName()+"\ncost:\n"+cost.toString()+"\nperiod: "+period+"\ntype: "+type+"\n");
+		return new String(tmp);
+	}
+	
 }
