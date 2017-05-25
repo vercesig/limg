@@ -12,11 +12,7 @@ public class Board {
 	private HarvestRegion harvestRegion;
 	private CouncilRegion councilRegion;
 		
-	public Board(){		
-		this.towerRegion = new TowerRegion[4]; //rendere scalabile
-		for(int i=0; i<4; i++){
-			towerRegion[i] = new TowerRegion(i,4);
-		}
+	public Board(){
 		this.productionRegion = new ProductionRegion(0);
 		this.harvestRegion = new HarvestRegion(1);
 		this.councilRegion = new CouncilRegion(2);
@@ -24,6 +20,13 @@ public class Board {
 	
 	public TowerRegion[] getTowerRegion(){
 		return this.towerRegion;
+	}
+	
+	public void setTowerRegion(int numberOfTowers){
+		this.towerRegion = new TowerRegion[numberOfTowers];
+		for(int i=0; i<numberOfTowers; i++){
+			towerRegion[i] = new TowerRegion(i,4);
+		}
 	}
 	
 	public ProductionRegion getProductionRegion(){

@@ -59,24 +59,18 @@ public class Setup {
 		}
 		
 		// configura le torri
-		if(tmpDecks.keySet().size()==game.getBoard().getTowerRegion().length){ //verifica che ci siano abbastanza torri
-			Object[] types = tmpDecks.keySet().toArray();
-			String[] cardTypes = new String[types.length];
-			for(int j=0; j<cardTypes.length; j++){
-				cardTypes[j] = (String)types[j];
-			}
-			for(int i=0; i<game.getBoard().getTowerRegion().length; i++){
-				game.getBoard().getTowerRegion()[i].setTypeCard(cardTypes[i]);
-			}
-			
-			
+		Object[] types = tmpDecks.keySet().toArray();
+		String[] cardTypes = new String[types.length];
+		game.getBoard().setTowerRegion(types.length);
+		for(int j=0; j<cardTypes.length; j++){
+			cardTypes[j] = (String)types[j];
 		}
-		else{
-			System.out.println("errore, numero di torri non sufficiente");
+		for(int i=0; i<game.getBoard().getTowerRegion().length; i++){
+			game.getBoard().getTowerRegion()[i].setTypeCard(cardTypes[i]);
 		}
 		
 		// preparazione carte scomunica
-		/*FileReader excommunicationCardFile = new FileReader("");
+		FileReader excommunicationCardFile = new FileReader("/home/alessandro/Scrivania/testscomunica.json");
 		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck(JsonImporter.importExcommunicationCard(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
@@ -93,7 +87,7 @@ public class Setup {
 		for(int i=1; i<=3; i++){ // --------------------------------- caricare il numero di periodi da file di configurazione
 			Deck<ExcommunicationCard> tmpDeck = new Deck(tmpSubDecks.get(i));
 			game.setExcommunicationCard(tmpDeck.drawRandomElement(), i);
-		}*/
+		}
 	}
 	
 	// imposta casualmente l'ordine di turno iniziale
@@ -115,25 +109,25 @@ public class Setup {
 	private void setUpPlayers(){
 		ArrayList<Player> players = game.getPlayerList();
 		for(int i=0; i<players.size(); i++){
-			players.get(i).getResources().addResource("WOOD", 2);
-			players.get(i).getResources().addResource("STONE", 2);
-			players.get(i).getResources().addResource("SERVANTS", 3);
+			players.get(i).getResources().setResource("WOOD", 2);
+			players.get(i).getResources().setResource("STONE", 2);
+			players.get(i).getResources().setResource("SERVANTS", 3);
 			// in base all'ordine di turno assegno le monete iniziali
-			players.get(i).getResources().addResource("COINS", 5 + i);
+			players.get(i).getResources().setResource("COINS", 5 + i);
 			// setta punteggi a 0
-			players.get(i).getResources().addResource("FAITH", 0);
-			players.get(i).getResources().addResource("VP", 0);
-			players.get(i).getResources().addResource("MILITARY", 0);
+			players.get(i).getResources().setResource("FAITH", 0);
+			players.get(i).getResources().setResource("VP", 0);
+			players.get(i).getResources().setResource("MILITARY", 0);
 			
 		}
 	}
 	
 	public Setup(Game game) throws IOException{
 		this.game = game;
+		
 		setUpCard();
 		setUpTurnOrder();
-		setUpPlayers();
-				
+		setUpPlayers();				
 	}
 	
 	public static void main(String[] args) throws IOException{
@@ -160,6 +154,8 @@ public class Setup {
 		}
 		
 		System.out.println("risorse: "+ a1.getResources().toString());
+		
+		System.out.println(game.getExcommunicationCard(1).toString());
 		
 	}
 

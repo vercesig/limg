@@ -44,8 +44,7 @@ public class TurnManager {
 			if(!newTurnOrder.contains(p)){
 				newTurnOrder.add(p);
 			}
-		}
-		
+		}	
 		game.setPlayerOrder(newTurnOrder);		
 	}
 	
@@ -62,9 +61,14 @@ public class TurnManager {
 		System.out.println(currentPlayer.getName()+" esegue mossa");
 	}
 	
-	// controlla tracciato punti fede e se è il caso attiva gli effetti della scomunica per ogni giocatore da scomunicare
+	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare
 	private void checkExcommunication(){
-		System.out.println("checkko scomunica");
+		int excommunicationLevel = 3 + this.turnID/2 -1 ; //calcolo punti fede richiesti 
+		for(Player p : game.getPlayerList()){
+			if(p.getFaithPoints()<=excommunicationLevel){
+				System.out.println("TIE! beccati la scomunica!");
+			}
+		}
 	}
 	
 	public void roundSetup(){
@@ -113,12 +117,12 @@ public class TurnManager {
 		System.out.println(game.getBoard().toString());
 		System.out.println(game.getBlackDiceValue());
 		
-		while(turnManager.getTurnID()<6){
+		/*while(turnManager.getTurnID()<6){
 			turnManager.roundSetup();
 			turnManager.actionPhase();
 			turnManager.vaticanReportPhase();
 			turnManager.roundEnd();
-		}
+		}*/
 		
 	}
 	

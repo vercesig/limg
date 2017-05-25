@@ -53,15 +53,39 @@ public class JsonImporter {
 		return tmp;		
 	}
 	
-	public static List<DevelopmentCard> importExcommunicationCard(FileReader fileReader) throws IOException{
-		return null;
+	public static List<ExcommunicationCard> importExcommunicationCard(FileReader fileReader) throws IOException{
+		
+		ArrayList<ExcommunicationCard> tmp = new ArrayList<ExcommunicationCard>();
+		
+		JsonArray cardList = Json.parse(fileReader).asArray();
+		
+		for(JsonValue item : cardList){
+			JsonObject card = item.asObject();
+			JsonValue name = card.get("name");
+			JsonValue period = card.get("period");
+	
+			JsonArray instantEffectList = card.get("instantEffectList").asArray();
+			JsonArray permanentEffectList = card.get("permanentEffectList").asArray();
+			
+			ExcommunicationCard newCard = new ExcommunicationCard(name.asString(),period.asInt());
+			instantEffectList.forEach(effectOPCODE -> newCard.addInstantEffect(EffectRegistry.getInstance().getEffect(effectOPCODE.asString())));
+			permanentEffectList.forEach(effectOPCODE -> newCard.addPermanentEffect(EffectRegistry.getInstance().getEffect(effectOPCODE.asString())));
+									
+			tmp.add(newCard);		
+		}
+		
+		return tmp;
+	}
+	
+	public static void importConfigurationFile(FileReader fileReader){
+		
 	}
 	
 	public static void main(String[] args) throws IOException{
 		
 		
-		FileReader developmentCard = new FileReader("/home/alessandro/Scrivania/test.json");
-		Deck<DevelopmentCard> list = new Deck(JsonImporter.importDevelopmentCard(developmentCard));
+		FileReader developmentCard = new FileReader("/home/alessandro/Scrivania/testscomunica.json");
+		Deck<ExcommunicationCard> list = new Deck(JsonImporter.importExcommunicationCard(developmentCard));
 		
 		System.out.println(list.toString());
 		

@@ -25,7 +25,7 @@ public class Game {
 		this.playerList = players;
 		this.board = new Board();
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
-		this.excommunicationCards = new ExcommunicationCard[2];
+		this.excommunicationCards = new ExcommunicationCard[3];
 		
 		if(this.playerList.size()>2){
 			this.flag2PlayersGame=false;
@@ -62,11 +62,11 @@ public class Game {
 	}
 	
 	public void setExcommunicationCard(ExcommunicationCard card, int period){
-		this.excommunicationCards[period] = card;
+		this.excommunicationCards[period-1] = card;
 	}
 	
 	public ExcommunicationCard getExcommunicationCard(int period){
-		return this.excommunicationCards[period];
+		return this.excommunicationCards[period-1];
 	}
 	
 	public int getBlackDiceValue(){
