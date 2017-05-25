@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
@@ -11,69 +12,61 @@ public class Game {
 	private ArrayList<Player> playerList;
 	private Board board;
 	
-	private Deck<DevelopmentCard> ventureCardDeck;
-	private Deck<DevelopmentCard> characterCardDeck;
-	private Deck<DevelopmentCard> buildingCardDeck;
-	private Deck<DevelopmentCard> territoryCardDeck;
-	
+	private HashMap<String, Deck<DevelopmentCard>> decks;	
 	private ExcommunicationCard[] excommunicationCards;
 	
 	private int blackDice;
 	private int whiteDice;
 	private int orangeDice;
 	
-	public Game(){
-		this.playerList = new ArrayList<Player>();
+	private boolean flag2PlayersGame=true;
+	
+	public Game(ArrayList<Player> players){
+		this.playerList = players;
 		this.board = new Board();
-		this.excommunicationCards = new ExcommunicationCard[2];
+		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
+		this.excommunicationCards = new ExcommunicationCard[3];
+		
+		if(this.playerList.size()>2){
+			this.flag2PlayersGame=false;
+		}
+		
+	}
+	
+	public Boolean getFlag2PlayersGame(){
+		return this.flag2PlayersGame;
 	}
 	
 	public ArrayList<Player> getPlayerList(){
 		return this.playerList;
 	}
 	
+	public void setPlayerOrder(ArrayList<Player> playerList){
+		this.playerList = playerList;
+	}
+	
 	public Board getBoard(){
 		return this.board;
 	}
 	
-	public Deck<DevelopmentCard> getVentureCardDeck(){
-		return this.ventureCardDeck;
+	public HashMap<String, Deck<DevelopmentCard>> getDecks(){
+		return this.decks;
 	}
 	
-	public Deck<DevelopmentCard> getCharacterCardDeck(){
-		return this.characterCardDeck;
+	public Deck<DevelopmentCard> getDeck(String type){
+		return this.decks.get(type);
 	}
 	
-	public Deck<DevelopmentCard> getBuildingCardDeck(){
-		return this.buildingCardDeck;
-	}
-	
-	public Deck<DevelopmentCard> getTerritoryCardDeck(){
-		return this.territoryCardDeck;
-	}
-	
-	public void setVentureCardDeck(Deck<DevelopmentCard> deck){
-		this.ventureCardDeck = deck;
-	}
-	
-	public void setBuildingCardDeck(Deck<DevelopmentCard> deck){
-		this.ventureCardDeck = deck;
-	}
-	
-	public void setTerritoryCardDeck(Deck<DevelopmentCard> deck){
-		this.ventureCardDeck = deck;
-	}
-	
-	public void setCharacterCardDeck(Deck<DevelopmentCard> deck){
-		this.ventureCardDeck = deck;
+	public void setDeck(String type, Deck<DevelopmentCard> deck){
+		this.decks.put(type, deck);
 	}
 	
 	public void setExcommunicationCard(ExcommunicationCard card, int period){
-		this.excommunicationCards[period] = card;
+		this.excommunicationCards[period-1] = card;
 	}
 	
 	public ExcommunicationCard getExcommunicationCard(int period){
-		return this.excommunicationCards[period];
+		return this.excommunicationCards[period-1];
 	}
 	
 	public int getBlackDiceValue(){

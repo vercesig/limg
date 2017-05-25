@@ -12,8 +12,7 @@ public class Board {
 	private HarvestRegion harvestRegion;
 	private CouncilRegion councilRegion;
 		
-	public Board(){		
-		this.towerRegion = new TowerRegion[3]; //rendere scalabile		
+	public Board(){
 		this.productionRegion = new ProductionRegion(0);
 		this.harvestRegion = new HarvestRegion(1);
 		this.councilRegion = new CouncilRegion(2);
@@ -21,6 +20,13 @@ public class Board {
 	
 	public TowerRegion[] getTowerRegion(){
 		return this.towerRegion;
+	}
+	
+	public void setTowerRegion(int numberOfTowers){
+		this.towerRegion = new TowerRegion[numberOfTowers];
+		for(int i=0; i<numberOfTowers; i++){
+			towerRegion[i] = new TowerRegion(i,4);
+		}
 	}
 	
 	public ProductionRegion getProductionRegion(){
@@ -38,9 +44,17 @@ public class Board {
 	public void flushBoard(){
 		
 	}
-
-	public List<Player> getPlayerOrder() {
-		return null;
+	
+	public String toString(){
+		StringBuilder tmp = new StringBuilder();
+		for(int i=0; i<towerRegion.length; i++){
+			tmp.append("--------------------------------------------torre numero: "+i+"\n");
+			for(int j=0; j<towerRegion[i].getTowerLayers().length; j++){
+				tmp.append("-------------- carta al livello: "+j+"\n");
+				tmp.append(towerRegion[i].getTowerLayers()[j].getCard().toString());
+			}
+		}
+		return new String(tmp);
 	}
 	
 }

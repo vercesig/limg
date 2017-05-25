@@ -7,14 +7,10 @@ public class TowerLayer {
 	private DevelopmentCard card;
 	private ActionSpace actionSpace;
 	
-	private TowerLayer(int regionID, int actionSpaceID){
+	public TowerLayer(int regionID, int actionSpaceID){
 		this.actionSpace = new ActionSpace(null, 0, false, regionID, actionSpaceID);
 	}
-	
-	public static TowerLayer create(int regionID, int actionSpaceID){
-		return new TowerLayer(regionID, actionSpaceID);
-	}
-	
+		
 	public DevelopmentCard getCard(){
 		return this.card;
 	}

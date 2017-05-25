@@ -8,18 +8,31 @@ public class TowerRegion {
 	private TowerLayer[] towerLayers;
 	private boolean towerBusy;
 	private final int regionID;
+	private String typeCard;
 	
 	public TowerRegion(int regionID, int numberOfLayers){
 		this.regionID = regionID;
 		this.towerBusy = false;
 		this.towerLayers = new TowerLayer[numberOfLayers];
 		for(int i=0; i<numberOfLayers; i++){
-			this.towerLayers[i] = TowerLayer.create(this.regionID,i);
+			this.towerLayers[i] = new TowerLayer(this.regionID, i);
 		}
+	}
+	
+	public String getTypeCard(){
+		return this.typeCard;
+	}
+	
+	public void setTypeCard(String type){
+		this.typeCard = type;
 	}
 	
 	public boolean isTowerBusy(){
 		return this.towerBusy;
+	}
+	
+	public TowerLayer[] getTowerLayers(){
+		return this.towerLayers;
 	}
 	
 	public boolean canIPlaceFamilyMember(Player player){
