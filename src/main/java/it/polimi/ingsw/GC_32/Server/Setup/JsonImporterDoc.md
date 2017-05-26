@@ -57,5 +57,5 @@ si riporta il formato JSON relativo alle excommunicationcards:
 JsonImporter offre un metodo *importExcommunicationCard(FileReader filePath)* per l'import delle tessere scomunica:
 
 ```
-Deck<ExcommunicationCard> excommunicationCardDeck = new Deck(JsonImporter.importDevelopmentCard(...));
+Deck<ExcommunicationCard> excommunicationCardDeck = new Deck(JsonImporter.importExcommunicationCard(...));
 ```
