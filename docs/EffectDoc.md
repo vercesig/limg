@@ -25,29 +25,29 @@ Proposta di strutturazione di un possibile file JSON:
 
 ```
 "istantEffectList" :{
-  "ADD" : {"WOOD" : 2, "STONE": 4, "MILITARY" : 2, ...},
-  "CHANGE" : [{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2},{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2}],
-  "ACTION" : {"TYPE" : tower/produzione/raccolto/... , "BONUSACTIONVALUE" : 3, "BONUSRESOURCE" : {"WOOD" : -1, "COINS" -1}, "EXCLUSIVEBONUS" : true/false},
-  "BONUS" {"CARTA/RISORSAPOSSEDUTA": "CHARACTERCARD", "RISORSADAINCREMENTARE" : 1}
+  "OPCODE1" : {"type": "ADD", "payload" :{"WOOD" : 2, "STONE": 4, "MILITARY" : 2, ...}},
+  "OPCODE2" : {"type" : "CHANGE", "payload" : [{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2},{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2}]},
+  "OPCODE3" : {"type" : "ACTION", "payload" : {"TYPE" : tower/produzione/raccolto/... , "BONUSACTIONVALUE" : 3, "BONUSRESOURCE" : {"WOOD" : -1, "COINS" -1}, "EXCLUSIVEBONUS" : true/false}},
+  "OPCODE4" : {"type" : "BONUS", "payload" : {"CARTA/RISORSAPOSSEDUTA": "CHARACTERCARD", "RISORSADAINCREMENTARE" : 1}}
 ]
 ```
 
 ```
-"ADD" : {"WOOD" : 2, "STONE": 4, "MILITARY" : 2, ...},
+"OPCODE1" : {"type": "ADD", "payload" :{"WOOD" : 2, "STONE": 4, "MILITARY" : 2, ...}},
 ```
 aggiunge le risorse elencate alle risorse del giocatore.
 
 ```
-"CHANGE" : [{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2},{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2}],
+"OPCODE2" : {"type" : "CHANGE", "payload" : [{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2},{"RISORSAPOSSEDUTA" : 2, "RISORSAOTTENUTA" : 2}]},
 ```
 consente di cambiare X unità' (qui 2) di RISORSAPOSSEDUTA in Y unità (qui 2) di RISORSAOTTENUTA. L'array è necessario perchè sono possibili più scelte.
 ```
-"ACTION" : {"TYPE" : tower/produzione/raccolto/... , "BONUSACTIONVALUE" : 3, "BONUSRESOURCE" : {"WOOD" : -1, "COINS" -1}, "EXCLUSIVEBONUS" : true/false},
+"OPCODE3" : {"type" : "ACTION", "payload" : {"TYPE" : tower/produzione/raccolto/... , "BONUSACTIONVALUE" : 3, "BONUSRESOURCE" : {"WOOD" : -1, "COINS" -1}, "EXCLUSIVEBONUS" : true/false}},
 ```
 consente di eseguire un azione di tipo TYPE con valore BONUSACTIONVALUE applicando lo "sconto" di BONUSRESOURCE sull'acquisto di una carta. (il flag EXCLUSIVEBONUS è necessario per indicare se lo sconto, qualora fosse costituito da più di una risorsa, è applicabile solo per una delle risorse elencate)
 
 ```
-"BONUS" {"CARTA/RISORSAPOSSEDUTA": "CHARACTERCARD", "QUANTITÀ1" : 1, "RISORSADAINCREMENTARE" : risorsa, "QUANTITÀ2" : 2}
+"OPCODE4" : {"type" : "BONUS", "payload" : {"CARTA/RISORSAPOSSEDUTA": "CHARACTERCARD", "RISORSADAINCREMENTARE" : 1}}
 ```
 per ogni QUANTITÀ1 di CARTA o RISORSA posseduta consente di incrementare RISORSADAINCREMENTARE di QUANTITÀ2 unità-
 
