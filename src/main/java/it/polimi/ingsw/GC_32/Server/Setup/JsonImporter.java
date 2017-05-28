@@ -32,10 +32,18 @@ public class JsonImporter {
 			JsonValue period = card.get("period");
 			JsonValue cardType = card.get("cardType");
 			
-			JsonArray instantEffectList = card.get("instantEffectList").asArray();
-			JsonArray permanentEffectList = card.get("permanentEffectList").asArray();
+			// effetto instantaneo da passare al builder
+			JsonValue instantEffect = card.get("instantEffect");
+			JsonObject instantPayload = card.get("instantPayload").asObject();
+			// OPCODE relativo all'effetto custom istantaneo
+			JsonValue customIstantEffect = card.get("customIstantEffect");
 			
-			JsonObject JsonresourceSet = card.get("resourceSet").asObject();
+			// effetto permanente da passare al builder
+			JsonValue permanentEffect = card.get("permanentEffect");
+			JsonObject permanentPayload = card.get("permanentPayload").asObject();
+			
+			// costo della carta
+			JsonObject JsonresourceSet = card.get("cost").asObject();
 			Iterator<Member> singleItem = JsonresourceSet.iterator();				
 			ResourceSet resourceSet = new ResourceSet();		
 			while(singleItem.hasNext()){
@@ -45,8 +53,10 @@ public class JsonImporter {
 			}
 			
 			DevelopmentCard newCard = new DevelopmentCard(name.asString(), resourceSet, period.asInt(), cardType.asString());
-			instantEffectList.forEach(effectOPCODE -> newCard.addInstantEffect(EffectRegistry.getInstance().getEffect(effectOPCODE.asString())));
-			permanentEffectList.forEach(effectOPCODE -> newCard.addPermanentEffect(EffectRegistry.getInstance().getEffect(effectOPCODE.asString())));
+			// binding degli effetti alla carta
+			if(!(customIstantEffect==null))
+				newCard.addInstantEffect(EffectRegistry.getInstance().getEffect(customIstantEffect.asString())); // effetto custom
+			
 									
 			tmp.add(newCard);
 		}
