@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
+import java.util.ArrayList;
 import java.util.List;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
@@ -7,15 +8,23 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class Board {
 
+	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
 	private ProductionRegion productionRegion;
 	private HarvestRegion harvestRegion;
 	private CouncilRegion councilRegion;
 		
 	public Board(){
+
 		this.productionRegion = new ProductionRegion(0);
 		this.harvestRegion = new HarvestRegion(1);
 		this.councilRegion = new CouncilRegion(2);
+	
+		this.region = new ArrayList <Region>();
+		region.add(0, (Region) productionRegion); 
+		region.add(1, (Region) harvestRegion);
+		region.add(2, (Region) councilRegion); 
+		
 	}
 	
 	public TowerRegion[] getTowerRegion(){
@@ -25,8 +34,20 @@ public class Board {
 	public void setTowerRegion(int numberOfTowers){
 		this.towerRegion = new TowerRegion[numberOfTowers];
 		for(int i=0; i<numberOfTowers; i++){
-			towerRegion[i] = new TowerRegion(i,4);
+			towerRegion[i] = new TowerRegion(i + 3,4);
+			region.add(3 + i, (Region) towerRegion[i]);
 		}
+	}
+	
+	public Region getRegion(int idRegion){	// NUOVO METODO
+		try{
+			return this.region.get(idRegion);
+		} catch (NullPointerException e){
+			return null;
+		}
+	}
+	public ArrayList <Region> getRegionMap(){
+		return this.region;
 	}
 	
 	public ProductionRegion getProductionRegion(){
@@ -47,12 +68,10 @@ public class Board {
 	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		for(int i=0; i<towerRegion.length; i++){
-			tmp.append("--------------------------------------------torre numero: "+i+"\n");
-			for(int j=0; j<towerRegion[i].getTowerLayers().length; j++){
-				tmp.append("-------------- carta al livello: "+j+"\n");
-				tmp.append(towerRegion[i].getTowerLayers()[j].getCard().toString());
-			}
+		for(int i=0; i< this.region.size(); i++){
+			tmp.append("Regione " + this.region.get(i).getRegionID() + " :" + '\n');
+			tmp.append(this.region.get(i).toString() + '\n');
+			tmp.append("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ " + '\n');
 		}
 		return new String(tmp);
 	}

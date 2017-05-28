@@ -4,27 +4,27 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 
 public class MoveChecker{
-
-    private MoveChecker(){}
-
-    public static boolean checkMove(Board b, Player p, Action a){
-        boolean cando = true;
-        for( Effect e : p.getEffectList() ){
-            if(! e.apply(b,p,a) ){
-                return false;
-            }
-        }
-
-        if( a.cost.compareTo(p.getResources()) > 0 && cando ){
-        	return true;
-            //for( Effect e : p.getEffectList() ){
-            //    e.apply(b,p,a);
-            //}
-            //p.resource -= a.resourceCost;
-        } else {
-        	return false;
-        }
-    }
-
-
-}
+	
+    public MoveChecker(){}
+    
+    public static boolean checkValidRegionID (Board board, Player player, Action action){	
+		if(board.getRegion(action.getActionRegionId()) == null){
+			return false;
+		} return true;
+	}
+	
+	public static boolean checkValidActionSpaceID (Board board, Player player, Action action){	
+		if(board.getRegion(action.getActionRegionId())
+				.getActionSpace(action.getActionSpaceId()) == null){
+			return false;
+		} return true;
+	}
+		
+    public static boolean checkStandardMove(Board board, Player player, Action action){
+            
+    		boolean checkValidRegionID = checkValidRegionID(board, player, action);
+    		boolean checkValidActionSpaceID = checkValidActionSpaceID (board, player, action);
+        	return checkValidRegionID && checkValidActionSpaceID;
+    	
+        } 
+   }

@@ -14,7 +14,6 @@ public class PersonalBoard {
 	
 	public PersonalBoard(){
 		this.cards = new HashMap<String, LinkedList<DevelopmentCard>>();
-		
 	}
 
 	public HashMap<String, LinkedList<DevelopmentCard>> getCards(){
