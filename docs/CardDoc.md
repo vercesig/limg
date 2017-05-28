@@ -6,6 +6,7 @@ cosi astratta:
 {
 "name" : "Trading Town",
 "cost" : null,
+"requirements":null
 "instantEffect": "ADD",
 "instantPayload": {
     "SERVANTS": 1,
@@ -25,6 +26,7 @@ cosi astratta:
 la semantica dei vari attribuit è la seguente:
 * **name**: il nome della carta
 * **cost**: il costo in risorse della carta (qui null perchè le carte territorio non hanno costo)
+* **requirement**: il numero di risorse necessarie per poter giocare o acquistare la carta.
 * **instantEffect**: la tipologia di effetto istantaneo che caratterizza la carta
 * **instantPayload**: ciò che caratterizza lo specifico effetto della carta in questione, gli
 argomenti qui presenti saranno impiegati dall'**EffectBuilder** per generare l'effetto corretto. Il
@@ -95,6 +97,7 @@ Secondo questo formato carte più complesse sono cosi rappresentate:
     "WOOD" : 2,
     "STONE" : 1
 },
+"requirements": null,
 "instantEffect": "ADD",
 "instantPayload": {
     "VP":3
@@ -119,6 +122,7 @@ Secondo questo formato carte più complesse sono cosi rappresentate:
 "cost" : {
     "COINS" : 4,
 },
+"requirements": null,
 "instantEffect": null,
 "instantPayload": null,
 "customInstantEffect" : null,

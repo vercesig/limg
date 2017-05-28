@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import it.polimi.ingsw.GC_32.Server.Game.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
@@ -19,7 +18,7 @@ public class Setup {
 	
 	private void setUpCard() throws IOException{
 		// preparazione carte sviluppo
-		FileReader developmentCardFile = new FileReader("/home/alessandro/Scrivania/test.json");
+		FileReader developmentCardFile = new FileReader("test.json");
 		
 		Deck<DevelopmentCard> developmentCardDeck = new Deck(JsonImporter.importDevelopmentCard(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();
