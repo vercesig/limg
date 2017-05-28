@@ -10,7 +10,7 @@ public class ProductionRegion implements Region {
 		this.regionID = id;
 		this.track = new ActionSpace[2];	//NUOVO ATTRIBUTO
 		track[0] = new ActionSpace(null, 1, true, this.getRegionID(), 0);
-		track[1] = new ActionSpace(null, 1, false, this.getRegionID(), 0);
+		track[1] = new ActionSpace(null, 1, false, this.getRegionID(), 1);
 	}
 	
 	public void activateEffect(){
