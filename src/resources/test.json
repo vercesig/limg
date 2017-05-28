@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [
 {
 "name" : "Trading Town",
@@ -273,36 +272,3 @@
 "cardType" : "CHARACTERCARD"
 }
 ]
-
-=======
-[{
-    "name" : "Cavaliere2",
-    "instantEffect" : "OPCODE1",
-    "permanentEffect" : "OPCODE1",
-    "resourceSet" : {
-        "WOOD":10,
-        "STONE":5,
-        "SERVANT":0,
-        "COIN":0
-        },
-    "period" : 2,
-    "cardType" : "bbb"
-},
-{
-    "name" : "Cavaliere1",
-    "instantEffectList" : "OPCODE1",
-    "permanentEffectList" : "OPCODE1",
-    "resourceSet" : [{
-        "WOOD":10,
-        "STONE":5,
-        "SERVANT":0,
-        "COIN":0
-        },
-        {
-        "WOOD": 3,
-        "MILITARY": 2
-        }],
-    "period" : 3,
-    "cardType" : "bbb"
-}]
->>>>>>> 5f64fe6946b2cce673374d56e5e78b70bc768364
