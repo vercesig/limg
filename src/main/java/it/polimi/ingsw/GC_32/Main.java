@@ -13,9 +13,9 @@ public class Main
     public static void main( String[] args ) throws IOException
     {
         
-    	Player a1 = new Player("aaa");
-		Player a2 = new Player("bbb");
-		Player a3 = new Player("ccc");
+    	Player a1 = new Player("PlayerOne");
+		Player a2 = new Player("PlayerTwo");
+		Player a3 = new Player("PlayerThree");
 		
 		
 		ArrayList<Player> playerList = new ArrayList<Player>();

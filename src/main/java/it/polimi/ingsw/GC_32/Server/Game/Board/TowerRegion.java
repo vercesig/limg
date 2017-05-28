@@ -3,7 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
-public class TowerRegion {
+public class TowerRegion implements Region {
 
 	private TowerLayer[] towerLayers;
 	private boolean towerBusy;
@@ -60,5 +60,31 @@ public class TowerRegion {
 	public void placeCards(){
 		
 	}
-	
+	// implementazioni Metodi Astratti Region
+		public int getRegionID(){
+			return this.regionID;
+		}
+		
+		public String toString(){
+			StringBuilder stringBuilder = new StringBuilder();
+			for (TowerLayer level: towerLayers){
+				stringBuilder.append(level.getActionSpace().toString());
+				stringBuilder.append("\n'''''''''''''''''''''''''''''''''''''''''''''''''\n");
+				stringBuilder.append("CARTA: \n");
+				stringBuilder.append(level.getCard().toString());
+				stringBuilder.append("====================================================\n");
+			}
+			return new String(stringBuilder);
+		}
+		
+		public ActionSpace getActionSpace(int id){
+			try{
+				for (TowerLayer level: towerLayers){
+					if(level.getActionSpace().getActionSpaceID() == id)
+						return level.getActionSpace();
+				} return null;
+			}catch(NullPointerException e){
+				return null;
+			}
+		}
 }

@@ -70,5 +70,8 @@ public class ActionSpace{
 		}
 		return false;
 	}
-	
+	public String toString(){
+		String string = "[" + actionSpaceID + " ]" + "*" + actionValue + " ";
+		return string;
+	}
 }
