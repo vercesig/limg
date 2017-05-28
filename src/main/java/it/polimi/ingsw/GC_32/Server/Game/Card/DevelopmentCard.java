@@ -17,6 +17,7 @@ public class DevelopmentCard extends Card{
 	
 	public DevelopmentCard(String name, int period, String type){
 		super(name);
+		this.cost = new ArrayList<ResourceSet>();
 		this.period = period;
 		this.type = type;
 	}
@@ -35,7 +36,8 @@ public class DevelopmentCard extends Card{
 
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		tmp.append("name: "+this.getName()+"\ncost:\n"+cost.toString()+"\nperiod: "+period+"\ntype: "+type+"\n");
+		tmp.append("name: "+this.getName()+"\nperiod: "+period+"\ntype: "+type+"\n");
+		cost.forEach(cost -> tmp.append("cost :" +cost.toString()+"\n"));
 		return new String(tmp);
 	}	
 	

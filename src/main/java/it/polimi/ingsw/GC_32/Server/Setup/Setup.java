@@ -18,7 +18,7 @@ public class Setup {
 	
 	private void setUpCard() throws IOException{
 		// preparazione carte sviluppo
-		FileReader developmentCardFile = new FileReader("test.json");
+		FileReader developmentCardFile = new FileReader("src/resources/test.json");
 		
 		Deck<DevelopmentCard> developmentCardDeck = new Deck(JsonImporter.importDevelopmentCard(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();
@@ -69,7 +69,7 @@ public class Setup {
 		}
 		
 		// preparazione carte scomunica
-		FileReader excommunicationCardFile = new FileReader("/home/alessandro/Scrivania/testscomunica.json");
+		FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
 		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck(JsonImporter.importExcommunicationCard(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
@@ -131,9 +131,9 @@ public class Setup {
 	
 	public static void main(String[] args) throws IOException{
 		
-		Player a1 = new Player("cazzuto");
-		Player a2 = new Player("stronzo");
-		Player a3 = new Player("spennato");
+		Player a1 = new Player("aaa");
+		Player a2 = new Player("bbb");
+		Player a3 = new Player("ccc");
 		
 		
 		ArrayList<Player> playerList = new ArrayList<Player>();

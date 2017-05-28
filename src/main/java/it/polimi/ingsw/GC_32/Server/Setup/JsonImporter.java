@@ -24,34 +24,32 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-		
-			try{
-				String name = card.get("name").asString();
-				Integer period = card.get("period").asInt();
-				String cardType = card.get("cardType").asString();
-				
-				String instantEffect = card.get("instantEffect").asString();
-				String permanentEffect = card.get("permanentEffect").asString();
-				
-				JsonValue resourceCost = card.get("resourceCost");
-				JsonArray resourceArray = new JsonArray();
-				if( resourceCost.isObject() ){ // Carta con costo singolo
-					 resourceArray = new JsonArray();
-					resourceArray.add(resourceCost);
-				}
-				if( resourceCost.isArray() ){ // Carta con costo multiplo
-					resourceArray = resourceCost.asArray();
-				}
-					
-				DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
-				newCard.registerCost(resourceArray.iterator());
-				newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
-				newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
-				
-				cardList.add(newCard);
-			} catch (UnsupportedOperationException e){
-				e.printStackTrace();
+			String name = card.get("name").asString();
+
+			Integer period = card.get("period").asInt();
+			String cardType = card.get("cardType").asString();
+			
+			String instantEffect = card.get("instantEffect").asString();
+			String permanentEffect = card.get("permanentEffect").asString();
+			
+			JsonValue resourceCost = card.get("resourceCost");
+			JsonArray resourceArray = new JsonArray();
+			if( resourceCost.isObject() ){ // Carta con costo singolo
+				 resourceArray = new JsonArray();
+				resourceArray.add(resourceCost);
 			}
+			if( resourceCost.isArray() ){ // Carta con costo multiplo
+				resourceArray = resourceCost.asArray();
+			}
+				
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			newCard.registerCost(resourceArray.iterator());
+			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
+			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
+			
+			cardList.add(newCard);
+		
+			cardList.add(newCard);
 		}
 		return cardList;
 	}
@@ -87,7 +85,7 @@ public class JsonImporter {
 	public static void main(String[] args) throws IOException{
 		
 		
-		FileReader developmentCard = new FileReader("/home/alessandro/Scrivania/testscomunica.json");
+		FileReader developmentCard = new FileReader("src/resources/test.json");
 		Deck<ExcommunicationCard> list = new Deck(JsonImporter.importExcommunicationCard(developmentCard));
 		
 		System.out.println(list.toString());

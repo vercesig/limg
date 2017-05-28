@@ -86,4 +86,10 @@ public class Player {
     public FamilyMember[] getFamilyMember(){
     	return this.familyMemberList;
     }
+    
+    public String toString(){
+    	StringBuilder tmp = new StringBuilder();
+    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\n");
+    	return new String(tmp);
+    }
 }
