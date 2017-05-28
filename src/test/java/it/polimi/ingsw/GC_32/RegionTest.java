@@ -40,14 +40,14 @@ public class RegionTest {
 			}
 		}
 		System.out.println(a.toString()); //su console non riesce a printarlo tutto
-		System.out.println(a.size()); // 7 * 5 = 35
+		System.out.println(a.size()); // 8 * 5 = 40
 	}
 	
-	// test che verifica il corretto numero di regioni del gioco: 7
+	// test che verifica il corretto numero di regioni del gioco: 8
 	@Test
 	public void testCorrectNumberOfRegion(){
 		board = new Board();
 		board.setTowerRegion(4);
-		assertEquals(7, board.getRegionMap().size());
+		assertEquals(8, board.getRegionMap().size());
 	}
 }

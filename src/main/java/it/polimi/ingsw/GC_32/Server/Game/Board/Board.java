@@ -13,18 +13,20 @@ public class Board {
 	private ProductionRegion productionRegion;
 	private HarvestRegion harvestRegion;
 	private CouncilRegion councilRegion;
+	private MarketRegion marketRegion;
 		
 	public Board(){
 
 		this.productionRegion = new ProductionRegion(0);
 		this.harvestRegion = new HarvestRegion(1);
 		this.councilRegion = new CouncilRegion(2);
-	
+		this.marketRegion = new MarketRegion(3);
+		
 		this.region = new ArrayList <Region>();
 		region.add(0, (Region) productionRegion); 
 		region.add(1, (Region) harvestRegion);
 		region.add(2, (Region) councilRegion); 
-		
+		region.add(3, (Region) marketRegion);
 	}
 	
 	public TowerRegion[] getTowerRegion(){
@@ -34,8 +36,8 @@ public class Board {
 	public void setTowerRegion(int numberOfTowers){
 		this.towerRegion = new TowerRegion[numberOfTowers];
 		for(int i=0; i<numberOfTowers; i++){
-			towerRegion[i] = new TowerRegion(i + 3,4);
-			region.add(3 + i, (Region) towerRegion[i]);
+			towerRegion[i] = new TowerRegion(i + 4,4);
+			region.add(4 + i, (Region) towerRegion[i]);
 		}
 	}
 	
@@ -60,6 +62,9 @@ public class Board {
 	
 	public CouncilRegion getCouncilRegion(){
 		return this.councilRegion;
+	}
+	public MarketRegion getMarketRegion(){
+		return this.marketRegion;
 	}
 	
 	public void flushBoard(){
