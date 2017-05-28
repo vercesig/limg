@@ -1,344 +1,275 @@
-[{
-"name" : "Cavaliere2",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+[
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 2,
-"cardType" : "bbb"
+"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Cavaliere1",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "bbb"
+"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Cavaliere1",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "bbb"
+"cardType" : "BUILDINGCARD"
 },
 {
-"name" : "Cavaliere1",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "bbb"
+"cardType" : "BUILDINGCARD"
 },
 {
-"name" : "Cavaliere1",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "bbb"
+"cardType" : "VENTURECARD"
 },
 {
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 2,
-"cardType" : "ccc"
+"cardType" : "VENTURECARD"
 },
 {
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ccc"
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "VENTURECARD"
 },
 {
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ccc"
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
 },
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ccc"
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
 },
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "ccc"
-},{
-"name" : "aaa",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "aaa"
+"cardType" : "VENTURECARD"
 },
 {
-"name" : "aaa",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "aaa"
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
 },
-{
-"name" : "aaa",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "aaa"
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
 },
-{
-"name" : "aaa",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "aaa"
-},
-{
-"name" : "aaa",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "aaa"
-},{
-"name" : "bbb",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "bbb"
-},{
-"name" : "ccc",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "ccc"
-},{
-"name" : "ddd",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "aaa"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "aaa"
-},{
-"name" : "eee",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 1,
-"cardType" : "bbb"
-},{
-"name" : "fff",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
 "period" : 3,
-"cardType" : "ccc"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ddd"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ddd"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ddd"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 2,
-"cardType" : "ddd"
-},
-{
-"name" : "Cavaliere",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":10,
-	"STONE":5,
-	"SERVANT":0,
-	"COIN":0
-	},
-"period" : 3,
-"cardType" : "ddd"
-},{
-"name" : "hhh",
-"instantEffectList" : ["OPCODE1", "OPCODE2"],
-"permanentEffectList" : ["OPCODE1", "OPCODE2"],
-"resourceSet" : {
-	"WOOD":100,
-	"STONE":50,
-	"SERVANT":4,
-	"COIN":0
-	},
-"period" : 1,
-"cardType" : "ddd"
-}]
+"cardType" : "CHARACTERCARD"
+}
+]
+

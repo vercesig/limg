@@ -24,70 +24,30 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-<<<<<<< HEAD
+			String name = card.get("name").asString();
+			Integer period = card.get("period").asInt();
+			String cardType = card.get("cardType").asString();
 			
-			JsonValue name = card.get("name");
-			JsonValue period = card.get("period");
-			JsonValue cardType = card.get("cardType");
+			String instantEffect = card.get("instantEffect").asString();
+			String permanentEffect = card.get("permanentEffect").asString();
 			
-			// effetto instantaneo da passare al builder
-			JsonValue instantEffect = card.get("instantEffect");
-			JsonObject instantPayload = card.get("instantPayload").asObject();
-			// OPCODE relativo all'effetto custom istantaneo
-			JsonValue customIstantEffect = card.get("customIstantEffect");
-			
-			// effetto permanente da passare al builder
-			JsonValue permanentEffect = card.get("permanentEffect");
-			JsonObject permanentPayload = card.get("permanentPayload").asObject();
-			
-			// costo della carta
-			JsonObject JsonresourceSet = card.get("cost").asObject();
-			Iterator<Member> singleItem = JsonresourceSet.iterator();				
-			ResourceSet resourceSet = new ResourceSet();		
-			while(singleItem.hasNext()){
-				String resourceType = singleItem.next().getName();
-				int value = JsonresourceSet.get(resourceType).asInt();
-				resourceSet.setResource(resourceType, value);
+			JsonValue resourceCost = card.get("resourceCost");
+			JsonArray resourceArray = new JsonArray();
+			if( resourceCost.isObject() ){ // Carta con costo singolo
+				resourceArray = new JsonArray();
+				resourceArray.add(resourceCost);
 			}
-			
-			DevelopmentCard newCard = new DevelopmentCard(name.asString(), resourceSet, period.asInt(), cardType.asString());
-			// binding degli effetti alla carta
-			if(!(customIstantEffect==null))
-				newCard.addInstantEffect(EffectRegistry.getInstance().getEffect(customIstantEffect.asString())); // effetto custom
-			
-									
-			tmp.add(newCard);
-=======
-		
-			try{
-				String name = card.get("name").asString();
-				Integer period = card.get("period").asInt();
-				String cardType = card.get("cardType").asString();
-				
-				String instantEffect = card.get("instantEffect").asString();
-				String permanentEffect = card.get("permanentEffect").asString();
-				
-				JsonValue resourceCost = card.get("resourceCost");
-				JsonArray resourceArray = new JsonArray();
-				if( resourceCost.isObject() ){ // Carta con costo singolo
-					 resourceArray = new JsonArray();
-					resourceArray.add(resourceCost);
-				}
-				if( resourceCost.isArray() ){ // Carta con costo multiplo
-					resourceArray = resourceCost.asArray();
-				}
-					
-				DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
-				newCard.registerCost(resourceArray.iterator());
-				newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
-				newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
-				
-				cardList.add(newCard);
-			} catch (UnsupportedOperationException e){
-				e.printStackTrace();
+			if( resourceCost.isArray() ){ // Carta con costo multiplo
+				resourceArray = resourceCost.asArray();
 			}
->>>>>>> 4647c49517b769421ed97e650f6d01432dcd68ce
-		}
+				
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			newCard.registerCost(resourceArray.iterator());
+			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
+			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
+			
+			cardList.add(newCard);
+			}
 		return cardList;
 	}
 	
@@ -122,7 +82,7 @@ public class JsonImporter {
 	public static void main(String[] args) throws IOException{
 		
 		
-		FileReader developmentCard = new FileReader("/home/alessandro/Scrivania/testscomunica.json");
+		FileReader developmentCard = new FileReader("src/resources/test.json");
 		Deck<ExcommunicationCard> list = new Deck(JsonImporter.importExcommunicationCard(developmentCard));
 		
 		System.out.println(list.toString());

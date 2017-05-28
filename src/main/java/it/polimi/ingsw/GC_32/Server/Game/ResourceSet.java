@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.HashMap;
+import java.util.Iterator;
+
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
@@ -15,7 +17,7 @@ public class ResourceSet implements Comparable {
     public ResourceSet(JsonObject jsonResourceSet) {
     	this();
     	for(Member singleResource: jsonResourceSet){
-    		this.addResource(singleResource.getName(), singleResource.getValue().asInt());
+    		this.setResource(singleResource.getName(), singleResource.getValue().asInt());
     	}
     }
 
@@ -53,7 +55,7 @@ public class ResourceSet implements Comparable {
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		for(String name : resourceSet.keySet()){
-			tmp.append(name+" :"+resourceSet.get(name).toString()+"\n");
+			tmp.append("\n"+name+" :"+resourceSet.get(name).toString());
 		}
 		return new String(tmp);
 	}
