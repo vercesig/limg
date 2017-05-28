@@ -1,11 +1,17 @@
 [{
 "name" : "cardID1",
+<<<<<<< HEAD
 "instantEffect" : "OPCODE1",
 "permanentEffect" : "OPCODE1",
+=======
+"instantEffectList" : "OPCODE1",
+"permanentEffectList" : "OPCODE1",
+>>>>>>> 5f64fe6946b2cce673374d56e5e78b70bc768364
 "period" : 1
 },
 {
 "name" : "cardID2",
+<<<<<<< HEAD
 "instantEffect" : "OPCODE1",
 "permanentEffect" : "OPCODE1",
 "period" : 2
@@ -84,3 +90,9 @@
 }
 ]
 
+=======
+"instantEffectList" : "OPCODE1",
+"permanentEffectList" : "OPCODE1",
+"period" : 1
+}]
+>>>>>>> 5f64fe6946b2cce673374d56e5e78b70bc768364

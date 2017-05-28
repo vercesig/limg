@@ -24,30 +24,31 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
+
 			String name = card.get("name").asString();
-			Integer period = card.get("period").asInt();
-			String cardType = card.get("cardType").asString();
-			
-			String instantEffect = card.get("instantEffect").asString();
-			String permanentEffect = card.get("permanentEffect").asString();
-			
-			JsonValue resourceCost = card.get("resourceCost");
-			JsonArray resourceArray = new JsonArray();
-			if( resourceCost.isObject() ){ // Carta con costo singolo
-				resourceArray = new JsonArray();
-				resourceArray.add(resourceCost);
-			}
-			if( resourceCost.isArray() ){ // Carta con costo multiplo
-				resourceArray = resourceCost.asArray();
-			}
+				Integer period = card.get("period").asInt();
+				String cardType = card.get("cardType").asString();
 				
-			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
-			newCard.registerCost(resourceArray.iterator());
-			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
-			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
+				String instantEffect = card.get("instantEffect").asString();
+				String permanentEffect = card.get("permanentEffect").asString();
+				
+				JsonValue resourceCost = card.get("resourceCost");
+				JsonArray resourceArray = new JsonArray();
+				if( resourceCost.isObject() ){ // Carta con costo singolo
+					 resourceArray = new JsonArray();
+					resourceArray.add(resourceCost);
+				}
+				if( resourceCost.isArray() ){ // Carta con costo multiplo
+					resourceArray = resourceCost.asArray();
+				}
+					
+				DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+				newCard.registerCost(resourceArray.iterator());
+				newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
+				newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
 			
 			cardList.add(newCard);
-			}
+		}
 		return cardList;
 	}
 	
