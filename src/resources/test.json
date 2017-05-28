@@ -1,0 +1,274 @@
+[
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "TERRITORYCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "BUILDINGCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "VENTURECARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "VENTURECARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "VENTURECARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "VENTURECARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 2,
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 1,
+"cardType" : "CHARACTERCARD"
+},
+{
+"name" : "Trading Town",
+"resourceCost" : {"WOOD" : 2, "COINS" : 1},
+"instantEffect": "ADD",
+"instantPayload": {
+    "SERVANTS": 1,
+    "COINS":1
+},
+"customInstantEffect" : null,
+"permanentEffect" : "ADD",
+"permanentPayload" : {
+    "COINS":3
+},
+"minimumActionValue" : 1,
+"period" : 3,
+"cardType" : "CHARACTERCARD"
+}
+]

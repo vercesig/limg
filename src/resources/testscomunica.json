@@ -1,0 +1,85 @@
+[{
+"name" : "cardID1",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 1
+},
+{
+"name" : "cardID2",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 2
+},
+{
+"name" : "cardID3",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 3
+},
+{
+"name" : "cardID4",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 1
+},
+{
+"name" : "cardID5",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 1
+},
+{
+"name" : "cardID1",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 1
+},
+{
+"name" : "cardID6",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 2
+},
+{
+"name" : "cardID7",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 3
+},
+{
+"name" : "cardID8",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 3
+},
+{
+"name" : "cardID9",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 2
+},
+{
+"name" : "cardID10",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 1
+},
+{
+"name" : "cardID11",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 2
+},
+{
+"name" : "cardID12",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 3
+},
+{
+"name" : "cardID13",
+"instantEffect" : "OPCODE1",
+"permanentEffect" : "OPCODE1",
+"period" : 3
+}
+]

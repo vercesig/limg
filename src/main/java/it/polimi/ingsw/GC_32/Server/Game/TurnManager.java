@@ -97,9 +97,9 @@ public class TurnManager {
 	
 	public static void main(String[] args) throws IOException{
 		
-		Player a1 = new Player("cazzuto");
-		Player a2 = new Player("stronzo");
-		Player a3 = new Player("spennato");
+		Player a1 = new Player("aaa");
+		Player a2 = new Player("bbb");
+		Player a3 = new Player("ccc");
 		
 		
 		ArrayList<Player> playerList = new ArrayList<Player>();
