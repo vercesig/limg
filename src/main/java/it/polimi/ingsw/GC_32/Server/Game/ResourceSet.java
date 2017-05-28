@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.HashMap;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonObject.Member;
 
 public class ResourceSet implements Comparable {
 	
@@ -10,7 +12,14 @@ public class ResourceSet implements Comparable {
     	this.resourceSet = new HashMap<String, Integer>();
     }
     
-    public HashMap<String, Integer> getResourceSet(){
+    public ResourceSet(JsonObject jsonResourceSet) {
+    	this();
+    	for(Member singleResource: jsonResourceSet){
+    		this.addResource(singleResource.getName(), singleResource.getValue().asInt());
+    	}
+    }
+
+	public HashMap<String, Integer> getResourceSet(){
     	return this.resourceSet;
     }
     
