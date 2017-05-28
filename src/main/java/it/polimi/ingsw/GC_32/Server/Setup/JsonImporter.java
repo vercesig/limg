@@ -24,6 +24,40 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
+<<<<<<< HEAD
+			
+			JsonValue name = card.get("name");
+			JsonValue period = card.get("period");
+			JsonValue cardType = card.get("cardType");
+			
+			// effetto instantaneo da passare al builder
+			JsonValue instantEffect = card.get("instantEffect");
+			JsonObject instantPayload = card.get("instantPayload").asObject();
+			// OPCODE relativo all'effetto custom istantaneo
+			JsonValue customIstantEffect = card.get("customIstantEffect");
+			
+			// effetto permanente da passare al builder
+			JsonValue permanentEffect = card.get("permanentEffect");
+			JsonObject permanentPayload = card.get("permanentPayload").asObject();
+			
+			// costo della carta
+			JsonObject JsonresourceSet = card.get("cost").asObject();
+			Iterator<Member> singleItem = JsonresourceSet.iterator();				
+			ResourceSet resourceSet = new ResourceSet();		
+			while(singleItem.hasNext()){
+				String resourceType = singleItem.next().getName();
+				int value = JsonresourceSet.get(resourceType).asInt();
+				resourceSet.setResource(resourceType, value);
+			}
+			
+			DevelopmentCard newCard = new DevelopmentCard(name.asString(), resourceSet, period.asInt(), cardType.asString());
+			// binding degli effetti alla carta
+			if(!(customIstantEffect==null))
+				newCard.addInstantEffect(EffectRegistry.getInstance().getEffect(customIstantEffect.asString())); // effetto custom
+			
+									
+			tmp.add(newCard);
+=======
 		
 			try{
 				String name = card.get("name").asString();
@@ -52,6 +86,7 @@ public class JsonImporter {
 			} catch (UnsupportedOperationException e){
 				e.printStackTrace();
 			}
+>>>>>>> 4647c49517b769421ed97e650f6d01432dcd68ce
 		}
 		return cardList;
 	}
