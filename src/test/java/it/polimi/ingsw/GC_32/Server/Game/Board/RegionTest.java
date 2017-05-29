@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32;
+package it.polimi.ingsw.GC_32.Server.Game.Board;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class RegionTest {
 	public void testGetActionSpaceNullPointerException(){
 		board = new Board();
 		board.setTowerRegion(4);
-		ArrayList <ActionSpace> a = new <ActionSpace> ArrayList();
+		ArrayList<ActionSpace> a = new ArrayList<ActionSpace>();
 		
 		for(Region region : board.getRegionMap()){
 			for (int i = 0; i < 5; i++){
