@@ -14,8 +14,21 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+/**
+ * allows to import and parse (from JSON files) external file like card description's file or game configuration file.
+ * @author alessandro
+ */
+
 public class JsonImporter {
 	
+	/**
+	 * method which return a list of development card from an external file correctly formatted. The method accept a FileReader object as parameter, 
+	 * then parse it and finally returns the list of card (which can be passed to the Deck's constructor to generate an effectively deck structure)
+	 * 
+	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 * @return the list of the cards generated from the JSON external file
+	 * @throws IOException
+	 */
 	public static List<DevelopmentCard> importDevelopmentCard(FileReader fileReader) throws IOException{
 		
 		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
@@ -52,6 +65,14 @@ public class JsonImporter {
 		return cardList;
 	}
 	
+	/**
+	 * method which return a list of excommunication card from an external file correctly formatted. The method accept a FileReader object as parameter, 
+	 * then parse it and finally returns the list of card (which can be passed to the Deck's constructor to generate an effectively deck structure)
+	 * 
+	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 * @return the list of the cards generated from the JSON external file
+	 * @throws IOException
+	 */
 	public static List<ExcommunicationCard> importExcommunicationCard(FileReader fileReader) throws IOException{
 		
 		ArrayList<ExcommunicationCard> cardList = new ArrayList<ExcommunicationCard>();
@@ -75,23 +96,11 @@ public class JsonImporter {
 		
 		return cardList;
 	}
-	
+	/**
+	 * perform the parsing of the configuration file
+	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 */
 	public static void importConfigurationFile(FileReader fileReader){
 		
-	}
-	
-	public static void main(String[] args) throws IOException{
-		
-		
-		FileReader developmentCard = new FileReader("src/resources/test.json");
-		Deck<ExcommunicationCard> list = new Deck(JsonImporter.importExcommunicationCard(developmentCard));
-		
-		System.out.println(list.toString());
-		
-		list.shuffleDeck();
-		
-		System.out.println(list.drawRandomElement().toString());
-		
-	}
-	
+	}	
 }
