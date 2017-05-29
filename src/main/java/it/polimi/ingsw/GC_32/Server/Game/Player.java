@@ -26,6 +26,7 @@ public class Player {
 			this.familyMemberList[i] = new FamilyMember(this);
 		}
 		this.uuid = UUID.randomUUID().toString();
+		this.effectList = new ArrayList<Effect>();
 	}
 	
 	public String getUUID() {
