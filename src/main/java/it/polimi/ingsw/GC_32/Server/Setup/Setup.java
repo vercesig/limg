@@ -12,10 +12,44 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 
+/**
+ * allows to configure all the elements of the game in their initial state. For example the preparation of the decks and the consequently associations of them
+ * to the Board.
+ * 
+ * <p>
+ * 
+ * @see Game
+ * @author alessandro 
+ */
 public class Setup {
 
 	private Game game;
 	
+	/**
+	 * the constructor encapsulates all the mechanisms which interest the game's status before the game is effectively started. In particular the constructor 
+	 * apply on an istance of Game object all the operations which interest the card's management (both development card and excommunication cars) and the decks
+	 * generation (like the import of the cards from an external file and the preparation of the decks accordint to the game's rule (each deck contains only card
+	 * belonging to one specific type and is sorted by period))
+	 *  
+	 * @param game			the game which must be inizialized
+	 * @throws IOException
+	 */	
+	public Setup(Game game) throws IOException{
+		this.game = game;
+		
+		setUpCard();
+		setUpTurnOrder();
+		setUpPlayers();				
+	}	
+	
+	/**
+	 * this method encapsulate all the mechanisms which interest the management of the cards (both development card and excommunication card) before the 
+	 * start of the game (like the import of the cards from an external file and the preparation of the decks. Each deck contains only card belonging to one 
+	 * specific type, and, according to the rule of the game, each one is sorted by period). .
+	 *  
+	 * @see JsonImporter
+	 * @throws IOException
+	 */	
 	private void setUpCard() throws IOException{
 		// preparazione carte sviluppo
 		FileReader developmentCardFile = new FileReader("src/resources/test.json");
@@ -89,7 +123,10 @@ public class Setup {
 		}
 	}
 	
-	// imposta casualmente l'ordine di turno iniziale
+	/**
+	 * according to the game rule, during the first round turn order is choosen randomly. this method perform such operation. After the method has been applied
+	 * the order of the player, memorized in the object Game, is randomly setted.
+	 */
 	private void setUpTurnOrder(){
 		ArrayList<Player> tmpPlayerList = game.getPlayerList();
 		Random randomGenerator = new Random();
@@ -104,8 +141,11 @@ public class Setup {
 		game.setPlayerOrder(startPlayerOrder);
 	}
 	
-	//TODO: associare PersonalBonusTile al giocatore
+	/**
+	 * this method set the resources and the scores of each player at their initial value (considering the random turn order as well).
+	 */
 	private void setUpPlayers(){
+		//TODO: associare PersonalBonusTile al giocatore
 		ArrayList<Player> players = game.getPlayerList();
 		for(int i=0; i<players.size(); i++){
 			players.get(i).getResources().setResource("WOOD", 2);
@@ -120,43 +160,4 @@ public class Setup {
 			
 		}
 	}
-	
-	public Setup(Game game) throws IOException{
-		this.game = game;
-		
-		setUpCard();
-		setUpTurnOrder();
-		setUpPlayers();				
-	}
-	
-	public static void main(String[] args) throws IOException{
-		
-		Player a1 = new Player("aaa");
-		Player a2 = new Player("bbb");
-		Player a3 = new Player("ccc");
-		
-		
-		ArrayList<Player> playerList = new ArrayList<Player>();
-		playerList.add(a1);
-		playerList.add(a2);
-		playerList.add(a3);
-		
-		
-		Game game = new Game(playerList);
-		Setup setupGame = new Setup(game);
-		
-		System.out.println("deck trovato: ");
-		System.out.println(game.getDeck("bbb").toString());
-		
-		for(Player p : game.getPlayerList()){
-			System.out.println(p.getName());
-		}
-		
-		System.out.println("risorse: "+ a1.getResources().toString());
-		
-		System.out.println(game.getExcommunicationCard(1).toString());
-		
-	}
-
-	
 }
