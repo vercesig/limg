@@ -33,5 +33,14 @@ public class PersonalBoard {
 			this.cards.put(card.getType(), tmpList);
 			this.cards.get(card.getType()).add(card);
 		}
-	}	
+	}
+	
+	public String toString(){
+		StringBuilder tmp = new StringBuilder();
+		for(String type : cards.keySet()){
+			tmp.append("**********************  "+type+": \n");
+			cards.get(type).forEach(card -> tmp.append(card.toString()));
+		}
+		return new String(tmp);
+	}
 }

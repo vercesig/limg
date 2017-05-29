@@ -11,23 +11,7 @@ public class TowerLayer {
 	public TowerLayer(int regionID, int actionSpaceID){
 		ResourceSet bonus = new ResourceSet();
 		boolean single = true;
-		int actionValue = 1;
-		
-		switch(actionSpaceID){		// BRUTTO_ CI VUOLE UNA NOVA SOLUZIONE
-			case 0:
-				actionValue = 1;
-				break;
-			case 1:
-				actionValue = 3;
-				break;
-			case 2:
-				actionValue = 5;
-				break;
-			case 3:
-				actionValue = 7;
-				break;
-		}
-		
+		int actionValue = 2*actionSpaceID + 1;
 		this.actionSpace = new ActionSpace(bonus, actionValue, single, regionID, actionSpaceID);
 	}
 		
@@ -41,6 +25,12 @@ public class TowerLayer {
 	
 	public void setCard(DevelopmentCard card){
 		this.card = card;
+	}
+	
+	public DevelopmentCard takeCard(){
+		DevelopmentCard takenCard = this.card;
+		this.card = null;
+		return takenCard;
 	}
 	
 	

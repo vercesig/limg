@@ -71,7 +71,11 @@ public class TowerRegion implements Region {
 				stringBuilder.append(level.getActionSpace().toString());
 				stringBuilder.append("\n'''''''''''''''''''''''''''''''''''''''''''''''''\n");
 				stringBuilder.append("CARTA: \n");
-				stringBuilder.append(level.getCard().toString());
+				try{
+					stringBuilder.append(level.getCard().toString());
+				}catch(NullPointerException e){
+					stringBuilder.append("nessuna carta presente\n");
+				}
 				stringBuilder.append("====================================================\n");
 			}
 			return new String(stringBuilder);

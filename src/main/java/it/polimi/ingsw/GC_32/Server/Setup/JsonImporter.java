@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -57,7 +58,8 @@ public class JsonImporter {
 				
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
 			newCard.registerCost(resourceArray.iterator());
-			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
+		    JsonObject payload = card.get("instantPayload").asObject();		
+			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect,payload));
 			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
 			
 			cardList.add(newCard);

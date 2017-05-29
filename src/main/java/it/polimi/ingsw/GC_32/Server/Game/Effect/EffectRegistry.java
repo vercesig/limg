@@ -31,8 +31,11 @@ public class EffectRegistry{
      * @return the instance of the registry
      */
     public static EffectRegistry getInstance(){
-        if( instance == null )
+        if( instance == null ){
             instance = new EffectRegistry();
+            ResourceAdder.loadBuilder();
+            BonusEffect.loadBuilder();
+        }
         return instance;
     }
 

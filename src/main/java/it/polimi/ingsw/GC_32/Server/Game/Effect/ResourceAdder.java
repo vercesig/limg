@@ -18,7 +18,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  */
 public class ResourceAdder {
 	
-	EffectBuilder buildAddResource = (JsonValue payload) -> {
+	static EffectBuilder buildAddResource = (JsonValue payload) -> {
 		
 		Iterator<Member> singleItem = payload.asObject().iterator();				
 		ResourceSet resourceSet = new ResourceSet();
@@ -33,7 +33,7 @@ public class ResourceAdder {
 		return e;
 	};
 	
-	private ResourceAdder() {
+	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("ADD", buildAddResource);
 	}
 }

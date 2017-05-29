@@ -20,9 +20,11 @@ public class Player {
 		this.personalBoard = new PersonalBoard();
 		this.name = name;
 		this.resources = new ResourceSet();
-		this.familyMemberList = new FamilyMember[3];
-		for(FamilyMember f : familyMemberList){
-			f = new FamilyMember(this);
+		
+		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
+		this.familyMemberList = new FamilyMember[4];
+		for(int i=0; i<familyMemberList.length; i++){
+			familyMemberList[i] = new FamilyMember(this);	
 		}
 		this.uuid = UUID.randomUUID().toString();
 	}
@@ -89,7 +91,18 @@ public class Player {
     
     public String toString(){
     	StringBuilder tmp = new StringBuilder();
-    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\n");
+    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\nPERSONALBOARD :"+this.personalBoard.toString());
+    	tmp.append("stato dei familiari: \n");
+    	for(FamilyMember f : familyMemberList){
+    		tmp.append(f.toString()+"\n");
+    	}
     	return new String(tmp);
     }
+    
+    // TODO: inserire gli opportuni check
+    public void takeCard(Game game, Action action){
+    	TowerRegion selectedTower = (TowerRegion)game.getBoard().getRegion(action.getActionRegionId());
+    	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
+    }
+        
 }

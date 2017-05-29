@@ -36,10 +36,13 @@
 {
 "name" : "Trading Town",
 "resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
+"instantEffect": "BONUS",
 "instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
+ 	"TYPE" : "CARD",
+	"FOREACH": "TERRITORYCARD",
+    "QUANTITY" : 1,
+    "INCREASE" : "MILITARY",
+    "INCREASINGQUANTITY": 5
 },
 "customInstantEffect" : null,
 "permanentEffect" : "ADD",
@@ -53,10 +56,13 @@
 {
 "name" : "Trading Town",
 "resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
+"instantEffect": "BONUS",
 "instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
+ 	"TYPE" : "CARD",
+	"FOREACH": "TERRITORYCARD",
+    "QUANTITY" : 1,
+    "INCREASE" : "MILITARY",
+    "INCREASINGQUANTITY": 5
 },
 "customInstantEffect" : null,
 "permanentEffect" : "ADD",

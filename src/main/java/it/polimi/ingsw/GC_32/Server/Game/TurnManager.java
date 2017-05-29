@@ -26,6 +26,11 @@ public class TurnManager {
 		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
 		game.setOrangeDiceValue(1+randomGenerator.nextInt(6));
 		game.setWhiteDiceValue(1+randomGenerator.nextInt(6));
+		for(Player player : game.getPlayerList()){
+			player.getFamilyMember()[1].setActionValue(game.getBlackDiceValue());
+			player.getFamilyMember()[2].setActionValue(game.getWhiteDiceValue());
+			player.getFamilyMember()[3].setActionValue(game.getOrangeDiceValue());
+		}
 	}
 	
 	private void updateTurnOrder(){

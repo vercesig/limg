@@ -2,10 +2,14 @@ package it.polimi.ingsw.GC_32;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Function;
 
+import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Server.Game.ActionType;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class Main 
@@ -41,6 +45,17 @@ public class Main
 		
 		game.getPlayerList().forEach(player -> System.out.println(player.toString()+"\n"));
 		
+		
+		Action action = new Action(ActionType.TOWER,3,1,5);
+		a1.takeCard(game, action);
+		System.out.println(game.getBoard().toString());
+
+		System.out.println(a1.toString());
+		
+		a1.getPersonalBoard().getCardsOfType("VENTURECARD").forEach(card -> card.getInstantEffect().apply(game.getBoard(), a1, null));
+		
+		System.out.println("dopo effetto ^^^^^^^^^^^^^^^^^^^\n");
+		System.out.println(a1.toString());
     	
     }
 }
