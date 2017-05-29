@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 public class Player {
 	private PersonalBoard personalBoard;
 	private final String name;
-    private List<Effect> effectList;
+    private ArrayList<Effect> effectList;
 	private ResourceSet resources;
 	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
@@ -21,8 +22,8 @@ public class Player {
 		this.name = name;
 		this.resources = new ResourceSet();
 		this.familyMemberList = new FamilyMember[3];
-		for(FamilyMember f : familyMemberList){
-			f = new FamilyMember(this);
+		for(int i = 0; i < this.familyMemberList.length; i++){
+			this.familyMemberList[i] = new FamilyMember(this);
 		}
 		this.uuid = UUID.randomUUID().toString();
 	}
