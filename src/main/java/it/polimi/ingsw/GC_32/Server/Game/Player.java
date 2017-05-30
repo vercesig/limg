@@ -3,6 +3,8 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.List;
 import java.util.UUID;
 
+import com.eclipsesource.json.JsonValue;
+
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
@@ -99,10 +101,18 @@ public class Player {
     	return new String(tmp);
     }
     
-    // TODO: inserire gli opportuni check
+    // TODO: inserire gli opportuni check (o ci pensa il move checker??)
     public void takeCard(Game game, Action action){
     	TowerRegion selectedTower = (TowerRegion)game.getBoard().getRegion(action.getActionRegionId());
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
     }
         
+    public void makeChange(JsonValue payload){
+    	
+    }
+    
+    public void makeAction(JsonValue payload){
+    	
+    }
+    
 }

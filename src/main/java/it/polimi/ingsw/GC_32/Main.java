@@ -46,16 +46,15 @@ public class Main
 		game.getPlayerList().forEach(player -> System.out.println(player.toString()+"\n"));
 		
 		
-		Action action = new Action(ActionType.TOWER,3,1,5);
+		Action action = new Action(ActionType.TOWER,3,1,6);
 		a1.takeCard(game, action);
 		System.out.println(game.getBoard().toString());
 
 		System.out.println(a1.toString());
 		
-		a1.getPersonalBoard().getCardsOfType("VENTURECARD").forEach(card -> card.getInstantEffect().apply(game.getBoard(), a1, null));
+		a1.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> card.getInstantEffect().apply(game.getBoard(), a1, null));
 		
 		System.out.println("dopo effetto ^^^^^^^^^^^^^^^^^^^\n");
 		System.out.println(a1.toString());
-    	
     }
 }

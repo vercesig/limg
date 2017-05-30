@@ -31,8 +31,7 @@ public class Game {
 		
 		if(this.playerList.size()>2){
 			this.flag2PlayersGame=false;
-		}
-		
+		}		
 	}
 	
 	public Boolean getFlag2PlayersGame(){

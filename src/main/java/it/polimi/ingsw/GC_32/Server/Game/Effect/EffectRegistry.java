@@ -33,7 +33,7 @@ public class EffectRegistry{
     public static EffectRegistry getInstance(){
         if( instance == null ){
             instance = new EffectRegistry();
-            ResourceAdder.loadBuilder();
+            AddEffect.loadBuilder();
             BonusEffect.loadBuilder();
         }
         return instance;

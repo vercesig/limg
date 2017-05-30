@@ -16,7 +16,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  * @author alessandro
  *
  */
-public class ResourceAdder {
+public class AddEffect {
 	
 	static EffectBuilder buildAddResource = (JsonValue payload) -> {
 		
