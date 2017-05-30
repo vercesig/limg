@@ -38,7 +38,6 @@ public class PlayerTest{
 		}
 	}
 	
-	@Ignore
 	@Test
 	public void checkResourceSet(){
 		this.player = new Player("Test");
