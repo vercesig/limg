@@ -35,6 +35,8 @@ public class EffectRegistry{
             instance = new EffectRegistry();
             AddEffect.loadBuilder();
             BonusEffect.loadBuilder();
+            ChangeEffect.loadBuilder();
+            ActionEffect.loadBuilder();
         }
         return instance;
     }

@@ -1,280 +1,360 @@
 [
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 2,
-"cardType" : "TERRITORYCARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "TERRITORYCARD"
+	"name" : "Trading Town",
+	"cost" : null,
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "SERVANTS": 1,
+	    "COINS":1
+	},
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {
+	    "COINS":3
+	},
+	"minimumActionValue" : 1,
+	"period" : 3,
+	"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "BONUS",
-"instantPayload": {
- 	"TYPE" : "CARD",
-	"FOREACH": "TERRITORYCARD",
-    "QUANTITY" : 1,
-    "INCREASE" : "MILITARY",
-    "INCREASINGQUANTITY": 5
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 1,
-"cardType" : "TERRITORYCARD"
+	"name" : "Trading Town",
+	"cost" : null,
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "SERVANTS": 1,
+	    "COINS":1
+	},
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {
+	    "COINS":3
+	},
+	"minimumActionValue" : 1,
+	"period" : 2,
+	"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "BONUS",
-"instantPayload": {
- 	"TYPE" : "CARD",
-	"FOREACH": "TERRITORYCARD",
-    "QUANTITY" : 1,
-    "INCREASE" : "MILITARY",
-    "INCREASINGQUANTITY": 5
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 1,
-"cardType" : "TERRITORYCARD"
+	"name" : "Trading Town",
+	"cost" : null,
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "SERVANTS": 1,
+	    "COINS":1
+	},
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {
+	    "COINS":3
+	},
+	"minimumActionValue" : 1,
+	"period" : 1,
+	"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "BUILDINGCARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 2,
-"cardType" : "BUILDINGCARD"
+	"name" : "Trading Town",
+	"cost" : null,
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "SERVANTS": 1,
+	    "COINS":1
+	},
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {
+	    "COINS":3
+	},
+	"minimumActionValue" : 1,
+	"period" : 3,
+	"cardType" : "TERRITORYCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 1,
-"cardType" : "BUILDINGCARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "BUILDINGCARD"
+	"name" : "Cardinal",
+	"cost" : {
+	    "COINS" : 4
+	},
+	"requirments" : null,
+	"instantEffect": ["ADD", "ACTION"],
+	"instantPayload": [
+	  {
+	    "FAITH" : 2
+	  },
+	  {
+	    "TYPE" : "HARVESTACTION" ,
+	    "BONUSACTIONVALUE" : 4,
+	    "BONUSRESOURCE" : null,
+	    "EXCLUSIVEBONUS" : false
+	  }],
+	"permanentEffect" : null,
+	"permanentPayload" : null,
+	"minimumActionValue" : null,
+	"period" : 3,
+	"cardType" : "CHARACTERCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "VENTURECARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 2,
-"cardType" : "VENTURECARD"
+	"name" : "Cardinal",
+	"cost" : {
+	    "COINS" : 4
+	},
+	"requirments" : null,
+	"instantEffect": ["ADD", "ACTION"],
+	"instantPayload": [
+	  {
+	    "FAITH" : 2
+	  },
+	  {
+	    "TYPE" : "HARVESTACTION" ,
+	    "BONUSACTIONVALUE" : 4,
+	    "BONUSRESOURCE" : null,
+	    "EXCLUSIVEBONUS" : false
+	  }],
+	"permanentEffect" : null,
+	"permanentPayload" : null,
+	"minimumActionValue" : null,
+	"period" : 2,
+	"cardType" : "CHARACTERCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 1,
-"cardType" : "VENTURECARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "VENTURECARD"
+	"name" : "Cardinal",
+	"cost" : {
+	    "COINS" : 4
+	},
+	"requirments" : null,
+	"instantEffect": ["ADD", "ACTION"],
+	"instantPayload": [
+	  {
+	    "FAITH" : 2
+	  },
+	  {
+	    "TYPE" : "HARVESTACTION" ,
+	    "BONUSACTIONVALUE" : 4,
+	    "BONUSRESOURCE" : null,
+	    "EXCLUSIVEBONUS" : false
+	  }],
+	"permanentEffect" : null,
+	"permanentPayload" : null,
+	"minimumActionValue" : null,
+	"period" : 1,
+	"cardType" : "CHARACTERCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "CHARACTERCARD"
-},
-{
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 2,
-"cardType" : "CHARACTERCARD"
+	"name" : "Cardinal",
+	"cost" : {
+	    "COINS" : 4
+	},
+	"requirments" : null,
+	"instantEffect": ["ADD", "ACTION"],
+	"instantPayload": [
+	  {
+	    "FAITH" : 2
+	  },
+	  {
+	    "TYPE" : "HARVESTACTION" ,
+	    "BONUSACTIONVALUE" : 4,
+	    "BONUSRESOURCE" : null,
+	    "EXCLUSIVEBONUS" : false
+	  }],
+	"permanentEffect" : null,
+	"permanentPayload" : null,
+	"minimumActionValue" : null,
+	"period" : 3,
+	"cardType" : "CHARACTERCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 1,
-"cardType" : "CHARACTERCARD"
+	"name" : "Marketplace",
+	"cost" : {
+	    "WOOD" : 2,
+	    "STONE" : 1
+	},
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "VP":3
+	},
+	"permanentEffect" : "CHANGE",
+	"permanentPayload" :
+	    {
+	      "RESOURCEOUT": {"COINS" : 3},
+	      "RESOURCEIN":  {"WOOD" : 2,
+	                      "STONE" : 2}
+	    },
+	"minimumActionValue" : 3,
+	"period" : 2,
+	"cardType" : "BUILDINGCARD"
 },
 {
-"name" : "Trading Town",
-"resourceCost" : {"WOOD" : 2, "COINS" : 1},
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
+	"name" : "Marketplace",
+	"cost" : {
+	    "WOOD" : 2,
+	    "STONE" : 1
+	},
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "VP":3
+	},
+	"permanentEffect" : "CHANGE",
+	"permanentPayload" :
+	    {
+	      "RESOURCEOUT": {"COINS" : 3},
+	      "RESOURCEIN":  {"WOOD" : 2,
+	                      "STONE" : 2}
+	    },
+	"minimumActionValue" : 3,
+	"period" : 1,
+	"cardType" : "BUILDINGCARD"
 },
-"customInstantEffect" : null,
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
+{
+	"name" : "Marketplace",
+	"cost" : {
+	    "WOOD" : 2,
+	    "STONE" : 1
+	},
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "VP":3
+	},
+	"permanentEffect" : "CHANGE",
+	"permanentPayload" :
+	    {
+	      "RESOURCEOUT": {"COINS" : 3},
+	      "RESOURCEIN":  {"WOOD" : 2,
+	                      "STONE" : 2}
+	    },
+	"minimumActionValue" : 3,
+	"period" : 3,
+	"cardType" : "BUILDINGCARD"
 },
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "CHARACTERCARD"
+{
+	"name" : "Marketplace",
+	"cost" : {
+	    "WOOD" : 2,
+	    "STONE" : 1
+	},
+	"requirments" : null,
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "VP":3
+	},
+	"permanentEffect" : "CHANGE",
+	"permanentPayload" :
+	    {
+	      "RESOURCEOUT": {"COINS" : 3},
+	      "RESOURCEIN":  {"WOOD" : 2,
+	                      "STONE" : 2}
+	    },
+	"minimumActionValue" : 3,
+	"period" : 2,
+	"cardType" : "BUILDINGCARD"
+},
+{
+	"name" : "Scholar",
+	"cost" : {
+	    "COINS" : 4
+	},
+	"requirments" : null,
+	"instantEffect": null,
+	"instantPayload": null,
+	"permanentEffect" : "ACTION",
+	"permanentPayload" : {
+	    "TYPE" : "PRODUCTIONACTION",
+	    "REGIONID" : null,
+	    "BONUSACTIONVALUE" : 3,
+	    "BONUSRESOURCE" : null,
+	    "EXCLUSIVEBONUS" : false
+	},
+	"minimumActionValue" : null,
+	"period" : 2,
+	"cardType" : "CHARACTERCARD"
+},
+{
+	"name" : "Support to the Bishop",
+	"cost" : [
+	  {
+	    "MILITARY" : 2
+	    },
+	  {
+	    "WOOD" : 1,
+	    "STONE" : 1,
+	    "COINS" : 2
+	    }],
+	"requirments" : {"MILITARY" : 4},
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "FAITH" : 3
+	  },
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {"VICTORY" : 1},
+	"minimumActionValue" : null,
+	"period" : 2,
+	"cardType" : "VENTURECARD"
+},
+{
+	"name" : "Support to the Bishop",
+	"cost" : [
+	  {
+	    "MILITARY" : 2
+	    },
+	  {
+	    "WOOD" : 1,
+	    "STONE" : 1,
+	    "COINS" : 2
+	    }],
+	"requirments" : {"MILITARY" : 4},
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "FAITH" : 3
+	  },
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {"VICTORY" : 1},
+	"minimumActionValue" : null,
+	"period" : 2,
+	"cardType" : "VENTURECARD"
+},
+{
+	"name" : "Support to the Bishop",
+	"cost" : [
+	  {
+	    "MILITARY" : 2
+	    },
+	  {
+	    "WOOD" : 1,
+	    "STONE" : 1,
+	    "COINS" : 2
+	    }],
+	"requirments" : {"MILITARY" : 4},
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "FAITH" : 3
+	  },
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {"VICTORY" : 1},
+	"minimumActionValue" : null,
+	"period" : 3,
+	"cardType" : "VENTURECARD"
+},
+{
+	"name" : "Support to the Bishop",
+	"cost" : [
+	  {
+	    "MILITARY" : 2
+	    },
+	  {
+	    "WOOD" : 1,
+	    "STONE" : 1,
+	    "COINS" : 2
+	    }],
+	"requirments" : {"MILITARY" : 4},
+	"instantEffect": "ADD",
+	"instantPayload": {
+	    "FAITH" : 3
+	  },
+	"permanentEffect" : "ADD",
+	"permanentPayload" : {"VICTORY" : 1},
+	"minimumActionValue" : null,
+	"period" : 1,
+	"cardType" : "VENTURECARD"
 }
 ]
+
+

@@ -43,34 +43,6 @@ public class Player {
 		return this.name;
 	}
 	
-	public int getMilitaryPoints(){
-		return this.resources.getResouce("MILITARY");
-	}
-	
-	public int getVictoryPoints(){
-		return this.resources.getResouce("VP");
-	}
-	
-	public int getFaithPoints(){
-		return this.resources.getResouce("FAITH");
-	}
-	
-	public int getWoodQuantity() {
-		return this.resources.getResouce("WOOD");
-	}
-
-	public int getStoneQuantity() {
-		return this.resources.getResouce("STONE");
-	}
-
-	public int getCoins() {
-		return this.resources.getResouce("COINS");
-	}
-
-	public int getServants() {
-		return this.resources.getResouce("SERVANTS");
-	}
-	
 	public ResourceSet getResources(){
 		return this.resources;
 	}

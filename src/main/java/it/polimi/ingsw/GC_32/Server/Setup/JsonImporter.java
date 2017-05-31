@@ -4,6 +4,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,28 +44,52 @@ public class JsonImporter {
 			Integer period = card.get("period").asInt();
 			String cardType = card.get("cardType").asString();
 			
-			String instantEffect = card.get("instantEffect").asString();
-			String permanentEffect = card.get("permanentEffect").asString();
-			
-			JsonValue resourceCost = card.get("resourceCost");
-			JsonArray resourceArray = new JsonArray();
-			if( resourceCost.isObject() ){ // Carta con costo singolo
-				 resourceArray = new JsonArray();
-				resourceArray.add(resourceCost);
-			}
-			if( resourceCost.isArray() ){ // Carta con costo multiplo
-				resourceArray = resourceCost.asArray();
-			}
-				
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
-			newCard.registerCost(resourceArray.iterator());
-		    JsonObject payload = card.get("instantPayload").asObject();		
-			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect,payload));
-			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
 			
-			cardList.add(newCard);
-		
-			cardList.add(newCard);
+			// registrazione costi e requisiti
+			JsonValue requirments = card.get("requirments");
+			JsonValue resourceCost = card.get("cost");
+			if(!resourceCost.isNull()){
+				JsonArray resourceArray = new JsonArray();
+				if( resourceCost.isObject() ){ // Carta con costo singolo
+					resourceArray.add(resourceCost);
+				}
+				if( resourceCost.isArray() ){ // Carta con costo multiplo
+					resourceArray = resourceCost.asArray();
+				}
+				newCard.registerCost(resourceArray.iterator());
+			}
+			if(!requirments.isNull())
+				newCard.setRequirments(requirments.asObject());
+			
+			// registrazione effetti
+			JsonValue instantEffect = card.get("instantEffect");
+			JsonArray instantEffectArray = new JsonArray();
+			JsonValue instantPayload = card.get("instantPayload");
+			JsonArray instantPayloadArray = new JsonArray();			
+			if(!instantEffect.isNull()&&!instantPayload.isNull()){
+				if(instantEffect.isArray()){
+					instantEffectArray = instantEffect.asArray();
+					instantPayloadArray = instantPayload.asArray();
+				}else{
+					instantEffectArray.add(instantEffect);
+					instantPayloadArray.add(instantPayload);
+				}
+				for(int i=0; i<instantEffectArray.size(); i++){
+					newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffectArray.get(i).asString(), instantPayloadArray.get(i)));
+				}
+			}	
+			JsonValue permanentEffect = card.get("permanentEffect");
+			if(!permanentEffect.isNull()){
+				JsonValue permanentPayload = card.get("permanentPayload");
+				if(permanentPayload.isNull()){ //effetto custom
+					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString())); //effetto permanente custom
+				}else{
+					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString(), permanentPayload));
+				}
+			}
+			
+			cardList.add(newCard);		
 		}
 		return cardList;
 	}
@@ -106,5 +131,5 @@ public class JsonImporter {
 	 */
 	public static void importConfigurationFile(FileReader fileReader){
 		
-	}	
+	}
 }

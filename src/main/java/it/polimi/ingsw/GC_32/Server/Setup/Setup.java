@@ -155,7 +155,7 @@ public class Setup {
 			players.get(i).getResources().setResource("COINS", 5 + i);
 			// setta punteggi a 0
 			players.get(i).getResources().setResource("FAITH", 0);
-			players.get(i).getResources().setResource("VP", 0);
+			players.get(i).getResources().setResource("VICTORY", 0);
 			players.get(i).getResources().setResource("MILITARY", 0);
 			
 		}
