@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
@@ -21,21 +22,15 @@ public class Game {
 	private int whiteDice;
 	private int orangeDice;
 	
-	private boolean flag2PlayersGame=true;
+	private boolean flag2PlayersGame=true; //settare a seconda del numero di giocatori
+	
+	private String lock;
 	
 	public Game(ArrayList<Player> players){
 		this.playerList = players;
 		this.board = new Board();
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
-		this.excommunicationCards = new ExcommunicationCard[3];
-		
-		if(this.playerList.size()>2){
-			this.flag2PlayersGame=false;
-		}		
-	}
-	
-	public Boolean getFlag2PlayersGame(){
-		return this.flag2PlayersGame;
+		this.excommunicationCards = new ExcommunicationCard[3];		
 	}
 	
 	public ArrayList<Player> getPlayerList(){
@@ -94,4 +89,11 @@ public class Game {
 		this.orangeDice = value;
 	}
 	
+	public void setLock(String player){
+		this.lock = player;
+	}
+	
+	public String getLock(){
+		return this.lock;
+	}
 }

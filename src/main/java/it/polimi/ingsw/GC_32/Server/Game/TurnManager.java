@@ -63,6 +63,7 @@ public class TurnManager {
 	
 	// chiede al client, secondo il protocollo di comunicazione, di effettuare una mossa
 	private void performAction(Player currentPlayer){
+		game.setLock(currentPlayer.getUUID());
 		System.out.println(currentPlayer.getName()+" esegue mossa");
 	}
 	

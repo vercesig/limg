@@ -3,19 +3,18 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
-public class TowerRegion implements Region {
+public class TowerRegion extends Region {
 
 	private TowerLayer[] towerLayers;
 	private boolean towerBusy;
-	private final int regionID;
 	private String typeCard;
 	
 	public TowerRegion(int regionID, int numberOfLayers){
-		this.regionID = regionID;
+		super(regionID);
 		this.towerBusy = false;
 		this.towerLayers = new TowerLayer[numberOfLayers];
 		for(int i=0; i<numberOfLayers; i++){
-			this.towerLayers[i] = new TowerLayer(this.regionID, i);
+			this.towerLayers[i] = new TowerLayer(this.getRegionID(), i);
 		}
 	}
 	
@@ -56,39 +55,21 @@ public class TowerRegion implements Region {
 	public void flushTowerRegion(){
 		
 	}
-	
-	public void placeCards(){
 		
-	}
-	// implementazioni Metodi Astratti Region
-		public int getRegionID(){
-			return this.regionID;
-		}
-		
-		public String toString(){
-			StringBuilder stringBuilder = new StringBuilder();
-			for (TowerLayer level: towerLayers){
-				stringBuilder.append(level.getActionSpace().toString());
-				stringBuilder.append("\n'''''''''''''''''''''''''''''''''''''''''''''''''\n");
-				stringBuilder.append("CARTA: \n");
-				try{
-					stringBuilder.append(level.getCard().toString());
-				}catch(NullPointerException e){
-					stringBuilder.append("nessuna carta presente\n");
-				}
-				stringBuilder.append("====================================================\n");
-			}
-			return new String(stringBuilder);
-		}
-		
-		public ActionSpace getActionSpace(int id){
+	public String toString(){
+		StringBuilder stringBuilder = new StringBuilder();
+		for (TowerLayer level: towerLayers){
+			stringBuilder.append(level.getActionSpace().toString());
+			stringBuilder.append("\n'''''''''''''''''''''''''''''''''''''''''''''''''\n");
+			stringBuilder.append("CARTA: \n");
 			try{
-				for (TowerLayer level: towerLayers){
-					if(level.getActionSpace().getActionSpaceID() == id)
-						return level.getActionSpace();
-				} return null;
+				stringBuilder.append(level.getCard().toString());
 			}catch(NullPointerException e){
-				return null;
+				stringBuilder.append("nessuna carta presente\n");
 			}
+			stringBuilder.append("====================================================\n");
 		}
+		return new String(stringBuilder);
+	}
+
 }
