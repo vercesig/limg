@@ -147,7 +147,7 @@ Secondo questo formato carte più complesse sono cosi rappresentate:
     {
       "RESOURCEOUT": {"COINS" : 3},
       "RESOURCEIN":  {"WOOD" : 2,
-                      "STONE" : 2},
+                      "STONE" : 2}
     },
 "minimumActionValue" : 3,
 "period" : 2,
@@ -159,7 +159,7 @@ Secondo questo formato carte più complesse sono cosi rappresentate:
 {
 "name" : "Scholar",
 "cost" : {
-    "COINS" : 4,
+    "COINS" : 4
 },
 "requirments" : null,
 "instantEffect": null,
@@ -182,7 +182,7 @@ Secondo questo formato carte più complesse sono cosi rappresentate:
 {
 "name" : "Ambassador",
 "cost" : {
-    "COINS" : 6,
+    "COINS" : 6
 },
 "requirments" : null,
 "instantEffect": ["ACTION", "PRIVILEGE"],
