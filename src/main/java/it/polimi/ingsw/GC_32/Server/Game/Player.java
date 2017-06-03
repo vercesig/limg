@@ -5,22 +5,23 @@ import java.util.UUID;
 
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 
 public class Player {
 	private PersonalBoard personalBoard;
-	private final String name;
+	private String name;
     private List<Effect> effectList;
 	private ResourceSet resources;
 	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
-	private String uuid;
+	private final String uuid;
 	
-	public Player(String name){
+	public Player(){
 		this.personalBoard = new PersonalBoard();
-		this.name = name;
 		this.resources = new ResourceSet();
 		
 		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
@@ -29,6 +30,10 @@ public class Player {
 			familyMemberList[i] = new FamilyMember(this);	
 		}
 		this.uuid = UUID.randomUUID().toString();
+	}
+	
+	public void setPlayerName(String name){
+		this.name = name;
 	}
 	
 	public String getUUID() {
@@ -84,7 +89,8 @@ public class Player {
     }
     
     public void makeAction(JsonValue payload){
-    	
+    	GameMessage message = new GameMessage(this.uuid,payload.toString());
+    	MessageManager.getInstance().sendMessge(message);
     }
     
 }

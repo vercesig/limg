@@ -99,39 +99,7 @@ public class TurnManager {
 		updateTurnOrder();
 		this.game.getBoard().flushBoard();
 		this.turnID++;
-	}
-	
-	public static void main(String[] args) throws IOException{
-		
-		Player a1 = new Player("aaa");
-		Player a2 = new Player("bbb");
-		Player a3 = new Player("ccc");
-		
-		
-		ArrayList<Player> playerList = new ArrayList<Player>();
-		playerList.add(a1);
-		playerList.add(a2);
-		playerList.add(a3);
-		
-		
-		Game game = new Game(playerList);
-		Setup setupGame = new Setup(game);
-		
-		TurnManager turnManager = new TurnManager(game);
-		turnManager.roundSetup();
-		
-		System.out.println(game.getBoard().toString());
-		System.out.println(game.getBlackDiceValue());
-		
-		/*while(turnManager.getTurnID()<6){
-			turnManager.roundSetup();
-			turnManager.actionPhase();
-			turnManager.vaticanReportPhase();
-			turnManager.roundEnd();
-		}*/
-		
-	}
-	
+	}	
 	/**
 	 * solo per il turno finale
 	 * - i giocatori che non hanno i punti fede richiesti, dopo aver attivato
