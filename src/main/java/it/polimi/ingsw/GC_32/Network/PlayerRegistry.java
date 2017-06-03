@@ -10,11 +10,11 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class PlayerRegistry {
 
 	private static PlayerRegistry instance;
-	private HashMap<String,String> playerConnectionMode;
+	private HashMap<String,ConnectionType> playerConnectionMode;
 	private ArrayList<Player> connectedPlayers;
 	
 	private PlayerRegistry(){
-		playerConnectionMode = new HashMap<String, String>();
+		playerConnectionMode = new HashMap<String, ConnectionType>();
 		connectedPlayers = new ArrayList<Player>();
 	}
 	
@@ -25,11 +25,11 @@ public class PlayerRegistry {
 		return instance;
 	}
 	
-	public void registerPlayer(String playerID, String connectionMode){
+	public void registerPlayer(String playerID, ConnectionType connectionMode){
 		this.playerConnectionMode.put(playerID, connectionMode);
 	}
 	
-	public String getConnectionMode(String playerID){
+	public ConnectionType getConnectionMode(String playerID){
 		return this.playerConnectionMode.get(playerID);
 	}
 	

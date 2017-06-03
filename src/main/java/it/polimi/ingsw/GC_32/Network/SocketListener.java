@@ -32,7 +32,7 @@ public class SocketListener implements Runnable{
 				Player newPlayer = new Player();
 				socketPlayerRegistry.put(newPlayer.getUUID(), socket);	
 				
-				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), "SOCKET");
+				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), ConnectionType.SOCKET);
 				System.out.println("client inserito");
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
