@@ -1,6 +1,8 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 
 public class MessageManager {
 

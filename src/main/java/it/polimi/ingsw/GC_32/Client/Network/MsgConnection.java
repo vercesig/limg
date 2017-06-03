@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Client.Network;
 
 import java.io.IOException;
 

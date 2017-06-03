@@ -5,11 +5,11 @@ import java.util.UUID;
 
 import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Network.GameMessage;
-import it.polimi.ingsw.GC_32.Network.MessageManager;
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
 public class Player {
 	private PersonalBoard personalBoard;

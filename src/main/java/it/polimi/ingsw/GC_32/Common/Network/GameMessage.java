@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Common.Network;
 
 import java.io.Serializable;
 

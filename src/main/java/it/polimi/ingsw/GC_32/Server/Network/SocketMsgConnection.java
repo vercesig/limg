@@ -1,9 +1,11 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 
 public class SocketMsgConnection implements MsgConnection{
 
