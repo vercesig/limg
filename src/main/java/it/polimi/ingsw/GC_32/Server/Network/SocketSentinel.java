@@ -1,8 +1,10 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 
 public class SocketSentinel implements Runnable{
 

@@ -7,14 +7,14 @@ import java.util.function.Function;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.ActionType;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class Main {

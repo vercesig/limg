@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
