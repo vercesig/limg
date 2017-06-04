@@ -3,10 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.Card.CardType;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 
 public class PersonalBoard {
 
@@ -22,7 +19,7 @@ public class PersonalBoard {
 	public LinkedList<DevelopmentCard> getCardsOfType(String type){
 		if(cards.containsKey(type))
 			return this.cards.get(type);
-		return null;
+		return new LinkedList<DevelopmentCard>();
 	}
 	
 	public void addCard(DevelopmentCard card){

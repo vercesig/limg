@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
@@ -54,8 +56,8 @@ public class ResourceSet implements Comparable {
 	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		for(String name : resourceSet.keySet()){
-			tmp.append("\n"+name+" :"+resourceSet.get(name).toString());
+		for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
+			tmp.append("\n"+element.getKey()+" :"+element.getValue().toString());
 		}
 		return new String(tmp);
 	}

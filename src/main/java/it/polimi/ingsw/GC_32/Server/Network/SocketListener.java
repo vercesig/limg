@@ -12,6 +12,7 @@ public class SocketListener implements Runnable{
 
 	private ServerSocket serverSocket;
 	private ConcurrentHashMap<String,Socket> socketPlayerRegistry;
+	private Boolean stop = false;
 	
 	public SocketListener(int port) throws IOException{
 		this.serverSocket = new ServerSocket(port);
@@ -26,6 +27,10 @@ public class SocketListener implements Runnable{
 		return this.socketPlayerRegistry;
 	}
 	
+	public void kill(){
+		this.stop = true;
+	}
+	
 	public void run(){
 		while(true){
 			try {
@@ -37,6 +42,9 @@ public class SocketListener implements Runnable{
 				System.out.println("client inserito");
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
+				break;
+			}
+			if(this.stop){
 				break;
 			}
 		}		
