@@ -29,11 +29,11 @@ public class GameMessageFilter implements Runnable {
 			// recupero messaggi di interesse dalla coda dei messaggi ricevuti
 			if(MessageManager.getInstance().hasMessage()){
 				for(GameMessage message : MessageManager.getInstance().getRecivedQueue()){
-					
+					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 					// recupero messaggi che non interessano il lock
-					switch(message.getMessageType()){
-					case SMSG:
-					case CHGNAME:
+					switch(Jsonmessage.get("TYPE").toString()){
+					case "SMSG":
+					case "CHGNAME":
 						filteredMessage.add(message);
 						MessageManager.getInstance().getRecivedQueue().remove(message);
 						break;
@@ -52,8 +52,8 @@ public class GameMessageFilter implements Runnable {
 			
 			filteredMessage.forEach(message -> {
 				JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
-				switch(message.getMessageType()){
-				case ASKACT:
+				switch(Jsonmessage.get("TYPE").toString()){
+				case "ASKACT":
 					int pawnID = Jsonmessage.get("PAWNID").asInt();
 					int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 					
@@ -67,10 +67,10 @@ public class GameMessageFilter implements Runnable {
 					MoveChecker.checkMove(game.getBoard(),PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()),action);
 					//game.moveFamiliar(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()), pawnID, regionID, spaceID);
 					break;
-				case SMSG:
+				case "SMSG":
 					//printa su chat
 					break;
-				case CHGNAME:
+				case "CHGNAME":
 					String name = Jsonmessage.get("NAME").asString();
 					PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).setPlayerName(name);
 					break;

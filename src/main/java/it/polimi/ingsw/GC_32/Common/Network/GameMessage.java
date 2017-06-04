@@ -6,7 +6,6 @@ public class GameMessage implements Serializable{
 
 	private String playerID;
 	private String message;
-	private MessageType messageType;
 	
 	public GameMessage(String playerID, String message){
 		this.playerID = playerID;
@@ -19,10 +18,6 @@ public class GameMessage implements Serializable{
 	
 	public String getMessage(){
 		return this.message;
-	}
-	
-	public MessageType getMessageType(){
-		return this.messageType;
 	}
 	
 }

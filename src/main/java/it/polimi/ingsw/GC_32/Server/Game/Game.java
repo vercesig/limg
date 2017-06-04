@@ -8,6 +8,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
 
 
 public class Game {
@@ -30,7 +31,13 @@ public class Game {
 		this.playerList = players;
 		this.board = new Board();
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
-		this.excommunicationCards = new ExcommunicationCard[3];		
+		this.excommunicationCards = new ExcommunicationCard[3];	
+		
+		// lancio thread per elaborazione messaggi in entrata
+		GameMessageFilter messageFilter = new GameMessageFilter(this);
+		Thread messageFilterThread = new Thread(messageFilter);
+		messageFilterThread.start();
+		
 	}
 	
 	public ArrayList<Player> getPlayerList(){
