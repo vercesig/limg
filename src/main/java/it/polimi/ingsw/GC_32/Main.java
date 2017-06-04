@@ -7,8 +7,6 @@ import java.util.function.Function;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.Action;
-import it.polimi.ingsw.GC_32.Server.Game.ActionType;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;

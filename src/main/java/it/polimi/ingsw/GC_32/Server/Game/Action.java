@@ -2,12 +2,12 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 public class Action{
     
-	private ActionType type;
+	private String type;
     private int actionValue;
     private int actionSpaceId;
     private int actionRegionId;
     
-    public Action(ActionType type, int actionValue, int actionSpaceId, int actionRegionId ){
+    public Action(String type, int actionValue, int actionSpaceId, int actionRegionId ){
     	
     	this.type = type;
     	this.actionValue = actionValue;
@@ -15,7 +15,7 @@ public class Action{
     	this.actionRegionId = actionRegionId;
     }
     
-    public ActionType getActionType(){
+    public String getActionType(){
     	return this.type;
     }
     

@@ -26,5 +26,10 @@ public class MoveChecker{
     		boolean checkValidActionSpaceID = checkValidActionSpaceID (board, player, action);
         	return checkValidRegionID && checkValidActionSpaceID;
     	
-        } 
+        }
+    
+    public static boolean checkMove(Board board, Player player, Action actionToCheck){
+    	return true;
+    }
+    
    }
