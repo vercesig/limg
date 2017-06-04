@@ -28,7 +28,7 @@ public class FamilyMember{
 	}
 	
 	public boolean isBusy(){
-		return this.position==null;
+		return this.position != null;
 	}
 	
 	public int getActionValue(){
