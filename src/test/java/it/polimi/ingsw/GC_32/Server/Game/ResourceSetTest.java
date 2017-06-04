@@ -49,4 +49,10 @@ public class ResourceSetTest{
 		this.resourceSet = new ResourceSet(testObject);
 		assertEquals(this.resourceSet.getResouce("WOOD"), 22);
 	}
+	
+	@Test
+	public void checkToStringNotNull(){
+		this.resourceSet= new ResourceSet();
+		assertNotNull(this.resourceSet.toString());
+	}
 }

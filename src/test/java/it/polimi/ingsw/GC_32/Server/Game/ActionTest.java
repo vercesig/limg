@@ -1,6 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -29,5 +29,11 @@ public class ActionTest {
 	public void checkRegionId(){
 		this.action = new Action("TestType",0,0,3);
 		assertEquals(3, this.action.getActionRegionId());
+	}
+	
+	@Test
+	public void checkToString(){
+		this.action = new Action("TestType",0,0,0);
+		assertNotNull(this.action.toString());
 	}
 }
