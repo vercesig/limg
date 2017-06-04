@@ -45,4 +45,12 @@ public class MessageManager {
 		return this.RMISendQueue;
 	}
 	
+	public ConcurrentLinkedQueue<GameMessage> getRecivedQueue(){
+		return this.reciveQueue;
+	}
+	
+	public boolean hasMessage(){
+		return !reciveQueue.isEmpty();
+	}
+	
 }

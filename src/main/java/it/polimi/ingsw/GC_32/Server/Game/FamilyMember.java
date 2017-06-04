@@ -19,8 +19,8 @@ public class FamilyMember{
 		return this.position;
 	}
 	
-	public void move(ActionSpace targetBox){
-		
+	public void setPosition(ActionSpace targetSpace){
+		this.position = targetSpace;
 	}
 	
 	public void removeFromBoard(){

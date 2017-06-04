@@ -12,11 +12,11 @@ public class PlayerRegistry {
 
 	private static PlayerRegistry instance;
 	private HashMap<String,ConnectionType> playerConnectionMode;
-	private ArrayList<Player> connectedPlayers;
+	private HashMap<String,Player> connectedPlayers;
 	
 	private PlayerRegistry(){
 		playerConnectionMode = new HashMap<String, ConnectionType>();
-		connectedPlayers = new ArrayList<Player>();
+		connectedPlayers = new HashMap<String,Player>();
 	}
 	
 	public static PlayerRegistry getInstance(){
@@ -35,13 +35,21 @@ public class PlayerRegistry {
 	}
 	
 	public void addPlayer(Player player) throws IOException{
-		this.connectedPlayers.add(player);
+		this.connectedPlayers.put(player.getUUID(),player);
 		if(connectedPlayers.size()>1)
-			Main.newGame(connectedPlayers);
+			Main.newGame(getConnectedPlayers());
 	}
 	
 	public ArrayList<Player> getConnectedPlayers(){
-		return this.connectedPlayers;
+		ArrayList<Player> tmp = new ArrayList<Player>();
+		connectedPlayers.values().iterator().forEachRemaining(player -> {
+			tmp.add(player);
+		});
+		return tmp;
+	}
+	
+	public Player getPlayerFromID(String playerID){
+		return this.connectedPlayers.get(playerID);
 	}
 		
 }

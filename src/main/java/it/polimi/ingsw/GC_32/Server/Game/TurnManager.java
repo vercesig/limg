@@ -64,7 +64,7 @@ public class TurnManager {
 	// chiede al client, secondo il protocollo di comunicazione, di effettuare una mossa
 	private void performAction(Player currentPlayer){
 		game.setLock(currentPlayer.getUUID());
-		System.out.println(currentPlayer.getName()+" esegue mossa");
+		currentPlayer.makeAction();
 	}
 	
 	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare

@@ -158,6 +158,7 @@ public class ActionSpace{
 			return false;
 		}
 		occupants.add(familyMember);
+		familyMember.setPosition(this);
 		return true;
 	}
 	

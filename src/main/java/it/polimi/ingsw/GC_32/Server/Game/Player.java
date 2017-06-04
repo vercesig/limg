@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.List;
 import java.util.UUID;
 
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
@@ -85,11 +86,21 @@ public class Player {
     }
         
     public void makeChange(JsonValue payload){
-    	
+    	GameMessage message = new GameMessage(this.uuid, payload.toString());
+    	MessageManager.getInstance().sendMessge(message);
     }
     
+    // richiede di effettuare un azione a seguito dell'attivazione di un effeto
     public void makeAction(JsonValue payload){
-    	GameMessage message = new GameMessage(this.uuid,payload.toString());
+    	GameMessage message = new GameMessage(this.uuid, payload.toString());
+    	MessageManager.getInstance().sendMessge(message);
+    }
+    
+    // richiede di effettuare un azione
+    public void makeAction(){
+    	JsonObject TURNBGN = new JsonObject();
+    	TURNBGN.add("code", "TURNBGN");
+    	GameMessage message = new GameMessage(this.uuid, TURNBGN.toString());
     	MessageManager.getInstance().sendMessge(message);
     }
     

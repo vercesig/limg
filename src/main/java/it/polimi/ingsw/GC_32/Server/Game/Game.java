@@ -96,4 +96,9 @@ public class Game {
 	public String getLock(){
 		return this.lock;
 	}
+	
+	public void moveFamiliar(Player owner, int pawnID, int regionID, int spaceID){
+		FamilyMember familyMember = playerList.get(playerList.indexOf(owner)).getFamilyMember()[pawnID];
+		this.board.getRegion(regionID).getActionSpace(spaceID).addFamilyMember(familyMember);
+	}
 }
