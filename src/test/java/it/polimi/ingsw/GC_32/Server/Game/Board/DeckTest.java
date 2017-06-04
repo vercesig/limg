@@ -6,14 +6,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 public class DeckTest{
-	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-	
 	public Deck<String> deck;
 	
 	@Test
@@ -158,7 +153,7 @@ public class DeckTest{
 		Deck<Integer> d = new Deck<Integer>();
 		Deck<Integer> f = new Deck<Integer>();
 		Deck<Integer> g = new Deck<Integer>();
-		g.addDecks(c,d);
+		g.addDecks(f,d);
 		System.out.println(g.toString());
 		
 		
