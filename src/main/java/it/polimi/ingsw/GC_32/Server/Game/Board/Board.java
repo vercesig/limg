@@ -47,12 +47,12 @@ public class Board {
 	public Region getRegion(int idRegion){	// NUOVO METODO
 		try{
 			return this.region.get(idRegion);
-		} catch (NullPointerException e){
+		} catch (IndexOutOfBoundsException e){
 			Logger.getLogger("").log(Level.SEVERE, "context", e);
 			return null;
 		}
 	}
-	public ArrayList <Region> getRegionMap(){
+	public ArrayList<Region> getRegionMap(){
 		return this.region;
 	}
 	
@@ -60,7 +60,7 @@ public class Board {
 		return this.productionRegion;
 	}
 	
-	public HarvestRegion getHarvastRegion(){
+	public HarvestRegion getHarvestRegion(){
 		return this.harvestRegion;
 	}
 	
