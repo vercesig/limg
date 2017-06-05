@@ -50,7 +50,9 @@ public class TowerRegion extends Region {
 	public void placeFamilyMember(FamilyMember familyMember, int layer){
 		if(canIPlaceFamilyMember(familyMember.getOwner())){
 			towerLayers[layer].getActionSpace().addFamilyMember(familyMember);
-			// ....
+		}
+		if(!this.towerBusy){
+			this.towerBusy = true;
 		}
 	}
 	

@@ -35,11 +35,13 @@ public class Region {
 	 * @see 		Region, TowerRegion, ProductionRegion, HarverstRegion, CouncilRegion, MarketRegion, ActionSpace
 	 */
 	public String toString(){		
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder("A");
 		for (ActionSpace actionSpace: track){
-			stringBuilder.append(actionSpace.toString());
+			if(actionSpace != null){
+				stringBuilder.append(actionSpace.toString());
+			}
 		}
-		return new String (stringBuilder);
+		return stringBuilder.toString();
 	}
 
 	/**
