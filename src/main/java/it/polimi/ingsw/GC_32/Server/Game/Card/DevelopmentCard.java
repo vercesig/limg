@@ -37,6 +37,10 @@ public class DevelopmentCard extends Card{
 		return this.type;
 	}
 
+	public ResourceSet getRequirments(){
+		return this.requirments;
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("name: "+this.getName()+"\nperiod: "+period+"\ntype: "+type+"\n");

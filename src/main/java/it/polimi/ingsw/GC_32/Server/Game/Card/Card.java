@@ -5,21 +5,15 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 public class Card {
 
 	private final String name;
-	private boolean onTheGame;
 	private Effect instantEffect;
 	private Effect permanentEffect; 
 	
 	public Card(String name){
 		this.name = name;
-		this.onTheGame = false;
 	}
 		
 	public String getName(){
 		return this.name;
-	}
-	
-	public boolean isOnTheGame(){
-		return this.onTheGame;
 	}
 	
 	public Effect getInstantEffect(){

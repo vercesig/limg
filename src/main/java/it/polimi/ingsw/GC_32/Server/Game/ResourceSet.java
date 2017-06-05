@@ -49,13 +49,24 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
 
     @Override
-	public int compareTo(ResourceSet resource) {
-		return 0;
+	public int compareTo(ResourceSet resource) {	
+    	if(this.equals(resource))
+    		return 0;
+    	for(String key : resource.getResourceSet().keySet()){
+    		if (!this.resourceSet.containsKey(key) || this.getResouce(key) < resource.getResouce(key))
+    			return -1;
+    		}
+    	return 1;
 	}
     
     @Override
     public boolean equals(Object resource){
-    	return false;
+    	ResourceSet r = (ResourceSet) resource;
+    	for(String key : r.getResourceSet().keySet()){
+    		if (!this.resourceSet.containsKey(key) || this.getResouce(key) != r.getResouce(key))
+    			return false;
+    		}
+    	return true;
     }
     
     @Override
