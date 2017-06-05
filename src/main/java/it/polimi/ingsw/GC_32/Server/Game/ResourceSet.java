@@ -49,7 +49,16 @@ public class ResourceSet implements Comparable<ResourceSet> {
     		this.resourceSet.put(type, resource.getResouce(type)+resourceSet.get(type));
     	}
     }
-
+     /**
+     * It returns a comparison between two ResourceSet.
+	 * <ul>
+	 *  <li> -1 if this.resource is less than input resource 
+	 *  <li>  0 if this,resource is equal to input resource
+	 *  <li>  1 if this.resource is more than input resource
+	 * </ul>
+	 * 
+	 * @param resource input resource to compare with this.
+	 */
     @Override
 	public int compareTo(ResourceSet resource) {
 		if(this.equals(resource)){
