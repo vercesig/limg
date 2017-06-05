@@ -3,8 +3,10 @@ package it.polimi.ingsw.GC_32.Server.Network;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 public class SocketSentinel implements Runnable{
 
@@ -27,6 +29,7 @@ public class SocketSentinel implements Runnable{
 						tmpScanner.close();
 					}
 				} catch (IOException e) {
+					Logger.getLogger("").log(Level.SEVERE, "context", e);
 					break;
 				}
 			}
@@ -41,6 +44,7 @@ public class SocketSentinel implements Runnable{
 							System.out.println("messaggio inviato a :"+message.getPlayerID());
 						tmpPrinter.close();
 					} catch (IOException e) {
+						Logger.getLogger("").log(Level.SEVERE, "context", e);
 						break;
 					}
 				}

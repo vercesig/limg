@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.logging.Level;
+
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 
 public class FamilyMember{
@@ -49,6 +52,7 @@ public class FamilyMember{
 		try{
 			tmp.append(this.position.toString());
 		}catch(NullPointerException e){
+			Logger.getLogger("").log(Level.SEVERE, "context", e);
 			tmp.append("la pedina non è stata ancora piazzata");
 		}
 		return new String(tmp);

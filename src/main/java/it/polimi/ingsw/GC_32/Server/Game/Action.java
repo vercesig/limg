@@ -33,7 +33,7 @@ public class Action{
     	
     	StringBuilder stringBuilder = new StringBuilder();
     	stringBuilder.append(" Action:");
-    	stringBuilder.append("type:" + type.toString() + " actionValue:"
+    	stringBuilder.append("type:" + type + " actionValue:"
     					+ actionValue + " actionSpaceId:" + actionSpaceId + 
     					" actionRegionId:" + actionRegionId);
     return new String(stringBuilder);

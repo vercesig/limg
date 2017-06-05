@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
+import java.util.logging.Level;
+
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
@@ -65,6 +68,7 @@ public class TowerRegion extends Region {
 			try{
 				stringBuilder.append(level.getCard().toString());
 			}catch(NullPointerException e){
+				Logger.getLogger("").log(Level.SEVERE, "context", e);
 				stringBuilder.append("nessuna carta presente\n");
 			}
 			stringBuilder.append("====================================================\n");

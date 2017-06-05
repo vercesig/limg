@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
@@ -34,9 +35,9 @@ public class PersonalBoard {
 	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		for(String type : cards.keySet()){
-			tmp.append("**********************  "+type+": \n");
-			cards.get(type).forEach(card -> tmp.append(card.toString()));
+		for(Map.Entry<String,LinkedList<DevelopmentCard>> type : cards.entrySet()){
+			tmp.append("**********************  "+type.getKey()+": \n");
+			type.getValue().forEach(card -> tmp.append(card.toString()));
 		}
 		return new String(tmp);
 	}

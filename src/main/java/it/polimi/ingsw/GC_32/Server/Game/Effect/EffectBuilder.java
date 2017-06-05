@@ -11,4 +11,4 @@ import com.eclipsesource.json.JsonValue;
  * @author alessandro
  *
  */
-public interface EffectBuilder extends Function<JsonValue,Effect>{};
+public interface EffectBuilder extends Function<JsonValue,Effect>{}
