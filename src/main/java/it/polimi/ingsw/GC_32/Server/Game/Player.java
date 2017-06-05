@@ -86,11 +86,6 @@ public class Player {
     	TowerRegion selectedTower = (TowerRegion)game.getBoard().getRegion(action.getActionRegionId());
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
     }
-        
-    public void makeChange(JsonValue payload){
-    	GameMessage message = new GameMessage(this.uuid, payload.toString());
-    	MessageManager.getInstance().sendMessge(message);
-    }
     
     // richiede di effettuare un azione a seguito dell'attivazione di un effeto
     public void makeAction(JsonValue payload){

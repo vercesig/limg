@@ -64,7 +64,7 @@ public class GameMessageFilter implements Runnable {
 					Action action = new Action(actionType,actionValue,regionID,spaceID);
 					
 					// verifica se l'azione è valida
-					MoveChecker.checkMove(game.getBoard(),PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()),action);
+					//MoveChecker.checkMove(game.getBoard(),PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()),action);
 					//game.moveFamiliar(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()), pawnID, regionID, spaceID);
 					break;
 				case "SMSG":
