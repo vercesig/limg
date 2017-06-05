@@ -20,6 +20,7 @@ public class GameMessageFilter implements Runnable {
 	
 	public GameMessageFilter(Game game){
 		this.game = game;
+		this.filteredMessage = new ArrayList<GameMessage>();
 	}
 	
 	public void run(){

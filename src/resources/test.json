@@ -173,9 +173,9 @@
 	"permanentEffect" : "CHANGE",
 	"permanentPayload" :
 	    {
-	      "RESOURCEOUT": {"COINS" : 3},
-	      "RESOURCEIN":  {"WOOD" : 2,
-	                      "STONE" : 2}
+	      "COINS" : 3,
+	      "WOOD" : 2,
+	      "STONE" : -2
 	    },
 	"minimumActionValue" : 3,
 	"period" : 2,
@@ -195,9 +195,9 @@
 	"permanentEffect" : "CHANGE",
 	"permanentPayload" :
 	    {
-	      "RESOURCEOUT": {"COINS" : 3},
-	      "RESOURCEIN":  {"WOOD" : 2,
-	                      "STONE" : 2}
+	      "COINS" : 3,
+	      "WOOD" : 2,
+	      "STONE" : -2
 	    },
 	"minimumActionValue" : 3,
 	"period" : 1,
@@ -217,9 +217,9 @@
 	"permanentEffect" : "CHANGE",
 	"permanentPayload" :
 	    {
-	      "RESOURCEOUT": {"COINS" : 3},
-	      "RESOURCEIN":  {"WOOD" : 2,
-	                      "STONE" : 2}
+	      "COINS" : 3,
+	      "WOOD" : 2,
+	      "STONE" : -2
 	    },
 	"minimumActionValue" : 3,
 	"period" : 3,
@@ -239,9 +239,9 @@
 	"permanentEffect" : "CHANGE",
 	"permanentPayload" :
 	    {
-	      "RESOURCEOUT": {"COINS" : 3},
-	      "RESOURCEIN":  {"WOOD" : 2,
-	                      "STONE" : 2}
+	      "COINS" : 3,
+	      "WOOD" : 2,
+	      "STONE" : -2
 	    },
 	"minimumActionValue" : 3,
 	"period" : 2,
