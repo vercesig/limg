@@ -15,6 +15,6 @@ public class ExcommunicationCardTest {
 	@Test
 	public void checkToString(){
 		this.card = new ExcommunicationCard("NAME", 0);
-		assertEquals("name: NAME\nperiod: 0\n", this.card.toString());
+		assertEquals("name: NAME\nperiod: 0", this.card.toString());
 	}
 }
