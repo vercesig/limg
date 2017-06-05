@@ -2,12 +2,14 @@ package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.JsonObject.Member;
 
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
@@ -41,6 +43,7 @@ public class ChangeEffect {
 				try{
 					p.getResources().addResource(changeList.get((Integer)a.getAdditionalInfo()));
 				}catch(NullPointerException e){
+					Logger.getLogger("").log(Level.SEVERE, "context", e);
 					System.err.println("resource index not valid");
 				}
 			};	
