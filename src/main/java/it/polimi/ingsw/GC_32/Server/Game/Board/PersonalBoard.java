@@ -17,6 +17,7 @@ public class PersonalBoard {
 	public HashMap<String, LinkedList<DevelopmentCard>> getCards(){
 		return this.cards;
 	}
+	
 	public LinkedList<DevelopmentCard> getCardsOfType(String type){
 		if(cards.containsKey(type))
 			return this.cards.get(type);
