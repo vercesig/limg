@@ -6,6 +6,7 @@ public class Action{
     private int actionValue;
     private int actionSpaceId;
     private int actionRegionId;
+    private Object additionalInfo = null;
     
     public Action(String type, int actionValue, int actionSpaceId, int actionRegionId ){
     	
@@ -13,6 +14,14 @@ public class Action{
     	this.actionValue = actionValue;
     	this.actionSpaceId = actionSpaceId;
     	this.actionRegionId = actionRegionId;
+    }
+    
+    public void setAdditionalInfo(Object info){
+    	this.additionalInfo = info;
+    }
+    
+    public Object getAdditionalInfo(){
+    	return this.additionalInfo;
     }
     
     public String getActionType(){
@@ -35,7 +44,8 @@ public class Action{
     	stringBuilder.append(" Action:");
     	stringBuilder.append("type:" + type + " actionValue:"
     					+ actionValue + " actionSpaceId:" + actionSpaceId + 
-    					" actionRegionId:" + actionRegionId);
+    					" actionRegionId:" + actionRegionId +
+    					" additionalInfo:"+ additionalInfo.toString());
     return new String(stringBuilder);
     }
 }  
