@@ -31,7 +31,7 @@ public class GameMessageFilter implements Runnable {
 				for(GameMessage message : MessageManager.getInstance().getRecivedQueue()){
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 					// recupero messaggi che non interessano il lock
-					switch(Jsonmessage.get("TYPE").toString()){
+					switch(Jsonmessage.get("MESSAGETYPE").toString()){ // TODO: gioco multipartita => filtra in base alla partita
 					case "SMSG":
 					case "CHGNAME":
 						filteredMessage.add(message);
@@ -52,7 +52,7 @@ public class GameMessageFilter implements Runnable {
 			
 			filteredMessage.forEach(message -> {
 				JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
-				switch(Jsonmessage.get("TYPE").toString()){
+				switch(Jsonmessage.get("MESSAGETYPE").toString()){
 				case "ASKACT":
 					int pawnID = Jsonmessage.get("PAWNID").asInt();
 					int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
@@ -73,6 +73,9 @@ public class GameMessageFilter implements Runnable {
 				case "CHGNAME":
 					String name = Jsonmessage.get("NAME").asString();
 					PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).setPlayerName(name);
+					break;
+				case "TRNEND":
+					game.getTurnManager().nextPlayer();
 					break;
 				}
 			});

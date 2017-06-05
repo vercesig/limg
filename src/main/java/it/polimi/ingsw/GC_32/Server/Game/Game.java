@@ -27,17 +27,26 @@ public class Game {
 	
 	private String lock;
 	
+	private TurnManager turnManager;
+	
 	public Game(ArrayList<Player> players){
 		this.playerList = players;
 		this.board = new Board();
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
 		this.excommunicationCards = new ExcommunicationCard[3];	
 		
+		this.turnManager = new TurnManager(this);
+		turnManager.gameStart();
+		
 		// lancio thread per elaborazione messaggi in entrata
 		GameMessageFilter messageFilter = new GameMessageFilter(this);
 		Thread messageFilterThread = new Thread(messageFilter);
 		messageFilterThread.start();
 		
+	}
+	
+	public TurnManager getTurnManager(){
+		return this.turnManager;
 	}
 	
 	public ArrayList<Player> getPlayerList(){
