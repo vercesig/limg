@@ -1,7 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,9 +54,10 @@ public class Setup {
 	 */	
 	private void setUpCard() throws IOException{
 		// preparazione carte sviluppo
-		FileReader developmentCardFile = new FileReader("src/resources/test.json");
+		Reader developmentCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("test.json"));
+//		/FileReader developmentCardFile = new FileReader("src/resources/test.json");
 		
-		Deck<DevelopmentCard> developmentCardDeck = new Deck(JsonImporter.importDevelopmentCard(developmentCardFile));
+		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCard(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();
 		
 		//suddivide i mazzi per tipologia di carta
@@ -104,7 +106,8 @@ public class Setup {
 		}
 		
 		// preparazione carte scomunica
-		FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
+		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testscomunica.json"));
+		//FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
 		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck<ExcommunicationCard>(JsonImporter.importExcommunicationCard(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
