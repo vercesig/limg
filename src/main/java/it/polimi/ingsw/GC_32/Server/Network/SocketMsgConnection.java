@@ -12,6 +12,7 @@ public class SocketMsgConnection implements MsgConnection{
 	private Socket socket;
 	private Scanner in;
 	private PrintWriter out;
+	private boolean stop;
 	
 	public void open() throws IOException{
 		socket = new Socket("localhost",9500);
@@ -41,7 +42,11 @@ public class SocketMsgConnection implements MsgConnection{
 		return in.hasNextLine();
 	}
 	
-	public static void main(String[] args) throws IOException{
+	public void kill(){
+		this.stop = true;
+	}
+	
+	public void main(String[] args) throws IOException{
 		SocketMsgConnection connection = new SocketMsgConnection();
 		connection.open();
 		
@@ -49,6 +54,9 @@ public class SocketMsgConnection implements MsgConnection{
 			if(connection.hasMessage()){
 				System.out.println("messaggio\n");
 				System.out.println(connection.getMessage());
+			}
+			if(this.stop){
+				break;
 			}
 		}
 	}

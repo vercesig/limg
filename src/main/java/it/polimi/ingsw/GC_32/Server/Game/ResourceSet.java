@@ -54,25 +54,24 @@ public class ResourceSet implements Comparable<ResourceSet> {
 	public int compareTo(ResourceSet resource) {
 		if(this.equals(resource)){
 			return 0;
-		} else {
-			Set<String> thisResources = this.resourceSet.keySet();
-			Set<String> otherResources = resource.resourceSet.keySet();
-			Set<String> thisResourcesDiff = new HashSet<String>(thisResources);
-			Set<String> otherResourcesDiff = new HashSet<String>(otherResources);
-			thisResourcesDiff.removeAll(otherResources);
-			otherResourcesDiff.removeAll(thisResources);
-			if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
-				for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
-					if( element.getValue() < resource.getResouce(element.getKey())){
-						return -1;
-					}
-				}
-				return 1;
-			} else {
-				return Integer.MIN_VALUE;
-			}
 		}
-	}
+		Set<String> thisResources = this.resourceSet.keySet();
+		Set<String> otherResources = resource.resourceSet.keySet();
+		Set<String> thisResourcesDiff = new HashSet<String>(thisResources);
+		Set<String> otherResourcesDiff = new HashSet<String>(otherResources);
+		thisResourcesDiff.removeAll(otherResources);
+		otherResourcesDiff.removeAll(thisResources);
+		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
+			for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
+				if( element.getValue() < resource.getResouce(element.getKey())){
+					return -1;
+				}
+			}
+			return 1;
+		} else {
+			return -2;
+		}
+    }
     
     @Override
     public boolean equals(Object resource){
