@@ -1,0 +1,7 @@
+[
+{
+    "name" : "TestExCard",
+    "instantEffect" : "Test1",
+    "permanentEffect" : "Test2",
+    "period" : 1
+}]

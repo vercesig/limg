@@ -7,6 +7,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -31,7 +32,7 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<DevelopmentCard> importDevelopmentCard(FileReader fileReader) throws IOException{
+	public static List<DevelopmentCard> importDevelopmentCard(Reader fileReader) throws IOException{
 		
 		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
 		
@@ -102,7 +103,7 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<ExcommunicationCard> importExcommunicationCard(FileReader fileReader) throws IOException{
+	public static List<ExcommunicationCard> importExcommunicationCard(Reader fileReader) throws IOException{
 		
 		ArrayList<ExcommunicationCard> cardList = new ArrayList<ExcommunicationCard>();
 		
@@ -129,7 +130,7 @@ public class JsonImporter {
 	 * perform the parsing of the configuration file
 	 * @param fileReader  contains the FileReader object relative to the external file to parse
 	 */
-	public static void importConfigurationFile(FileReader fileReader){
+	public static void importConfigurationFile(Reader fileReader){
 		
 	}
 }
