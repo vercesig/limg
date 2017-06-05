@@ -56,8 +56,8 @@ public class ResourceSet implements Comparable<ResourceSet> {
 	 *  <li>  0 if this,resource is equal to input resource
 	 *  <li>  1 if this.resource is more than input resource
 	 * </ul>
-	 * 
-	 * @param resource input resource to compare with this.
+	 *
+	 * @param resource input to compare with this.
 	 */
     @Override
 	public int compareTo(ResourceSet resource) {
