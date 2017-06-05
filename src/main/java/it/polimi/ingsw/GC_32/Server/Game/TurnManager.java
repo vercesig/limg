@@ -20,10 +20,6 @@ public class TurnManager {
 		this.game = game;
 	}
 	
-	public int getTurnID(){
-		return this.turnID;
-	}
-	
 	private void diceRoll(){
 		Random randomGenerator = new Random();
 		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
@@ -64,12 +60,6 @@ public class TurnManager {
 		}	
 	}
 	
-	// chiede al client, secondo il protocollo di comunicazione, di effettuare una mossa
-	private void performAction(Player currentPlayer){
-		game.setLock(currentPlayer.getUUID());
-		currentPlayer.makeAction();
-	}
-	
 	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare
 	private void checkExcommunication(){
 		int excommunicationLevel = 3 + this.turnID/2 -1 ; //calcolo punti fede richiesti 
@@ -79,31 +69,13 @@ public class TurnManager {
 			}
 		}
 	}
-	
-	private void roundSetup(){
-		placeCards();
-		diceRoll();
-	}
-	
-
-	private void vaticanReportPhase(){
-			checkExcommunication();			
-	}
-	
-	private void roundEnd(){
-		updateTurnOrder();
-		this.game.getBoard().flushBoard();
 		
-		// prepara il prossimo round
-		this.roundID++;
-		roundSetup();
-	}	
-	
 	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
 
 	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
 	public void gameStart(){
-		roundSetup();
+		placeCards();
+		diceRoll();
 		game.setLock(game.getPlayerList().get(0).getUUID());
 		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
 	}
@@ -117,7 +89,6 @@ public class TurnManager {
 		// non sono l'ultimo giocatore della lista
 		if(currentIndexPlayer+1<=game.getPlayerList().size()){
 			game.setLock(game.getPlayerList().get(currentIndexPlayer+1).getUUID());
-			
 		}
 		else{ // il giro ricomincia
 			game.setLock(game.getPlayerList().get(0).getUUID());
@@ -126,11 +97,17 @@ public class TurnManager {
 		
 		// fine round
 		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
-			roundEnd();
+			updateTurnOrder();
+			this.game.getBoard().flushBoard();
+			
+			// prepara il prossimo round
+			this.roundID++;
+			placeCards();
+			diceRoll();
 			
 			// fine periodo
 			if(roundID%2==0){
-				vaticanReportPhase();
+				checkExcommunication();	
 			}
 		}
 		
