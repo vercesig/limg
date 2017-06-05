@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
+import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
 	
 	private int turnID;
+	private int roundID;
 	private Game game;
 	
 	public TurnManager(Game game){
 		this.turnID = 1;
+		this.roundID = 1;
 		this.game = game;
 	}
 	
@@ -77,29 +80,62 @@ public class TurnManager {
 		}
 	}
 	
-	public void roundSetup(){
+	private void roundSetup(){
 		placeCards();
 		diceRoll();
 	}
 	
-	public void actionPhase(){
-		for(FamilyMember f : this.game.getPlayerList().get(0).getFamilyMember()){ //recupera il numero di familiari, meglio caricare da file di configurazione
-			for(Player p : this.game.getPlayerList()){
-				performAction(p);
-			}
-		}
-	}
-	public void vaticanReportPhase(){
-		if(this.turnID%2==0){ //solo per turni pari
+
+	private void vaticanReportPhase(){
 			checkExcommunication();			
-		}
 	}
 	
-	public void roundEnd(){
+	private void roundEnd(){
 		updateTurnOrder();
 		this.game.getBoard().flushBoard();
-		this.turnID++;
+		
+		// prepara il prossimo round
+		this.roundID++;
+		roundSetup();
 	}	
+	
+	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
+
+	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
+	public void gameStart(){
+		roundSetup();
+		game.setLock(game.getPlayerList().get(0).getUUID());
+		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
+	}
+	
+	// passa il turno al player successivo
+	public void nextPlayer(){
+		turnID++;
+		Player tmp;
+		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));
+		
+		// non sono l'ultimo giocatore della lista
+		if(currentIndexPlayer+1<=game.getPlayerList().size()){
+			game.setLock(game.getPlayerList().get(currentIndexPlayer+1).getUUID());
+			
+		}
+		else{ // il giro ricomincia
+			game.setLock(game.getPlayerList().get(0).getUUID());
+		}
+		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
+		
+		// fine round
+		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+			roundEnd();
+			
+			// fine periodo
+			if(roundID%2==0){
+				vaticanReportPhase();
+			}
+		}
+		
+	}
+	
 	/**
 	 * solo per il turno finale
 	 * - i giocatori che non hanno i punti fede richiesti, dopo aver attivato
