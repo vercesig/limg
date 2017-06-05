@@ -55,7 +55,11 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     @Override
     public boolean equals(Object resource){
-    	return false;
+    	if(resource instanceof ResourceSet){
+    		return this.resourceSet.equals(((ResourceSet) resource).getResourceSet());
+    	} else {
+    		return false;
+    	}
     }
     
     @Override
