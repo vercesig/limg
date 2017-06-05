@@ -28,8 +28,9 @@ public class AddEffect {
 			int value = payload.asObject().get(resourceType).asInt();
 			resourceSet.setResource(resourceType, value);			
 		}
-		Effect e = (Board b, Player p, Action a) ->	
+		Effect e = (Board b, Player p, Action a) ->	{
 			p.getResources().addResource(resourceSet);
+		};
 		return e;
 	};
 	

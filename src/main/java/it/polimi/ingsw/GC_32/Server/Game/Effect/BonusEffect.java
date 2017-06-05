@@ -33,7 +33,6 @@ public class BonusEffect {
 		Effect bonusEffect = (Board b, Player p, Action a) -> {
 			Function<Player,Integer> howManyTimes = typeEffect.apply(type.asString().equals("CARD"),p);
 			p.getResources().addResource(increase.asString(), increasingQuantity.asInt()*howManyTimes.apply(p));
-			
 		};
 		return bonusEffect;		
 	};	

@@ -70,7 +70,7 @@ public class ResourceSetTest{
 	}
 	@Test
 	public void checkNotEqualResource(){
-		this.resourceSet= new ResourceSet();
+		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 1);
 		this.resourceSet.setResource("COIN", 10);
 		ResourceSet newResource = new ResourceSet();
@@ -82,7 +82,7 @@ public class ResourceSetTest{
 	
 	@Test
 	public void checkCompareToEqualResource(){
-		this.resourceSet= new ResourceSet();
+		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 5);
 		this.resourceSet.setResource("COIN", 4);
 		this.resourceSet.setResource("STONE", 3);
@@ -95,7 +95,7 @@ public class ResourceSetTest{
 	
 	@Test
 	public void checkCompareToMoreResource(){
-		this.resourceSet= new ResourceSet();
+		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 10);
 		this.resourceSet.setResource("COIN", 100);
 		this.resourceSet.setResource("STONE", 1);
@@ -103,12 +103,13 @@ public class ResourceSetTest{
 		ResourceSet newResource = new ResourceSet();
 		newResource.setResource("WOOD", 10);
 		newResource.setResource("COIN", 100);
-		newResource.setResource("MILITARY_POINTS", 3);	
+		newResource.setResource("MILITARY_POINTS", 3);
 		assertEquals(1, this.resourceSet.compareTo(newResource));
 	}
+
 	@Test
 	public void checkCompareToLessResource(){
-		this.resourceSet= new ResourceSet();
+		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 10);
 		this.resourceSet.setResource("COIN", 100);
 		this.resourceSet.setResource("STONE", 1);
@@ -116,18 +117,7 @@ public class ResourceSetTest{
 		ResourceSet newResource = new ResourceSet();
 		newResource.setResource("WOOD", 1);
 		newResource.setResource("COIN", 1);
-		newResource.setResource("VICTORY_POINTS", 100);	
+		newResource.setResource("MILITARY_POINTS", 100);
 		assertEquals(-1, this.resourceSet.compareTo(newResource));
-	}	
-	@Test
-	public void checkCompareToNotValidResource(){
-		this.resourceSet= new ResourceSet();
-		this.resourceSet.setResource("WOOD", 10);
-		this.resourceSet.setResource("COIN", 100);
-		ResourceSet newResource = new ResourceSet();
-		newResource.setResource("WOOD", 1);
-		newResource.setResource("COIN", 10);
-		newResource.setResource("VICTORY_POINTS", 100);	
-		assertEquals(-1, this.resourceSet.compareTo(newResource));
-	}	
+	}
 }
