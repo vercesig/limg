@@ -20,6 +20,10 @@ public class TurnManager {
 		this.game = game;
 	}
 	
+	public int getTurnID(){
+		return this.turnID;
+	}
+	
 	private void diceRoll(){
 		Random randomGenerator = new Random();
 		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
