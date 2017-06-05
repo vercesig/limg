@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Network;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 
 public class MessageManager {
 
@@ -29,7 +30,7 @@ public class MessageManager {
 	}
 	
 	public void sendMessge(GameMessage message){
-		if(PlayerRegistry.getInstance().getConnectionMode(message.getPlayerID()).equals("SOCKET")){
+		if(PlayerRegistry.getInstance().getConnectionMode(message.getPlayerID()) == ConnectionType.SOCKET){
 			socketSendQueue.add(message);
 			System.out.println("messaggio inserito nella coda");
 		}else{

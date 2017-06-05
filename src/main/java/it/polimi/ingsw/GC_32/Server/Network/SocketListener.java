@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class SocketListener implements Runnable{
@@ -42,6 +44,7 @@ public class SocketListener implements Runnable{
 				System.out.println("client inserito");
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
+				Logger.getLogger("").log(Level.SEVERE, "context", e);
 				break;
 			}
 			if(this.stop){

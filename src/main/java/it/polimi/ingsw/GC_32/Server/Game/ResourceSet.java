@@ -6,7 +6,7 @@ import java.util.Map;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
-public class ResourceSet implements Comparable {
+public class ResourceSet implements Comparable<ResourceSet> {
 	
 	private HashMap<String, Integer> resourceSet;
 	
@@ -48,11 +48,20 @@ public class ResourceSet implements Comparable {
     	}
     }
 
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
+    @Override
+	public int compareTo(ResourceSet resource) {
 		return 0;
 	}
+    
+    @Override
+    public boolean equals(Object resource){
+    	return false;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return 0;
+    }
 	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();

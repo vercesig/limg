@@ -2,6 +2,9 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 
@@ -45,6 +48,7 @@ public class Board {
 		try{
 			return this.region.get(idRegion);
 		} catch (NullPointerException e){
+			Logger.getLogger("").log(Level.SEVERE, "context", e);
 			return null;
 		}
 	}
