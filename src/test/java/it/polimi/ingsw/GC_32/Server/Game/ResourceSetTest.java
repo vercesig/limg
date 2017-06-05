@@ -120,4 +120,12 @@ public class ResourceSetTest{
 		newResource.setResource("MILITARY_POINTS", 100);
 		assertEquals(-1, this.resourceSet.compareTo(newResource));
 	}
+	
+	public void checkDifferentResource(){
+		this.resourceSet = new ResourceSet();
+		this.resourceSet.setResource("WOOD", 10);
+		ResourceSet newResource = new ResourceSet();
+		newResource.setResource("STONE", 1);
+		assertEquals(-2, this.resourceSet.compareTo(newResource));
+	}
 }
