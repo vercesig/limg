@@ -11,7 +11,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 
 public class FamilyMemberTest{
 	
-	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	public FamilyMember familyMember;
 	

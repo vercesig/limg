@@ -14,7 +14,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class PersonalBoardTest{
 	
-	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	public PersonalBoard personalBoard;
 	
