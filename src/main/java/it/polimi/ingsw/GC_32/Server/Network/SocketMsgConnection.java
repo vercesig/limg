@@ -41,7 +41,7 @@ public class SocketMsgConnection implements MsgConnection{
 		return in.hasNextLine();
 	}
 	
-/*	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException{
 		SocketMsgConnection connection = new SocketMsgConnection();
 		connection.open();
 		
@@ -51,6 +51,6 @@ public class SocketMsgConnection implements MsgConnection{
 				System.out.println(connection.getMessage());
 			}
 		}
-	}*/
+	}
 	
 }

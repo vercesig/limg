@@ -19,7 +19,7 @@ public class Main {
 	
 	public static void newGame(ArrayList<Player> players) throws IOException{
 		Game game = new Game(players);
-		Setup setupGame = new Setup(game);
+		//Setup setupGame = new Setup(game);
 		
 		System.out.println(game.getBoard().toString());
 		System.out.println("blackDice :" +game.getBlackDiceValue()+"\n");

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
+import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 
 public class Game {
@@ -28,12 +30,16 @@ public class Game {
 	private String lock;
 	
 	private TurnManager turnManager;
+	private Setup setupgame;
 	
-	public Game(ArrayList<Player> players){
+	public Game(ArrayList<Player> players) throws IOException{
 		this.playerList = players;
 		this.board = new Board();
+		//this.board.setTowerRegion(4);
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
 		this.excommunicationCards = new ExcommunicationCard[3];	
+		
+		this.setupgame = new Setup(this);
 		
 		this.turnManager = new TurnManager(this);
 		turnManager.gameStart();
