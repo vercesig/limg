@@ -45,7 +45,7 @@ public class Action{
     	stringBuilder.append("type:" + type + " actionValue:"
     					+ actionValue + " actionSpaceId:" + actionSpaceId + 
     					" actionRegionId:" + actionRegionId +
-    					" additionalInfo:"+ additionalInfo.toString());
-    return new String(stringBuilder);
+    					" additionalInfo:"+ ((additionalInfo != null) ? additionalInfo.toString() : ""));
+    return stringBuilder.toString();
     }
 }  
