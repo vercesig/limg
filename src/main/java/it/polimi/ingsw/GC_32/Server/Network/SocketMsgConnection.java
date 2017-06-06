@@ -46,7 +46,7 @@ public class SocketMsgConnection implements MsgConnection{
 		this.stop = true;
 	}
 	
-	public void main(String[] args) throws IOException{
+	/*public void main(String[] args) throws IOException{
 		SocketMsgConnection connection = new SocketMsgConnection();
 		connection.open();
 		
@@ -59,6 +59,6 @@ public class SocketMsgConnection implements MsgConnection{
 				break;
 			}
 		}
-	}
+	}*/
 	
 }

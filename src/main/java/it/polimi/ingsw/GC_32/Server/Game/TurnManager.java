@@ -81,7 +81,7 @@ public class TurnManager {
 		placeCards();
 		diceRoll();
 		game.setLock(game.getPlayerList().get(0).getUUID());
-		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
+		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
 	}
 	
 	// passa il turno al player successivo
