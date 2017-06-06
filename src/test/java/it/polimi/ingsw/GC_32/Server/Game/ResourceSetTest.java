@@ -68,6 +68,7 @@ public class ResourceSetTest{
 		newResource.setResource("STONE", 3);		
 		assertEquals(true, this.resourceSet.equals(newResource));
 	}
+	
 	@Test
 	public void checkNotEqualResource(){
 		this.resourceSet = new ResourceSet();
@@ -78,7 +79,13 @@ public class ResourceSetTest{
 		newResource.setResource("COIN", 10);
 		newResource.setResource("STONE", 3);
 		assertEquals(false, this.resourceSet.equals(newResource));
-	}	
+	}
+	
+	@Test
+	public void checkEqualNotResource(){
+		this.resourceSet = new ResourceSet();
+		assertFalse(this.resourceSet.equals("Test"));
+	}
 	
 	@Test
 	public void checkCompareToEqualResource(){
@@ -121,11 +128,21 @@ public class ResourceSetTest{
 		assertEquals(-1, this.resourceSet.compareTo(newResource));
 	}
 	
+	@Test
 	public void checkDifferentResource(){
 		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 10);
 		ResourceSet newResource = new ResourceSet();
 		newResource.setResource("STONE", 1);
 		assertEquals(-2, this.resourceSet.compareTo(newResource));
+	}
+	
+	@Test
+	public void checkHashCode(){
+		this.resourceSet = new ResourceSet();
+		this.resourceSet.addResource("WOOD", 10);
+		ResourceSet resourceSet2 = new ResourceSet();
+		resourceSet2.addResource("WOOD", 10);
+		assertEquals(resourceSet2.hashCode(), this.resourceSet.hashCode());
 	}
 }

@@ -49,11 +49,13 @@ public class ResourceSet implements Comparable<ResourceSet> {
     		this.resourceSet.put(type, resource.getResouce(type)+resourceSet.get(type));
     	}
     }
+
      /**
      * It returns a comparison between two ResourceSet.
 	 * <ul>
-	 *  <li> -1 if this.resource is less than input resource 
-	 *  <li>  0 if this,resource is equal to input resource
+	 *  <li> -2 if the resource compared is not a subset of this
+	 *  <li> -1 if this.resource is less than input resource
+	 *  <li>  0 if this.resource is equal to input resource
 	 *  <li>  1 if this.resource is more than input resource
 	 * </ul>
 	 *
@@ -66,8 +68,8 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		}
 		Set<String> thisResources = this.resourceSet.keySet();
 		Set<String> otherResources = resource.resourceSet.keySet();
-		Set<String> thisResourcesDiff = new HashSet<String>(thisResources);
-		Set<String> otherResourcesDiff = new HashSet<String>(otherResources);
+		Set<String> thisResourcesDiff = new HashSet<>(thisResources);
+		Set<String> otherResourcesDiff = new HashSet<>(otherResources);
 		thisResourcesDiff.removeAll(otherResources);
 		otherResourcesDiff.removeAll(thisResources);
 		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
@@ -93,9 +95,10 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     @Override
     public int hashCode() {
-    	return 0;
+    	return this.toString().hashCode();
     }
 	
+    @Override
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
