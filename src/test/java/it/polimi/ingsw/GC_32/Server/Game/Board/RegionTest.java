@@ -1,5 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -49,5 +49,11 @@ public class RegionTest {
 		board = new Board();
 		board.setTowerRegion(4);
 		assertEquals(8, board.getRegionMap().size());
+	}
+	
+	@Test
+	public void checkToStringNotNull(){
+		Region region = new Region(0,4);
+		assertNotNull(region.toString());
 	}
 }

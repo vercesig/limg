@@ -2,12 +2,13 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 public class Action{
     
-	private ActionType type;
+	private String type;
     private int actionValue;
     private int actionSpaceId;
     private int actionRegionId;
+    private Object additionalInfo = null;
     
-    public Action(ActionType type, int actionValue, int actionSpaceId, int actionRegionId ){
+    public Action(String type, int actionValue, int actionSpaceId, int actionRegionId ){
     	
     	this.type = type;
     	this.actionValue = actionValue;
@@ -15,7 +16,15 @@ public class Action{
     	this.actionRegionId = actionRegionId;
     }
     
-    public ActionType getActionType(){
+    public void setAdditionalInfo(Object info){
+    	this.additionalInfo = info;
+    }
+    
+    public Object getAdditionalInfo(){
+    	return this.additionalInfo;
+    }
+    
+    public String getActionType(){
     	return this.type;
     }
     
@@ -29,14 +38,14 @@ public class Action{
     	return this.actionRegionId;
     }
     
-    	// to String
     public String toString(){
     	
     	StringBuilder stringBuilder = new StringBuilder();
     	stringBuilder.append(" Action:");
-    	stringBuilder.append("type:" + type.toString() + " actionValue:"
+    	stringBuilder.append("type:" + type + " actionValue:"
     					+ actionValue + " actionSpaceId:" + actionSpaceId + 
-    					" actionRegionId:" + actionRegionId);
-    return new String(stringBuilder);
+    					" actionRegionId:" + actionRegionId +
+    					" additionalInfo:"+ ((additionalInfo != null) ? additionalInfo.toString() : ""));
+    return stringBuilder.toString();
     }
 }  

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -52,9 +54,10 @@ public class Setup {
 	 */	
 	private void setUpCard() throws IOException{
 		// preparazione carte sviluppo
-		FileReader developmentCardFile = new FileReader("src/resources/test.json");
+		Reader developmentCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("test.json"));
+//		/FileReader developmentCardFile = new FileReader("src/resources/test.json");
 		
-		Deck<DevelopmentCard> developmentCardDeck = new Deck(JsonImporter.importDevelopmentCard(developmentCardFile));
+		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCard(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();
 		
 		//suddivide i mazzi per tipologia di carta
@@ -68,12 +71,12 @@ public class Setup {
 			}
 		});	
 		// crea i mazzi e li carica in game
-		for(String type : tmpDecks.keySet()){
+		for(Map.Entry<String,List<DevelopmentCard>> element : tmpDecks.entrySet()){
 			// strutture dati temporanee per la generazione dei mazzi
 			HashMap<Integer, List<DevelopmentCard>> tmpSubDecks = new HashMap<Integer, List<DevelopmentCard>>();
 			List<DevelopmentCard> tmp = new ArrayList<DevelopmentCard>();
 			
-			tmpDecks.get(type).forEach(card -> {
+			element.getValue().forEach(card -> {
 					if(tmpSubDecks.keySet().contains(card.getPeriod())){
 						tmpSubDecks.get(card.getPeriod()).add(card);
 					}else{
@@ -83,12 +86,12 @@ public class Setup {
 				});
 				// crea i vari sotto-mazzi, li mischia e li carica nel mazzo conclusivo (ordinato per periodi crescenti)
 				for(int i=1; i<=tmpSubDecks.size(); i++){
-					Deck<DevelopmentCard> subDeck = new Deck(tmpSubDecks.get(i));
+					Deck<DevelopmentCard> subDeck = new Deck<DevelopmentCard>(tmpSubDecks.get(i));
 					subDeck.shuffleDeck();
 					tmp.addAll(subDeck.getDeck());
 				}
-				Deck<DevelopmentCard> finalDeck = new Deck(tmp);
-				game.setDeck(type, finalDeck);// setta il mazzo risultante in game
+				Deck<DevelopmentCard> finalDeck = new Deck<DevelopmentCard>(tmp);
+				game.setDeck(element.getKey(), finalDeck);// setta il mazzo risultante in game
 		}
 		
 		// configura le torri
@@ -103,8 +106,9 @@ public class Setup {
 		}
 		
 		// preparazione carte scomunica
-		FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
-		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck(JsonImporter.importExcommunicationCard(excommunicationCardFile));
+		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testscomunica.json"));
+		//FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
+		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck<ExcommunicationCard>(JsonImporter.importExcommunicationCard(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
 		// divido carte scomunica per periodo
@@ -118,7 +122,7 @@ public class Setup {
 		});
 		// carica per ogni periodo una carta scomunica scelta a caso
 		for(int i=1; i<=3; i++){ // --------------------------------- caricare il numero di periodi da file di configurazione
-			Deck<ExcommunicationCard> tmpDeck = new Deck(tmpSubDecks.get(i));
+			Deck<ExcommunicationCard> tmpDeck = new Deck<ExcommunicationCard>(tmpSubDecks.get(i));
 			game.setExcommunicationCard(tmpDeck.drawRandomElement(), i);
 		}
 	}
@@ -155,7 +159,7 @@ public class Setup {
 			players.get(i).getResources().setResource("COINS", 5 + i);
 			// setta punteggi a 0
 			players.get(i).getResources().setResource("FAITH", 0);
-			players.get(i).getResources().setResource("VP", 0);
+			players.get(i).getResources().setResource("VICTORY", 0);
 			players.get(i).getResources().setResource("MILITARY", 0);
 			
 		}

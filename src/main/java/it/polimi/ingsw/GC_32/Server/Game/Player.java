@@ -4,29 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
 public class Player {
 	private PersonalBoard personalBoard;
-	private final String name;
-    private ArrayList<Effect> effectList;
+	private String name;
+    	private ArrayList<Effect> effectList;
 	private ResourceSet resources;
 	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
-	private String uuid;
+	private final String uuid;
 	
-	public Player(String name){
+	public Player(){
 		this.personalBoard = new PersonalBoard();
 		this.name = name;
 		this.resources = new ResourceSet();
-		this.familyMemberList = new FamilyMember[3];
-		for(int i = 0; i < this.familyMemberList.length; i++){
-			this.familyMemberList[i] = new FamilyMember(this);
+		
+		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
+		this.familyMemberList = new FamilyMember[4];
+		for(int i=0; i<familyMemberList.length; i++){
+			familyMemberList[i] = new FamilyMember(this);	
 		}
 		this.uuid = UUID.randomUUID().toString();
 		this.effectList = new ArrayList<Effect>();
+	}
+	
+	public void setPlayerName(String name){
+		this.name = name;
 	}
 	
 	public String getUUID() {
@@ -91,7 +102,11 @@ public class Player {
     
     public String toString(){
     	StringBuilder tmp = new StringBuilder();
-    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\n");
+    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\nPERSONALBOARD :"+this.personalBoard.toString());
+    	tmp.append("stato dei familiari: \n");
+    	for(FamilyMember f : familyMemberList){
+    		tmp.append(f.toString()+"\n");
+    	}
     	return new String(tmp);
     }
 }

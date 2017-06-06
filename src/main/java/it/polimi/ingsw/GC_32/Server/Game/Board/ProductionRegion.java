@@ -14,11 +14,8 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
  * @author VaporUser
  * @see ProductionRegion, Region, ActionSpace.
  */
-public class ProductionRegion implements Region {
+public class ProductionRegion extends Region {
 
-	private ActionSpace[] track;
-	private int regionID;	
-	
 	/**
 	 * Constructor of ProductionRegion. 
 	 * <p>
@@ -29,41 +26,13 @@ public class ProductionRegion implements Region {
 	 * @param regionID.
 	 * @see ProductionRegion, Region, ActionSpace.
 	 */
-	public ProductionRegion(int id){ 
-	
-		this.regionID = id;
-		this.track = new ActionSpace[2];	//NUOVO ATTRIBUTO
-		track[0] = new ActionSpace(null, 1, true, this.getRegionID(), 0);
-		track[1] = new ActionSpace(null, 1, false, this.getRegionID(), 1);
+	public ProductionRegion(int regionID){ 
+		super(regionID,2);
+		super.getTrack()[0] = new ActionSpace(null, 1, true, this.getRegionID(), 0);
+		super.getTrack()[1] = new ActionSpace(null, 1, false, this.getRegionID(), 1);
 	}
 	
 	public void activateEffect(){
 		
-	}
-	
-	@Override
-	public int getRegionID(){
-		return this.regionID;
-	}
-	
-	@Override
-	public String toString(){		
-		StringBuilder stringBuilder = new StringBuilder();
-		for (ActionSpace actionSpace: track){
-			stringBuilder.append(actionSpace.toString());
-		}
-		return new String (stringBuilder);
-	}
-	
-	@Override
-	public ActionSpace getActionSpace(int id){
-		try{
-			for (ActionSpace actionSpace: track){
-				if(actionSpace.getActionSpaceID() == id)
-					return actionSpace;
-			} return null;
-		}catch(NullPointerException e){
-			return null;
-		}
 	}
 }

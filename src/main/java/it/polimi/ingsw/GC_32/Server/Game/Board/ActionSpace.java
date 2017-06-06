@@ -153,10 +153,11 @@ public class ActionSpace{
 	 * @see ActionSpace, FamilyMember, Player.
 	 * */
 	public boolean addFamilyMember(FamilyMember familyMember){
-		if(isBusy()){
+		if(this.isBusy() && this.isSingleActionSpace()){
 			return false;
 		}
 		occupants.add(familyMember);
+		familyMember.setPosition(this);
 		return true;
 	}
 	
@@ -184,10 +185,7 @@ public class ActionSpace{
 	 * @see ActionSpace.
 	 * */
 	public boolean isBusy(){
-		if(this.isSingleActionSpace()){
-			return this.occupants.isEmpty();
-		}
-		return false;
+		return !this.occupants.isEmpty();
 	}
 	
 	/**

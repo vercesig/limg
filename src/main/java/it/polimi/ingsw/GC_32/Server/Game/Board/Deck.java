@@ -26,6 +26,12 @@ public class Deck<T> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Deck(Deck<T>... decks){
+		this();
+		this.addDecks(decks);
+	}
+	
 	public ArrayList<T> getDeck(){
 		return this.deck;
 	}
@@ -45,15 +51,15 @@ public class Deck<T> {
 		deck = shuffledDeck;
 	}
 	
-	// dati N mazzi di tipo T, ne genera uno unico impilando i mazzi passati come parametri secondo l'ordine con cui essi vengono passati nel metodo
-	public Deck<T> composeDeck(Deck<T>...decks){
-		List<T> tmp = new ArrayList<T>();
-		for(Deck<T> e : decks){
-			for(int i=0; i<e.getDeck().size(); i++){
-				tmp.add(e.getDeck().get(i));
-			}
+	public void addDeck(Deck<T> deck){
+		this.deck.addAll(deck.getDeck());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addDecks(Deck<T>...decks){
+		for(Deck<T> deck: decks){
+			this.addDeck(deck);
 		}
-		return new Deck(tmp);
 	}
 	
 	// pesca il primo elmento in cima al mazzo
@@ -90,42 +96,4 @@ public class Deck<T> {
 		}
 		return new String(tmp);
 	}
-	
-	public static void main(String args[]){
-		
-		ArrayList<Integer> a = new ArrayList<Integer>();
-		a.add(10);
-		a.add(15);
-		a.add(7);
-		a.add(48);
-		a.add(210);
-		a.add(215);
-		a.add(73);
-		a.add(4821);
-		a.add(105);
-		a.add(1544);
-		a.add(768);
-		a.add(48888);
-		
-		for(Integer b : a){
-			System.out.println(b.toString());
-		}
-		
-		Deck<Integer> c = new Deck(a);
-		System.out.println("..................");
-		c.shuffleDeck();
-		System.out.println(c.toString());
-		System.out.println("pesco elemento in cima al mazzo :" +c.drawElement().toString());
-		System.out.println("pesco elemento in cima al mazzo :" +c.drawElement().toString());
-		System.out.println("pesco i primi 5 elementi in cima al mazzo :" +c.drawManyElements(5).toString());
-		System.out.println("pesco elemento casuale :" +c.drawRandomElement().toString());
-
-
-		Deck<Integer> d = new Deck();
-		Deck<Integer> f = new Deck();
-		System.out.println(f.composeDeck(c,d).toString());
-		
-		
-	}
-	
 }

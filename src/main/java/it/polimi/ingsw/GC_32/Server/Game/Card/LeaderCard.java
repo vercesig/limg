@@ -13,7 +13,7 @@ public class LeaderCard extends Card{
 	}
 	
 	public void discard(){
-		
+		this.discarded = true;
 	}
 	
 	public boolean isDiscarded(){
@@ -23,5 +23,7 @@ public class LeaderCard extends Card{
 	public void turnCard(){
 		onePerRoundAbility = !onePerRoundAbility;
 	}
-	
+	public boolean getOnePerRoundAbility(){
+		return this.onePerRoundAbility;
+	}
 }

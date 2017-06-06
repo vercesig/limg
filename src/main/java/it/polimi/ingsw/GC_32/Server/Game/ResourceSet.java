@@ -1,10 +1,14 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
-public class ResourceSet implements Comparable {
+public class ResourceSet implements Comparable<ResourceSet> {
 	
 	private HashMap<String, Integer> resourceSet;
 	
@@ -46,16 +50,59 @@ public class ResourceSet implements Comparable {
     	}
     }
 
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+     /**
+     * It returns a comparison between two ResourceSet.
+	 * <ul>
+	 *  <li> -2 if the resource compared is not a subset of this
+	 *  <li> -1 if this.resource is less than input resource
+	 *  <li>  0 if this.resource is equal to input resource
+	 *  <li>  1 if this.resource is more than input resource
+	 * </ul>
+	 *
+	 * @param resource input to compare with this.
+	 */
+    @Override
+	public int compareTo(ResourceSet resource) {
+		if(this.equals(resource)){
+			return 0;
+		}
+		Set<String> thisResources = this.resourceSet.keySet();
+		Set<String> otherResources = resource.resourceSet.keySet();
+		Set<String> thisResourcesDiff = new HashSet<>(thisResources);
+		Set<String> otherResourcesDiff = new HashSet<>(otherResources);
+		thisResourcesDiff.removeAll(otherResources);
+		otherResourcesDiff.removeAll(thisResources);
+		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
+			for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
+				if( element.getValue() < resource.getResouce(element.getKey())){
+					return -1;
+				}
+			}
+			return 1;
+		} else {
+			return -2;
+		}
+    }
+    
+    @Override
+    public boolean equals(Object resource){
+    	if(resource instanceof ResourceSet){
+    		return this.resourceSet.equals(((ResourceSet) resource).getResourceSet());
+    	} else {
+    		return false;
+    	}
+    }
+    
+    @Override
+    public int hashCode() {
+    	return this.toString().hashCode();
+    }
 	
+    @Override
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		for(String name : resourceSet.keySet()){
-			tmp.append("\n"+name+" :"+resourceSet.get(name).toString());
+		for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
+			tmp.append("\n"+element.getKey()+" :"+element.getValue().toString());
 		}
 		return new String(tmp);
 	}

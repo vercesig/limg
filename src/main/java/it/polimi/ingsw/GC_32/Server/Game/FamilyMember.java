@@ -1,12 +1,15 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.logging.Level;
+
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 
 public class FamilyMember{
 	
-	private boolean busy;
 	private DiceColor diceColor;
-	private int actionValue = 0;
+	// l'actionValue dei familiy member è settato nella fase di diceRoll gestita dalla classe TurnManager
+	private int actionValue = 0; 
 	private ActionSpace position;
 	private Player owner;
 	
@@ -18,13 +21,17 @@ public class FamilyMember{
 	public ActionSpace getPosition(){
 		return this.position;
 	}
-		
-	public void move(ActionSpace targetBox){
-		
+	
+	public void setPosition(ActionSpace targetSpace){
+		this.position = targetSpace;
+	}
+	
+	public void removeFromBoard(){
+		this.position = null;
 	}
 	
 	public boolean isBusy(){
-		return this.busy;
+		return this.position != null;
 	}
 	
 	public int getActionValue(){
@@ -37,6 +44,18 @@ public class FamilyMember{
 	
 	public Player getOwner(){
 		return this.owner;
+	}
+	
+	public String toString(){
+		StringBuilder tmp = new StringBuilder();
+		tmp.append("actionValue :"+this.actionValue+"\nposition :");
+		try{
+			tmp.append(this.position.toString());
+		}catch(NullPointerException e){
+			Logger.getLogger("").log(Level.SEVERE, "context", e);
+			tmp.append("la pedina non è stata ancora piazzata");
+		}
+		return new String(tmp);
 	}
 
 }

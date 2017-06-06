@@ -1,12 +1,16 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
+import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 
 public class Game {
@@ -21,22 +25,34 @@ public class Game {
 	private int whiteDice;
 	private int orangeDice;
 	
-	private boolean flag2PlayersGame=true;
+	private boolean flag2PlayersGame=true; //settare a seconda del numero di giocatori
 	
-	public Game(ArrayList<Player> players){
+	private String lock;
+	
+	private TurnManager turnManager;
+	private Setup setupgame;
+	
+	public Game(ArrayList<Player> players) throws IOException{
 		this.playerList = players;
 		this.board = new Board();
+		//this.board.setTowerRegion(4);
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
-		this.excommunicationCards = new ExcommunicationCard[3];
+		this.excommunicationCards = new ExcommunicationCard[3];	
 		
-		if(this.playerList.size()>2){
-			this.flag2PlayersGame=false;
-		}
+		this.setupgame = new Setup(this);
+		
+		this.turnManager = new TurnManager(this);
+		turnManager.gameStart();
+		
+		// lancio thread per elaborazione messaggi in entrata
+		GameMessageFilter messageFilter = new GameMessageFilter(this);
+		Thread messageFilterThread = new Thread(messageFilter);
+		messageFilterThread.start();
 		
 	}
 	
-	public Boolean getFlag2PlayersGame(){
-		return this.flag2PlayersGame;
+	public TurnManager getTurnManager(){
+		return this.turnManager;
 	}
 	
 	public ArrayList<Player> getPlayerList(){
@@ -95,4 +111,16 @@ public class Game {
 		this.orangeDice = value;
 	}
 	
+	public void setLock(String player){
+		this.lock = player;
+	}
+	
+	public String getLock(){
+		return this.lock;
+	}
+	
+	public void moveFamiliar(Player owner, int pawnID, int regionID, int spaceID){
+		FamilyMember familyMember = playerList.get(playerList.indexOf(owner)).getFamilyMember()[pawnID];
+		this.board.getRegion(regionID).getActionSpace(spaceID).addFamilyMember(familyMember);
+	}
 }

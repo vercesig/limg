@@ -4,10 +4,13 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -29,7 +32,7 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<DevelopmentCard> importDevelopmentCard(FileReader fileReader) throws IOException{
+	public static List<DevelopmentCard> importDevelopmentCard(Reader fileReader) throws IOException{
 		
 		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
 		
@@ -37,30 +40,57 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-
 			String name = card.get("name").asString();
-				Integer period = card.get("period").asInt();
-				String cardType = card.get("cardType").asString();
-				
-				String instantEffect = card.get("instantEffect").asString();
-				String permanentEffect = card.get("permanentEffect").asString();
-				
-				JsonValue resourceCost = card.get("resourceCost");
+
+			Integer period = card.get("period").asInt();
+			String cardType = card.get("cardType").asString();
+			
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			
+			// registrazione costi e requisiti
+			JsonValue requirments = card.get("requirments");
+			JsonValue resourceCost = card.get("cost");
+			if(!resourceCost.isNull()){
 				JsonArray resourceArray = new JsonArray();
 				if( resourceCost.isObject() ){ // Carta con costo singolo
-					 resourceArray = new JsonArray();
 					resourceArray.add(resourceCost);
 				}
 				if( resourceCost.isArray() ){ // Carta con costo multiplo
 					resourceArray = resourceCost.asArray();
 				}
-					
-				DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
 				newCard.registerCost(resourceArray.iterator());
-				newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
-				newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
+			}
+			if(!requirments.isNull())
+				newCard.setRequirments(requirments.asObject());
 			
-			cardList.add(newCard);
+			// registrazione effetti
+			JsonValue instantEffect = card.get("instantEffect");
+			JsonArray instantEffectArray = new JsonArray();
+			JsonValue instantPayload = card.get("instantPayload");
+			JsonArray instantPayloadArray = new JsonArray();			
+			if(!instantEffect.isNull()&&!instantPayload.isNull()){
+				if(instantEffect.isArray()){
+					instantEffectArray = instantEffect.asArray();
+					instantPayloadArray = instantPayload.asArray();
+				}else{
+					instantEffectArray.add(instantEffect);
+					instantPayloadArray.add(instantPayload);
+				}
+				for(int i=0; i<instantEffectArray.size(); i++){
+					newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffectArray.get(i).asString(), instantPayloadArray.get(i)));
+				}
+			}	
+			JsonValue permanentEffect = card.get("permanentEffect");
+			if(!permanentEffect.isNull()){
+				JsonValue permanentPayload = card.get("permanentPayload");
+				if(permanentPayload.isNull()){ //effetto custom
+					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString())); //effetto permanente custom
+				}else{
+					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString(), permanentPayload));
+				}
+			}
+			
+			cardList.add(newCard);		
 		}
 		return cardList;
 	}
@@ -73,7 +103,7 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<ExcommunicationCard> importExcommunicationCard(FileReader fileReader) throws IOException{
+	public static List<ExcommunicationCard> importExcommunicationCard(Reader fileReader) throws IOException{
 		
 		ArrayList<ExcommunicationCard> cardList = new ArrayList<ExcommunicationCard>();
 		
@@ -100,7 +130,7 @@ public class JsonImporter {
 	 * perform the parsing of the configuration file
 	 * @param fileReader  contains the FileReader object relative to the external file to parse
 	 */
-	public static void importConfigurationFile(FileReader fileReader){
+	public static void importConfigurationFile(Reader fileReader){
 		
-	}	
+	}
 }

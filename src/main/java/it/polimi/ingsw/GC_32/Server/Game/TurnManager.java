@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
+import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
 	
 	private int turnID;
+	private int roundID;
 	private Game game;
 	
 	public TurnManager(Game game){
 		this.turnID = 1;
+		this.roundID = 1;
 		this.game = game;
 	}
 	
@@ -26,6 +29,11 @@ public class TurnManager {
 		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
 		game.setOrangeDiceValue(1+randomGenerator.nextInt(6));
 		game.setWhiteDiceValue(1+randomGenerator.nextInt(6));
+		for(Player player : game.getPlayerList()){
+			player.getFamilyMember()[1].setActionValue(game.getBlackDiceValue());
+			player.getFamilyMember()[2].setActionValue(game.getWhiteDiceValue());
+			player.getFamilyMember()[3].setActionValue(game.getOrangeDiceValue());
+		}
 	}
 	
 	private void updateTurnOrder(){
@@ -56,73 +64,56 @@ public class TurnManager {
 		}	
 	}
 	
-	// chiede al client, secondo il protocollo di comunicazione, di effettuare una mossa
-	private void performAction(Player currentPlayer){
-		System.out.println(currentPlayer.getName()+" esegue mossa");
-	}
-	
 	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare
 	private void checkExcommunication(){
 		int excommunicationLevel = 3 + this.turnID/2 -1 ; //calcolo punti fede richiesti 
 		for(Player p : game.getPlayerList()){
-			if(p.getFaithPoints()<=excommunicationLevel){
+			if(p.getResources().getResouce("VICTORY")<=excommunicationLevel){
 				System.out.println("TIE! beccati la scomunica!");
 			}
 		}
 	}
-	
-	public void roundSetup(){
+		
+	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
+
+	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
+	public void gameStart(){
 		placeCards();
 		diceRoll();
+		game.setLock(game.getPlayerList().get(0).getUUID());
+		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
 	}
 	
-	public void actionPhase(){
-		for(FamilyMember f : this.game.getPlayerList().get(0).getFamilyMember()){ //recupera il numero di familiari, meglio caricare da file di configurazione
-			for(Player p : this.game.getPlayerList()){
-				performAction(p);
+	// passa il turno al player successivo
+	public void nextPlayer(){
+		turnID++;
+		Player tmp;
+		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));
+		
+		// non sono l'ultimo giocatore della lista
+		if(currentIndexPlayer+1<=game.getPlayerList().size()){
+			game.setLock(game.getPlayerList().get(currentIndexPlayer+1).getUUID());
+		}
+		else{ // il giro ricomincia
+			game.setLock(game.getPlayerList().get(0).getUUID());
+		}
+		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
+		
+		// fine round
+		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+			updateTurnOrder();
+			this.game.getBoard().flushBoard();
+			
+			// prepara il prossimo round
+			this.roundID++;
+			placeCards();
+			diceRoll();
+			
+			// fine periodo
+			if(roundID%2==0){
+				checkExcommunication();	
 			}
 		}
-	}
-	public void vaticanReportPhase(){
-		if(this.turnID%2==0){ //solo per turni pari
-			checkExcommunication();			
-		}
-	}
-	
-	public void roundEnd(){
-		updateTurnOrder();
-		this.game.getBoard().flushBoard();
-		this.turnID++;
-	}
-	
-	public static void main(String[] args) throws IOException{
-		
-		Player a1 = new Player("aaa");
-		Player a2 = new Player("bbb");
-		Player a3 = new Player("ccc");
-		
-		
-		ArrayList<Player> playerList = new ArrayList<Player>();
-		playerList.add(a1);
-		playerList.add(a2);
-		playerList.add(a3);
-		
-		
-		Game game = new Game(playerList);
-		Setup setupGame = new Setup(game);
-		
-		TurnManager turnManager = new TurnManager(game);
-		turnManager.roundSetup();
-		
-		System.out.println(game.getBoard().toString());
-		System.out.println(game.getBlackDiceValue());
-		
-		/*while(turnManager.getTurnID()<6){
-			turnManager.roundSetup();
-			turnManager.actionPhase();
-			turnManager.vaticanReportPhase();
-			turnManager.roundEnd();
-		}*/
 		
 	}
 	

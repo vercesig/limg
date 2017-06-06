@@ -18,7 +18,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  */
 public class BonusEffect {
 	
-	EffectBuilder bonusEffectBuilder = (JsonValue payload) -> {
+	static EffectBuilder bonusEffectBuilder = (JsonValue payload) -> {
 		JsonValue type = payload.asObject().get("TYPE");
 		JsonValue forEach = payload.asObject().get("FOREACH");
 		JsonValue quantity = payload.asObject().get("QUANTITY");
@@ -33,12 +33,11 @@ public class BonusEffect {
 		Effect bonusEffect = (Board b, Player p, Action a) -> {
 			Function<Player,Integer> howManyTimes = typeEffect.apply(type.asString().equals("CARD"),p);
 			p.getResources().addResource(increase.asString(), increasingQuantity.asInt()*howManyTimes.apply(p));
-			
 		};
 		return bonusEffect;		
 	};	
 
-	private BonusEffect() {
+	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("BONUS", bonusEffectBuilder);
 	}	
 }

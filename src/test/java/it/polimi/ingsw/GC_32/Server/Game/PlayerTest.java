@@ -11,28 +11,30 @@ public class PlayerTest{
 	
 	@Test
 	public void checkUUID(){
-		this.player = new Player("Test");
+		this.player = new Player();
 		assertNotNull(this.player.getUUID());
 		assertFalse(this.player.getUUID().equals(""));
 	}
 	
 	@Test
 	public void checkPersonalBoard(){
-		this.player = new Player("Test");
+		this.player = new Player();
 		assertNotNull(this.player.getPersonalBoard());
 	}
 	
 	@Test
 	public void checkPlayerName(){
-		this.player = new Player("");
+		this.player = new Player();
+		this.player.setPlayerName("");
 		assertEquals(this.player.getName(),"");
-		this.player = new Player(null);
+		this.player = new Player();
+		this.player.setPlayerName(null);
 		assertNull(this.player.getName());
 	}
 	
 	@Test
 	public void checkFamilyMember(){
-		this.player = new Player("test");
+		this.player = new Player();
 		for(FamilyMember f : this.player.getFamilyMember()){
 			assertNotNull(f);
 		}
@@ -40,7 +42,7 @@ public class PlayerTest{
 	
 	@Test
 	public void checkResourceSet(){
-		this.player = new Player("Test");
+		this.player = new Player();
 		assertNotNull(this.player.getResources());
 		this.player.getResources().addResource("WOOD", 10);
 		assertEquals(this.player.getResources().getResouce("WOOD"), 10);
@@ -48,15 +50,21 @@ public class PlayerTest{
 	
 	@Test
 	public void checkEffectListNotNull(){
-		this.player = new Player("Test");
+		this.player = new Player();
 		assertNotNull(this.player.getEffectList());
 	}
 	
 	@Test
 	public void checkEffectRegistration(){
-		this.player = new Player("Test");
+		this.player = new Player();
 		Effect testEffect = (Board b, Player p, Action a) -> {};
 		this.player.addEffect(testEffect);
 		assertEquals(this.player.getEffectList().get(0), testEffect);
+	}
+	
+	@Test
+	public void checkToStringNotNull(){
+		this.player = new Player();
+		assertNotNull(this.player.toString());
 	}
 }
