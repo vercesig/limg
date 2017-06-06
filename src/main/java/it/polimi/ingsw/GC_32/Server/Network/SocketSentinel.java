@@ -23,9 +23,9 @@ public class SocketSentinel implements Runnable{
 				try {
 					if(socketListener.getSocketPlayerRegistry().get(player).getInputStream().available()!=0){
 						Scanner tmpScanner = new Scanner(socketListener.getSocketPlayerRegistry().get(player).getInputStream());
-							GameMessage tmpMessage = new GameMessage(player,tmpScanner.nextLine());
-							MessageManager.getInstance().putRecivedMessage(tmpMessage);
-							System.out.println("nuovo messaggio per te :"+player);
+						GameMessage tmpMessage = new GameMessage(player,tmpScanner.nextLine());
+						MessageManager.getInstance().putRecivedMessage(tmpMessage);
+						System.out.println("nuovo messaggio per te :"+player);
 						tmpScanner.close();
 					}
 				} catch (IOException e) {
