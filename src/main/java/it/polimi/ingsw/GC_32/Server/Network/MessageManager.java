@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
@@ -15,10 +17,15 @@ public class MessageManager {
 	
 	private Game game;
 	
+	private Set<String> filterMessageTypeSet;
+	
 	private MessageManager(){
 		this.reciveQueue = new ConcurrentLinkedQueue<GameMessage>();
 		this.RMISendQueue = new ConcurrentLinkedQueue<GameMessage>();
 		this.socketSendQueue = new ConcurrentLinkedQueue<GameMessage>();
+		this.filterMessageTypeSet = new HashSet<String>();
+		this.filterMessageTypeSet.add("SMSG");
+		this.filterMessageTypeSet.add("CHGNAME");
 	}
 	
 	public static MessageManager getInstance(){
@@ -29,7 +36,9 @@ public class MessageManager {
 	}
 	
 	public void putRecivedMessage(GameMessage message){
-		reciveQueue.add(message);
+		if(filterMessageTypeSet.contains(message.getOpcode())||message.getPlayerID().equals(game.getLock())){
+			reciveQueue.add(message);
+		}
 	}
 	
 	public void sendMessge(GameMessage message){

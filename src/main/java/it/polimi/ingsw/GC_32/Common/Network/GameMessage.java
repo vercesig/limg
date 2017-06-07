@@ -6,8 +6,9 @@ public class GameMessage implements Serializable{
 
 	private String playerID;
 	private String message;
+	private String opcode;
 	
-	public GameMessage(String playerID, String message){
+	public GameMessage(String playerID, String opcode, String message){
 		this.playerID = playerID;
 		this.message = message;
 	}
@@ -18,6 +19,10 @@ public class GameMessage implements Serializable{
 	
 	public String getMessage(){
 		return this.message;
+	}
+	
+	public String getOpcode(){
+		return this.opcode;
 	}
 	
 }
