@@ -16,6 +16,7 @@ public class GameMessageFilter implements Runnable {
 
 	private Game game;
 	private ArrayList<GameMessage> filteredMessage;
+	private boolean runFlag = true;
 	
 	
 	public GameMessageFilter(Game game){
@@ -23,12 +24,21 @@ public class GameMessageFilter implements Runnable {
 		this.filteredMessage = new ArrayList<GameMessage>();
 	}
 	
+	public void stop(){
+		this.runFlag = false;
+	}
+	
+	public ArrayList<GameMessage> getFilteredMessage(){
+		return this.filteredMessage;
+	}
+	
 	public void run(){
 		
-		while(true){
+		while(runFlag){
 			
 			// recupero messaggi di interesse dalla coda dei messaggi ricevuti
 			if(MessageManager.getInstance().hasMessage()){
+				System.out.println("[GAMEMESSAGEFILTER] ci sono messaggi");
 				for(GameMessage message : MessageManager.getInstance().getRecivedQueue()){
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 					// recupero messaggi che non interessano il lock
@@ -44,6 +54,7 @@ public class GameMessageFilter implements Runnable {
 					
 					// recupero messaggi relativi al giocatore che ha il lock
 					if(message.getPlayerID().equals(game.getLock())){
+						System.out.println("[GAMEMESSAGEFILTER] filtrato messaggio di:"+PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getName());
 						filteredMessage.add(message);
 					}
 				}
@@ -76,7 +87,6 @@ public class GameMessageFilter implements Runnable {
 					PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).setPlayerName(name);
 					break;
 				case "TRNEND":
-					game.getTurnManager().nextPlayer();
 					break;
 				}
 			});

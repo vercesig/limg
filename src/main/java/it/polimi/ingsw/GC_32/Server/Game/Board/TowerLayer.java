@@ -33,5 +33,9 @@ public class TowerLayer {
 		return takenCard;
 	}
 	
+	public void flushTowerLayer(){
+		this.card = null;
+		actionSpace.flushActionSpace();
+	}
 	
 }

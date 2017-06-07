@@ -89,4 +89,10 @@ public class Region {
 	public ActionSpace[] getTrack(){
 		return this.track;
 	}
+	
+	public void flushRegion(){
+		for(int i=0; i<track.length; i++){
+			track[i].flushActionSpace();
+		}
+	}
 }

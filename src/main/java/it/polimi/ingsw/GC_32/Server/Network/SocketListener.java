@@ -18,11 +18,8 @@ public class SocketListener implements Runnable{
 	
 	public SocketListener(int port) throws IOException{
 		this.serverSocket = new ServerSocket(port);
-		System.out.println("ready!!");
+		System.out.println("[SOCKETLISTENER] start");
 		this.socketPlayerRegistry = new ConcurrentHashMap<String,Socket>();
-		SocketSentinel sentinel = new SocketSentinel(this);
-		Thread sentinelThread = new Thread(sentinel);
-		sentinelThread.start();
 	}
 		
 	public ConcurrentHashMap<String, Socket> getSocketPlayerRegistry(){
@@ -34,6 +31,11 @@ public class SocketListener implements Runnable{
 	}
 	
 	public void run(){
+		System.out.println("[SOCKETLISTENER] launching socketsentinel");
+		SocketSentinel sentinel = new SocketSentinel(this);
+		Thread sentinelThread = new Thread(sentinel);
+		sentinelThread.start();
+		System.out.println("[SOCKETLISTENER] ready to accept connection");
 		while(true){
 			try {
 				Socket socket = serverSocket.accept();
@@ -41,7 +43,7 @@ public class SocketListener implements Runnable{
 				socketPlayerRegistry.put(newPlayer.getUUID(), socket);	
 				
 				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), ConnectionType.SOCKET);
-				System.out.println("client inserito");
+				System.out.println("[SOCKETLISTENER] new client connected");
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
 				Logger.getLogger("").log(Level.SEVERE, "context", e);

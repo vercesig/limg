@@ -16,9 +16,7 @@ public class SocketMsgConnection implements MsgConnection{
 	
 	public void open() throws IOException{
 		socket = new Socket("localhost",9500);
-		
-		System.out.println("connected to server");
-		
+		System.out.println("[SOCKETMSGCONNECTION] connected to server");
 		in = new Scanner(socket.getInputStream());
 		out = new PrintWriter(socket.getOutputStream());
 	}
@@ -46,7 +44,7 @@ public class SocketMsgConnection implements MsgConnection{
 		this.stop = true;
 	}
 	
-	public void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException{
 		SocketMsgConnection connection = new SocketMsgConnection();
 		connection.open();
 		
@@ -54,9 +52,6 @@ public class SocketMsgConnection implements MsgConnection{
 			if(connection.hasMessage()){
 				System.out.println("messaggio\n");
 				System.out.println(connection.getMessage());
-			}
-			if(this.stop){
-				break;
 			}
 		}
 	}

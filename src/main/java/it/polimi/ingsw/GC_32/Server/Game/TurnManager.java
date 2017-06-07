@@ -24,6 +24,7 @@ public class TurnManager {
 		return this.turnID;
 	}
 	
+	// passare a function da buttare nella registry
 	private void diceRoll(){
 		Random randomGenerator = new Random();
 		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
@@ -36,6 +37,7 @@ public class TurnManager {
 		}
 	}
 	
+	// passare a function da caricare nella registry
 	private void updateTurnOrder(){
 		ArrayList<Player> oldTurnOrder = game.getPlayerList(); //vecchio ordine di turno	
 		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
@@ -56,6 +58,7 @@ public class TurnManager {
 		game.setPlayerOrder(newTurnOrder);		
 	}
 	
+	// buttare nella board
 	private void placeCards(){
 		for(TowerRegion towerRegion : this.game.getBoard().getTowerRegion()){
 			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
@@ -84,6 +87,7 @@ public class TurnManager {
 		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
 	}
 	
+	// RESTITUIRE UN PLAYER, È IL GAME SI OCCUPERÀ DI PASSARE IL LOCK AL PLAYER
 	// passa il turno al player successivo
 	public void nextPlayer(){
 		turnID++;

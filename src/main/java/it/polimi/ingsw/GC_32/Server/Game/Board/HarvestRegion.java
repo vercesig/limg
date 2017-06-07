@@ -10,5 +10,5 @@ public class HarvestRegion extends Region {
 	
 	public void activateEffect(){
 		
-	}	
+	}
 }

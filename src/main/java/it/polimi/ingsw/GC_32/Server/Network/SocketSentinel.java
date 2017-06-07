@@ -14,9 +14,11 @@ public class SocketSentinel implements Runnable{
 	
 	public SocketSentinel(SocketListener target){
 		this.socketListener = target;
+		System.out.println("[SOCKETSENTINEL] start");
 	}
 	
 	public void run(){
+		System.out.println("[SOCKETSENTINEL] ready to recive and send message");
 		while(true){		
 			// controllo messaggi in ricezione dall'inputBuffer dei socket connessi
 			for(String player : socketListener.getSocketPlayerRegistry().keySet()){
@@ -25,7 +27,7 @@ public class SocketSentinel implements Runnable{
 						Scanner tmpScanner = new Scanner(socketListener.getSocketPlayerRegistry().get(player).getInputStream());
 							GameMessage tmpMessage = new GameMessage(player,tmpScanner.nextLine());
 							MessageManager.getInstance().putRecivedMessage(tmpMessage);
-							System.out.println("nuovo messaggio per te :"+player);
+							System.out.println("[SOCKETSENTINEL] catched new message for "+tmpMessage.getPlayerID());
 						tmpScanner.close();
 					}
 				} catch (IOException e) {
@@ -41,7 +43,7 @@ public class SocketSentinel implements Runnable{
 							tmpPrinter.println(message.getMessage());
 							tmpPrinter.flush();
 							MessageManager.getInstance().getSocketSendQueue().remove();
-							System.out.println("messaggio inviato a :"+message.getPlayerID());
+							System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
 						tmpPrinter.close();
 					} catch (IOException e) {
 						Logger.getLogger("").log(Level.SEVERE, "context", e);

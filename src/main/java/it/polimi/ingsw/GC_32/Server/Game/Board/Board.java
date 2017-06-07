@@ -1,11 +1,10 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
-import it.polimi.ingsw.GC_32.Server.Game.Player;
+import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
 
 
 
@@ -28,20 +27,22 @@ public class Board {
 		this.region = new ArrayList <Region>();
 		region.add(0, (Region) productionRegion); 
 		region.add(1, (Region) harvestRegion);
-		region.add(2, (Region) councilRegion); 
+		region.add(2, councilRegion); 
 		region.add(3, (Region) marketRegion);
+		
+		// setup delle torri
+		String[] cardTypes = CardRegistry.getInstance().getAllCardType().toArray(new String[CardRegistry.getInstance().getAllCardType().size()]);
+		this.towerRegion =new TowerRegion[cardTypes.length];
+		for(int i=0; i<cardTypes.length; i++){
+			towerRegion[i] = new TowerRegion(i + 4,4);
+			region.add(4 + i, towerRegion[i]);
+			towerRegion[i].setTypeCard(cardTypes[i]);
+		}
+		System.out.println("[GAME->BOARD] board succesfully inizialized");
 	}
 	
 	public TowerRegion[] getTowerRegion(){
 		return this.towerRegion;
-	}
-	
-	public void setTowerRegion(int numberOfTowers){
-		this.towerRegion = new TowerRegion[numberOfTowers];
-		for(int i=0; i<numberOfTowers; i++){
-			towerRegion[i] = new TowerRegion(i + 4,4);
-			region.add(4 + i, (Region) towerRegion[i]);
-		}
 	}
 	
 	public Region getRegion(int idRegion){	// NUOVO METODO
@@ -72,7 +73,8 @@ public class Board {
 	}
 	
 	public void flushBoard(){
-		
+		System.out.println("[BOARD] flushing board");
+		region.forEach(region -> region.flushRegion());
 	}
 	
 	public String toString(){

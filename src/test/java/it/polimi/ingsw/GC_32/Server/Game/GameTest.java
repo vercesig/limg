@@ -16,17 +16,7 @@ public class GameTest {
 	public Game game;
 	public ArrayList<Player> playerList;
 	public Player playerOne;
-	
-	@Test
-	public void checkGetTurnManager() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		assertNotNull(this.game.getTurnManager());
-	}
-	
+		
 	@Test
 	public void checkGetPlayerList() throws IOException{
 		this.playerList = new ArrayList<Player>();
@@ -56,19 +46,7 @@ public class GameTest {
 		this.game = new Game(playerList);
 		assertNotNull(this.game.getDecks());
 	}
-	
-	@Test
-	public void checkSetDeck() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		Deck<DevelopmentCard> deck = new Deck<DevelopmentCard>();
-		game.setDeck("DeckTest", deck);
-		assertEquals(deck, game.getDecks().get("DeckTest"));
-	}
-	
+		
 	@Test
 	public void checkGetDeck() throws IOException{
 		this.playerOne = new Player();

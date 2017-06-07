@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
@@ -13,7 +14,7 @@ import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 
-public class Game {
+public class Game implements Runnable{
 
 	private ArrayList<Player> playerList;
 	private Board board;
@@ -29,30 +30,54 @@ public class Game {
 	
 	private String lock;
 	
-	private TurnManager turnManager;
-	private Setup setupgame;
-	
 	public Game(ArrayList<Player> players) throws IOException{
+		System.out.println("[GAME] setting up game...");
 		this.playerList = players;
 		this.board = new Board();
-		//this.board.setTowerRegion(4);
-		this.decks = new HashMap<String, Deck<DevelopmentCard>>();
+		System.out.println("[GAME] loading cards...");
+		this.decks = new HashMap<String, Deck<DevelopmentCard>>(CardRegistry.getInstance().getDevelopmentDecks());
 		this.excommunicationCards = new ExcommunicationCard[3];	
+		for(int i=0; i<3; i++){
+			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
+		}
+		System.out.println("[GAME] decks succesfully loaded");
 		
-		this.setupgame = new Setup(this);
+		System.out.println("[GAME] setting up players' resources");
+		//TODO: associare PersonalBonusTile al giocatore
+		for(int i=0; i<playerList.size(); i++){
+			playerList.get(i).getResources().setResource("WOOD", 2);
+			playerList.get(i).getResources().setResource("STONE", 2);
+			playerList.get(i).getResources().setResource("SERVANTS", 3);
+			// in base all'ordine di turno assegno le monete iniziali
+			playerList.get(i).getResources().setResource("COINS", 5 + i);
+			// setta punteggi a 0
+			playerList.get(i).getResources().setResource("FAITH", 0);
+			playerList.get(i).getResources().setResource("VICTORY", 0);
+			playerList.get(i).getResources().setResource("MILITARY", 0);
+			
+		}
+		System.out.println("[GAME] setting first turn order");
+		Random randomGenerator = new Random();
+		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
+		int playerListSize = this.playerList.size();
 		
-		this.turnManager = new TurnManager(this);
-		turnManager.gameStart();
+		for(int i=0; i<playerListSize; i++){
+			int randomNumber = randomGenerator.nextInt(playerList.size());
+			startPlayerOrder.add(playerList.get(randomNumber));
+			playerList.remove(randomNumber);
+		}
+		this.setPlayerOrder(startPlayerOrder);
+		System.out.println("[GAME] done");
 		
 		// lancio thread per elaborazione messaggi in entrata
-		GameMessageFilter messageFilter = new GameMessageFilter(this);
+		/*GameMessageFilter messageFilter = new GameMessageFilter(this);
 		Thread messageFilterThread = new Thread(messageFilter);
 		messageFilterThread.start();
-		
+		*/
 	}
 	
-	public TurnManager getTurnManager(){
-		return this.turnManager;
+	public void run(){
+		System.out.println("[GAME] ready to play");
 	}
 	
 	public ArrayList<Player> getPlayerList(){
@@ -73,14 +98,6 @@ public class Game {
 	
 	public Deck<DevelopmentCard> getDeck(String type){
 		return this.decks.get(type);
-	}
-	
-	public void setDeck(String type, Deck<DevelopmentCard> deck){
-		this.decks.put(type, deck);
-	}
-	
-	public void setExcommunicationCard(ExcommunicationCard card, int period){
-		this.excommunicationCards[period-1] = card;
 	}
 	
 	public ExcommunicationCard getExcommunicationCard(int period){

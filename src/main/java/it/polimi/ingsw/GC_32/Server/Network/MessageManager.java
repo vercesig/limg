@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Network;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 
 public class MessageManager {
@@ -11,6 +12,8 @@ public class MessageManager {
 	private ConcurrentLinkedQueue<GameMessage> reciveQueue;
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
+	
+	private Game game;
 	
 	private MessageManager(){
 		this.reciveQueue = new ConcurrentLinkedQueue<GameMessage>();
@@ -52,6 +55,10 @@ public class MessageManager {
 	
 	public boolean hasMessage(){
 		return !reciveQueue.isEmpty();
+	}
+	
+	public void registerGame(Game game){
+		this.game = game;
 	}
 	
 }
