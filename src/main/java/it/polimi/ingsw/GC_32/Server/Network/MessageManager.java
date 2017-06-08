@@ -44,7 +44,7 @@ public class MessageManager {
 	public void sendMessge(GameMessage message){
 		if(PlayerRegistry.getInstance().getConnectionMode(message.getPlayerID()) == ConnectionType.SOCKET){
 			socketSendQueue.add(message);
-			System.out.println("messaggio inserito nella coda");
+			System.out.println("[MESSAGEMANAGER] add new message to sendQueue");
 		}else{
 			RMISendQueue.add(message);
 		}

@@ -11,6 +11,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
+import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 
@@ -25,15 +26,16 @@ public class Game implements Runnable{
 	private int blackDice;
 	private int whiteDice;
 	private int orangeDice;
-	
-	private boolean flag2PlayersGame=true; //settare a seconda del numero di giocatori
-	
+		
 	private String lock;
+	
+	private TurnManager turnManager;
 	
 	public Game(ArrayList<Player> players) throws IOException{
 		System.out.println("[GAME] setting up game...");
 		this.playerList = players;
 		this.board = new Board();
+		this.turnManager = new TurnManager(this);
 		System.out.println("[GAME] loading cards...");
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>(CardRegistry.getInstance().getDevelopmentDecks());
 		this.excommunicationCards = new ExcommunicationCard[3];	
@@ -66,36 +68,30 @@ public class Game implements Runnable{
 			startPlayerOrder.add(playerList.get(randomNumber));
 			playerList.remove(randomNumber);
 		}
-		this.setPlayerOrder(startPlayerOrder);
+		playerList = startPlayerOrder;
 		System.out.println("[GAME] done");
-		
-		// lancio thread per elaborazione messaggi in entrata
-		/*GameMessageFilter messageFilter = new GameMessageFilter(this);
-		Thread messageFilterThread = new Thread(messageFilter);
-		messageFilterThread.start();
-		*/
 	}
 	
 	public void run(){
 		System.out.println("[GAME] ready to play");
+		System.out.println("[GAME] giving lock to the first player...");
+		setLock(playerList.get(0).getUUID());
+		System.out.println("[GAME] player "+getLock()+" has the lock");
+		//PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
 	}
 	
 	public ArrayList<Player> getPlayerList(){
 		return this.playerList;
 	}
-	
-	public void setPlayerOrder(ArrayList<Player> playerList){
-		this.playerList = playerList;
-	}
-	
+		
 	public Board getBoard(){
 		return this.board;
 	}
 	
-	public HashMap<String, Deck<DevelopmentCard>> getDecks(){
-		return this.decks;
+	public String getLock(){
+		return this.lock;
 	}
-	
+		
 	public Deck<DevelopmentCard> getDeck(String type){
 		return this.decks.get(type);
 	}
@@ -104,36 +100,49 @@ public class Game implements Runnable{
 		return this.excommunicationCards[period-1];
 	}
 	
-	public int getBlackDiceValue(){
-		return this.blackDice;
-	}
-	
-	public int getWhiteDiceValue(){
-		return this.whiteDice;
-	}
-	
-	public int getOrangeDiceValue(){
-		return this.orangeDice;
-	}
-	
-	public void setBlackDiceValue(int value){
-		this.blackDice = value;
-	}
-	
-	public void setWhiteDiceValue(int value){
-		this.whiteDice = value;
-	}
-	
-	public void setOrangeDiceValue(int value){
-		this.orangeDice = value;
-	}
-	
 	public void setLock(String player){
 		this.lock = player;
 	}
 	
-	public String getLock(){
-		return this.lock;
+	private void diceRoll(){
+		Random randomGenerator = new Random();
+		this.blackDice = 1+randomGenerator.nextInt(6);
+		this.orangeDice = 1+randomGenerator.nextInt(6);
+		this.whiteDice = 1+randomGenerator.nextInt(6);
+		playerList.forEach(player -> {
+			player.getFamilyMember()[1].setActionValue(this.blackDice);
+			player.getFamilyMember()[2].setActionValue(this.orangeDice);
+			player.getFamilyMember()[3].setActionValue(this.whiteDice);
+		});
+	}
+	
+	private void updateTurnOrder(){
+		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(playerList); //vecchio ordine di turno	
+		ArrayList<FamilyMember> councilRegionState = board.getCouncilRegion().getOccupants();		
+		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
+		
+		//aggiorno stato dell'ordine di turno quardando i familiari in councilRegion
+		for(FamilyMember f : councilRegionState){
+			if(!newTurnOrder.contains(f.getOwner())){
+				newTurnOrder.add(f.getOwner());
+			}
+		}
+		//player che non hanno piazzato familiari nel councilregion
+		for(Player p : oldTurnOrder){
+			if(!newTurnOrder.contains(p)){
+				newTurnOrder.add(p);
+			}
+		}	
+		playerList = newTurnOrder;	
+	}
+	
+	private void checkExcommunication(){
+		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
+		playerList.forEach(player -> {
+			if(player.getResources().getResouce("VICTORY")<=excommunicationLevel){
+				System.out.println("TIE! beccati la scomunica!");
+			}
+		});
 	}
 	
 	public void moveFamiliar(Player owner, int pawnID, int regionID, int spaceID){

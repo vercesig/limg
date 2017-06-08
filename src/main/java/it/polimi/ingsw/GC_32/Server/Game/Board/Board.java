@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
 
 
 
@@ -70,6 +71,15 @@ public class Board {
 	}
 	public MarketRegion getMarketRegion(){
 		return this.marketRegion;
+	}
+	
+	public void placeCards(Game game){
+		System.out.println("[BOARD] placing cards on tower regions...");
+		for(TowerRegion towerRegion : this.getTowerRegion()){
+			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
+				towerLayer.setCard(game.getDeck(towerRegion.getTypeCard()).drawElement());
+			}
+		}	
 	}
 	
 	public void flushBoard(){

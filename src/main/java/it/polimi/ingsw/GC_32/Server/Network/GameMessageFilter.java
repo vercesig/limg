@@ -36,32 +36,6 @@ public class GameMessageFilter implements Runnable {
 		
 		while(runFlag){
 			
-			// recupero messaggi di interesse dalla coda dei messaggi ricevuti
-			if(MessageManager.getInstance().hasMessage()){
-				System.out.println("[GAMEMESSAGEFILTER] ci sono messaggi");
-				for(GameMessage message : MessageManager.getInstance().getRecivedQueue()){
-					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
-					// recupero messaggi che non interessano il lock
-					switch(Jsonmessage.get("MESSAGETYPE").toString()){ // TODO: gioco multipartita => filtra in base alla partita
-					case "SMSG":
-					case "CHGNAME":
-						filteredMessage.add(message);
-						MessageManager.getInstance().getRecivedQueue().remove(message);
-						break;
-					default:
-						break;
-					}
-					
-					// recupero messaggi relativi al giocatore che ha il lock
-					if(message.getPlayerID().equals(game.getLock())){
-						System.out.println("[GAMEMESSAGEFILTER] filtrato messaggio di:"+PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getName());
-						filteredMessage.add(message);
-					}
-				}
-				// pulisco la coda dai rimanenti messaggi (ASKACT, ASKLDRACT) non applicabili
-				MessageManager.getInstance().getRecivedQueue().clear();
-			}
-			
 			filteredMessage.forEach(message -> {
 				JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 				switch(Jsonmessage.get("MESSAGETYPE").toString()){

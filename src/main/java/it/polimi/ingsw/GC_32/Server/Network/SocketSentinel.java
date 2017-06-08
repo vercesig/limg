@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
@@ -25,7 +28,8 @@ public class SocketSentinel implements Runnable{
 				try {
 					if(socketListener.getSocketPlayerRegistry().get(player).getInputStream().available()!=0){
 						Scanner tmpScanner = new Scanner(socketListener.getSocketPlayerRegistry().get(player).getInputStream());
-							GameMessage tmpMessage = new GameMessage(player,tmpScanner.nextLine());
+							JsonObject parsedMessage = Json.parse(tmpScanner.nextLine()).asObject();						
+							GameMessage tmpMessage = new GameMessage(player,parsedMessage.get("MESSAGETYPE").toString(),parsedMessage.get("PAYLOAD").toString());
 							MessageManager.getInstance().putRecivedMessage(tmpMessage);
 							System.out.println("[SOCKETSENTINEL] catched new message for "+tmpMessage.getPlayerID());
 						tmpScanner.close();
