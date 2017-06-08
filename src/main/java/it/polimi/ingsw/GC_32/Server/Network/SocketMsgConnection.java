@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 
 public class SocketMsgConnection implements MsgConnection{
@@ -50,8 +53,20 @@ public class SocketMsgConnection implements MsgConnection{
 		
 		while(true){
 			if(connection.hasMessage()){
-				System.out.println("messaggio\n");
-				System.out.println(connection.getMessage());
+				System.out.println("[SOCKETMSGCONNECTION] recived message from server");
+				JsonObject message = Json.parse(connection.getMessage()).asObject();
+				switch(message.get("MESSAGETYPE").asString()){
+				case "TURNBGN":
+					System.out.println("[SOCKETMSGCONNECTION] message type "+message.get("MESSAGETYPE").toString());
+					/*JsonObject sendMessage = new JsonObject();
+					sendMessage.add("MESSAGETYPE", "TRNEND");
+					JsonObject payload = new JsonObject();
+					payload.add("TYPE", "TOWER");
+					sendMessage.add("PAYLOAD", payload);
+					System.out.println("[SOCKETMSGCONNECTION] sending response to server");
+					connection.sendMessage(sendMessage.toString());*/
+					break;
+				}
 			}
 		}
 	}

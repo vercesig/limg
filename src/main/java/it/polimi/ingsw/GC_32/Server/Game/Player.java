@@ -96,7 +96,7 @@ public class Player {
     // richiede di effettuare un azione
     public void makeAction(){
     	JsonObject TURNBGN = new JsonObject();
-    	TURNBGN.add("code", "TURNBGN");
+    	TURNBGN.add("TYPE", "TOWER");
     	GameMessage message = new GameMessage(this.uuid,"TURNBGN", TURNBGN.toString());
     	MessageManager.getInstance().sendMessge(message);
     }

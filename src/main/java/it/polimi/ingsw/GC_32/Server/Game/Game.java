@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.UUID;
+
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
-import it.polimi.ingsw.GC_32.Server.Network.GameMessageFilter;
+import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
-
 
 public class Game implements Runnable{
 
@@ -77,7 +77,37 @@ public class Game implements Runnable{
 		System.out.println("[GAME] giving lock to the first player...");
 		setLock(playerList.get(0).getUUID());
 		System.out.println("[GAME] player "+getLock()+" has the lock");
-		//PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+		PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+		while(true){
+			if(MessageManager.getInstance().hasMessage()){
+				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
+					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
+					switch(message.getOpcode()){
+					case "ASKACT":
+						System.out.println("[GAME] processing ASKACT message from "+message.getPlayerID());
+						int pawnID = Jsonmessage.get("PAWNID").asInt();
+						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
+						
+						int regionID = Jsonmessage.get("REGIONID").asInt();
+						int spaceID = Jsonmessage.get("SPACEID").asInt();
+						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
+						
+						Action action = new Action(actionType,actionValue,regionID,spaceID);
+						
+						// MoveChecker
+						break;
+					case "TRNEND":
+						System.out.println("[GAME] "+message.getPlayerID()+" has terminated his turn");
+						System.out.println("[GAME] giving lock to the next player");
+						setLock(turnManager.nextPlayer().getUUID());
+						System.out.println("[GAME] player "+getLock()+" has the lock");
+						PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+						break;
+					}
+				});
+				MessageManager.getInstance().getRecivedQueue().clear();
+			}
+		}
 	}
 	
 	public ArrayList<Player> getPlayerList(){

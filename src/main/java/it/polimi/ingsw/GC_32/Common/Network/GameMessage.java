@@ -11,6 +11,7 @@ public class GameMessage implements Serializable{
 	public GameMessage(String playerID, String opcode, String message){
 		this.playerID = playerID;
 		this.message = message;
+		this.opcode = opcode;
 	}
 	
 	public String getPlayerID(){

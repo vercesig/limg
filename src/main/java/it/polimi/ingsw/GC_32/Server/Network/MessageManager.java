@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
@@ -38,15 +40,16 @@ public class MessageManager {
 	public void putRecivedMessage(GameMessage message){
 		if(filterMessageTypeSet.contains(message.getOpcode())||message.getPlayerID().equals(game.getLock())){
 			reciveQueue.add(message);
+			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
 		}
 	}
 	
-	public void sendMessge(GameMessage message){
-		if(PlayerRegistry.getInstance().getConnectionMode(message.getPlayerID()) == ConnectionType.SOCKET){
-			socketSendQueue.add(message);
+	public void sendMessge(GameMessage gameMessage){
+		if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
+			socketSendQueue.add(gameMessage);
 			System.out.println("[MESSAGEMANAGER] add new message to sendQueue");
 		}else{
-			RMISendQueue.add(message);
+			RMISendQueue.add(gameMessage);
 		}
 	}
 	

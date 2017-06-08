@@ -33,12 +33,11 @@ public class TurnManager {
 	public Player nextPlayer(){
 		turnID++;
 		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));		
-		// non sono l'ultimo giocatore della lista
-		if(currentIndexPlayer+1<=game.getPlayerList().size()){
+		
+		try{// non sono l'ultimo giocatore della lista
 			return game.getPlayerList().get(currentIndexPlayer+1);
-		}
-		else{ // il giro ricomincia
-			return game.getPlayerList().get(0);
+		}catch(IndexOutOfBoundsException e){// il giro ricomincia
+			return game.getPlayerList().get(0); 
 		}
 	}
 	
@@ -54,26 +53,6 @@ public class TurnManager {
 	public boolean isGameEnd(){
 		return roundID%6==0;
 	}
-	
-	/*// passare a function da buttare nella registry
-	
-	
-	// passare a function da caricare nella registry
-	
-		
-	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare
-
-		
-	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
-
-	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
-	public void gameStart(){
-		diceRoll();
-		game.setLock(game.getPlayerList().get(0).getUUID());
-		PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
-	}*/
-	
-
 	
 	/**
 	 * solo per il turno finale
