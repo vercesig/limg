@@ -29,27 +29,22 @@ public class SocketSentinel implements Runnable{
 			// se ci sono messaggi in coda li spedisco sul relativo socket
 			if(!MessageManager.getInstance().getSocketSendQueue().isEmpty()){
 				for(GameMessage message : MessageManager.getInstance().getSocketSendQueue()){
-					try {
-						JsonObject finalMessage = new JsonObject();
-						finalMessage.add("MESSAGETYPE", message.getOpcode());
-						finalMessage.add("PAYLOAD", message.getMessage());
-						PrintWriter tmpPrinter = new PrintWriter(socketListener.getSocketPlayerRegistry().get(message.getPlayerID()).getOutputStream());
-							tmpPrinter.println(finalMessage.toString());
-							tmpPrinter.flush();
-							MessageManager.getInstance().getSocketSendQueue().remove();
-							System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
-					} catch (IOException e) {
-						Logger.getLogger("").log(Level.SEVERE, "context", e);
-						break;
-					}
+					JsonObject finalMessage = new JsonObject();
+					finalMessage.add("MESSAGETYPE", message.getOpcode());
+					finalMessage.add("PAYLOAD", message.getMessage());
+					PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerID()).getPrinterOut();
+					tmpPrinter.println(finalMessage.toString());
+					tmpPrinter.flush();
+					MessageManager.getInstance().getSocketSendQueue().remove();
+					System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
 				}
 			}
 			
 			// controllo messaggi in ricezione dall'inputBuffer dei socket connessi
 			for(String player : socketListener.getSocketPlayerRegistry().keySet()){
 				try {
-					if(socketListener.getSocketPlayerRegistry().get(player).getInputStream().available()!=0){
-						Scanner tmpScanner = new Scanner(socketListener.getSocketPlayerRegistry().get(player).getInputStream());
+					if(socketListener.getSocketPlayerRegistry().get(player).getSocket().getInputStream().available()!=0){
+							Scanner tmpScanner = socketListener.getSocketPlayerRegistry().get(player).getScannerIn();
 							JsonObject parsedMessage = Json.parse(tmpScanner.nextLine()).asObject();						
 							GameMessage tmpMessage = new GameMessage(player,parsedMessage.get("MESSAGETYPE").asString(),parsedMessage.get("PAYLOAD").toString());
 							System.out.println("[SOCKETSENTINEL] catched new message for "+tmpMessage.getPlayerID());

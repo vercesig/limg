@@ -58,13 +58,13 @@ public class SocketMsgConnection implements MsgConnection{
 				switch(message.get("MESSAGETYPE").asString()){
 				case "TURNBGN":
 					System.out.println("[SOCKETMSGCONNECTION] message type "+message.get("MESSAGETYPE").toString());
-					/*JsonObject sendMessage = new JsonObject();
+					JsonObject sendMessage = new JsonObject();
 					sendMessage.add("MESSAGETYPE", "TRNEND");
 					JsonObject payload = new JsonObject();
 					payload.add("TYPE", "TOWER");
 					sendMessage.add("PAYLOAD", payload);
 					System.out.println("[SOCKETMSGCONNECTION] sending response to server");
-					connection.sendMessage(sendMessage.toString());*/
+					connection.sendMessage(sendMessage.toString());
 					break;
 				}
 			}

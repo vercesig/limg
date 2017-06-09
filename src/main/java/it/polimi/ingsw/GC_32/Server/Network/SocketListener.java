@@ -13,16 +13,16 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class SocketListener implements Runnable{
 
 	private ServerSocket serverSocket;
-	private ConcurrentHashMap<String,Socket> socketPlayerRegistry;
+	private ConcurrentHashMap<String,SocketInfoContainer> socketPlayerRegistry;
 	private Boolean stop = false;
 	
 	public SocketListener(int port) throws IOException{
 		this.serverSocket = new ServerSocket(port);
 		System.out.println("[SOCKETLISTENER] start");
-		this.socketPlayerRegistry = new ConcurrentHashMap<String,Socket>();
+		this.socketPlayerRegistry = new ConcurrentHashMap<String,SocketInfoContainer>();
 	}
 		
-	public ConcurrentHashMap<String, Socket> getSocketPlayerRegistry(){
+	public ConcurrentHashMap<String, SocketInfoContainer> getSocketPlayerRegistry(){
 		return this.socketPlayerRegistry;
 	}
 	
@@ -40,7 +40,8 @@ public class SocketListener implements Runnable{
 			try {
 				Socket socket = serverSocket.accept();
 				Player newPlayer = new Player();
-				socketPlayerRegistry.put(newPlayer.getUUID(), socket);	
+				SocketInfoContainer newContainer = new SocketInfoContainer(socket);
+				socketPlayerRegistry.put(newPlayer.getUUID(), newContainer);	
 				
 				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), ConnectionType.SOCKET);
 				System.out.println("[SOCKETLISTENER] new client connected");
