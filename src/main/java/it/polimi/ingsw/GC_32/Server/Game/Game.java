@@ -30,6 +30,7 @@ public class Game implements Runnable{
 	private String lock;
 	
 	private TurnManager turnManager;
+	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players) throws IOException{
 		System.out.println("[GAME] setting up game...");
@@ -78,7 +79,8 @@ public class Game implements Runnable{
 		setLock(playerList.get(0).getUUID());
 		System.out.println("[GAME] player "+getLock()+" has the lock");
 		PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
-		while(true){
+		
+		while(runGameFlag){
 			if(MessageManager.getInstance().hasMessage()){
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
@@ -97,17 +99,35 @@ public class Game implements Runnable{
 						// MoveChecker
 						break;
 					case "TRNEND":
-						System.out.println("[GAME] "+message.getPlayerID()+" has terminated his turn");
-						System.out.println("[GAME] giving lock to the next player");
-						setLock(turnManager.nextPlayer().getUUID());
-						System.out.println("[GAME] player "+getLock()+" has the lock");
-						PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+						if(!turnManager.isGameEnd()){
+							System.out.println("[GAME] "+message.getPlayerID()+" has terminated his turn");
+							
+							if(turnManager.isRoundEnd()){
+								System.out.println("[GAME] round end");
+								
+								if(turnManager.isPeriodEnd()){
+									System.out.println("[GAME] period "+turnManager.getRoundID()/2+" finished");
+								}
+							}
+							System.out.println("[GAME] giving lock to the next player");
+							setLock(turnManager.nextPlayer().getUUID());
+							System.out.println("[GAME] player "+getLock()+" has the lock");
+							PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+						}else{
+							System.out.println("[GAME] game end");
+							MessageManager.getInstance().getRecivedQueue().clear();
+							stopGame();
+						}
 						break;
 					}
 				});
 				MessageManager.getInstance().getRecivedQueue().clear();
 			}
 		}
+	}
+	
+	private void stopGame(){
+		this.runGameFlag = false;
 	}
 	
 	public ArrayList<Player> getPlayerList(){

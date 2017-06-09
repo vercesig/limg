@@ -38,7 +38,6 @@ public class Board {
 			towerRegion[i] = new TowerRegion(i + 4,4);
 			region.add(4 + i, towerRegion[i]);
 			towerRegion[i].setTypeCard(cardTypes[i]);
-			System.out.println(towerRegion[i].toString());
 		}
 		System.out.println("[GAME->BOARD] board succesfully inizialized");
 	}

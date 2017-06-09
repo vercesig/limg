@@ -16,7 +16,7 @@ public class TurnManager {
 	
 	public TurnManager(Game game){
 		this.turnID = 1;
-		this.roundID = 1;
+		this.roundID = 0;
 		this.game = game;
 		System.out.println("[TURNMANAGER] inizialized");
 	}
@@ -42,16 +42,19 @@ public class TurnManager {
 	}
 	
 	public boolean isRoundEnd(){
-		roundID++;
-		return turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0;
+		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+			roundID++;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isPeriodEnd(){
-		return roundID%2==0;
+		return roundID!=0&&roundID%2==0;
 	}
 	
 	public boolean isGameEnd(){
-		return roundID%6==0;
+		return isPeriodEnd()&&roundID%6==0;
 	}
 	
 	/**
