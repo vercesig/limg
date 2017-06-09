@@ -20,7 +20,7 @@ public class MessageManagerTest {
 		Player testPlayer = new Player();
 		String message = "test message";
 		
-		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),message);
+		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),"SMSG",message);
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
 		assertTrue(MessageManager.getInstance().getRecivedQueue().contains(testGameMessage));
@@ -37,11 +37,11 @@ public class MessageManagerTest {
 		PlayerRegistry.getInstance().registerPlayer(testPlayerSocket.getUUID(), ConnectionType.SOCKET);
 		PlayerRegistry.getInstance().registerPlayer(testPlayerRMI.getUUID(), ConnectionType.RMI);
 		
-		GameMessage testGameMessageSocket = new GameMessage(testPlayerSocket.getUUID(),messageSocket);
+		GameMessage testGameMessageSocket = new GameMessage(testPlayerSocket.getUUID(),null,messageSocket);
 		MessageManager.getInstance().sendMessge(testGameMessageSocket);
 		assertTrue(MessageManager.getInstance().getSocketSendQueue().contains(testGameMessageSocket));
 		
-		GameMessage testGameMessageRMI = new GameMessage(testPlayerRMI.getUUID(),messageRMI);
+		GameMessage testGameMessageRMI = new GameMessage(testPlayerRMI.getUUID(),null,messageRMI);
 		MessageManager.getInstance().sendMessge(testGameMessageRMI);
 		assertTrue(MessageManager.getInstance().getRMISendQueue().contains(testGameMessageRMI));		
 	}
@@ -51,7 +51,7 @@ public class MessageManagerTest {
 		Player testPlayer = new Player();
 		String message = "test message";
 		
-		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),message);
+		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),"SMSG",message);
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
 		assertTrue(MessageManager.getInstance().hasMessage());	

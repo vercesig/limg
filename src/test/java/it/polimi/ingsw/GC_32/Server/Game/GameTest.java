@@ -11,6 +11,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class GameTest {
 	public Game game;
@@ -36,27 +37,20 @@ public class GameTest {
 		this.game = new Game(playerList);
 		assertNotNull(this.game.getBoard());
 	}
-	
-	@Test
-	public void checkGetDecks() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		assertNotNull(this.game.getDecks());
-	}
-		
+			
 	@Test
 	public void checkGetDeck() throws IOException{
+		Setup setup = new Setup();
+		try{
+			setup.loadCard();
+		}catch(Exception e){}
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
 		PlayerRegistry.getInstance().addPlayer(playerOne);
 		this.game = new Game(playerList);
 		Deck<DevelopmentCard> deck = new Deck<DevelopmentCard>();
-		game.setDeck("DeckTest", deck);
-		assertNotNull(this.game.getDeck("DeckTest"));
+		assertNotNull(this.game.getDeck("TERRITORYCARD"));
 	}
 	
 	@Test
@@ -78,28 +72,19 @@ public class GameTest {
 		game.setPlayerOrder(playerOrderedList);
 		assertEquals(true, game.getPlayerList().contains(playerTwo));
 	}
-	
-	@Test
-	public void checkSetExcomunitcationCard() throws IOException{
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		ExcommunicationCard card = new ExcommunicationCard("TEST", 1);
-		game.setExcommunicationCard(card, card.getPeriod());
-		assertEquals("TEST", game.getExcommunicationCard(1).getName());
-	}
-	
+		
 	@Test
 	public void checkGetExcomunitcationCard() throws IOException{
+		Setup setup = new Setup();
+		try{
+			setup.loadCard();
+		}catch(Exception e){}
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
 		PlayerRegistry.getInstance().addPlayer(playerOne);
 		this.game = new Game(playerList);
 		ExcommunicationCard card = new ExcommunicationCard("TEST", 1);
-		game.setExcommunicationCard(card, card.getPeriod());
 		assertNotNull(this.game.getExcommunicationCard(1));
 	}
 	
