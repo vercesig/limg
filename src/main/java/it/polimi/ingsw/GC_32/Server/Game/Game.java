@@ -115,7 +115,6 @@ public class Game implements Runnable{
 							PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
 						}else{
 							System.out.println("[GAME] game end");
-							MessageManager.getInstance().getRecivedQueue().clear();
 							stopGame();
 						}
 						break;
