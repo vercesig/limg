@@ -6,7 +6,10 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
@@ -39,12 +42,20 @@ public class SocketListener implements Runnable{
 		while(true){
 			try {
 				Socket socket = serverSocket.accept();
+				System.out.println("[SOCKETLISTENER] new client connected");
 				Player newPlayer = new Player();
 				SocketInfoContainer newContainer = new SocketInfoContainer(socket);
 				socketPlayerRegistry.put(newPlayer.getUUID(), newContainer);	
 				
 				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), ConnectionType.SOCKET);
-				System.out.println("[SOCKETLISTENER] new client connected");
+				
+				// inoltro del CONNEST
+				JsonObject CONNEST = new JsonObject();
+				CONNEST.add("PLAYERID", newPlayer.getUUID());
+				GameMessage CONNESTmessage = new GameMessage(newPlayer.getUUID(),"CONNEST", CONNEST.toString());
+				MessageManager.getInstance().sendMessge(CONNESTmessage);
+				System.out.println("[SOCKETLISTENER] put CONNEST message in the sendQueue");
+				
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
 				Logger.getLogger("").log(Level.SEVERE, "context", e);

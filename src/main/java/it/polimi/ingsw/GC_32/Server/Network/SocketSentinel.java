@@ -32,11 +32,20 @@ public class SocketSentinel implements Runnable{
 					JsonObject finalMessage = new JsonObject();
 					finalMessage.add("MESSAGETYPE", message.getOpcode());
 					finalMessage.add("PAYLOAD", message.getMessage());
-					PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerID()).getPrinterOut();
-					tmpPrinter.println(finalMessage.toString());
-					tmpPrinter.flush();
+					if(message.isBroadcastMessage()){
+						socketListener.getSocketPlayerRegistry().forEach((playerID,socketInfoContainer) -> {
+							PrintWriter tmpPrinter = socketInfoContainer.getPrinterOut();
+							tmpPrinter.println(finalMessage.toString());
+							tmpPrinter.flush();
+						});
+						System.out.println("[SOCKETSENTINEL] send message in broadcast");
+					}else{
+						PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerID()).getPrinterOut();
+						tmpPrinter.println(finalMessage.toString());
+						tmpPrinter.flush();
+						System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
+					}
 					MessageManager.getInstance().getSocketSendQueue().remove();
-					System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
 				}
 			}
 			

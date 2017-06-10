@@ -38,19 +38,32 @@ public class MessageManager {
 	}
 	
 	public void putRecivedMessage(GameMessage message){
-		if(filterMessageTypeSet.contains(message.getOpcode())||message.getPlayerID().equals(game.getLock())){
+		if(filterMessageTypeSet.contains(message.getOpcode())){
+			reciveQueue.add(message);
+			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
+			return;
+		}
+		if(message.getPlayerID().equals(game.getLock())){
 			reciveQueue.add(message);
 			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
 		}
 	}
 	
 	public void sendMessge(GameMessage gameMessage){
-		if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
+		if(gameMessage.isBroadcastMessage()){
 			socketSendQueue.add(gameMessage);
-			System.out.println("[MESSAGEMANAGER] add new message to sendQueue");
-		}else{
+			System.out.println("[MESSAGEMANAGER] add new message to socket sendQueue");
 			RMISendQueue.add(gameMessage);
+			System.out.println("[MESSAGEMANAGER] add new message to RMI sendQueue");
+		}else{
+			if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
+				socketSendQueue.add(gameMessage);
+				System.out.println("[MESSAGEMANAGER] add new message to socket sendQueue");
+			}else{
+				RMISendQueue.add(gameMessage);
+			}	
 		}
+		
 	}
 	
 	public ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
