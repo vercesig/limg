@@ -120,7 +120,7 @@ public class JsonImporter {
 			ExcommunicationCard newCard = new ExcommunicationCard(name.asString(),period.asInt());
 			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
 			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
-									
+			
 			cardList.add(newCard);
 		}
 		

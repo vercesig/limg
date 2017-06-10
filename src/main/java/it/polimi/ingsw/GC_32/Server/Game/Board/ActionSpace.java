@@ -153,13 +153,10 @@ public class ActionSpace{
 	 * @author VaporUser
 	 * @see ActionSpace, FamilyMember, Player.
 	 * */
-	public boolean addFamilyMember(FamilyMember familyMember){
-		if(this.isBusy() && this.isSingleActionSpace()){
-			return false;
-		}
+	public void addFamilyMember(FamilyMember familyMember){
+		
 		occupants.add(familyMember);
 		familyMember.setPosition(this);
-		return true;
 	}
 	
 	/**

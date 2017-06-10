@@ -31,6 +31,10 @@ public class Player {
 		for(int i=0; i<familyMemberList.length; i++){
 			familyMemberList[i] = new FamilyMember(this);	
 		}
+		familyMemberList[0].setColor(DiceColor.GREY);
+		familyMemberList[1].setColor(DiceColor.BLACK);
+		familyMemberList[2].setColor(DiceColor.WHITE);
+		familyMemberList[3].setColor(DiceColor.ORANGE);
 		this.uuid = UUID.randomUUID().toString();
 		this.effectList = new ArrayList<Effect>();
 	}
@@ -99,6 +103,12 @@ public class Player {
     	TURNBGN.add("code", "TURNBGN");
     	GameMessage message = new GameMessage(this.uuid, TURNBGN.toString());
     	MessageManager.getInstance().sendMessge(message);
+    }
+    public void moveFamilyMember(int i, Action a, Board b){
+    	FamilyMember f = this.getFamilyMember()[i];
+    	ActionSpace space = b.getRegion(a.getActionRegionId())
+    			.getActionSpace(a.getActionSpaceId());
+    	space.addFamilyMember(f);
     }
     
 }

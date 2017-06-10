@@ -7,13 +7,20 @@ import java.util.function.Function;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
+import it.polimi.ingsw.GC_32.Server.Game.MoveChecker;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
+import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+
 
 public class Main {
 	
@@ -42,12 +49,47 @@ public class Main {
 	
     public static void main( String[] args ) throws IOException{
         
+		Player p = new Player();
+		Board b = new Board();
+		Action a = new Action("Culo", 10, 0, 5);
+		b.setTowerRegion(2);
+	//	System.out.println(a.toString());
+		DevelopmentCard card = new DevelopmentCard ("Card", 1, "TERRITORYCARD");
+		JsonObject ja = new JsonObject().add("MILITARY_POINTS", 10).add("WOOD", 1).add("STONE", 3);
+		JsonObject jb = new JsonObject().add("MILITARY_POINTS", 2).add("WOOD", 4);
+		JsonObject jc = new JsonObject().add("SERVANTS", 5).add("WOOD", 1);
+		card.setRequirments(ja);
+		card.registerCost(jb);
+		card.registerCost(jc);
+		((TowerRegion) b.getRegion(5)).getTowerLayers()[0].setCard(card); 
+	    
+		for(int i=0; i<1; i++){
+		p.getPersonalBoard().addCard(card);
+		}
+		// risorse player
+		p.getResources().addResource("WOOD", 1);
+		p.getResources().addResource("MILITARY_POINTS", 3);
+		p.getResources().addResource("SERVANTS", 5);
 		
+		//familymember player
+	//	b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
 		
-		SocketListener socketListener = new SocketListener(9500);
+		MoveChecker move = new MoveChecker();
+		System.out.println(move.checkMove(b, p, a));
+		
+		//	System.out.println(b.toString());
+	/*	System.out.println(a.toString());
+		System.out.println(p.toString());
+		System.out.println(card.toString());
+	*/	
+	//	System.out.println(MoveChecker.checkCost(b, p, a));
+	//	System.out.println(MoveChecker.checkTerrytoryRequirement(b, p, a));
+	//	System.out.println(MoveChecker.checkMaxCard(b, p, a));
+		
+		/*SocketListener socketListener = new SocketListener(9500);
 		Thread socketListenerThread = new Thread(socketListener);
 		socketListenerThread.start();		
-		
+		*/
 		
     	
     	/*ServerSocket serverSocket = new ServerSocket(9500);
@@ -74,7 +116,7 @@ public class Main {
 					
 					
 					ArrayList<Player> playerList = new ArrayList<Player>();
-					playerList.add(a1);
+	//				playerList.add(a1);
 					playerList.add(a2);
 					playerList.add(a3);
 					

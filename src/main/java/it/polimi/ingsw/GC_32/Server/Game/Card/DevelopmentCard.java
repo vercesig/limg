@@ -45,6 +45,7 @@ public class DevelopmentCard extends Card{
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("name: "+this.getName()+"\nperiod: "+period+"\ntype: "+type+"\n");
 		cost.forEach(cost -> tmp.append("cost :" +cost.toString()+"\n"));
+		tmp.append("requirements" +this.getRequirments()+'\n');
 		return new String(tmp);
 	}	
 	

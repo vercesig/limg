@@ -46,6 +46,13 @@ public class FamilyMember{
 		return this.owner;
 	}
 	
+	public DiceColor getColor(){
+		return this.diceColor;
+	}
+	public void setColor(DiceColor diceColor){
+		this.diceColor = diceColor;
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("actionValue :"+this.actionValue+"\nposition :");

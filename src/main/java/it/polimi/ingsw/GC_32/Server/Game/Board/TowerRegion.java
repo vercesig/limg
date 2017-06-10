@@ -13,11 +13,12 @@ public class TowerRegion extends Region {
 	private String typeCard;
 	
 	public TowerRegion(int regionID, int numberOfLayers){
-		super(regionID);
+		super(regionID, numberOfLayers);
 		this.towerBusy = false;
 		this.towerLayers = new TowerLayer[numberOfLayers];
 		for(int i=0; i<numberOfLayers; i++){
 			this.towerLayers[i] = new TowerLayer(this.getRegionID(), i);
+			this.getTrack()[i] = towerLayers[i].getActionSpace();
 		}
 	}
 	
@@ -30,7 +31,12 @@ public class TowerRegion extends Region {
 	}
 	
 	public boolean isTowerBusy(){
-		return this.towerBusy;
+		for(int i=0; i<this.getTrack().length; i++){
+			if(this.getTrack()[i].getPlayers().size()>0){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public TowerLayer[] getTowerLayers(){
@@ -77,5 +83,4 @@ public class TowerRegion extends Region {
 		}
 		return new String(stringBuilder);
 	}
-
 }
