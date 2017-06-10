@@ -10,6 +10,7 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Common.Network.Protocol;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -77,13 +78,19 @@ public class Game implements Runnable{
 	
 	public void run(){
 		System.out.println("[GAME] notifying connected players on game settings...");
-		JsonObject GMSTRT = new JsonObject();
-		JsonArray GMSTRTplayers = new JsonArray();
-		playerList.forEach(player -> GMSTRTplayers.add(player.getUUID()));
-		GMSTRT.add("PLAYERLIST", GMSTRTplayers.toString());
-		GameMessage GMSTRTmessage = new GameMessage(null, "GMSTRT", GMSTRT.toString());
-		GMSTRTmessage.setAsBroadcastMessage();
-		MessageManager.getInstance().sendMessge(GMSTRTmessage);
+		MessageManager.getInstance().sendMessge(Protocol.buildGMSTRTmessage(this));
+		
+		// ********************* ESEMPIO 
+		ArrayList<DevelopmentCard> tmp = new ArrayList<DevelopmentCard>();
+		tmp.add(decks.get("TERRITORYCARD").drawElement());
+		// ********************* ESEMPIO
+		playerList.forEach(player -> {
+			MessageManager.getInstance().sendMessge(Protocol.buildSTATCHNGmessage(player));
+			// *********************** ESEMPIO
+			MessageManager.getInstance().sendMessge(Protocol.buildSTATCHNGmessage(player.getUUID(), tmp));
+		});
+
+
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
@@ -102,13 +109,8 @@ public class Game implements Runnable{
 				int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
 				this.playerList.get(playerIndex).setPlayerName(JsonMessage.get("NAME").asString());
 				System.out.println("[GAME] player "+message.getPlayerID()+" setted his name to "+JsonMessage.get("NAME").asString());
-				
-				JsonObject NAMECHG = new JsonObject();
-				NAMECHG.add("PLAYERID", message.getPlayerID());
-				NAMECHG.add("NAME", JsonMessage.get("NAME").asString());
-				GameMessage NAMECHGmessage = new GameMessage(message.getPlayerID(),"NAMECHG",NAMECHG.toString());
-				NAMECHGmessage.setAsBroadcastMessage();
-				MessageManager.getInstance().sendMessge(NAMECHGmessage);
+
+				MessageManager.getInstance().sendMessge(Protocol.buildNAMECHGmessage(message.getPlayerID(), JsonMessage.get("NAME").asString()));
 				break;
 			}
 			MessageManager.getInstance().getRecivedQueue().clear();

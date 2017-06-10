@@ -41,6 +41,10 @@ public class SlimPlayer {
 		return this.cards;
 	}
 	
+	public void addResources(ResourceSet resources){
+		this.playerResources.addResource(resources);
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append(playerResources.toString()+"\n");
