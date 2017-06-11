@@ -6,6 +6,7 @@ import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class MoveChecker{
@@ -210,6 +211,7 @@ public class MoveChecker{
     	Board board = game.getBoard();
     	if(firstCheck(board, player, action)){
     		Cloner cloner = new Cloner();
+    		cloner.dontCloneInstanceOf(Card.class);
     		Board cloneBoard = cloner.deepClone(board);
     		Player clonePlayer = cloner.deepClone(player);
     		Action cloneAction = cloner.deepClone(action);

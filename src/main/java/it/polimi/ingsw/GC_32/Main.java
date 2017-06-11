@@ -2,25 +2,14 @@ package it.polimi.ingsw.GC_32;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.function.Function;
-
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.MoveChecker;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;
-import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
-import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
-import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
-
 
 public class Main {
 	
@@ -74,7 +63,7 @@ public class Main {
 	//	b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
 		
 		MoveChecker move = new MoveChecker();
-		ArrayList player = new <Player> ArrayList();
+		ArrayList<Player> player = new ArrayList<>();
 		player.add(p);
 		Game game = new Game(player);
 		TurnManager turnManager = new TurnManager(game);
