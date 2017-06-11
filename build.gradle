@@ -13,11 +13,7 @@ repositories {
 
 dependencies {
     compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version: '0.9.4'
-<<<<<<< HEAD
-    compile group: 'com.rits.cloning.Cloner', name: 'cloning', version: '1.9.3'
-=======
     compile group: 'uk.com.robust-it', name: 'cloning', version: '1.9.3'
->>>>>>> 16dab38f76e24aa6c967153d65c74e7eb1e2120e
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.mockito:mockito-core:2.+'
 
@@ -51,6 +47,12 @@ publishing {
 
             from components.java
         }
+    }
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
     }
 }
 
