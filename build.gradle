@@ -48,4 +48,19 @@ publishing {
     }
 }
 
+task convertCards {
+    doLast {
+        exec {
+            executable 'python3'
+            args 'utils/card_converter.py', 'raw_resources/cards.csv', 'src/main/resources/cards.json'
+        }
+        exec {
+            executable 'python3'
+            args 'utils/card_converter.py', 'raw_resources/excom_cards.csv', 'src/main/resources/excom_cards.json'
+        }
+    }
+    description = "Convert the cards from csv to json format"
+}
+tasks.processResources.dependsOn(convertCards)
+
 description = 'Prova Finale Ingegneria del software'
