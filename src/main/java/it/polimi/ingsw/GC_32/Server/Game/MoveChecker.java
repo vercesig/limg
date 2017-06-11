@@ -2,6 +2,8 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 
+import com.rits.cloning.Cloner;
+
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -132,22 +134,27 @@ public class MoveChecker{
 		}
 		return true;
 	}
-	
+    private boolean firstCheck(Board board, Player player, Action action){
+    	boolean result = true;
+    	while(result){
+			result = checkValidRegionID(board,player, action); // region ID valida
+			System.out.println("/******** CHECK validRegionID:\n" + result);
+			if(result==false){break;}
+			result = checkValidActionSpaceID(board,player, action); // actionId valido
+			System.out.println("/******** CHECK aCtionSpaceID:\n" + result);
+			break;
+    	} return result;
+    }
 	// check da controllare sempre
     private boolean checkStandardMove(Board board, Player player, Action action){ 
     		boolean result = true;
     		while(result){
-    			result = checkValidRegionID(board,player, action); // region ID valida
-    			System.out.println("/******** CHECK validRegionID: PASSATO ");
-    			if(result==false){break;}
-    			result = checkValidActionSpaceID(board,player, action); // actionId valido
-    			System.out.println("/******** CHECK aCtionSpaceOD: " + result);
-    			if(result==false){break;}
+    			result = firstCheck(board,player, action);
     			result = checkIsFreeSingleSpace(board,player, action); // family member su free SingleSpace
-    			System.out.println("/******** CHECK FamilColor: "+ result);
+    			System.out.println("/******** FreeSingleSpace: "+ result);
     			if(result==false){break;}
     			result = checkActionValue(board,player, action); // actionValue azione >= actionValue space
-    			System.out.println("/******** CHECK FamilColor: " + result);
+    			System.out.println("/******** ActionValue: " + result);
     			break;
     	} return result;
     }
@@ -183,10 +190,12 @@ public class MoveChecker{
     	} System.out.println("/******** CHECK FINE Step:"); 
     	return result;
     }
+    
+    // Check della Mossa
     public boolean checkMove(Board board, Player player, Action action){
     	System.out.println("/******** INIZIO CHECK");
     	boolean result = checkStandardMove(board,player, action);
-    	System.out.println("/******** STANDARD CHECK result :"+ result);
+    	System.out.println("/******** STANDARD CHECK result :\n" + result);
 		if(action.getActionRegionId()<=1){
 			System.out.println("/********Check production/Harvest");
 			result = result && checkProductionHarvestMove(board,player, action);
@@ -196,5 +205,16 @@ public class MoveChecker{
 		}System.out.println("/********Check FINITO result: " +result); 
 		return result; 
     }
-    
+    // Simulatore della Mossa
+    public void Simulate (Game game, Player player, Action action){
+    	Board board = game.getBoard();
+    	if(firstCheck(board, player, action)){
+    		Cloner cloner = new Cloner();
+    		Board cloneBoard = cloner.deepClone(board);
+    		Player clonePlayer = cloner.deepClone(player);
+    		Action cloneAction = cloner.deepClone(action);
+    		System.out.println("CLONATO");
+    	System.out.println(checkMove(cloneBoard, clonePlayer, cloneAction));
+    	}
+    }
 }

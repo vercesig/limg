@@ -56,7 +56,7 @@ public class TurnManager {
 		game.setPlayerOrder(newTurnOrder);		
 	}
 	
-	private void placeCards(){
+	public void placeCards(){
 		for(TowerRegion towerRegion : this.game.getBoard().getTowerRegion()){
 			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
 				towerLayer.setCard(game.getDeck(towerRegion.getTypeCard()).drawElement());

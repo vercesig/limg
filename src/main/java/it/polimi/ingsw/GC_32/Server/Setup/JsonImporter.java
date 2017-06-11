@@ -48,7 +48,7 @@ public class JsonImporter {
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
 			
 			// registrazione costi e requisiti
-			JsonValue requirments = card.get("requirments");
+			JsonValue requirments = card.get("requirements");
 			JsonValue resourceCost = card.get("cost");
 			if(!resourceCost.isNull()){
 				JsonArray resourceArray = new JsonArray();
@@ -113,7 +113,8 @@ public class JsonImporter {
 			JsonObject card = item.asObject();
 			JsonValue name = card.get("name");
 			JsonValue period = card.get("period");
-	
+			
+			
 			String instantEffect = card.get("instantEffect").asString();
 			String permanentEffect = card.get("permanentEffect").asString();
 			

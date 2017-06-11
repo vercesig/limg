@@ -5,4 +5,8 @@
 * RegionID 1 : HarvestRegion
 * RegionID 2 : CouncilRegion
 * RegionID 3 : MarketRegion
-* RegionID >=4 : TowerRegion
+* RegionID 4 : TowerRegion Territory
+* RegionID 5 : TowerRegion Character
+* RegionID 6 : TowerRegion Building
+* RegionID 7 : TowerRegion Venture
+	

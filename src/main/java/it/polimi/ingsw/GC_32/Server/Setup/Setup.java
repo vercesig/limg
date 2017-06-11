@@ -97,7 +97,8 @@ public class Setup {
 		// configura le torri
 		Object[] types = tmpDecks.keySet().toArray();
 		String[] cardTypes = new String[types.length];
-		game.getBoard().setTowerRegion(types.length);
+		System.out.println(types.length);
+		game.getBoard().setTowerRegion(types.length);//
 		for(int j=0; j<cardTypes.length; j++){
 			cardTypes[j] = (String)types[j];
 		}

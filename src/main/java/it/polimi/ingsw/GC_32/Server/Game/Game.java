@@ -41,14 +41,14 @@ public class Game {
 		
 		this.setupgame = new Setup(this);
 		
-		this.turnManager = new TurnManager(this);
+/*		this.turnManager = new TurnManager(this);
 		turnManager.gameStart();
 		
 		// lancio thread per elaborazione messaggi in entrata
 		GameMessageFilter messageFilter = new GameMessageFilter(this);
 		Thread messageFilterThread = new Thread(messageFilter);
-		messageFilterThread.start();
-		
+	0	messageFilterThread.start();
+	*/	
 	}
 	
 	public TurnManager getTurnManager(){

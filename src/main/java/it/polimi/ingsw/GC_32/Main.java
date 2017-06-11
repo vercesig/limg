@@ -50,9 +50,8 @@ public class Main {
     public static void main( String[] args ) throws IOException{
         
 		Player p = new Player();
-		Board b = new Board();
-		Action a = new Action("Culo", 10, 0, 5);
-		b.setTowerRegion(2);
+		Action a = new Action("Test", 10, 0, 5);
+	//	b.setTowerRegion(2);
 	//	System.out.println(a.toString());
 		DevelopmentCard card = new DevelopmentCard ("Card", 1, "TERRITORYCARD");
 		JsonObject ja = new JsonObject().add("MILITARY_POINTS", 10).add("WOOD", 1).add("STONE", 3);
@@ -61,7 +60,7 @@ public class Main {
 		card.setRequirments(ja);
 		card.registerCost(jb);
 		card.registerCost(jc);
-		((TowerRegion) b.getRegion(5)).getTowerLayers()[0].setCard(card); 
+	//	((TowerRegion) b.getRegion(5)).getTowerLayers()[0].setCard(card); 
 	    
 		for(int i=0; i<1; i++){
 		p.getPersonalBoard().addCard(card);
@@ -75,7 +74,13 @@ public class Main {
 	//	b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
 		
 		MoveChecker move = new MoveChecker();
-		System.out.println(move.checkMove(b, p, a));
+		ArrayList player = new <Player> ArrayList();
+		player.add(p);
+		Game game = new Game(player);
+		TurnManager turnManager = new TurnManager(game);
+		turnManager.placeCards();
+
+		move.Simulate(game, p, a);
 		
 		//	System.out.println(b.toString());
 	/*	System.out.println(a.toString());

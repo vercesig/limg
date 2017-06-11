@@ -71,6 +71,7 @@ public class Board {
 		return this.marketRegion;
 	}
 	
+	
 	public void flushBoard(){
 		
 	}
