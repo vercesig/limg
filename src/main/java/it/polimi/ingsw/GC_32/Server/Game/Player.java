@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 public class Player {
 	private PersonalBoard personalBoard;
 	private String name;
-    private ArrayList<Effect> effectList;
+    private HashMap<String, ArrayList<Effect>> effectList;
 	private ResourceSet resources;
 	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
@@ -36,7 +37,7 @@ public class Player {
 		familyMemberList[2].setColor(DiceColor.WHITE);
 		familyMemberList[3].setColor(DiceColor.ORANGE);
 		this.uuid = UUID.randomUUID().toString();
-		this.effectList = new ArrayList<Effect>();
+		this.effectList = new HashMap<String, ArrayList<Effect>>();
 	}
 	
 	public void setPlayerName(String name){
@@ -59,17 +60,18 @@ public class Player {
 		return this.resources;
 	}
 
-    public void addEffect(Effect e){
-        this.effectList.add(e);
+    public void addEffect(String s, Effect e){
+        this.effectList.get(s).add(e);
     }
     
     public void addEffect(String s){
-    	this.effectList.add(EffectRegistry.getInstance().getEffect(s));
+    	
+   // 	this.effectList.(EffectRegistry.getInstance().getEffect(s));
     }
 
-    public List<Effect> getEffectList(){
-        return this.effectList;
-    }
+/*    public ArrayList<Effect> getEffectList(){
+        return this.effectList.;
+    }*/
     
     public FamilyMember[] getFamilyMember(){
     	return this.familyMemberList;
