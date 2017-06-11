@@ -10,4 +10,6 @@ public class PermanentEffect {
 		JsonValue quantity = payload.asObject().get("QUANTITY");
 		JsonValue increase = payload.asObject().get("INCREASE");
 		JsonValue increasingQuantity = payload.asObject().get("INCREASINGQUANTITY");
+		return null;
+	};
 }
