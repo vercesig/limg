@@ -10,6 +10,7 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
+import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
 public class NetworkClient{
@@ -17,14 +18,13 @@ public class NetworkClient{
 	private MsgConnection network;
 	private String myUUID;
 	private String name  ="pippo";
-	private SlimPlayer I;
+	//private SlimPlayer I;
 	private HashMap<String,SlimPlayer> players;
 	
 	
 	public NetworkClient(){
 		network = new SocketMsgConnection();
 		players = new HashMap<String, SlimPlayer>();
-		I = new SlimPlayer();
 	}
 	
 	public MsgConnection getNetwork(){
@@ -46,37 +46,32 @@ public class NetworkClient{
 						client.myUUID = messagePayload.get("PLAYERID").asString();
 						client.players.put(client.myUUID, new SlimPlayer());
 						// notifica il proprio nome
-						JsonObject response = new JsonObject();
-						JsonObject responsePayload = new JsonObject();
-						response.add("MESSAGETYPE", "CHGNAME");
-						responsePayload.add("NAME", client.name);
-						response.add("PAYLOAD", responsePayload);
-						client.getNetwork().sendMessage(response.toString());
+						client.getNetwork().sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.name));
 						break;
 					case "GMSTRT":
-						JsonArray opponents = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();
-						opponents.forEach(opponent -> {
-							if(!opponent.asString().equals(client.myUUID))
-								client.players.put(opponent.asString(), new SlimPlayer());
+						JsonArray playerList = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();
+						playerList.forEach(player -> {
+								client.players.put(player.asString(), new SlimPlayer());
 						});
 						System.out.println("[NETWORKCLIENT] added opponents to player list");
 						break;
 					case "STATCHNG":
+						String playerID = messagePayload.get("PLAYERID").asString();
 						if(messagePayload.get("TYPE").asString().equals("RESOURCE")){
-							JsonObject startResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-							client.I.addResources(new ResourceSet(startResources));
-							System.out.println("[NETWORKCLIENT] change resources");
+							JsonObject addingResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
+							client.players.get(playerID).addResources(new ResourceSet(addingResources));
+							System.out.println("[NETWORKCLIENT] player "+playerID+" change resources");
 							
 							// ************************* ESEMPIO
-							System.out.println(client.I.toString());
+							System.out.println(client.players.get(client.myUUID).toString());
 						}else{
-							System.out.println("[NETWORKCLIENT] add new card");
-							JsonObject startResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-							Iterator<Member> iterable = startResources.iterator();
-							iterable.forEachRemaining(card -> client.I.addCard(card.getName(), card.getValue().asString()));
+							JsonObject addingCard = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
+							Iterator<Member> iterable = addingCard.iterator();
+							iterable.forEachRemaining(card -> client.players.get(playerID).addCard(card.getName(), card.getValue().asString()));
+							System.out.println("[NETWORKCLIENT] add new card to "+playerID);
 							
 							// ************************* ESEMPIO
-							System.out.println(client.I.toString());
+							System.out.println(client.players.get(client.myUUID).toString());
 						}
 						break;
 						

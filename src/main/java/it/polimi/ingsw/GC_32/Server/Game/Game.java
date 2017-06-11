@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
-import it.polimi.ingsw.GC_32.Common.Network.Protocol;
+import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -78,30 +76,28 @@ public class Game implements Runnable{
 	
 	public void run(){
 		System.out.println("[GAME] notifying connected players on game settings...");
-		MessageManager.getInstance().sendMessge(Protocol.buildGMSTRTmessage(this));
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 		
 		// ********************* ESEMPIO 
 		ArrayList<DevelopmentCard> tmp = new ArrayList<DevelopmentCard>();
 		tmp.add(decks.get("TERRITORYCARD").drawElement());
 		// ********************* ESEMPIO
 		playerList.forEach(player -> {
-			MessageManager.getInstance().sendMessge(Protocol.buildSTATCHNGmessage(player));
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player));
 			// *********************** ESEMPIO
-			MessageManager.getInstance().sendMessge(Protocol.buildSTATCHNGmessage(player.getUUID(), tmp));
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), tmp));
 		});
-
-
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
 		
-		System.out.println("[GAME] done");
-		
+		System.out.println("[GAME] done");	
 		System.out.println("[GAME] ready to play");
 		
 		// svuoto la recivedQueue dai messaggi di game setting
+		System.out.println("[GAME] processing game setting messages...");
 		MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 			JsonObject JsonMessage = Json.parse(message.getMessage()).asObject();
 			switch(message.getOpcode()){
@@ -110,7 +106,7 @@ public class Game implements Runnable{
 				this.playerList.get(playerIndex).setPlayerName(JsonMessage.get("NAME").asString());
 				System.out.println("[GAME] player "+message.getPlayerID()+" setted his name to "+JsonMessage.get("NAME").asString());
 
-				MessageManager.getInstance().sendMessge(Protocol.buildNAMECHGmessage(message.getPlayerID(), JsonMessage.get("NAME").asString()));
+				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildNAMECHGmessage(message.getPlayerID(), JsonMessage.get("NAME").asString()));
 				break;
 			}
 			MessageManager.getInstance().getRecivedQueue().clear();
@@ -120,6 +116,7 @@ public class Game implements Runnable{
 				Thread.sleep(200);
 			} catch (InterruptedException e) {}
 		});
+		System.out.println("[GAME] done");
 		
 		System.out.println("[GAME] giving lock to the first player...");
 		setLock(playerList.get(0).getUUID());

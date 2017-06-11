@@ -12,7 +12,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
-public class Protocol {
+public class ServerMessageFactory {
 
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();
@@ -36,19 +36,21 @@ public class Protocol {
 		STATCHNGpayload.add("MILITARY", 0);
 		STATCHNGpayload.add("VICTORY", 0);
 		STATCHNGpayload.add("COINS", player.getResources().getResouce("COINS"));
+		STATCHNG.add("PLAYERID", player.getUUID());
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());		
 		return new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
 	}
 	
-	public static GameMessage buildSTATCHNGmessage(Player player, ResourceSet addingResources){
+	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet addingResources){
 		JsonObject STATCHNG = new JsonObject();
 		JsonObject STATCHNGpayload = new JsonObject();
 		STATCHNG.add("TYPE", "RESOURCE");
 		addingResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
 			STATCHNG.add(resourceName, resourceQuantity);
 		});
+		STATCHNG.add("PLAYERID", playerUUID);
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
-		return new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());		
+		return new GameMessage(playerUUID, "STATCHNG", STATCHNG.toString());		
 	}
 	
 	public static GameMessage buildSTATCHNGmessage(String playerUUID, List<DevelopmentCard> cards){
@@ -57,6 +59,7 @@ public class Protocol {
 		STATCHNG.add("TYPE", "CARD");
 		cards.forEach(card -> STATCHNGpayload.add(card.getType(),card.getName()));
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
+		STATCHNG.add("PLAYERID", playerUUID);
 		return new GameMessage(playerUUID, "STATCHNG", STATCHNG.toString());	
 	}
 	
