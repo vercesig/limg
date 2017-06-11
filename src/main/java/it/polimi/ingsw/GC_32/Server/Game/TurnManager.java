@@ -18,7 +18,7 @@ public class TurnManager {
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		System.out.println("[TURNMANAGER] inizialized");
+		System.out.println("[GAME->TURNMANAGER] tunrmanager inizialized");
 	}
 	
 	public int getTurnID(){

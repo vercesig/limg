@@ -21,6 +21,10 @@ public class CouncilRegion extends Region {
 		return this.councilSpace.getOccupants();
 	}
 	
+	public ActionSpace getCouncilSpace(){
+		return this.councilSpace;
+	}
+	
 	public String toString(){ 			
 		return this.councilSpace.toString();
 	}

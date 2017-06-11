@@ -20,6 +20,7 @@ public class NetworkClient{
 	private String name  ="pippo";
 	//private SlimPlayer I;
 	private HashMap<String,SlimPlayer> players;
+	private SlimBoard slimBoard;
 	
 	
 	public NetworkClient(){
@@ -54,6 +55,12 @@ public class NetworkClient{
 								client.players.put(player.asString(), new SlimPlayer());
 						});
 						System.out.println("[NETWORKCLIENT] added opponents to player list");
+						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
+
+						System.out.println("[NETWORKCLIENT] synchronizing board");
+						client.slimBoard = new SlimBoard(board);
+						System.out.println("[NETWORKCLIENT] board correctly synchronized");
+						System.out.println(client.slimBoard.toString());
 						break;
 					case "STATCHNG":
 						String playerID = messagePayload.get("PLAYERID").asString();

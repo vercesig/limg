@@ -13,23 +13,13 @@ public class Board {
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
-	private ProductionRegion productionRegion;
-	private HarvestRegion harvestRegion;
-	private CouncilRegion councilRegion;
-	private MarketRegion marketRegion;
 		
 	public Board(){
-
-		this.productionRegion = new ProductionRegion(0);
-		this.harvestRegion = new HarvestRegion(1);
-		this.councilRegion = new CouncilRegion(2);
-		this.marketRegion = new MarketRegion(3);
-		
 		this.region = new ArrayList <Region>();
-		region.add(0, (Region) productionRegion); 
-		region.add(1, (Region) harvestRegion);
-		region.add(2, councilRegion); 
-		region.add(3, (Region) marketRegion);
+		region.add(0, new ProductionRegion(0)); 
+		region.add(1, new HarvestRegion(1));
+		region.add(2, new CouncilRegion(2)); 
+		region.add(3, new MarketRegion(3));
 		
 		// setup delle torri
 		String[] cardTypes = CardRegistry.getInstance().getAllCardType().toArray(new String[CardRegistry.getInstance().getAllCardType().size()]);
@@ -42,10 +32,6 @@ public class Board {
 		System.out.println("[GAME->BOARD] board succesfully inizialized");
 	}
 	
-	public TowerRegion[] getTowerRegion(){
-		return this.towerRegion;
-	}
-	
 	public Region getRegion(int idRegion){	// NUOVO METODO
 		try{
 			return this.region.get(idRegion);
@@ -54,23 +40,28 @@ public class Board {
 			return null;
 		}
 	}
+		
+	public TowerRegion[] getTowerRegion(){
+		return this.towerRegion;
+	}
+	
 	public ArrayList<Region> getRegionMap(){
 		return this.region;
 	}
 	
 	public ProductionRegion getProductionRegion(){
-		return this.productionRegion;
+		return (ProductionRegion) this.region.get(0);
 	}
 	
 	public HarvestRegion getHarvestRegion(){
-		return this.harvestRegion;
+		return (HarvestRegion) this.region.get(1);
 	}
 	
 	public CouncilRegion getCouncilRegion(){
-		return this.councilRegion;
+		return (CouncilRegion) this.region.get(2);
 	}
 	public MarketRegion getMarketRegion(){
-		return this.marketRegion;
+		return (MarketRegion) this.region.get(3);
 	}
 	
 	public void placeCards(Game game){
