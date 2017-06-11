@@ -41,7 +41,7 @@ public class ChangeEffect {
 		Effect bonusEffect = (Board b, Player p, Action a) -> {
 				ArrayList<ResourceSet> changeList = chanches;
 				try{
-					p.getResources().addResource(changeList.get(a.getAdditionalInfo().asInt()));
+					p.getResources().addResource(changeList.get(a.getAdditionalInfo().get("INDEX_EFFECT").asInt()));
 				}catch(NullPointerException e){
 					Logger.getLogger("").log(Level.SEVERE, "context", e);
 					System.err.println("resource index not valid");

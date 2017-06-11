@@ -27,7 +27,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	return this.resourceSet;
     }
     
-    public int getResouce(String resourceName){
+    public int getResource(String resourceName){
     	return this.resourceSet.getOrDefault(resourceName, 0);
     }
     
@@ -45,8 +45,8 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
     
     public void addResource(ResourceSet resource){
-    	for(String type : resource.getResourceSet().keySet()){
-    		this.resourceSet.put(type, resource.getResouce(type)+resourceSet.get(type));
+    	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
+    		this.addResource(entry.getKey(), entry.getValue());
     	}
     }
 
@@ -74,7 +74,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		otherResourcesDiff.removeAll(thisResources);
 		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
 			for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
-				if( element.getValue() < resource.getResouce(element.getKey())){
+				if( element.getValue() < resource.getResource(element.getKey())){
 					return -1;
 				}
 			}

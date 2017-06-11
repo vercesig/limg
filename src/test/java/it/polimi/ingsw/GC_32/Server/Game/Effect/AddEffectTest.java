@@ -28,9 +28,9 @@ public class AddEffectTest {
 		
 		addTestEffect.apply(null, testPlayer, null);
 		
-		assertEquals(2,testPlayer.getResources().getResouce("WOOD"));
-		assertEquals(4,testPlayer.getResources().getResouce("COINS"));
-		assertEquals(3,testPlayer.getResources().getResouce("STONE"));
+		assertEquals(2,testPlayer.getResources().getResource("WOOD"));
+		assertEquals(4,testPlayer.getResources().getResource("COINS"));
+		assertEquals(3,testPlayer.getResources().getResource("STONE"));
 	}
 	
 	

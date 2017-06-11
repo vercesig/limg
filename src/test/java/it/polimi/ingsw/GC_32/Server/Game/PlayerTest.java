@@ -45,7 +45,7 @@ public class PlayerTest{
 		this.player = new Player();
 		assertNotNull(this.player.getResources());
 		this.player.getResources().addResource("WOOD", 10);
-		assertEquals(this.player.getResources().getResouce("WOOD"), 10);
+		assertEquals(this.player.getResources().getResource("WOOD"), 10);
 	}
 	
 	@Test

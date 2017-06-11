@@ -1,7 +1,7 @@
 [{
 	"name" : "TestCard",
 	"cost" : null,
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -21,7 +21,7 @@
                 "WOOD": 10,
                 "STONE": 10
              },
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -45,7 +45,7 @@
                 "WOOD": 10,
                 "MILITARY_POINTS": 2
              }],
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,

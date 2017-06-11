@@ -101,7 +101,7 @@ public class MoveChecker{
     			.getTowerLayers()[action.getActionSpaceId()]
     					.getCard();
     	if(card.getType().equals("TERRITORYCARD")){
-    		int point = player.getResources().getResouce("MILITARY_POINTS");
+    		int point = player.getResources().getResource("MILITARY_POINTS");
     		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){
     		case 2 : if(point >= 3){return true;}  else {return false;} 
     		case 3 : if(point >= 7){return true;}  else {return false;} 

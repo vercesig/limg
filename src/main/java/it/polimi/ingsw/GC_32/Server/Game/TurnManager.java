@@ -68,7 +68,7 @@ public class TurnManager {
 	private void checkExcommunication(){
 		int excommunicationLevel = 3 + this.turnID/2 -1 ; //calcolo punti fede richiesti 
 		for(Player p : game.getPlayerList()){
-			if(p.getResources().getResouce("VICTORY")<=excommunicationLevel){
+			if(p.getResources().getResource("VICTORY")<=excommunicationLevel){
 				System.out.println("TIE! beccati la scomunica!");
 			}
 		}
