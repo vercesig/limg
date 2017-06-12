@@ -1,12 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-
-import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
 	
@@ -48,9 +42,21 @@ public class TurnManager {
 		}
 		return false;
 	}
+<<<<<<< HEAD
+		
+	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
+
+	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
+	public void gameStart(){
+		placeCards();
+		diceRoll();
+		game.setLock(game.getPlayerList().get(0).getUUID());
+		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
+=======
 	
 	public boolean isPeriodEnd(){
 		return roundID!=0&&roundID%2==0;
+>>>>>>> experimental
 	}
 	
 	public boolean isGameEnd(){

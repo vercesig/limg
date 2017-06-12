@@ -206,4 +206,15 @@ public class ActionSpace{
 		String string = "[" + actionSpaceID + " ]" + "*" + actionValue + " ";
 		return string;
 	}
+	
+	public ArrayList<FamilyMember> getOccupants(){
+		return this.occupants;
+	}
+	
+	public void flushActionSpace(){
+		this.occupants.forEach(familyMember -> {
+			familyMember.removeFromBoard();
+		});
+		this.occupants.clear();
+	}
 }

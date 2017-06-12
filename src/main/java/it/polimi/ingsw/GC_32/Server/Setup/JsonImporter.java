@@ -1,16 +1,12 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
-import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;

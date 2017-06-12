@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.Action;
-import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 import static org.junit.Assert.*;

@@ -1,13 +1,11 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import com.eclipsesource.json.JsonObject.Member;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Action;

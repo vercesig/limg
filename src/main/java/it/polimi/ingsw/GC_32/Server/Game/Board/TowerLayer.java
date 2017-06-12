@@ -10,6 +10,7 @@ public class TowerLayer {
 	
 	public TowerLayer(int regionID, int actionSpaceID){
 		ResourceSet bonus = new ResourceSet();
+		bonus.setResource("COINS", 1);
 		boolean single = true;
 		int actionValue = 2*actionSpaceID + 1;
 		this.actionSpace = new ActionSpace(bonus, actionValue, single, regionID, actionSpaceID);
@@ -33,5 +34,9 @@ public class TowerLayer {
 		return takenCard;
 	}
 	
+	public void flushTowerLayer(){
+		this.card = null;
+		actionSpace.flushActionSpace();
+	}
 	
 }

@@ -50,12 +50,21 @@ public class SocketSentinel implements Runnable{
 			// controllo messaggi in ricezione dall'inputBuffer dei socket connessi
 			for(String player : socketListener.getSocketPlayerRegistry().keySet()){
 				try {
+<<<<<<< HEAD
+					if(socketListener.getSocketPlayerRegistry().get(player).getInputStream().available()!=0){
+						Scanner tmpScanner = new Scanner(socketListener.getSocketPlayerRegistry().get(player).getInputStream());
+						GameMessage tmpMessage = new GameMessage(player,tmpScanner.nextLine());
+						MessageManager.getInstance().putRecivedMessage(tmpMessage);
+						System.out.println("nuovo messaggio per te :"+player);
+						tmpScanner.close();
+=======
 					if(socketListener.getSocketPlayerRegistry().get(player).getSocket().getInputStream().available()!=0){
 							Scanner tmpScanner = socketListener.getSocketPlayerRegistry().get(player).getScannerIn();
 							JsonObject parsedMessage = Json.parse(tmpScanner.nextLine()).asObject();						
 							GameMessage tmpMessage = new GameMessage(player,parsedMessage.get("MESSAGETYPE").asString(),parsedMessage.get("PAYLOAD").toString());
 							System.out.println("[SOCKETSENTINEL] catched new message for "+tmpMessage.getPlayerID());
 							MessageManager.getInstance().putRecivedMessage(tmpMessage);
+>>>>>>> experimental
 					}
 				} catch (IOException e) {
 					System.out.println("eccezione in lettura");

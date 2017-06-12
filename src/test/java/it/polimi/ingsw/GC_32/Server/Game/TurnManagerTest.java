@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
-
 public class TurnManagerTest{
 	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 	

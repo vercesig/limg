@@ -1,8 +1,13 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 
 public class MessageManager {
@@ -12,10 +17,17 @@ public class MessageManager {
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
 	
+	private Game game;
+	
+	private Set<String> filterMessageTypeSet;
+	
 	private MessageManager(){
 		this.reciveQueue = new ConcurrentLinkedQueue<GameMessage>();
 		this.RMISendQueue = new ConcurrentLinkedQueue<GameMessage>();
 		this.socketSendQueue = new ConcurrentLinkedQueue<GameMessage>();
+		this.filterMessageTypeSet = new HashSet<String>();
+		this.filterMessageTypeSet.add("SMSG");
+		this.filterMessageTypeSet.add("CHGNAME");
 	}
 	
 	public static MessageManager getInstance(){
@@ -26,16 +38,33 @@ public class MessageManager {
 	}
 	
 	public void putRecivedMessage(GameMessage message){
-		reciveQueue.add(message);
+		if(filterMessageTypeSet.contains(message.getOpcode())){
+			message.setAsBroadcastMessage();
+			this.sendMessge(message);
+			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
+			return;
+		}
+		if(message.getPlayerID().equals(game.getLock())){
+			reciveQueue.add(message);
+			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
+		}
 	}
 	
-	public void sendMessge(GameMessage message){
-		if(PlayerRegistry.getInstance().getConnectionMode(message.getPlayerID()) == ConnectionType.SOCKET){
-			socketSendQueue.add(message);
-			System.out.println("messaggio inserito nella coda");
+	public void sendMessge(GameMessage gameMessage){
+		if(gameMessage.isBroadcastMessage()){
+			socketSendQueue.add(gameMessage);
+			System.out.println("[MESSAGEMANAGER] add new message to socket sendQueue");
+			RMISendQueue.add(gameMessage);
+			System.out.println("[MESSAGEMANAGER] add new message to RMI sendQueue");
 		}else{
-			RMISendQueue.add(message);
+			if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
+				socketSendQueue.add(gameMessage);
+				System.out.println("[MESSAGEMANAGER] add new message to socket sendQueue");
+			}else{
+				RMISendQueue.add(gameMessage);
+			}	
 		}
+		
 	}
 	
 	public ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
@@ -52,6 +81,10 @@ public class MessageManager {
 	
 	public boolean hasMessage(){
 		return !reciveQueue.isEmpty();
+	}
+	
+	public void registerGame(Game game){
+		this.game = game;
 	}
 	
 }

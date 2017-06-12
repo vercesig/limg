@@ -89,15 +89,15 @@ public class Player {
     
     // richiede di effettuare un azione a seguito dell'attivazione di un effeto
     public void makeAction(JsonValue payload){
-    	GameMessage message = new GameMessage(this.uuid, payload.toString());
+    	GameMessage message = new GameMessage(this.uuid,"TURNBGN", payload.toString());
     	MessageManager.getInstance().sendMessge(message);
     }
     
     // richiede di effettuare un azione
     public void makeAction(){
     	JsonObject TURNBGN = new JsonObject();
-    	TURNBGN.add("code", "TURNBGN");
-    	GameMessage message = new GameMessage(this.uuid, TURNBGN.toString());
+    	TURNBGN.add("TYPE", "TOWER");
+    	GameMessage message = new GameMessage(this.uuid,"TURNBGN", TURNBGN.toString());
     	MessageManager.getInstance().sendMessge(message);
     }
     

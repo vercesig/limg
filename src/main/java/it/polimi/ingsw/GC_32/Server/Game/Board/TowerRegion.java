@@ -57,8 +57,10 @@ public class TowerRegion extends Region {
 	}
 	
 	// rimuove carte e familiari sulla torre
-	public void flushTowerRegion(){
-		
+	public void flushRegion(){
+		for(int i=0; i<towerLayers.length; i++){
+			towerLayers[i].flushTowerLayer();
+		}
 	}
 		
 	public String toString(){

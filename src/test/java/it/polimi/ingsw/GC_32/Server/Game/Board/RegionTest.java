@@ -8,6 +8,7 @@ import org.junit.Test;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Region;
+import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class RegionTest {
 
@@ -17,7 +18,6 @@ public class RegionTest {
 	@Test (expected = NullPointerException.class)
 	public void testToStringNullPointerException(){
 		board = new Board();
-		board.setTowerRegion(4);
 		
 		for(Region region : board.getRegionMap()){
 			for (int i = 0; i < 100; i++){	
@@ -31,7 +31,6 @@ public class RegionTest {
 	@Test
 	public void testGetActionSpaceNullPointerException(){
 		board = new Board();
-		board.setTowerRegion(4);
 		ArrayList<ActionSpace> a = new ArrayList<ActionSpace>();
 		
 		for(Region region : board.getRegionMap()){
@@ -46,8 +45,12 @@ public class RegionTest {
 	// test che verifica il corretto numero di regioni del gioco: 8
 	@Test
 	public void testCorrectNumberOfRegion(){
+		Setup setup = new Setup();
+		try{
+			setup.loadCard();
+		}catch(Exception e){}
 		board = new Board();
-		board.setTowerRegion(4);
+		
 		assertEquals(8, board.getRegionMap().size());
 	}
 	

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Server.Network;
+package it.polimi.ingsw.GC_32.Client.Network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +12,10 @@ public class SocketMsgConnection implements MsgConnection{
 	private Socket socket;
 	private Scanner in;
 	private PrintWriter out;
-	private boolean stop;
 	
 	public void open() throws IOException{
 		socket = new Socket("localhost",9500);
-		
-		System.out.println("connected to server");
-		
+		System.out.println("[SOCKETMSGCONNECTION] connected to server");
 		in = new Scanner(socket.getInputStream());
 		out = new PrintWriter(socket.getOutputStream());
 	}
@@ -41,6 +38,7 @@ public class SocketMsgConnection implements MsgConnection{
 	public boolean hasMessage(){
 		return in.hasNextLine();
 	}
+<<<<<<< HEAD:src/main/java/it/polimi/ingsw/GC_32/Server/Network/SocketMsgConnection.java
 	
 	public void kill(){
 		this.stop = true;
@@ -61,4 +59,7 @@ public class SocketMsgConnection implements MsgConnection{
 		}
 	}*/
 	
+=======
+			
+>>>>>>> experimental:src/main/java/it/polimi/ingsw/GC_32/Client/Network/SocketMsgConnection.java
 }
