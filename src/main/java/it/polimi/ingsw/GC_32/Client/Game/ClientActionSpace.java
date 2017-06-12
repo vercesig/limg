@@ -1,25 +1,25 @@
-package it.polimi.ingsw.GC_32.Client.Network;
+package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
-public class SlimActionSpace {
+public class ClientActionSpace {
 
 	private final int regionID;
 	private final int actionSpaceID;
 	private int actionValue;
-	private ArrayList<SlimFamilyMember> occupants;
+	private ArrayList<ClientFamilyMember> occupants;
 	private ResourceSet bonus;
 	private boolean single;
 	
 	// solo per tower region
 	private String cardName;
 	
-	public SlimActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
+	public ClientActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
 		this.bonus = bonus;
 		this.actionValue = actionValue;
-		this.occupants = new ArrayList<SlimFamilyMember>();
+		this.occupants = new ArrayList<ClientFamilyMember>();
 		this.single = single;
 		this.actionSpaceID = actionSpaceID;
 		this.regionID = regionID;
