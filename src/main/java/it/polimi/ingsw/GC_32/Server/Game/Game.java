@@ -119,6 +119,11 @@ public class Game implements Runnable{
 		
 		System.out.println("[GAME] ready to play");
 		this.board.placeCards(this);
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {}
+		System.out.println("[GAME] notified players on card layout");
 		System.out.println("[GAME] giving lock to the first player...");
 		setLock(playerList.get(0).getUUID());
 		System.out.println("[GAME] player "+getLock()+" has the lock");

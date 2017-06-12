@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GC_32.Common.Network;
 
-
-
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -12,6 +10,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.CouncilRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
@@ -26,33 +25,13 @@ public class ServerMessageFactory {
 		
 		System.out.println("[GAME->SERVERMESSAGEFACTORY] creating JSON for inititial board configuration...");
 		
-		// ***************************** BOARD JSON		
-		JsonObject bonus = null;
-		
-		// JSON towers
-		for(TowerRegion towerRegion : game.getBoard().getTowerRegion()){
-			JsonArray tower = new JsonArray();
-			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
-				JsonObject actionSpace = new JsonObject();
-				actionSpace.add("ACTIONVALUE", towerLayer.getActionSpace().getActionValue());
-				actionSpace.add("REGIONID", towerLayer.getActionSpace().getRegionID());
-				actionSpace.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
-				bonus = new JsonObject();
-				for(Entry<String,Integer> resource : towerLayer.getActionSpace().getBonus().getResourceSet().entrySet()){
-					bonus.add(resource.getKey(), resource.getValue());
-				}
-				actionSpace.add("BONUS", bonus.toString());
-				// single is setted true by default
-				tower.add(actionSpace);
-			}
-			GMSTRTboard.add("TOWERREGION", tower.toString());
-		}
+		// ***************************** BOARD JSON	(l'ordine con cui vengono impilate le region è fondamentale)		
 		
 		// Json production region
 		JsonArray boardProductionRegion = new JsonArray();
 		for(ActionSpace action : game.getBoard().getProductionRegion().getTrack()){
 			JsonObject actionSpace = new JsonObject();
-			actionSpace.add("BONUS", bonus.toString());
+			actionSpace.add("BONUS", "#");
 			actionSpace.add("REGIONID", action.getRegionID());
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
@@ -61,11 +40,11 @@ public class ServerMessageFactory {
 		}
 		GMSTRTboard.add("PRODUCTIONREGION", boardProductionRegion.toString());
 		
-		// Json production region
+		// Json harvast region
 		JsonArray boardHarvastRegion = new JsonArray();
 		for(ActionSpace action : game.getBoard().getHarvestRegion().getTrack()){
 			JsonObject actionSpace = new JsonObject();
-			actionSpace.add("BONUS", bonus.toString());
+			actionSpace.add("BONUS", "#");
 			actionSpace.add("REGIONID", action.getRegionID());
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
@@ -78,7 +57,7 @@ public class ServerMessageFactory {
 		JsonArray boardCouncilRegion = new JsonArray();
 		CouncilRegion councilRegion = game.getBoard().getCouncilRegion();
 		JsonObject councilSpace = new JsonObject();
-		councilSpace.add("BONUS", bonus.toString());
+		councilSpace.add("BONUS", "#");
 		councilSpace.add("REGIONID", councilRegion.getCouncilSpace().getRegionID());
 		councilSpace.add("SPACEID",  councilRegion.getCouncilSpace().getActionSpaceID());
 		councilSpace.add("SINGLE", councilRegion.getCouncilSpace().isSingleActionSpace());
@@ -90,7 +69,7 @@ public class ServerMessageFactory {
 		JsonArray boardMarketRegion = new JsonArray();
 		for(ActionSpace action : game.getBoard().getMarketRegion().getTrack()){
 			JsonObject actionSpace = new JsonObject();
-			actionSpace.add("BONUS", bonus.toString());
+			actionSpace.add("BONUS", "#");
 			actionSpace.add("REGIONID", action.getRegionID());
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
@@ -100,6 +79,24 @@ public class ServerMessageFactory {
 		}
 		GMSTRTboard.add("MARKETREGION", boardMarketRegion.toString());
 		
+		// JSON towers
+		for(TowerRegion towerRegion : game.getBoard().getTowerRegion()){
+			JsonArray tower = new JsonArray();
+			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
+				JsonObject actionSpace = new JsonObject();
+				actionSpace.add("ACTIONVALUE", towerLayer.getActionSpace().getActionValue());
+				actionSpace.add("REGIONID", towerLayer.getActionSpace().getRegionID());
+				actionSpace.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
+				JsonObject bonus = new JsonObject();
+				for(Entry<String,Integer> resource : towerLayer.getActionSpace().getBonus().getResourceSet().entrySet()){
+					bonus.add(resource.getKey(), resource.getValue());
+				}
+				actionSpace.add("BONUS", bonus.toString());
+				// single is setted true by default
+				tower.add(actionSpace);
+			}
+			GMSTRTboard.add("TOWERREGION", tower.toString());
+		}
 		GMSTRT.add("BOARD", GMSTRTboard.toString());
 		
 		System.out.println("[GAME->SERVERMESSAGEFACTORY] packaging game player list...");
@@ -163,6 +160,24 @@ public class ServerMessageFactory {
 	}
 	
 	
-	
+	public static GameMessage buildCHGBOARDSTATmessage(Board board){
+		JsonObject CHGBOARDSTAT = new JsonObject();
+		CHGBOARDSTAT.add("TYPE", "BOARD");
+		JsonArray CHGBOARDSTATpayload = new JsonArray();
+		for(TowerRegion towerRegion : board.getTowerRegion()){
+			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
+				JsonObject card = new JsonObject();
+				card.add("NAME", towerLayer.getCard().getName());
+				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
+				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
+				CHGBOARDSTATpayload.add(card);
+			}
+		}
+		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload.toString());
+		
+		GameMessage CHGBOARDSTATmessage = new GameMessage(null, "CHGBOARDSTAT", CHGBOARDSTAT.toString());
+		CHGBOARDSTATmessage.setAsBroadcastMessage();		
+		return CHGBOARDSTATmessage;
+	}
 	
 }

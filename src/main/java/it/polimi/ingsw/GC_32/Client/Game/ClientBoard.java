@@ -29,4 +29,7 @@ public class ClientBoard {
 		return new String(tmp);
 	}
 	
+	public ArrayList<ClientRegion> getRegionList(){
+		return this.region;
+	}
 }
