@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Client.Network;
+package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,12 +6,12 @@ import java.util.Map.Entry;
 
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
-public class SlimPlayer {
+public class ClientPlayer {
 
 	private ResourceSet playerResources;
 	private HashMap<String, ArrayList<String>> cards;
 	
-	public SlimPlayer(){
+	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
 		this.cards = new HashMap<String, ArrayList<String>>();
 		

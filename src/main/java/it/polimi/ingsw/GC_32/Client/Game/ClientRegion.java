@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Client.Network;
+package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 
@@ -8,15 +8,15 @@ import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
-public class SlimRegion {
+public class ClientRegion {
 
 	private String type;
-	private ArrayList<SlimActionSpace> actionSpaces;
+	private ArrayList<ClientActionSpace> actionSpaces;
 	
 	
-	public SlimRegion(String type, JsonArray actionSpaces){
+	public ClientRegion(String type, JsonArray actionSpaces){
 		this.type = type;
-		this.actionSpaces = new ArrayList<SlimActionSpace>();
+		this.actionSpaces = new ArrayList<ClientActionSpace>();
 		
 		actionSpaces.forEach(actionSpace -> {
 			JsonObject slimActionSpace = actionSpace.asObject();
@@ -27,7 +27,7 @@ public class SlimRegion {
 			boolean single = slimActionSpace.getBoolean("SINGLE", true);
 			int regionID = slimActionSpace.get("REGIONID").asInt();
 			int actionspaceID = slimActionSpace.get("SPACEID").asInt();
-			this.actionSpaces.add(new SlimActionSpace(bonus,actionValue,single,regionID,actionspaceID));
+			this.actionSpaces.add(new ClientActionSpace(bonus,actionValue,single,regionID,actionspaceID));
 		});
 	}
 	

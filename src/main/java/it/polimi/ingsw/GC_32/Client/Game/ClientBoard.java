@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Client.Network;
+package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,18 +8,18 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
-public class SlimBoard {
+public class ClientBoard {
 
-	private ArrayList<SlimRegion> region;
+	private ArrayList<ClientRegion> region;
 	
-	public SlimBoard(JsonObject boardPacket){
-		this.region = new ArrayList<SlimRegion>();
+	public ClientBoard(JsonObject boardPacket){
+		this.region = new ArrayList<ClientRegion>();
 		Iterator<Member> regions = boardPacket.iterator();
 		regions.forEachRemaining(region -> {
 			String regionType = region.getName();
 			JsonArray actionSpaces = Json.parse(region.getValue().asString()).asArray();
 			
-			this.region.add(new SlimRegion(regionType,actionSpaces));			
+			this.region.add(new ClientRegion(regionType,actionSpaces));			
 		});	
 	}
 	

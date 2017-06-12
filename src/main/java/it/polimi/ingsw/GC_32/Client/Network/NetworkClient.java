@@ -9,6 +9,8 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
+import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
+import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
@@ -18,13 +20,13 @@ public class NetworkClient{
 	private String myUUID;
 	private String name  ="pippo";
 	//private SlimPlayer I;
-	private HashMap<String,SlimPlayer> players;
-	private SlimBoard slimBoard;
+	private HashMap<String,ClientPlayer> players;
+	private ClientBoard slimBoard;
 	
 	
 	public NetworkClient(){
 		network = new SocketMsgConnection();
-		players = new HashMap<String, SlimPlayer>();
+		players = new HashMap<String, ClientPlayer>();
 	}
 	
 	public MsgConnection getNetwork(){
@@ -44,20 +46,20 @@ public class NetworkClient{
 					switch(message.get("MESSAGETYPE").asString()){
 					case "CONNEST":
 						client.myUUID = messagePayload.get("PLAYERID").asString();
-						client.players.put(client.myUUID, new SlimPlayer());
+						client.players.put(client.myUUID, new ClientPlayer());
 						// notifica il proprio nome
 						client.getNetwork().sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.name));
 						break;
 					case "GMSTRT":
 						JsonArray playerList = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();
 						playerList.forEach(player -> {
-								client.players.put(player.asString(), new SlimPlayer());
+								client.players.put(player.asString(), new ClientPlayer());
 						});
 						System.out.println("[NETWORKCLIENT] added opponents to player list");
 						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
 
 						System.out.println("[NETWORKCLIENT] synchronizing board");
-						client.slimBoard = new SlimBoard(board);
+						client.slimBoard = new ClientBoard(board);
 						System.out.println("[NETWORKCLIENT] board correctly synchronized");
 						System.out.println(client.slimBoard.toString());
 						break;
