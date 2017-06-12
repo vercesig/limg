@@ -114,7 +114,6 @@ public class JsonImporter {
 			JsonValue name = card.get("name");
 			JsonValue period = card.get("period");
 			
-			
 			String instantEffect = card.get("instantEffect").asString();
 			String permanentEffect = card.get("permanentEffect").asString();
 			

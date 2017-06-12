@@ -37,6 +37,7 @@ public class EffectRegistry{
             BonusEffect.loadBuilder();
             ChangeEffect.loadBuilder();
             ActionEffect.loadBuilder();
+            PermanentEffect.loadBuilder();
         }
         return instance;
     }

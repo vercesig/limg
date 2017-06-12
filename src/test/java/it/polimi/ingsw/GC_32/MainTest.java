@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32;
 
+import java.io.IOException;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -22,10 +24,13 @@ public class MainTest
 
     /**
      * @return the suite of tests being tested
+     * @throws IOException 
      */
-    public static Test suite()
+    public static Test suite() throws IOException
     {
-        return new TestSuite( MainTest.class );
+    	Main main = new Main();
+    	main.main(null);
+    	return new TestSuite( MainTest.class );
     }
 
     /**
@@ -33,6 +38,6 @@ public class MainTest
      */
     public void testApp()
     {
-        assertTrue( true );
+        assertTrue(true);
     }
 }

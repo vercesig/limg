@@ -2,14 +2,20 @@ package it.polimi.ingsw.GC_32;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.MoveChecker;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
+import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.TurnManager;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 
 public class Main {
 	
@@ -39,7 +45,7 @@ public class Main {
     public static void main( String[] args ) throws IOException{
         
 		Player p = new Player();
-		Action a = new Action("Test", 10, 0, 5);
+		Action a = new Action("TOWER_GREEN", 10, 0, 4);
 	//	b.setTowerRegion(2);
 	//	System.out.println(a.toString());
 		DevelopmentCard card = new DevelopmentCard ("Card", 1, "TERRITORYCARD");
@@ -68,9 +74,8 @@ public class Main {
 		Game game = new Game(player);
 		TurnManager turnManager = new TurnManager(game);
 		turnManager.placeCards();
-
-		move.Simulate(game, p, a);
 		
+		//move.Simulate(game, p, a);
 		//	System.out.println(b.toString());
 	/*	System.out.println(a.toString());
 		System.out.println(p.toString());

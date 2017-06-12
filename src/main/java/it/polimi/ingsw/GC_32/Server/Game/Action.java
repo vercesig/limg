@@ -34,6 +34,9 @@ public class Action{
     public int getActionValue(){
     	return this.actionValue;
     }
+    public void setActionValue(int actionValue){
+    	this.actionValue = actionValue;
+    }
     public int getActionSpaceId(){
     	return this.actionSpaceId;
     }

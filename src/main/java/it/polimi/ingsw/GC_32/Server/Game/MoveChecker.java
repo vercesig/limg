@@ -135,6 +135,21 @@ public class MoveChecker{
 		}
 		return true;
 	}
+    
+    private boolean checkValidActionType(Board board, Player player, Action action){	
+		switch (action.getActionType()){
+		case "PRODUCTION" : {if(action.getActionRegionId()!=0){return false;} else {return true;}}
+		case "HARVEST" : {if(action.getActionRegionId()!=1){return false;} else {return true;}}
+		case "COUNCIL" : {if(action.getActionRegionId()!=2){return false;} else {return true;}}
+		case "MARKET" : {if(action.getActionRegionId()!=3){return false;} else {return true;}}
+		case "TOWER_GREEN" : {if(action.getActionRegionId()!=4){return false;} else {return true;}}
+		case "TOWER_BLUE" : {if(action.getActionRegionId()!=5){return false;} else {return true;}}
+		case "TOWER_YELLOW" : {if(action.getActionRegionId()!=6){return false;} else {return true;}}
+		case "TOWER_PURPLE" : {if(action.getActionRegionId()!=7){return false;} else {return true;}}
+		default : return false;
+		}
+	}
+    
     private boolean firstCheck(Board board, Player player, Action action){
     	boolean result = true;
     	while(result){
@@ -143,6 +158,8 @@ public class MoveChecker{
 			if(result==false){break;}
 			result = checkValidActionSpaceID(board,player, action); // actionId valido
 			System.out.println("/******** CHECK aCtionSpaceID:\n" + result);
+			result = checkValidActionType(board,player, action);
+			System.out.println("/******** CHECK validActionTYpe:\n" + result);
 			break;
     	} return result;
     }

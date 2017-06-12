@@ -3,10 +3,10 @@
  It is used for the most Characters Permanent Effect. Effect which add extra actionValue to a specific action or extra resource to buy a card.
 The Effect has this structure in Json:
 
- {"type": "Permanent", "payload" :{
+ {"type": "PERMANENT", "payload" :{
  	"actionType" : "ACTIONTYPE" 
  	"actionValueBonus" : x
- 	"cost" : {"RESOURCE": x, "RESOURCE" : x, ... }
+ 	"cost" : [{"RESOURCE": x}, {"RESOURCE" : x, ...} ] // JsonArray of JsonObject
  	"flagCost" : "exclusive"	
  } 
   The values permitted are the follow:

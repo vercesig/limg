@@ -59,6 +59,19 @@ public class DevelopmentCard extends Card{
 		}
 	}
 	
+	public void discountCard(ResourceSet discount){
+		for(ResourceSet singleCost : this.cost){
+			singleCost.addResource(discount);
+			
+			/*for(String key : singleCost.getResourceSet().keySet()){
+				if(discount.getResourceSet().containsKey(key)){
+					singleCost.setResource(key, singleCost.getResource(key) - discount.getResource(key));
+				}
+			}*/
+
+		}
+	}
+	
 	public void setRequirments(JsonObject requirments){
 		Iterator<Member> singleItem = requirments.iterator();
 		while(singleItem.hasNext()){
