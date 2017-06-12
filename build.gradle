@@ -48,4 +48,10 @@ publishing {
     }
 }
 
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
 description = 'Prova Finale Ingegneria del software'

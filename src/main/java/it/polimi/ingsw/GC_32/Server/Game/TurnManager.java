@@ -1,12 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
-
-import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
 	

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -33,7 +32,7 @@ public class Game implements Runnable{
 	private TurnManager turnManager;
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players) throws IOException{
+	public Game(ArrayList<Player> players){
 		System.out.println("[GAME] setting up game...");
 		this.playerList = players;
 		this.board = new Board();

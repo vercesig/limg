@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Client.Network;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import com.eclipsesource.json.Json;

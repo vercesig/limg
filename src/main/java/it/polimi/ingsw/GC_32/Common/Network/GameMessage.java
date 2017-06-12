@@ -1,8 +1,6 @@
 package it.polimi.ingsw.GC_32.Common.Network;
 
-import java.io.Serializable;
-
-public class GameMessage implements Serializable{
+public class GameMessage{
 
 	private String playerID;
 	private String message;

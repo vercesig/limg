@@ -25,7 +25,7 @@ public class BonusEffect {
 		JsonValue increase = payload.asObject().get("INCREASE");
 		JsonValue increasingQuantity = payload.asObject().get("INCREASINGQUANTITY");
 		
-		BiFunction<Boolean,Player,Function> typeEffect = (typeCheck,p) -> {
+		BiFunction<Boolean,Player, Function<Player,Integer>> typeEffect = (typeCheck,p) -> {
 			if(typeCheck) return player -> ((Player) player).getPersonalBoard().getCardsOfType(forEach.asString()).size()/quantity.asInt();
 			return player -> ((Player) player).getResources().getResouce(forEach.asString())/quantity.asInt();
 		};

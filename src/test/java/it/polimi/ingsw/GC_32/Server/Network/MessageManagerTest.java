@@ -1,26 +1,31 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.junit.Rule;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class MessageManagerTest {
-
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+	
 	@Test
 	public void chekMessageManagerNotNull(){
 		assertNotNull(MessageManager.getInstance());
 	}
-	
+
 	@Test
 	public void checkPutRecivedMessage(){
-		Player testPlayer = new Player();
 		String message = "test message";
 		
-		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),"SMSG",message);
+		GameMessage testGameMessage = new GameMessage("Test_UUID","TESTMSG",message);
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
 		assertTrue(MessageManager.getInstance().getRecivedQueue().contains(testGameMessage));
@@ -48,10 +53,12 @@ public class MessageManagerTest {
 	
 	@Test
 	public void checkHasMessage(){
-		Player testPlayer = new Player();
+		Game game = mock(Game.class);
+		when(game.getLock()).thenReturn("Test_UUID");
 		String message = "test message";
+		MessageManager.getInstance().registerGame(game);
 		
-		GameMessage testGameMessage = new GameMessage(testPlayer.getUUID(),"SMSG",message);
+		GameMessage testGameMessage = new GameMessage("Test_UUID","TSTMSG",message);
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
 		assertTrue(MessageManager.getInstance().hasMessage());	

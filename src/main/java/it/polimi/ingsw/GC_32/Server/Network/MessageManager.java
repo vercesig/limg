@@ -39,7 +39,8 @@ public class MessageManager {
 	
 	public void putRecivedMessage(GameMessage message){
 		if(filterMessageTypeSet.contains(message.getOpcode())){
-			reciveQueue.add(message);
+			message.setAsBroadcastMessage();
+			this.sendMessge(message);
 			System.out.println("[MESSAGEMANAGER] add new message to recivedQueue");
 			return;
 		}
