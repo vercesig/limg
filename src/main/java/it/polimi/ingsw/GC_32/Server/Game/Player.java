@@ -17,7 +17,7 @@ import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 public class Player {
 	private PersonalBoard personalBoard;
 	private String name;
-    private HashMap<String, ArrayList<Effect>> effectList;
+    private ArrayList<Effect> effectList;
 	private ResourceSet resources;
 	//private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
@@ -37,7 +37,7 @@ public class Player {
 		familyMemberList[2].setColor(DiceColor.WHITE);
 		familyMemberList[3].setColor(DiceColor.ORANGE);
 		this.uuid = UUID.randomUUID().toString();
-		this.effectList = new HashMap<String, ArrayList<Effect>>();
+		this.effectList = new ArrayList<Effect>();
 	}
 	
 	public void setPlayerName(String name){
@@ -60,18 +60,18 @@ public class Player {
 		return this.resources;
 	}
 
-    public void addEffect(String s, Effect e){
-        this.effectList.get(s).add(e);
+    public void addEffect(Effect e){
+        this.effectList.add(e);
     }
     
     public void addEffect(String s){
     	
-   // 	this.effectList.(EffectRegistry.getInstance().getEffect(s));
+    	this.effectList.add(EffectRegistry.getInstance().getEffect(s));
     }
 
-/*    public ArrayList<Effect> getEffectList(){
-        return this.effectList.;
-    }*/
+    public ArrayList<Effect> getEffectList(){
+        return this.effectList;
+    }
     
     public FamilyMember[] getFamilyMember(){
     	return this.familyMemberList;
@@ -91,6 +91,10 @@ public class Player {
     public void takeCard(Game game, Action action){
     	TowerRegion selectedTower = (TowerRegion)game.getBoard().getRegion(action.getActionRegionId());
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
+    }
+    
+    //TO-DO PLayer effettua l'azione
+    public void makeAction(Action action){
     }
     
     // richiede di effettuare un azione a seguito dell'attivazione di un effeto

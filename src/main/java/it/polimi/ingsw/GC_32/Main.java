@@ -75,7 +75,7 @@ public class Main {
 		TurnManager turnManager = new TurnManager(game);
 		turnManager.placeCards();
 		
-		//move.Simulate(game, p, a);
+		move.Simulate(game, p, a);
 		//	System.out.println(b.toString());
 	/*	System.out.println(a.toString());
 		System.out.println(p.toString());

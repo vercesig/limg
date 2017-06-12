@@ -115,6 +115,19 @@ public class Game {
 		this.lock = player;
 	}
 	
+	// metodi per sostituire gli originali con le copie
+	public void setBoard(Board board){
+		this.board = board;
+	}
+	
+	public void setPlayer(Player player){
+		this.playerList.forEach(p -> {
+			if (p.getUUID().equals(player.getUUID())){
+				p = player;
+			}
+		});
+	}
+	
 	public String getLock(){
 		return this.lock;
 	}

@@ -7,7 +7,7 @@ import com.rits.cloning.Cloner;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
 public class MoveChecker{
 	
@@ -228,12 +228,31 @@ public class MoveChecker{
     	Board board = game.getBoard();
     	if(firstCheck(board, player, action)){
     		Cloner cloner = new Cloner();
-    		cloner.dontCloneInstanceOf(Effect.class);
+    		cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
     		Board cloneBoard = cloner.deepClone(board);
     		Player clonePlayer = cloner.deepClone(player);
     		Action cloneAction = cloner.deepClone(action);
-    		System.out.println("CLONATO");
-    	System.out.println(checkMove(cloneBoard, clonePlayer, cloneAction));
+    		
+    		//applico gli effetti sul player. Se ho effetti che negano l'azione ottengo una ImpossibleMoveException.
+    		try{
+    			for(Effect buff : player.getEffectList()){
+    				buff.apply(cloneBoard, clonePlayer, cloneAction);
+    			}
+    		}catch(ImpossibleMoveException e){return;};
+    		
+    		//prendo il bonus dell'actionSpace
+    		clonePlayer.getResources().addResource(cloneBoard.getRegion(cloneAction.getActionRegionId())
+    				.getActionSpace(cloneAction.getActionSpaceId()).getBonus());
+    		
+    		// check l'azione
+    		if(checkMove(cloneBoard, clonePlayer, cloneAction)){
+    			
+    			//effettuo l'azione
+    			clonePlayer.makeAction(cloneAction);
+    			//sostituisco le copie con le originali
+    			game.setPlayer(clonePlayer);
+    			game.setBoard(cloneBoard);
+    		}
     	}
     }
 }
