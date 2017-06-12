@@ -21,7 +21,7 @@ public class NetworkClient{
 	private String name  ="pippo";
 	//private SlimPlayer I;
 	private HashMap<String,ClientPlayer> players;
-	private ClientBoard slimBoard;
+	private ClientBoard clientBoard;
 	
 	
 	public NetworkClient(){
@@ -31,6 +31,10 @@ public class NetworkClient{
 	
 	public MsgConnection getNetwork(){
 		return this.network;
+	}
+	
+	public ClientBoard getClientBoard(){
+		return this.clientBoard;
 	}
 	
 	public static void main(String[] args) throws IOException{
@@ -59,9 +63,8 @@ public class NetworkClient{
 						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
 
 						System.out.println("[NETWORKCLIENT] synchronizing board");
-						client.slimBoard = new ClientBoard(board);
+						client.clientBoard = new ClientBoard(board);
 						System.out.println("[NETWORKCLIENT] board correctly synchronized");
-						System.out.println(client.slimBoard.toString());
 						break;
 					case "STATCHNG":
 						String playerID = messagePayload.get("PLAYERID").asString();
@@ -80,6 +83,20 @@ public class NetworkClient{
 							
 							// ************************* ESEMPIO
 							System.out.println(client.players.get(client.myUUID).toString());
+						}
+						break;
+					case "CHGBOARDSTAT":
+						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
+						if(messagePayload.get("TYPE").asString().equals("BOARD")){
+							JsonArray cardLayout = Json.parse(messagePayload.get("PAYLOAD").asString()).asArray();
+							cardLayout.forEach(JSONcard -> {
+								JsonObject card = JSONcard.asObject();
+								int regionID = card.get("REGIONID").asInt();
+								int spaceID = card.get("SPACEID").asInt();
+								String cardName = card.get("NAME").asString();
+								client.getClientBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).setCard(cardName);
+							});
+							System.out.println(client.clientBoard.toString());
 						}
 						break;
 						

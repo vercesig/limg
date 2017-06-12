@@ -21,7 +21,7 @@ public class ClientRegion {
 		actionSpaces.forEach(actionSpace -> {
 			JsonObject slimActionSpace = actionSpace.asObject();
 			ResourceSet bonus = null;
-			if(!slimActionSpace.get("BONUS").isNull())
+			if(!slimActionSpace.get("BONUS").asString().equals("#"))
 				bonus = new ResourceSet(Json.parse(slimActionSpace.get("BONUS").asString()).asObject());			
 			int actionValue = slimActionSpace.getInt("ACTIONVALUE", 1);
 			boolean single = slimActionSpace.getBoolean("SINGLE", true);
@@ -36,5 +36,9 @@ public class ClientRegion {
 		tmp.append("************************** "+type.toUpperCase()+"\n");
 		actionSpaces.forEach(actionSpace -> tmp.append(actionSpace.toString()));
 		return new String(tmp);
+	}
+	
+	public ArrayList<ClientActionSpace> getActionSpaceList(){
+		return this.actionSpaces;
 	}
 }

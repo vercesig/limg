@@ -43,7 +43,7 @@ public class ClientActionSpace {
 		tmp.append("\n");
 
 		if(cardName!=null)
-			tmp.append("Card :"+this.cardName);
+			tmp.append("Card :"+this.cardName+"\n");
 		
 		tmp.append("-------------------------------------\n");
 		return new String(tmp);
