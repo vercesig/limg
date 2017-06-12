@@ -33,7 +33,7 @@ public class MoveCheckerTest {
 		jb = new JsonObject().add("MILITARY_POINTS", 2).add("WOOD", 4);
 		jc = new JsonObject().add("SERVANTS", 5).add("WOOD", 1);
 		
-		card = new DevelopmentCard ("Card", 1, "TERRITORYCARD");
+		card = new DevelopmentCard ("Card", 1, "TERRITORYCARD", 0);
 		card.registerCost(new JsonObject().add("WOOD", 1));
 		((TowerRegion) b.getRegion(5)).getTowerLayers()[0].setCard(card); 
 		

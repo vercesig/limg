@@ -9,7 +9,7 @@ public class DevelopmentCardTest {
 	
 	@Before
 	public void prepareTests(){
-		this.card = new DevelopmentCard("NAME", 0, "TYPE");
+		this.card = new DevelopmentCard("NAME", 0, "TYPE", 0);
 	}
 	
 	@Test

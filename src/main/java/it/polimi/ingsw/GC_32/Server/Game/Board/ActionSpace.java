@@ -200,7 +200,11 @@ public class ActionSpace{
 	 * @see 	ActionSpace.
 	 */
 	public String toString(){
-		String string = "[" + actionSpaceID + " ]" + "*" + actionValue + " ";
-		return string;
+		StringBuilder tmp = new StringBuilder();
+		tmp.append("[" + actionSpaceID + " ]" + "*" + actionValue + " \n");
+		try{
+		tmp.append(bonus.toString());
+		} catch(NullPointerException e){ tmp.append("null\n");}
+		return new String(tmp);
 	}
 }

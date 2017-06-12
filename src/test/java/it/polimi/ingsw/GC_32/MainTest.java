@@ -28,8 +28,6 @@ public class MainTest
      */
     public static Test suite() throws IOException
     {
-    	Main main = new Main();
-    	main.main(null);
     	return new TestSuite( MainTest.class );
     }
 

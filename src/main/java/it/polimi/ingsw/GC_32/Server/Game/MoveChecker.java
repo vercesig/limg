@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.rits.cloning.Cloner;
 
@@ -223,9 +224,20 @@ public class MoveChecker{
 		}System.out.println("/********Check FINITO result: " +result); 
 		return result; 
     }
+    
     // Simulatore della Mossa
     public void Simulate (Game game, Player player, Action action){
     	Board board = game.getBoard();
+    	
+    	//check Zone Bloccate per insufficiente numero di Giocatori
+    	switch (game.getPlayerList().size()){
+    	case 2 : if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
+    			(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2))
+    			{return;} // zone bloccate: Harvest-1,Production-1 e Market 2-3
+    	case 3 : if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)
+				{return;} // zone bloccate Market 2-3
+    	default : break;
+    	}
     	if(firstCheck(board, player, action)){
     		Cloner cloner = new Cloner();
     		cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
@@ -248,7 +260,60 @@ public class MoveChecker{
     		if(checkMove(cloneBoard, clonePlayer, cloneAction)){
     			
     			//effettuo l'azione
-    			clonePlayer.makeAction(cloneAction);
+    			switch(cloneAction.getActionType()){
+    			
+    			case "PRODUCTION" : {
+    				
+    				// sommo i bonus della tile 
+    				clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+    				
+    				// move FamilyMember
+    				int familyIndex = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt(); // indice fm da spostare
+    				cloneBoard.moveFamiliar(clonePlayer, familyIndex, cloneAction.getActionRegionId(), cloneAction.getActionSpaceId());
+    				
+    				//active cardEffect
+    				LinkedList<DevelopmentCard> cardlist = new LinkedList<DevelopmentCard>();
+    				cardlist = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
+    				for (DevelopmentCard c : cardlist){
+    					if(c.getMinimumActionvalue() > cloneAction.getActionValue()){
+    						cardlist.remove(c);
+    					}
+    				}
+    				//send Json with cardList to activate their effects
+    				// receive Json with cardList to activate
+    				try{
+    					for(DevelopmentCard c : cardlist){
+    						c.getInstantEffect().apply(cloneBoard, clonePlayer, cloneAction);
+    						//gestione dell'effetto change
+    					}	
+    				}catch(ImpossibleMoveException e){return;} // failed
+    				// sostituisco copie con originali.
+    			}
+    			case "HARVEST" : {
+    				
+    				// sommo i bonus della tile 
+    				clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+    				
+    				// move FamilyMember
+    				int familyIndex = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt(); // indice fm da spostare
+    				cloneBoard.moveFamiliar(clonePlayer, familyIndex, cloneAction.getActionRegionId(), cloneAction.getActionSpaceId());
+    				
+    				//active cardEffect
+    				LinkedList<DevelopmentCard> cardlist = new LinkedList<DevelopmentCard>();
+    				cardlist = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
+    				for(DevelopmentCard c : cardlist){
+						try {
+							c.getInstantEffect().apply(cloneBoard, clonePlayer, cloneAction);
+						} catch (ImpossibleMoveException e) {return;}
+					}
+    				// sostituisco copie con originali.
+    			}
+    			case "COUNCIL" : {}
+    			case "MARKET" : {}
+    			//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
+    			default : {}
+    			
+    			}
     			//sostituisco le copie con le originali
     			game.setPlayer(clonePlayer);
     			game.setBoard(cloneBoard);

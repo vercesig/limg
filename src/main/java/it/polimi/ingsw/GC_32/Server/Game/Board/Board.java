@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
+import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 
@@ -74,6 +75,11 @@ public class Board {
 	
 	public void flushBoard(){
 		
+	}
+	
+	public void moveFamiliar(Player owner, int pawnID, int regionID, int spaceID){
+		FamilyMember familyMember = owner.getFamilyMember()[pawnID];
+		this.getRegion(regionID).getActionSpace(spaceID).addFamilyMember(familyMember);
 	}
 	
 	public String toString(){

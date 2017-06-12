@@ -40,12 +40,19 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-			String name = card.get("name").asString();
-
-			Integer period = card.get("period").asInt();
-			String cardType = card.get("cardType").asString();
 			
-			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			String name = card.get("name").asString();
+			String cardType = card.get("cardType").asString();
+			Integer period = card.get("period").asInt();
+			Integer actionValue;
+			JsonValue action = card.get("minimumActionValue");
+	
+			if(!action.isNull())
+				actionValue = action.asInt();
+			else 
+				actionValue = 0;
+			
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
 			
 			// registrazione costi e requisiti
 			JsonValue requirements = card.get("requirements");

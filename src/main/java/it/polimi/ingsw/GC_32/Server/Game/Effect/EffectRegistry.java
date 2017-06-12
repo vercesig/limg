@@ -38,6 +38,7 @@ public class EffectRegistry{
             ChangeEffect.loadBuilder();
             ActionEffect.loadBuilder();
             PermanentEffect.loadBuilder();
+            UniqueEffect.loadBuilder();
         }
         return instance;
     }

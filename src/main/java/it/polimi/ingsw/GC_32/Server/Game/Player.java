@@ -19,7 +19,7 @@ public class Player {
 	private String name;
     private ArrayList<Effect> effectList;
 	private ResourceSet resources;
-	//private PersonalBonusTile personalBonusTile;
+	private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
 	private final String uuid;
 	
@@ -93,10 +93,6 @@ public class Player {
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
     }
     
-    //TO-DO PLayer effettua l'azione
-    public void makeAction(Action action){
-    }
-    
     // richiede di effettuare un azione a seguito dell'attivazione di un effeto
     public void makeAction(JsonValue payload){
     	GameMessage message = new GameMessage(this.uuid, payload.toString());
@@ -115,6 +111,10 @@ public class Player {
     	ActionSpace space = b.getRegion(a.getActionRegionId())
     			.getActionSpace(a.getActionSpaceId());
     	space.addFamilyMember(f);
+    }
+    
+    public PersonalBonusTile getPersonalBonusTile(){
+    	return this.personalBonusTile;
     }
     
 }
