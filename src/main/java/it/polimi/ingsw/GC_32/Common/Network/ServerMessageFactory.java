@@ -26,8 +26,7 @@ public class ServerMessageFactory {
 		
 		System.out.println("[GAME->SERVERMESSAGEFACTORY] creating JSON for inititial board configuration...");
 		
-		// ***************************** BOARD JSON
-		
+		// ***************************** BOARD JSON		
 		JsonObject bonus = null;
 		
 		// JSON towers
