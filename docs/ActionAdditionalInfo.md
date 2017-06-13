@@ -6,6 +6,5 @@ Some optional information are useful for the MoveChecker.
 
   Example of optional information are:
 
-* {FAMILY_MEMBER_COLOR : GREY}
 * {FAMILYMEMBER_ID: 0}
 * {INDEX_EFFECT: 0 }

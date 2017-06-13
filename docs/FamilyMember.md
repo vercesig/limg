@@ -9,3 +9,5 @@
 * index 1 : BLACK
 * index 2 : WHITE
 * index 3 : ORANGE
+
+ In json payload it is always specified the index as an int.

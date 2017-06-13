@@ -24,7 +24,7 @@ public class MoveCheckerTest {
 		p = new Player();
 		b = new Board();
 		a1 = new Action("TEST", 3, 0, 5); // Tower
-		a1.setAdditionalInfo(new JsonObject().add("FAMILY_MEMBER_COLOR" , "GREY"));
+		a1.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID" , 0));
 		a2 = new Action("TEST", 1, 1, 1); // Harvest multiple
 		a3 = new Action("TEST", 3, 0, 2); // Council
 		b.setTowerRegion(2);
@@ -51,7 +51,7 @@ public class MoveCheckerTest {
 		b.getRegion(1).getActionSpace(1).addFamilyMember(p.getFamilyMember()[1]);
 		Action act = new Action("TEST", 1, 0, 1);
 		JsonObject grey = new JsonObject();
-		grey.add("FAMILY_MEMBER_COLOR", "GREY");
+		grey.add("FAMILYMEMBER_ID", 0);
 		act.setAdditionalInfo(grey);
 		assertEquals(true, moveChecker.checkMove(b, p, act));
 	}

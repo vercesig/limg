@@ -82,9 +82,5 @@ public class Main {
 		System.out.println(b.getRegion(a.getActionRegionId()).getActionSpace(a.getActionSpaceId()));
 		//move.Simulate(game, p, a);
 		//	System.out.println(b.toString());
-	/*	System.out.println(a.toString());
-		System.out.println(p.toString());
-		System.out.println(card.toString());
-		*/
-    }
+	}
 }

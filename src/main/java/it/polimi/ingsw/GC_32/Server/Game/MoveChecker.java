@@ -17,7 +17,7 @@ public class MoveChecker{
     //FamilyColorCheck
     private boolean checkFamilyColor(Board board, Player player, Action action){
     	try{
-    		if(action.getAdditionalInfo().get("FAMILY_MEMBER_COLOR").asString().equals("GREY")){
+    		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
     			return true;
     		}
     	} catch(NullPointerException e){};
@@ -177,28 +177,35 @@ public class MoveChecker{
     			break;
     	} return result;
     }
+
     private boolean checkTowerMove(Board board, Player player, Action action){ 
 		boolean result = true;
 		while(result){
 			result = checkFamilyColor(board,player, action); // region ID valida
 			System.out.println("/******** CHECK FamilColor: PASSATO "+ result);
-			if(result==false){break;}
+			if(!result)
+				break;
 			result = checkCoinForTribute(board,player, action);
 			System.out.println("/******** CHECK COINS: PASSATO "+ result);
-			if(result==false){break;}
+			if(!result)
+				break;
 			result = checkIsFreeSingleSpace(board,player, action); // actionId valido
 			System.out.println("/******** CHECK FreeSingleSpace:" + result);
-			if(result==false){break;}
+			if(!result)
+				break;
 			result = checkMaxCard(board,player, action);
 			System.out.println("/******** CHECK MAxCard: "+ result );
-			if(result==false){break;}
+			if(!result)
+				break;
 			result = checkTerrytoryRequirement(board,player, action); // family member su free SingleSpace
 			System.out.println("/******** CHECK Terrytory" + result);
-			if(result==false){break;}
+			if(!result)
+				break;
 			result = checkCost(board,player, action); // actionValue azione >= actionValue space
 			System.out.println("/******** CHECK checkCost: " + result);
 			break;
-		} return result;
+		}
+		return result;
     }
     private boolean checkProductionHarvestMove(Board board, Player player, Action action){
     	boolean result = true;
@@ -281,6 +288,8 @@ public class MoveChecker{
     				}
     				//send Json with cardList to activate their effects
     				// receive Json with cardList to activate
+    				// payload doppio array, primo cosa mettere dentro, secondo quello che esce fuori.
+    				// pacchetto cambio di conbte
     				try{
     					for(DevelopmentCard c : cardlist){
     						c.getInstantEffect().apply(cloneBoard, clonePlayer, cloneAction);
@@ -303,7 +312,8 @@ public class MoveChecker{
     				cardlist = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
     				for(DevelopmentCard c : cardlist){
 						try {
-							c.getInstantEffect().apply(cloneBoard, clonePlayer, cloneAction);
+							c.getInstantEffect()
+							.apply(cloneBoard, clonePlayer, cloneAction);
 						} catch (ImpossibleMoveException e) {return;}
 					}
     				// sostituisco copie con originali.

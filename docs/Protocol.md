@@ -37,6 +37,8 @@ Following there is a rough draft concerning the codes and the inherent payload
 
 #### ACTCHK
 * result: true or false, if true the server already applied the action
+server inoltra al client che checkMove e' fallito.
+
 
 #### BRDSTS
 payload is a json-diff of the player object
