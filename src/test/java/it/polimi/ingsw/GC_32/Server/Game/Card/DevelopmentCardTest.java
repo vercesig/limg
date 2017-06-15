@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class DevelopmentCardTest {
 	public DevelopmentCard card;

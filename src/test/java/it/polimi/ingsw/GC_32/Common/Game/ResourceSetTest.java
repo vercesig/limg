@@ -1,10 +1,12 @@
-package it.polimi.ingsw.GC_32.Server.Game;
+package it.polimi.ingsw.GC_32.Common.Game;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
+
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ResourceSetTest{
 	public ResourceSet resourceSet;

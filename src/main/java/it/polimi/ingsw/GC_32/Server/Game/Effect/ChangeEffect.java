@@ -7,10 +7,10 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
 public class ChangeEffect {
