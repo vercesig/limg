@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32;
 import java.io.IOException;
 
 import it.polimi.ingsw.GC_32.Server.Game.GameLobby;
+import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 

@@ -50,6 +50,13 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	}
     }
 
+    public JsonObject toJson(){
+    	JsonObject resource = new JsonObject();
+    	for(String key : this.getResourceSet().keySet()){
+    		resource.add(key, this.getResouce(key));
+    	}
+    	return resource;
+    }	
      /**
      * It returns a comparison between two ResourceSet.
 	 * <ul>
