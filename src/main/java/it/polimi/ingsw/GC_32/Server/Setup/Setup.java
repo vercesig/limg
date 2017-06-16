@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -24,6 +26,8 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.*;
  */
 public class Setup {
 	
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	/**
 	 * this method encapsulate all the mechanisms which interest the management of the cards (both development card and excommunication card) before the 
 	 * start of the game (like the import of the cards from an external file and the preparation of the decks. Each deck contains only card belonging to one 
@@ -34,7 +38,7 @@ public class Setup {
 	 */
 	public void loadCard() throws IOException{
 		// preparazione carte sviluppo
-		System.out.println("[SETUP] loading development card...");
+		LOGGER.log(Level.INFO, "loading development card...");
 		Reader developmentCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("test.json"));
 		
 		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCard(developmentCardFile));
@@ -73,8 +77,9 @@ public class Setup {
 				Deck<DevelopmentCard> finalDeck = new Deck<DevelopmentCard>(tmp);
 				CardRegistry.getInstance().registerDeck(element.getKey(), finalDeck);
 		}
-		System.out.println("[SETUP] development card correctly loaded into CardRegistry");
-		System.out.println("[SETUP] loading excommunication card...");
+		LOGGER.log(Level.INFO, "development card correctly loaded into CardRegistry");
+		LOGGER.log(Level.INFO, "loading excommunication card...");
+		
 		// preparazione carte scomunica
 		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testscomunica.json"));
 		//FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
@@ -95,7 +100,6 @@ public class Setup {
 			Deck<ExcommunicationCard> tmpDeck = new Deck<ExcommunicationCard>(tmpSubDecks.get(i));
 			CardRegistry.getInstance().registerDeck(i,tmpDeck);
 		}
-		System.out.println("[SETUP] excommunication card correctly loaded into CardRegistry");
-		
+		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");		
 	}	
 }

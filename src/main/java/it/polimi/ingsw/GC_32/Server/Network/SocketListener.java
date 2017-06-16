@@ -15,13 +15,15 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class SocketListener implements Runnable{
 
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private ServerSocket serverSocket;
 	private ConcurrentHashMap<String,SocketInfoContainer> socketPlayerRegistry;
 	private Boolean stop = false;
 	
 	public SocketListener(int port) throws IOException{
 		this.serverSocket = new ServerSocket(port);
-		System.out.println("[SOCKETLISTENER] start");
+		LOGGER.log(Level.INFO, "start");
 		this.socketPlayerRegistry = new ConcurrentHashMap<String,SocketInfoContainer>();
 	}
 		
@@ -34,15 +36,15 @@ public class SocketListener implements Runnable{
 	}
 	
 	public void run(){
-		System.out.println("[SOCKETLISTENER] launching socketsentinel");
+		LOGGER.log(Level.INFO, "launching socketsentinel");
 		SocketSentinel sentinel = new SocketSentinel(this);
 		Thread sentinelThread = new Thread(sentinel);
 		sentinelThread.start();
-		System.out.println("[SOCKETLISTENER] ready to accept connection");
+		LOGGER.log(Level.INFO, "ready to accept connection");
 		while(true){
 			try {
 				Socket socket = serverSocket.accept();
-				System.out.println("[SOCKETLISTENER] new client connected");
+				LOGGER.log(Level.INFO, "new client connected");
 				Player newPlayer = new Player();
 				SocketInfoContainer newContainer = new SocketInfoContainer(socket);
 				socketPlayerRegistry.put(newPlayer.getUUID(), newContainer);	
@@ -54,7 +56,7 @@ public class SocketListener implements Runnable{
 				CONNEST.add("PLAYERID", newPlayer.getUUID());
 				GameMessage CONNESTmessage = new GameMessage(newPlayer.getUUID(),"CONNEST", CONNEST.toString());
 				MessageManager.getInstance().sendMessge(CONNESTmessage);
-				System.out.println("[SOCKETLISTENER] put CONNEST message in the sendQueue");
+				LOGGER.log(Level.INFO, "put CONNEST message in the sendQueue");
 				
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){

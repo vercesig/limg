@@ -11,6 +11,9 @@ import com.eclipsesource.json.JsonObject.Member;
 public class ClientBoard {
 
 	private ArrayList<ClientRegion> region;
+	int blackDice;
+	int whiteDice;
+	int orangeDice;
 	
 	public ClientBoard(JsonObject boardPacket){
 		this.region = new ArrayList<ClientRegion>();
@@ -21,6 +24,12 @@ public class ClientBoard {
 			
 			this.region.add(new ClientRegion(regionType,actionSpaces));			
 		});	
+	}
+	
+	public void setDiceValue(int blackValue, int whiteValue, int orangeValue){
+		this.blackDice = blackValue;
+		this.whiteDice = whiteValue;
+		this.orangeDice = orangeValue;
 	}
 	
 	public String toString(){

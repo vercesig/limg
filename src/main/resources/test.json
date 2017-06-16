@@ -44,7 +44,7 @@
 {
 	"name" : "Trading Town",
 	"cost" : null,
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,

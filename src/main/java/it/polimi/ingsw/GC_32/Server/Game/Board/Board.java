@@ -10,6 +10,8 @@ import it.polimi.ingsw.GC_32.Server.Game.Game;
 
 
 public class Board {
+	
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
@@ -29,7 +31,7 @@ public class Board {
 			region.add(4 + i, towerRegion[i]);
 			towerRegion[i].setTypeCard(cardTypes[i]);
 		}
-		System.out.println("[GAME->BOARD] board succesfully inizialized");
+		LOGGER.log(Level.INFO, "board succesfully inizialized");
 	}
 	
 	public Region getRegion(int idRegion){	// NUOVO METODO
@@ -65,7 +67,7 @@ public class Board {
 	}
 	
 	public void placeCards(Game game){
-		System.out.println("[BOARD] placing cards on tower regions...");
+		LOGGER.log(Level.INFO, "placing cards on tower regions...");
 		for(TowerRegion towerRegion : this.getTowerRegion()){
 			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
 				towerLayer.setCard(game.getDeck(towerRegion.getTypeCard()).drawElement());
@@ -74,7 +76,7 @@ public class Board {
 	}
 	
 	public void flushBoard(){
-		System.out.println("[BOARD] flushing board");
+		LOGGER.log(Level.INFO, "flushing board");
 		region.forEach(region -> region.flushRegion());
 	}
 	

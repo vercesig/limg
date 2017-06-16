@@ -1,8 +1,14 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class TurnManager {
+	
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	private int turnID;
 	private int roundID;
@@ -12,7 +18,7 @@ public class TurnManager {
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		System.out.println("[GAME->TURNMANAGER] tunrmanager inizialized");
+		LOGGER.log(Level.INFO, "tunrmanager inizialized");
 	}
 	
 	public int getTurnID(){
@@ -32,17 +38,7 @@ public class TurnManager {
 			return game.getPlayerList().get(currentIndexPlayer+1);
 		}catch(IndexOutOfBoundsException e){// il giro ricomincia
 			return game.getPlayerList().get(0); 
-		}
-		
-		//TODO: this is a mess
-		//ArrayList<Player> oldTurnOrder = new ArrayList<>();
-		//player che non hanno piazzato familiari nel councilregion
-		/*for(Player p : oldTurnOrder){
-			if(!newTurnOrder.contains(p)){
-				newTurnOrder.add(p);
-			}
 		}	
-		game.setPlayerOrder(newTurnOrder);*/		
 	}
 	
 	public boolean isRoundEnd(){
@@ -59,6 +55,26 @@ public class TurnManager {
 	
 	public boolean isGameEnd(){
 		return isPeriodEnd()&&roundID%6==0;
+	}
+	
+	public ArrayList<Player> updateTurnOrder(){
+		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(game.getPlayerList()); //vecchio ordine di turno	
+		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
+		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
+		
+		//aggiorno stato dell'ordine di turno quardando i familiari in councilRegion
+		for(FamilyMember f : councilRegionState){
+			if(!newTurnOrder.contains(f.getOwner())){
+				newTurnOrder.add(f.getOwner());
+			}
+		}
+		//player che non hanno piazzato familiari nel councilregion
+		for(Player p : oldTurnOrder){
+			if(!newTurnOrder.contains(p)){
+				newTurnOrder.add(p);
+			}
+		}	
+		return newTurnOrder;	
 	}
 	
 	/**

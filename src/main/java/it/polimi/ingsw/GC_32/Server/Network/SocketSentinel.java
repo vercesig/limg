@@ -13,15 +13,17 @@ import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 public class SocketSentinel implements Runnable{
 
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private SocketListener socketListener;
 	
 	public SocketSentinel(SocketListener target){
 		this.socketListener = target;
-		System.out.println("[SOCKETSENTINEL] start");
+		LOGGER.log(Level.INFO, "start");
 	}
 	
 	public void run(){
-		System.out.println("[SOCKETSENTINEL] ready to recive and send message");
+		LOGGER.log(Level.INFO, "ready to recive and send message");
 		while(true){		
 			
 			// se ci sono messaggi in coda li spedisco sul relativo socket
@@ -36,12 +38,12 @@ public class SocketSentinel implements Runnable{
 							tmpPrinter.println(finalMessage.toString());
 							tmpPrinter.flush();
 						});
-						System.out.println("[SOCKETSENTINEL] send message in broadcast");
+						LOGGER.log(Level.INFO, "send message ("+message.getOpcode()+")in broadcast");
 					}else{
 						PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerID()).getPrinterOut();
 						tmpPrinter.println(finalMessage.toString());
 						tmpPrinter.flush();
-						System.out.println("[SOCKETSENTINEL] message sent to :"+message.getPlayerID());
+						LOGGER.log(Level.INFO, "message sent to :"+message.getPlayerID());
 					}
 					MessageManager.getInstance().getSocketSendQueue().remove();
 				}
@@ -54,11 +56,10 @@ public class SocketSentinel implements Runnable{
 							Scanner tmpScanner = socketListener.getSocketPlayerRegistry().get(player).getScannerIn();
 							JsonObject parsedMessage = Json.parse(tmpScanner.nextLine()).asObject();						
 							GameMessage tmpMessage = new GameMessage(player,parsedMessage.get("MESSAGETYPE").asString(),parsedMessage.get("PAYLOAD").toString());
-							System.out.println("[SOCKETSENTINEL] catched new message for "+tmpMessage.getPlayerID());
+							LOGGER.log(Level.INFO, "catched new message for "+tmpMessage.getPlayerID());
 							MessageManager.getInstance().putRecivedMessage(tmpMessage);
 					}
 				} catch (IOException e) {
-					System.out.println("eccezione in lettura");
 					e.printStackTrace();
 					Logger.getLogger("").log(Level.SEVERE, "context", e);
 					break;

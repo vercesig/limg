@@ -2,6 +2,8 @@ package it.polimi.ingsw.GC_32.Common.Network;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
@@ -17,13 +19,15 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class ServerMessageFactory {
-
+	
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();
 		JsonArray GMSTRTplayers = new JsonArray();
 		JsonObject GMSTRTboard = new JsonObject();
 		
-		System.out.println("[GAME->SERVERMESSAGEFACTORY] creating JSON for inititial board configuration...");
+		LOGGER.log(Level.INFO, "creating JSON for inititial board configuration...");
 		
 		// ***************************** BOARD JSON	(l'ordine con cui vengono impilate le region è fondamentale)		
 		
@@ -99,7 +103,7 @@ public class ServerMessageFactory {
 		}
 		GMSTRT.add("BOARD", GMSTRTboard.toString());
 		
-		System.out.println("[GAME->SERVERMESSAGEFACTORY] packaging game player list...");
+		LOGGER.log(Level.INFO, "packaging game player list...");
 		
 		// playerList
 		game.getPlayerList().forEach(player -> GMSTRTplayers.add(player.getUUID()));
@@ -107,7 +111,7 @@ public class ServerMessageFactory {
 		GameMessage GMSTRTmessage = new GameMessage(null, "GMSTRT", GMSTRT.toString());
 		GMSTRTmessage.setAsBroadcastMessage();
 		
-		System.out.println("[GAME->SERVERMESSAGEFACTORY] done, GMSTRT ready to be sent");		
+		LOGGER.log(Level.INFO, "done, GMSTRT ready to be sent");		
 		
 		return GMSTRTmessage;
 	}
@@ -186,4 +190,15 @@ public class ServerMessageFactory {
 		
 		return new GameMessage(null, "CONTEXT", CONTEXT.toString()); 
 	} 
+	
+	public static GameMessage buildDICEROLLmessage(int blackDice, int whiteDice, int orangeDice){
+		JsonObject DICEROLL = new JsonObject();
+		DICEROLL.add("BLACKDICE", blackDice);
+		DICEROLL.add("WHITEDICE",whiteDice);
+		DICEROLL.add("ORANGEDICE", orangeDice);
+		
+		GameMessage DICEROLLmessage = new GameMessage(null, "DICEROLL", DICEROLL.toString());
+		DICEROLLmessage.setAsBroadcastMessage();
+		return DICEROLLmessage;
+	}
 }

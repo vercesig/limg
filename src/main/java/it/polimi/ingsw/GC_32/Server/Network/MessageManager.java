@@ -1,8 +1,11 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -10,6 +13,8 @@ import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 
 public class MessageManager {
 
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private static MessageManager instance;
 	private ConcurrentLinkedQueue<GameMessage> reciveQueue;
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
@@ -39,25 +44,25 @@ public class MessageManager {
 		if(filterMessageTypeSet.contains(message.getOpcode())){
 			message.setAsBroadcastMessage();
 			reciveQueue.add(message);
-			System.out.println("[MESSAGEMANAGER] add new message ("+message.getOpcode()+") to recivedQueue");
+			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 			return;
 		}
 		if(message.getPlayerID().equals(game.getLock())){
 			reciveQueue.add(message);
-			System.out.println("[MESSAGEMANAGER] add new ("+message.getOpcode()+") message to recivedQueue");
+			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 		}
 	}
 	
 	public void sendMessge(GameMessage gameMessage){
 		if(gameMessage.isBroadcastMessage()){
 			socketSendQueue.add(gameMessage);
-			System.out.println("[MESSAGEMANAGER] add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
+			LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
 			RMISendQueue.add(gameMessage);
-			System.out.println("[MESSAGEMANAGER] add new message ("+gameMessage.getOpcode()+") to RMI sendQueue");
+			LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to RMI sendQueue");
 		}else{
 			if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
 				socketSendQueue.add(gameMessage);
-				System.out.println("[MESSAGEMANAGER] add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
+				LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
 			}else{
 				RMISendQueue.add(gameMessage);
 			}	

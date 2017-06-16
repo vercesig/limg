@@ -3,6 +3,9 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
@@ -17,6 +20,8 @@ import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class Game implements Runnable{
 
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private ArrayList<Player> playerList;
 	private Board board;
 	
@@ -33,19 +38,19 @@ public class Game implements Runnable{
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players){
-		System.out.println("[GAME] setting up game...");
+		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
 		this.board = new Board();
 		this.turnManager = new TurnManager(this);
-		System.out.println("[GAME] loading cards...");
+		LOGGER.log(Level.INFO, "loading cards...");
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>(CardRegistry.getInstance().getDevelopmentDecks());
 		this.excommunicationCards = new ExcommunicationCard[3];	
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
-		System.out.println("[GAME] decks succesfully loaded");
+		LOGGER.log(Level.INFO, "decks succesfully loaded");
 		
-		System.out.println("[GAME] setting up players' resources");
+		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
 		for(int i=0; i<playerList.size(); i++){
 			playerList.get(i).getResources().setResource("WOOD", 2);
@@ -59,7 +64,7 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("MILITARY", 0);
 			
 		}
-		System.out.println("[GAME] setting first turn order");
+		LOGGER.log(Level.INFO, "setting first turn order");
 		Random randomGenerator = new Random();
 		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
 		int playerListSize = this.playerList.size();
@@ -70,11 +75,11 @@ public class Game implements Runnable{
 			playerList.remove(randomNumber);
 		}
 		playerList = startPlayerOrder;
-		System.out.println("[GAME] done");
+		LOGGER.log(Level.INFO, "done");
 	}
 	
 	public void run(){
-		System.out.println("[GAME] notifying connected players on game settings...");
+		LOGGER.log(Level.INFO, "notifying connected players on game settings...");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 		
 		// ********************* ESEMPIO 
@@ -91,18 +96,17 @@ public class Game implements Runnable{
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
-		
-		System.out.println("[GAME] done");	
+		LOGGER.log(Level.INFO, "done");	
 		
 		// svuoto la recivedQueue dai messaggi di game setting
-		System.out.println("[GAME] processing game setting messages...");
+		LOGGER.log(Level.INFO, "processing game setting messages..");
 		MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 			JsonObject JsonMessage = Json.parse(message.getMessage()).asObject();
 			switch(message.getOpcode()){
 			case "CHGNAME":
 				int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
 				this.playerList.get(playerIndex).setPlayerName(JsonMessage.get("NAME").asString());
-				System.out.println("[GAME] player "+message.getPlayerID()+" setted his name to "+JsonMessage.get("NAME").asString());
+				LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" setted his name to "+JsonMessage.get("NAME").asString());
 
 				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildNAMECHGmessage(message.getPlayerID(), JsonMessage.get("NAME").asString()));
 				break;
@@ -114,18 +118,25 @@ public class Game implements Runnable{
 				Thread.sleep(200);
 			} catch (InterruptedException e) {}
 		});
-		System.out.println("[GAME] done");
+		LOGGER.log(Level.INFO, "done");
 		
-		System.out.println("[GAME] ready to play");
+		LOGGER.log(Level.INFO, "ready to play");
 		this.board.placeCards(this);
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
+		LOGGER.log(Level.INFO, "notified players on card layout");
+		
+		diceRoll();
+		LOGGER.log(Level.INFO, "dice rolled");
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(blackDice, whiteDice, orangeDice));
+		
+		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
-		System.out.println("[GAME] notified players on card layout");
-		System.out.println("[GAME] giving lock to the first player...");
+		
+		LOGGER.log(Level.INFO, "giving lock to the first player...");
 		setLock(playerList.get(0).getUUID());
-		System.out.println("[GAME] player "+getLock()+" has the lock");
+		LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 		PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
 		
 		while(runGameFlag){
@@ -136,10 +147,10 @@ public class Game implements Runnable{
 					case "CHGNAME":
 						int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
 						this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
-						System.out.println("[GAME] player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
+						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
 						break;
 					case "ASKACT":
-						System.out.println("[GAME] processing ASKACT message from "+message.getPlayerID());
+						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 						int pawnID = Jsonmessage.get("PAWNID").asInt();
 						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 						
@@ -153,21 +164,21 @@ public class Game implements Runnable{
 						break;
 					case "TRNEND":
 						if(!turnManager.isGameEnd()){
-							System.out.println("[GAME] "+message.getPlayerID()+" has terminated his turn");
+							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 							
 							if(turnManager.isRoundEnd()){
-								System.out.println("[GAME] round end");
+								LOGGER.log(Level.INFO, "round end");
 								
 								if(turnManager.isPeriodEnd()){
-									System.out.println("[GAME] period "+turnManager.getRoundID()/2+" finished");
+									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 								}
 							}
-							System.out.println("[GAME] giving lock to the next player");
+							LOGGER.log(Level.INFO, "giving lock to the next player");
 							setLock(turnManager.nextPlayer().getUUID());
-							System.out.println("[GAME] player "+getLock()+" has the lock");
+							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 							PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
 						}else{
-							System.out.println("[GAME] game end");
+							LOGGER.log(Level.INFO, "game end");
 							//stopGame();
 						}
 						break;
@@ -228,26 +239,6 @@ public class Game implements Runnable{
 			player.getFamilyMember()[2].setActionValue(this.orangeDice);
 			player.getFamilyMember()[3].setActionValue(this.whiteDice);
 		});
-	}
-	
-	private void updateTurnOrder(){
-		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(playerList); //vecchio ordine di turno	
-		ArrayList<FamilyMember> councilRegionState = board.getCouncilRegion().getOccupants();		
-		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
-		
-		//aggiorno stato dell'ordine di turno quardando i familiari in councilRegion
-		for(FamilyMember f : councilRegionState){
-			if(!newTurnOrder.contains(f.getOwner())){
-				newTurnOrder.add(f.getOwner());
-			}
-		}
-		//player che non hanno piazzato familiari nel councilregion
-		for(Player p : oldTurnOrder){
-			if(!newTurnOrder.contains(p)){
-				newTurnOrder.add(p);
-			}
-		}	
-		playerList = newTurnOrder;	
 	}
 	
 	private void checkExcommunication(){

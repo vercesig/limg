@@ -121,6 +121,13 @@ public class MainClient{
 							System.out.println(client.getBoard().toString());
 						}
 						break;
+					case "DICEROLL":
+						int blackDice = messagePayload.get("BLACKDICE").asInt();
+						int whiteDice = messagePayload.get("WHITEDICE").asInt();
+						int orangeDice = messagePayload.get("ORANGEDICE").asInt();
+						client.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
+						System.out.println("[MAINCLIENT] set dice value to ["+blackDice+","+whiteDice+","+orangeDice+"]");
+						break;
 						
 				}
 			}
