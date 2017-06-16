@@ -63,7 +63,7 @@ public class JsonImporter {
 				}
 				newCard.registerCost(resourceArray.iterator());
 			}
-			if(!requirements.isNull())
+			if(requirements != null && !requirements.isNull())
 				newCard.setRequirments(requirements.asObject());
 			
 			// registrazione effetti

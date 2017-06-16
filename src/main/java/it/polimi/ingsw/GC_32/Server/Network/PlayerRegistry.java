@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,7 +32,7 @@ public class PlayerRegistry {
 		return this.playerConnectionMode.get(playerID);
 	}
 	
-	public void addPlayer(Player player) throws IOException{
+	public void addPlayer(Player player){
 		this.connectedPlayers.put(player.getUUID(),player);
 	}
 	

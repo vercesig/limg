@@ -9,8 +9,9 @@ public class CouncilRegion extends Region {
 	private ActionSpace councilSpace;
 	
 	public CouncilRegion(int regionID){
-		super(regionID);
+		super(regionID, 1);
 		this.councilSpace = new ActionSpace(null, 1, false, this.getRegionID(), 0);
+		this.getTrack()[0] = this.councilSpace;
 	}
 	
 	public void putFamilyMember(FamilyMember familyMember){
@@ -32,5 +33,4 @@ public class CouncilRegion extends Region {
 	public void flushRegion(){
 		councilSpace.flushActionSpace();
 	}
-	
 }
