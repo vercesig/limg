@@ -11,8 +11,8 @@ import com.eclipsesource.json.JsonObject.Member;
 
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
 public class NetworkClient{
 

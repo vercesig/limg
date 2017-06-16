@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
@@ -11,7 +10,7 @@ public class GameLobby {
 	private int startGameTimeout = 5000;
 	private Game game;
 	
-	public GameLobby() throws IOException, InterruptedException{
+	public GameLobby() throws InterruptedException{
 		System.out.println("[GAMELOBBY] GameLobby start, waiting for players");
 		while(true){
 			if(PlayerRegistry.getInstance().getConnectedPlayers().size()>=MIN_PLAYERS){

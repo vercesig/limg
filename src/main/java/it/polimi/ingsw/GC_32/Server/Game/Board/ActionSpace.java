@@ -2,9 +2,9 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 /**
  * ActionSpace is a specific Box of the Game in which can be placed a FamilyMember.
  * In the ActionSpace there are informations about:

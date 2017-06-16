@@ -5,9 +5,10 @@ import java.util.Iterator;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
-import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
+import com.eclipsesource.json.JsonValue;
 
 
 public class DevelopmentCard extends Card{

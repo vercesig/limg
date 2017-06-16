@@ -4,9 +4,9 @@ import java.util.Iterator;
 import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
 /**
