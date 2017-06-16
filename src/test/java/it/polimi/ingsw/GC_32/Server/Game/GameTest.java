@@ -64,7 +64,8 @@ public class GameTest {
 		Setup setup = new Setup();
 		try{
 			setup.loadCard();
-		}catch(Exception e){}
+		}
+		catch(Exception e){}
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);

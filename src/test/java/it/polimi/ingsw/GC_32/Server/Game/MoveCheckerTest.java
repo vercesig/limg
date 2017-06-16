@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
-import it.polimi.ingsw.GC_32.Server.Game.Board.Region;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 

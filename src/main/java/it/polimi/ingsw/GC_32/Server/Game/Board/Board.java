@@ -13,13 +13,9 @@ public class Board {
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
-	private ProductionRegion productionRegion;
-	private HarvestRegion harvestRegion;
-	private CouncilRegion councilRegion;
-	private MarketRegion marketRegion;
 		
 	public Board(){
-		this.region = new ArrayList <Region>();
+		this.region = new ArrayList<Region>();
 		region.add(0, new ProductionRegion(0)); 
 		region.add(1, new HarvestRegion(1));
 		region.add(2, new CouncilRegion(2)); 
@@ -27,7 +23,7 @@ public class Board {
 		
 		// setup delle torri
 		String[] cardTypes = CardRegistry.getInstance().getAllCardType().toArray(new String[CardRegistry.getInstance().getAllCardType().size()]);
-		this.towerRegion =new TowerRegion[cardTypes.length];
+		this.towerRegion = new TowerRegion[cardTypes.length];
 		for(int i=0; i<cardTypes.length; i++){
 			towerRegion[i] = new TowerRegion(i + 4,4);
 			region.add(4 + i, towerRegion[i]);
