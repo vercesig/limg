@@ -10,6 +10,7 @@ public class ClientPlayer {
 
 	private ResourceSet playerResources;
 	private HashMap<String, ArrayList<String>> cards;
+	private String name;
 	
 	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
@@ -24,6 +25,10 @@ public class ClientPlayer {
 		this.playerResources.setResource("FAITH", 0);
 	}
 		
+	public void setName(String name){
+		this.name = name;
+	}
+	
 	public ResourceSet getPlayerResources(){
 		return this.playerResources;
 	}

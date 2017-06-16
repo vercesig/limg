@@ -2,6 +2,8 @@ package it.polimi.ingsw.GC_32.Client;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
+
 public interface ClientInterface{
 	//Context Management Section
 	public int getScreenId();
@@ -18,6 +20,7 @@ public interface ClientInterface{
 	public void setDiceValue(int blackDice, int whiteDice, int orangeDice);
 	public void enableSpace(int regionID, int spaceID);
 	public void disableSpace(int regionID, int spaceID);
+	public void registerBoard(ClientBoard board);
 	
 	//Game Change
 	public void moveFamiliar(int familiar, int regionID, int spaceID);
