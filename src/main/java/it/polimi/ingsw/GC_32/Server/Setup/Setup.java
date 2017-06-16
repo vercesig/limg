@@ -26,7 +26,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.*;
  */
 public class Setup {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(Setup.class.getName());
 	
 	/**
 	 * this method encapsulate all the mechanisms which interest the management of the cards (both development card and excommunication card) before the 

@@ -13,7 +13,7 @@ import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 
 public class MessageManager {
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(MessageManager.class.getName());
 	
 	private static MessageManager instance;
 	private ConcurrentLinkedQueue<GameMessage> reciveQueue;

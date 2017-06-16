@@ -15,7 +15,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class SocketListener implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(SocketListener.class.getName());
 	
 	private ServerSocket serverSocket;
 	private ConcurrentHashMap<String,SocketInfoContainer> socketPlayerRegistry;

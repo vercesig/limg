@@ -11,7 +11,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Game;
 
 public class Board {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(Board.class.getName());
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;

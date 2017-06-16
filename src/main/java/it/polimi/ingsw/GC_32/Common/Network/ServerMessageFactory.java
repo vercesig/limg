@@ -20,7 +20,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class ServerMessageFactory {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(ServerMessageFactory.class.getName());
 	
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();

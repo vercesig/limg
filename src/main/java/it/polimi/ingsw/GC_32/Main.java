@@ -10,7 +10,7 @@ import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class Main {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 		
     public static void main( String[] args ) throws IOException, InterruptedException{
             	    	

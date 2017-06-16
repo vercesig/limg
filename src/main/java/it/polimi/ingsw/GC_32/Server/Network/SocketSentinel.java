@@ -13,7 +13,7 @@ import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 public class SocketSentinel implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(SocketSentinel.class.getName());
 	
 	private SocketListener socketListener;
 	

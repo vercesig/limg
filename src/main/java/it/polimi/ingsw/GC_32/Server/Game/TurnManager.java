@@ -8,7 +8,7 @@ import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class TurnManager {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(TurnManager.class.getName());
 	
 	private int turnID;
 	private int roundID;

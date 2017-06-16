@@ -9,7 +9,7 @@ import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class GameLobby {
 	
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(GameLobby.class.getName());
 	
 	private int MIN_PLAYERS = 2;
 	private int MAX_PLAYERS = 4;
