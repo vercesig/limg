@@ -1,10 +1,11 @@
 package it.polimi.ingsw.GC_32.Server.Game.Card;
+
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 public class DevelopmentCardTest {
 	public DevelopmentCard card;
 	
@@ -17,27 +18,22 @@ public class DevelopmentCardTest {
 	public void checkGetCost(){
 		assertNotNull(this.card.getCost());
 	}
-	
 	@Test
 	public void checkGetPeriod(){
 		assertEquals(0, this.card.getPeriod());
 	}
-	
 	@Test
 	public void checkGetType(){
 		assertEquals("TYPE", this.card.getType());
 	}
-	
 	@Test
 	public void checkGetRequirements(){
 		assertNotNull(this.card.getRequirments());
 	}
-	
 	@Test
 	public void checkToString(){
 		assertNotNull(this.card.toString());
 	}
-	
 	@Test
 	public void checkRegisterCost(){
 		JsonObject jcost = new JsonObject().add("COIN", 10).add("WOOD", 100).add("STONE", 9);

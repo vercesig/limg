@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Server.Game;
+package it.polimi.ingsw.GC_32.Common.Game;
 
 import static org.junit.Assert.*;
 

@@ -97,4 +97,10 @@ public class GameTest {
 		this.game.setLock("TESTLOCK");
 		assertEquals("TESTLOCK", this.game.getLock());
 	}
+	
+	@Test
+	public void checkBoardNotNull(){
+		this.game = new Game(new ArrayList<Player>());
+		assertNotNull(this.game.getBoard());
+	}
 }

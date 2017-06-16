@@ -59,5 +59,10 @@ public class TowerLayer {
 			}
 		} return bonusJs;
 	}
+
+	public void flushTowerLayer(){
+		this.card = null;
+		actionSpace.flushActionSpace();
+	}
 	
 }

@@ -179,11 +179,10 @@ public class ServerMessageFactory {
 		CHGBOARDSTATmessage.setAsBroadcastMessage();		
 		return CHGBOARDSTATmessage;
 	}
-	
 	public static GameMessage buildContextMessage(JsonObject payload) {
-		
+			
 		JsonObject CONTEXT = new JsonObject();
-		CONTEXT.add("PAYLOAD", payload.toString());
+		CONTEXT.add("PAYLOAD", payload.toString());				
 		
 		return new GameMessage(null, "CONTEXT", CONTEXT.toString()); 
 	} 
