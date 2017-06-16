@@ -1,19 +1,21 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
-import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import com.eclipsesource.json.JsonObject;
+
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class PersonalBonusTile {
 	
-	private Effect personalBonus; 
+	private ResourceSet personalBonus; 
 	private boolean flagGameRule; // flag for the type of game rule: STANDARD or ADVANCED 
 	
-	public PersonalBonusTile(Effect personalBonus, boolean flagGameRule){
+	public PersonalBonusTile(JsonObject config, boolean flagGameRule){
 		
-		this.personalBonus = personalBonus;
+		this.personalBonus = new ResourceSet(config);
 		this.flagGameRule = flagGameRule;
 	}
 	
-	public Effect getPersonalBonus(){
+	public ResourceSet getPersonalBonus(){
 		return this.personalBonus;
 	} 
 	

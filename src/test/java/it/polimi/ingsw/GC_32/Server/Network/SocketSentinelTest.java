@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,8 +29,8 @@ public class SocketSentinelTest{
 		when(socket.getInputStream()).thenReturn(testString);
 		ByteArrayOutputStream returnString = new ByteArrayOutputStream();
 		when(socket.getOutputStream()).thenReturn(returnString);
-		ConcurrentHashMap<String, Socket> playerMap = new ConcurrentHashMap<>();
-		playerMap.put("Test_player", socket);
+		ConcurrentHashMap<String, SocketInfoContainer> playerMap = new ConcurrentHashMap<>();
+		playerMap.put("Test_player", new SocketInfoContainer(socket));
 		when(socketListener.getSocketPlayerRegistry()).thenReturn(playerMap);
 		SocketSentinel ss = new SocketSentinel(socketListener);
 		Thread threadObject = new Thread(ss);
@@ -42,7 +40,7 @@ public class SocketSentinelTest{
 		//assertEquals("Test_player", msg.getPlayerID());
 		//assertEquals("Test_String", msg.getMessage());
 		PlayerRegistry.getInstance().registerPlayer("Test_player", ConnectionType.SOCKET);
-		GameMessage newMsg = new GameMessage("Test_Player","Return_Test");
+		GameMessage newMsg = new GameMessage("Test_Player", "TESTMSG", "Return_Test");
 		MessageManager.getInstance().sendMessge(newMsg);
 		while(returnString.toString() == ""){}
 		//assertEquals("Return_Test",returnString.toString());

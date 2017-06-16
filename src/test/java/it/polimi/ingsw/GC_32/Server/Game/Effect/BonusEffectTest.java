@@ -19,7 +19,7 @@ public class BonusEffectTest {
 	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 	
 	@Test
-	public void checkBonusEffectCard(){
+	public void checkBonusEffectCard() throws ImpossibleMoveException{
 		
 		Player testPlayer = new Player();
 		testPlayer.getResources().setResource("COINS", 0);
@@ -43,11 +43,11 @@ public class BonusEffectTest {
 
 		bonusCardTest.apply(null, testPlayer, null);
 		
-		assertEquals(8, testPlayer.getResources().getResouce("COINS"));	
+		assertEquals(8, testPlayer.getResources().getResource("COINS"));	
 	}
 	
 	@Test
-	public void checkBonusEffectResource(){
+	public void checkBonusEffectResource() throws ImpossibleMoveException{
 		Player testPlayer = new Player();
 		testPlayer.getResources().setResource("WOOD", 12);
 		testPlayer.getResources().setResource("MILITARY", 0);
@@ -63,7 +63,7 @@ public class BonusEffectTest {
 		
 		bonusResourceTest.apply(null, testPlayer, null);
 		
-		assertEquals(6, testPlayer.getResources().getResouce("MILITARY"));
+		assertEquals(6, testPlayer.getResources().getResource("MILITARY"));
 	}
 	
 }

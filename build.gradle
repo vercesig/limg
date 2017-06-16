@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version: '0.9.4'
+    compile group: 'uk.com.robust-it', name: 'cloning', version: '1.9.3'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.mockito:mockito-core:2.+'
 }
@@ -47,5 +48,26 @@ publishing {
         }
     }
 }
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+task convertCards {
+    doLast {
+        exec {
+            executable 'python3'
+            args 'utils/card_converter.py', 'raw_resources/cards.csv', 'src/main/resources/cards.json'
+        }
+        exec {
+            executable 'python3'
+            args 'utils/card_converter.py', 'raw_resources/excom_cards.csv', 'src/main/resources/excom_cards.json'
+        }
+    }
+    description = "Convert the cards from csv to json format"
+}
+tasks.processResources.dependsOn(convertCards)
 
 description = 'Prova Finale Ingegneria del software'

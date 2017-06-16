@@ -2,9 +2,9 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 /**
  * ActionSpace is a specific Box of the Game in which can be placed a FamilyMember.
  * In the ActionSpace there are informations about:
@@ -30,8 +30,9 @@ public class ActionSpace{
 	private final int regionID;
 	private final int actionSpaceID;
 	
-	/**
-	 * This method builds an ActionSpace object with the specific parameters passed.  
+	/**If returns true, this is a single ActionSpace and only one FamilyMember is permitted.
+	 * If returns false, this is a multiple ActionSpace and there is no limit of FamilyMember that can occupy this ActionSpace
+	 * builds an ActionSpace object with the specific parameters passed.  
 	 * <p>
 	 * An actionSpace that has to be used in the Game, must have actionSpaceID and regionID 
 	 * not null.
@@ -152,13 +153,10 @@ public class ActionSpace{
 	 * @author VaporUser
 	 * @see ActionSpace, FamilyMember, Player.
 	 * */
-	public boolean addFamilyMember(FamilyMember familyMember){
-		if(this.isBusy() && this.isSingleActionSpace()){
-			return false;
-		}
+	public void addFamilyMember(FamilyMember familyMember){
+		
 		occupants.add(familyMember);
 		familyMember.setPosition(this);
-		return true;
 	}
 	
 	/**
@@ -202,7 +200,22 @@ public class ActionSpace{
 	 * @see 	ActionSpace.
 	 */
 	public String toString(){
-		String string = "[" + actionSpaceID + " ]" + "*" + actionValue + " ";
-		return string;
+		StringBuilder tmp = new StringBuilder();
+		tmp.append("[" + actionSpaceID + " ]" + "*" + actionValue + " \n");
+		try{
+		tmp.append(bonus.toString());
+		} catch(NullPointerException e){ tmp.append("null\n");}
+		return new String(tmp);
+	}
+	
+	public ArrayList<FamilyMember> getOccupants(){
+		return this.occupants;
+	}
+	
+	public void flushActionSpace(){
+		this.occupants.forEach(familyMember -> {
+			familyMember.removeFromBoard();
+		});
+		this.occupants.clear();
 	}
 }

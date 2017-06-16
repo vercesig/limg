@@ -16,6 +16,6 @@ public class MainTest{
 		Player player = new Player();
 		ArrayList<Player> playerList = new ArrayList<>();
 		playerList.add(player);
-		Main.newGame(playerList);
+		//Main.newGame(playerList);
 	}
 }

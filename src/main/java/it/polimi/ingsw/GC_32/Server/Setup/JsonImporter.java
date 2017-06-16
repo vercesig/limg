@@ -1,16 +1,12 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
-import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -40,15 +36,22 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-			String name = card.get("name").asString();
 
-			Integer period = card.get("period").asInt();
+			String name = card.get("name").asString();
 			String cardType = card.get("cardType").asString();
+			Integer period = card.get("period").asInt();
+			Integer actionValue;
+			JsonValue action = card.get("minimumActionValue");
+	
+			if(!action.isNull())
+				actionValue = action.asInt();
+			else 
+				actionValue = 0;
 			
-			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
 			
 			// registrazione costi e requisiti
-			JsonValue requirments = card.get("requirments");
+			JsonValue requirements = card.get("requirements");
 			JsonValue resourceCost = card.get("cost");
 			if(!resourceCost.isNull()){
 				JsonArray resourceArray = new JsonArray();
@@ -60,8 +63,8 @@ public class JsonImporter {
 				}
 				newCard.registerCost(resourceArray.iterator());
 			}
-			if(!requirments.isNull())
-				newCard.setRequirments(requirments.asObject());
+			if(requirements != null && !requirements.isNull())
+				newCard.setRequirments(requirements.asObject());
 			
 			// registrazione effetti
 			JsonValue instantEffect = card.get("instantEffect");
@@ -120,7 +123,7 @@ public class JsonImporter {
 			ExcommunicationCard newCard = new ExcommunicationCard(name.asString(),period.asInt());
 			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
 			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
-									
+			
 			cardList.add(newCard);
 		}
 		

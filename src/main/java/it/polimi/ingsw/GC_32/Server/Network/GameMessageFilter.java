@@ -8,7 +8,6 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
-import it.polimi.ingsw.GC_32.Server.Game.MoveChecker;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 

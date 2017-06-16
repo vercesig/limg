@@ -1,22 +1,20 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
-import it.polimi.ingsw.GC_32.Main;
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class PlayerRegistry {
 
 	private static PlayerRegistry instance;
-	private HashMap<String,ConnectionType> playerConnectionMode;
-	private HashMap<String,Player> connectedPlayers;
+	private ConcurrentHashMap<String,ConnectionType> playerConnectionMode;
+	private ConcurrentHashMap<String,Player> connectedPlayers;
 	
 	private PlayerRegistry(){
-		playerConnectionMode = new HashMap<String, ConnectionType>();
-		connectedPlayers = new HashMap<String,Player>();
+		playerConnectionMode = new ConcurrentHashMap<String, ConnectionType>();
+		connectedPlayers = new ConcurrentHashMap<String,Player>();
 	}
 	
 	public static PlayerRegistry getInstance(){
@@ -34,17 +32,13 @@ public class PlayerRegistry {
 		return this.playerConnectionMode.get(playerID);
 	}
 	
-	public void addPlayer(Player player) throws IOException{
+	public void addPlayer(Player player){
 		this.connectedPlayers.put(player.getUUID(),player);
-		if(connectedPlayers.size()>1)
-			Main.newGame(getConnectedPlayers());
 	}
 	
 	public ArrayList<Player> getConnectedPlayers(){
 		ArrayList<Player> tmp = new ArrayList<Player>();
-		connectedPlayers.values().iterator().forEachRemaining(player -> {
-			tmp.add(player);
-		});
+		connectedPlayers.values().iterator().forEachRemaining(player -> tmp.add(player));
 		return tmp;
 	}
 	

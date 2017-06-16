@@ -1,12 +1,12 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
-import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
+
 
 /**
  * Board is a set of all the Region of the Game in which can be placed a FamilyMember.
@@ -27,13 +27,11 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
  */
 
 public class Board {
+	
+	private final static Logger LOGGER = Logger.getLogger(Board.class.getName());
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
-	private ProductionRegion productionRegion;
-	private HarvestRegion harvestRegion;
-	private CouncilRegion councilRegion;
-	private MarketRegion marketRegion;
 	
 	/**
 	 * Board constructor.
@@ -52,48 +50,21 @@ public class Board {
 	 * @see Region, TowerRegion, ProductionRegion, HarverstRegion, CouncilRegion, MarketRegion.
 	 */
 	public Board(){
-
-		this.productionRegion = new ProductionRegion(0);
-		this.harvestRegion = new HarvestRegion(1);
-		this.councilRegion = new CouncilRegion(2);
-		this.marketRegion = new MarketRegion(3);
+		this.region = new ArrayList<Region>();
+		region.add(0, new ProductionRegion(0)); 
+		region.add(1, new HarvestRegion(1));
+		region.add(2, new CouncilRegion(2)); 
+		region.add(3, new MarketRegion(3));
 		
-		this.region = new ArrayList <Region>();
-		region.add(0, (Region) productionRegion); 
-		region.add(1, (Region) harvestRegion);
-		region.add(2, (Region) councilRegion); 
-		region.add(3, (Region) marketRegion);
-	}
-	
-	/**
-	 * Get method for the {@link #towerRegion}.
-	 * <p>
-	 * It is helpful to get informations about the TowerRegion in the Board.
-	 * 
-	 * @author VaporUser.
-	 * @return this {@link #towerRegion}.
-	 * @see Board, TowerRegion.
-	 */
-	public TowerRegion[] getTowerRegion(){
-		return this.towerRegion;
-	}
-	
-	/**
-	 * Set method for the {@link #towerRegion}.
-	 * <p>
-	 * With this method it can be build all the TowerRegion in the Board.
-	 * It calls the {@link TowerRegion}'s Constructor.
-	 * 
-	 * @author VaporUser.
-	 * @param numberOfTowers specifies the number of layer for each TowerRegion.
-	 * @see Board, TowerRegion, TOwerLayer.
-	 */
-	public void setTowerRegion(int numberOfTowers){
-		this.towerRegion = new TowerRegion[numberOfTowers];
-		for(int i=0; i<numberOfTowers; i++){
+		// setup delle torri
+		String[] cardTypes = CardRegistry.getInstance().getAllCardType().toArray(new String[CardRegistry.getInstance().getAllCardType().size()]);
+		this.towerRegion = new TowerRegion[cardTypes.length];
+		for(int i=0; i<cardTypes.length; i++){
 			towerRegion[i] = new TowerRegion(i + 4,4);
-			region.add(4 + i, (Region) towerRegion[i]);
+			region.add(4 + i, towerRegion[i]);
+			towerRegion[i].setTypeCard(cardTypes[i]);
 		}
+		LOGGER.log(Level.INFO, "board succesfully inizialized");
 	}
 	
 	/**
@@ -115,6 +86,10 @@ public class Board {
 			return null;
 		}
 	}
+		
+	public TowerRegion[] getTowerRegion(){
+		return this.towerRegion;
+	}
 	
 	/**
 	 * Get method for the {@link #region}.
@@ -125,7 +100,7 @@ public class Board {
 	 * @return this {@link #region}.
 	 * @see Board, Region.
 	 */
-	public ArrayList <Region> getRegionMap(){
+	public ArrayList<Region> getRegionMap(){
 		return this.region;
 	}
 	
@@ -139,7 +114,7 @@ public class Board {
 	 * @see Board, ProductionRegion.
 	 */
 	public ProductionRegion getProductionRegion(){
-		return this.productionRegion;
+		return (ProductionRegion) this.region.get(0);
 	}
 	
 	/**
@@ -152,7 +127,7 @@ public class Board {
 	 * @see Board, HarvestRegion.
 	 */
 	public HarvestRegion getHarvestRegion(){
-		return this.harvestRegion;
+		return (HarvestRegion) this.region.get(1);
 	}
 	
 	/**
@@ -165,7 +140,7 @@ public class Board {
 	 * @see Board, CouncilRegion.
 	 */
 	public CouncilRegion getCouncilRegion(){
-		return this.councilRegion;
+		return (CouncilRegion) this.region.get(2);
 	}
 	
 	/**
@@ -178,11 +153,21 @@ public class Board {
 	 * @see Board, MarketRegion.
 	 */
 	public MarketRegion getMarketRegion(){
-		return this.marketRegion;
+		return (MarketRegion) this.region.get(3);
+	}
+	
+	public void placeCards(Game game){
+		LOGGER.log(Level.INFO, "placing cards on tower regions...");
+		for(TowerRegion towerRegion : this.getTowerRegion()){
+			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
+				towerLayer.setCard(game.getDeck(towerRegion.getTypeCard()).drawElement());
+			}
+		}	
 	}
 	
 	public void flushBoard(){
-		
+		LOGGER.log(Level.INFO, "flushing board");
+		region.forEach(region -> region.flushRegion());
 	}
 	
 	/**

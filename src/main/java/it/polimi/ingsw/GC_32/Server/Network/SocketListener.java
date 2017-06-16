@@ -6,26 +6,28 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class SocketListener implements Runnable{
 
+	private final static Logger LOGGER = Logger.getLogger(SocketListener.class.getName());
+	
 	private ServerSocket serverSocket;
-	private ConcurrentHashMap<String,Socket> socketPlayerRegistry;
+	private ConcurrentHashMap<String,SocketInfoContainer> socketPlayerRegistry;
 	private Boolean stop = false;
 	
 	public SocketListener(int port) throws IOException{
 		this.serverSocket = new ServerSocket(port);
-		System.out.println("ready!!");
-		this.socketPlayerRegistry = new ConcurrentHashMap<String,Socket>();
-		SocketSentinel sentinel = new SocketSentinel(this);
-		Thread sentinelThread = new Thread(sentinel);
-		sentinelThread.start();
+		LOGGER.log(Level.INFO, "start");
+		this.socketPlayerRegistry = new ConcurrentHashMap<String,SocketInfoContainer>();
 	}
 		
-	public ConcurrentHashMap<String, Socket> getSocketPlayerRegistry(){
+	public ConcurrentHashMap<String, SocketInfoContainer> getSocketPlayerRegistry(){
 		return this.socketPlayerRegistry;
 	}
 	
@@ -34,14 +36,28 @@ public class SocketListener implements Runnable{
 	}
 	
 	public void run(){
+		LOGGER.log(Level.INFO, "launching socketsentinel");
+		SocketSentinel sentinel = new SocketSentinel(this);
+		Thread sentinelThread = new Thread(sentinel);
+		sentinelThread.start();
+		LOGGER.log(Level.INFO, "ready to accept connection");
 		while(true){
 			try {
 				Socket socket = serverSocket.accept();
+				LOGGER.log(Level.INFO, "new client connected");
 				Player newPlayer = new Player();
-				socketPlayerRegistry.put(newPlayer.getUUID(), socket);	
+				SocketInfoContainer newContainer = new SocketInfoContainer(socket);
+				socketPlayerRegistry.put(newPlayer.getUUID(), newContainer);	
 				
 				PlayerRegistry.getInstance().registerPlayer(newPlayer.getUUID(), ConnectionType.SOCKET);
-				System.out.println("client inserito");
+				
+				// inoltro del CONNEST
+				JsonObject CONNEST = new JsonObject();
+				CONNEST.add("PLAYERID", newPlayer.getUUID());
+				GameMessage CONNESTmessage = new GameMessage(newPlayer.getUUID(),"CONNEST", CONNEST.toString());
+				MessageManager.getInstance().sendMessge(CONNESTmessage);
+				LOGGER.log(Level.INFO, "put CONNEST message in the sendQueue");
+				
 				PlayerRegistry.getInstance().addPlayer(newPlayer);
 			}catch(IOException e){
 				Logger.getLogger("").log(Level.SEVERE, "context", e);

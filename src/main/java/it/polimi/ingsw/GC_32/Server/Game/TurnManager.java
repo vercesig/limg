@@ -1,14 +1,14 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
+	
+	private final static Logger LOGGER = Logger.getLogger(TurnManager.class.getName());
 	
 	private int turnID;
 	private int roundID;
@@ -16,28 +16,49 @@ public class TurnManager {
 	
 	public TurnManager(Game game){
 		this.turnID = 1;
-		this.roundID = 1;
+		this.roundID = 0;
 		this.game = game;
+		LOGGER.log(Level.INFO, "tunrmanager inizialized");
 	}
 	
 	public int getTurnID(){
 		return this.turnID;
 	}
 	
-	private void diceRoll(){
-		Random randomGenerator = new Random();
-		game.setBlackDiceValue(1+randomGenerator.nextInt(6));
-		game.setOrangeDiceValue(1+randomGenerator.nextInt(6));
-		game.setWhiteDiceValue(1+randomGenerator.nextInt(6));
-		for(Player player : game.getPlayerList()){
-			player.getFamilyMember()[1].setActionValue(game.getBlackDiceValue());
-			player.getFamilyMember()[2].setActionValue(game.getWhiteDiceValue());
-			player.getFamilyMember()[3].setActionValue(game.getOrangeDiceValue());
-		}
+	public int getRoundID(){
+		return this.roundID;
 	}
 	
-	private void updateTurnOrder(){
-		ArrayList<Player> oldTurnOrder = game.getPlayerList(); //vecchio ordine di turno	
+	// restituisce il player a cui passare il lock
+	public Player nextPlayer(){
+		turnID++;
+		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));		
+		
+		try{// non sono l'ultimo giocatore della lista
+			return game.getPlayerList().get(currentIndexPlayer+1);
+		}catch(IndexOutOfBoundsException e){// il giro ricomincia
+			return game.getPlayerList().get(0); 
+		}	
+	}
+	
+	public boolean isRoundEnd(){
+		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+			roundID++;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isPeriodEnd(){
+		return roundID!=0&&roundID%2==0;
+	}
+	
+	public boolean isGameEnd(){
+		return isPeriodEnd()&&roundID%6==0;
+	}
+	
+	public ArrayList<Player> updateTurnOrder(){
+		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(game.getPlayerList()); //vecchio ordine di turno	
 		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
 		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
 		
@@ -53,68 +74,7 @@ public class TurnManager {
 				newTurnOrder.add(p);
 			}
 		}	
-		game.setPlayerOrder(newTurnOrder);		
-	}
-	
-	private void placeCards(){
-		for(TowerRegion towerRegion : this.game.getBoard().getTowerRegion()){
-			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
-				towerLayer.setCard(game.getDeck(towerRegion.getTypeCard()).drawElement());
-			}
-		}	
-	}
-	
-	// controlla punti fede posseduti e se del caso attiva carta scomunica sul giocatore da scomunicare
-	private void checkExcommunication(){
-		int excommunicationLevel = 3 + this.turnID/2 -1 ; //calcolo punti fede richiesti 
-		for(Player p : game.getPlayerList()){
-			if(p.getResources().getResouce("VICTORY")<=excommunicationLevel){
-				System.out.println("TIE! beccati la scomunica!");
-			}
-		}
-	}
-		
-	// ---------- METODI RELATIVI ALLA ROTAZIONE DEI TURNI
-
-	// fa partire la partita, da lanciare esplicitamente dopo la creazione di game SOLO UNA VOLTA
-	public void gameStart(){
-		placeCards();
-		diceRoll();
-		game.setLock(game.getPlayerList().get(0).getUUID());
-		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
-	}
-	
-	// passa il turno al player successivo
-	public void nextPlayer(){
-		turnID++;
-		Player tmp;
-		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));
-		
-		// non sono l'ultimo giocatore della lista
-		if(currentIndexPlayer+1<=game.getPlayerList().size()){
-			game.setLock(game.getPlayerList().get(currentIndexPlayer+1).getUUID());
-		}
-		else{ // il giro ricomincia
-			game.setLock(game.getPlayerList().get(0).getUUID());
-		}
-		//PlayerRegistry.getInstance().getPlayerFromID(game.getLock()).makeAction();
-		
-		// fine round
-		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
-			updateTurnOrder();
-			this.game.getBoard().flushBoard();
-			
-			// prepara il prossimo round
-			this.roundID++;
-			placeCards();
-			diceRoll();
-			
-			// fine periodo
-			if(roundID%2==0){
-				checkExcommunication();	
-			}
-		}
-		
+		return newTurnOrder;	
 	}
 	
 	/**

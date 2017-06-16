@@ -5,30 +5,39 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import static org.mockito.Mockito.*;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class GameTest {
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+	
 	public Game game;
 	public ArrayList<Player> playerList;
 	public Player playerOne;
 	
-	@Test
-	public void checkGetTurnManager() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		assertNotNull(this.game.getTurnManager());
+	@Before
+	public void initTest(){
+		Setup setup = new Setup();
+		try{
+			setup.loadCard("test.json");
+		}
+		catch(IOException e){
+			
+		}
 	}
 	
 	@Test
-	public void checkGetPlayerList() throws IOException{
+	public void checkGetPlayerList(){
 		this.playerList = new ArrayList<Player>();
 		this.playerOne = new Player();
 		playerList.add(playerOne);
@@ -38,7 +47,7 @@ public class GameTest {
 	}
 	
 	@Test
-	public void checkGetBoard() throws IOException{
+	public void checkGetBoard(){
 		this.playerList = new ArrayList<Player>();
 		this.playerOne = new Player();
 		this.playerList.add(playerOne);
@@ -48,118 +57,47 @@ public class GameTest {
 	}
 	
 	@Test
-	public void checkGetDecks() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		assertNotNull(this.game.getDecks());
-	}
-	
-	@Test
-	public void checkSetDeck() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		Deck<DevelopmentCard> deck = new Deck<DevelopmentCard>();
-		game.setDeck("DeckTest", deck);
-		assertEquals(deck, game.getDecks().get("DeckTest"));
-	}
-	
-	@Test
-	public void checkGetDeck() throws IOException{
+	public void checkGetDeck(){
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
 		PlayerRegistry.getInstance().addPlayer(playerOne);
 		this.game = new Game(playerList);
 		Deck<DevelopmentCard> deck = new Deck<DevelopmentCard>();
-		game.setDeck("DeckTest", deck);
-		assertNotNull(this.game.getDeck("DeckTest"));
+		assertNotNull(this.game.getDeck("TERRITORYCARD"));
 	}
-	
+		
 	@Test
-	public void checkSetPlayerOrder() throws IOException{
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		
-		Player playerTwo = new Player();
-		playerTwo.setPlayerName("NumberTwo");
-		ArrayList<Player> playerOrderedList = new ArrayList<Player>();
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerTwo);
-		
-		playerOne.setPlayerName("NumberOne");
-		playerOrderedList.add(playerTwo);
-		
-		this.game = new Game(playerList);
-		game.setPlayerOrder(playerOrderedList);
-		assertEquals(true, game.getPlayerList().contains(playerTwo));
-	}
-	
-	@Test
-	public void checkSetExcomunitcationCard() throws IOException{
+	public void checkGetExcomunitcationCard(){
+		Setup setup = new Setup();
+		try{
+			setup.loadCard("test.json");
+		}
+		catch(Exception e){}
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
 		PlayerRegistry.getInstance().addPlayer(playerOne);
 		this.game = new Game(playerList);
 		ExcommunicationCard card = new ExcommunicationCard("TEST", 1);
-		game.setExcommunicationCard(card, card.getPeriod());
-		assertEquals("TEST", game.getExcommunicationCard(1).getName());
-	}
-	
-	@Test
-	public void checkGetExcomunitcationCard() throws IOException{
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		ExcommunicationCard card = new ExcommunicationCard("TEST", 1);
-		game.setExcommunicationCard(card, card.getPeriod());
 		assertNotNull(this.game.getExcommunicationCard(1));
 	}
 	
 	@Test
-	public void checkBlackDiceValue() throws IOException{
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		this.game.setBlackDiceValue(1);
-		assertEquals(1, this.game.getBlackDiceValue());
+	public void checkDiceRoll(){
+		Player player = mock(Player.class);
+		FamilyMember[] fmArray = new FamilyMember[4];
+		fmArray[1] = new FamilyMember(player);
+		fmArray[2] = new FamilyMember(player);
+		fmArray[3] = new FamilyMember(player);
+		when(player.getFamilyMember()).thenReturn(fmArray);
+		ArrayList<Player> playerList = new ArrayList<>();
+		playerList.add(player);
+		//Game game = new Game(playerList);
 	}
 	
 	@Test
-	public void checkOrangeDiceValue() throws IOException{
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		this.game.setOrangeDiceValue(1);
-		assertEquals(1, this.game.getOrangeDiceValue());
-	}
-	
-	@Test
-	public void checkWhiteDiceValue() throws IOException{
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		this.game.setWhiteDiceValue(1);
-		assertEquals(1, this.game.getWhiteDiceValue());
-	}
-	
-	@Test
-	public void checkLock() throws IOException{
+	public void checkLock(){
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
@@ -167,5 +105,11 @@ public class GameTest {
 		this.game = new Game(playerList);
 		this.game.setLock("TESTLOCK");
 		assertEquals("TESTLOCK", this.game.getLock());
+	}
+	
+	@Test
+	public void checkBoardNotNull(){
+		this.game = new Game(new ArrayList<Player>());
+		assertNotNull(this.game.getBoard());
 	}
 }

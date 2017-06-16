@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.Action;
-import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 import static org.junit.Assert.*;
@@ -13,7 +11,7 @@ import static org.junit.Assert.*;
 public class AddEffectTest {
 	
 	@Test
-	public void checkAddEffectBuilder(){
+	public void checkAddEffectBuilder() throws ImpossibleMoveException{
 		JsonObject payload = new JsonObject();
 		payload.add("WOOD", 2);
 		payload.add("COINS", 4);
@@ -28,9 +26,9 @@ public class AddEffectTest {
 		
 		addTestEffect.apply(null, testPlayer, null);
 		
-		assertEquals(2,testPlayer.getResources().getResouce("WOOD"));
-		assertEquals(4,testPlayer.getResources().getResouce("COINS"));
-		assertEquals(3,testPlayer.getResources().getResouce("STONE"));
+		assertEquals(2,testPlayer.getResources().getResource("WOOD"));
+		assertEquals(4,testPlayer.getResources().getResource("COINS"));
+		assertEquals(3,testPlayer.getResources().getResource("STONE"));
 	}
 	
 	

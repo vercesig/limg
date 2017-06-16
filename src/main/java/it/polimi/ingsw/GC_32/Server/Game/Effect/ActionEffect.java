@@ -13,7 +13,7 @@ public class ActionEffect {
 		
 		Effect actionEffect = (Board b, Player p, Action a) -> {
 			JsonValue actionPayload = payload;
-			//p.makeAction(actionPayload);
+			p.makeAction(actionPayload);
 		};
 		return actionEffect;
 	};	
