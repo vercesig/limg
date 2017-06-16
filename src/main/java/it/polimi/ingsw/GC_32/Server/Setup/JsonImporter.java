@@ -36,15 +36,22 @@ public class JsonImporter {
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-			String name = card.get("name").asString();
-
-			Integer period = card.get("period").asInt();
-			String cardType = card.get("cardType").asString();
 			
-			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType);
+			String name = card.get("name").asString();
+			String cardType = card.get("cardType").asString();
+			Integer period = card.get("period").asInt();
+			Integer actionValue;
+			JsonValue action = card.get("minimumActionValue");
+	
+			if(!action.isNull())
+				actionValue = action.asInt();
+			else 
+				actionValue = 0;
+			
+			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
 			
 			// registrazione costi e requisiti
-			JsonValue requirments = card.get("requirments");
+			JsonValue requirements = card.get("requirements");
 			JsonValue resourceCost = card.get("cost");
 			if(!resourceCost.isNull()){
 				JsonArray resourceArray = new JsonArray();
@@ -56,8 +63,8 @@ public class JsonImporter {
 				}
 				newCard.registerCost(resourceArray.iterator());
 			}
-			if(!requirments.isNull())
-				newCard.setRequirments(requirments.asObject());
+			if(!requirements.isNull())
+				newCard.setRequirments(requirements.asObject());
 			
 			// registrazione effetti
 			JsonValue instantEffect = card.get("instantEffect");
@@ -109,14 +116,14 @@ public class JsonImporter {
 			JsonObject card = item.asObject();
 			JsonValue name = card.get("name");
 			JsonValue period = card.get("period");
-	
+			
 			String instantEffect = card.get("instantEffect").asString();
 			String permanentEffect = card.get("permanentEffect").asString();
 			
 			ExcommunicationCard newCard = new ExcommunicationCard(name.asString(),period.asInt());
 			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
 			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
-									
+			
 			cardList.add(newCard);
 		}
 		

@@ -13,6 +13,10 @@ public class Board {
 
 	private ArrayList <Region> region;
 	private TowerRegion[] towerRegion;
+	private ProductionRegion productionRegion;
+	private HarvestRegion harvestRegion;
+	private CouncilRegion councilRegion;
+	private MarketRegion marketRegion;
 		
 	public Board(){
 		this.region = new ArrayList <Region>();

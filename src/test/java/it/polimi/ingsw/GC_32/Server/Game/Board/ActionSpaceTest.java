@@ -48,7 +48,7 @@ public class ActionSpaceTest{
 		assertEquals(17, this.actionSpace.getActionSpaceID());
 	}
 	
-	@Test
+/*	@Test
 	public void checkAddFamilyMember(){
 		this.actionSpace = new ActionSpace(new ResourceSet(), 0, true, 0, 0);
 		FamilyMember familyMember = mock(FamilyMember.class);
@@ -62,7 +62,7 @@ public class ActionSpaceTest{
 		this.actionSpace = new ActionSpace(new ResourceSet(), 0, false, 0, 0);
 		assertTrue(this.actionSpace.addFamilyMember(familyMember));
 		assertTrue(this.actionSpace.addFamilyMember(familyMember2));
-	}
+	}*/
 	
 	@Test
 	public void checkGetPlayers(){

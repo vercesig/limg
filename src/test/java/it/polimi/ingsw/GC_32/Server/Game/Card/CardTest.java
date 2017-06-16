@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import org.junit.Test;
 
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.ImpossibleMoveException;
 
 public class CardTest {
 	public Card card;
@@ -19,7 +20,7 @@ public class CardTest {
 	}
 
 	@Test
-	public void checkInstantEffect(){
+	public void checkInstantEffect() throws ImpossibleMoveException{
 		this.card = new Card("NAME");
 		ByteArrayOutputStream printStream = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(printStream));
@@ -32,7 +33,7 @@ public class CardTest {
 		assertEquals("Hello, this is an instant Effect", printStream.toString());
 	}
 	@Test
-	public void checkPermanentEffect(){
+	public void checkPermanentEffect() throws ImpossibleMoveException{
 		this.card = new Card("NAME");
 		ByteArrayOutputStream printStream = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(printStream));

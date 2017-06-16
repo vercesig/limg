@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.eclipsesource.json.JsonObject;
-
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;

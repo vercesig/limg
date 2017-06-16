@@ -13,7 +13,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class ChangeEffectTest {
 	
 	@Test
-	public void checkChangeEffect(){
+	public void checkChangeEffect() throws ImpossibleMoveException{
 		
 		JsonArray payloadArray = new JsonArray();
 		JsonObject choose1 = new JsonObject();
@@ -41,8 +41,8 @@ public class ChangeEffectTest {
 		
 		Effect chooseEffectTest = EffectRegistry.getInstance().getEffect("CHANGE", payloadArray);
 		
-		Action testAction1 = new Action("HARVAST",5,2,2);
-		testAction1.setAdditionalInfo(0);
+		Action testAction1 = new Action("HARVEST",5,2,2);
+		testAction1.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 0));
 		
 		chooseEffectTest.apply(null, testPlayer, testAction1);
 		
@@ -52,8 +52,8 @@ public class ChangeEffectTest {
 		assertEquals(3, testPlayer.getResources().getResource("SERVANTS"));
 		
 
-		Action testAction2 = new Action("HARVAST",5,2,2);
-		testAction2.setAdditionalInfo(1);
+		Action testAction2 = new Action("HARVEST",5,2,2);
+		testAction2.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 1));
 		
 		chooseEffectTest.apply(null, testPlayer, testAction2);
 		

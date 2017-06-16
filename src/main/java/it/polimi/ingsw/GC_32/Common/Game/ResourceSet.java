@@ -27,12 +27,20 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	return this.resourceSet;
     }
     
-    public int getResouce(String resourceName){
+    public int getResource(String resourceName){
     	return this.resourceSet.getOrDefault(resourceName, 0);
     }
     
     public void setResource(String resourceName, int quantity){
     	this.resourceSet.put(resourceName, quantity);
+    }
+    
+    public boolean hasNegativeValue(){
+    	for(String key : this.getResourceSet().keySet()){
+    		if(this.getResourceSet().get(key) < 0){
+    			return true;
+    		}
+    	}return false;
     }
     
     public void addResource(String resourceName, int quantity){
@@ -45,15 +53,15 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
     
     public void addResource(ResourceSet resource){
-    	for(String type : resource.getResourceSet().keySet()){
-    		this.resourceSet.put(type, resource.getResouce(type)+resourceSet.get(type));
+    	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
+    		this.addResource(entry.getKey(), entry.getValue());
     	}
     }
 
     public JsonObject toJson(){
     	JsonObject resource = new JsonObject();
     	for(String key : this.getResourceSet().keySet()){
-    		resource.add(key, this.getResouce(key));
+    		resource.add(key, this.getResource(key));
     	}
     	return resource;
     }	
@@ -81,7 +89,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		otherResourcesDiff.removeAll(thisResources);
 		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
 			for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
-				if( element.getValue() < resource.getResouce(element.getKey())){
+				if( element.getValue() < resource.getResource(element.getKey())){
 					return -1;
 				}
 			}
