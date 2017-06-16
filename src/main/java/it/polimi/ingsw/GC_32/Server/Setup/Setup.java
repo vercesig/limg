@@ -28,6 +28,10 @@ public class Setup {
 	
 	private final static Logger LOGGER = Logger.getLogger(Setup.class.getName());
 	
+	public void loadCard(String path) throws IOException{
+		this.loadCard(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path)));
+	}
+	
 	/**
 	 * this method encapsulate all the mechanisms which interest the management of the cards (both development card and excommunication card) before the 
 	 * start of the game (like the import of the cards from an external file and the preparation of the decks. Each deck contains only card belonging to one 
@@ -36,10 +40,10 @@ public class Setup {
 	 * @see JsonImporter
 	 * @throws IOException
 	 */
-	public void loadCard() throws IOException{
+	public void loadCard(Reader inputReader) throws IOException{
 		// preparazione carte sviluppo
 		LOGGER.log(Level.INFO, "loading development card...");
-		Reader developmentCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("test.json"));
+		Reader developmentCardFile = inputReader;
 		
 		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCard(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();

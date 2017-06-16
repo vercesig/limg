@@ -29,7 +29,7 @@ public class GameTest {
 	public void initTest(){
 		Setup setup = new Setup();
 		try{
-			setup.loadCard();
+			setup.loadCard("test.json");
 		}
 		catch(IOException e){
 			
@@ -71,7 +71,7 @@ public class GameTest {
 	public void checkGetExcomunitcationCard(){
 		Setup setup = new Setup();
 		try{
-			setup.loadCard();
+			setup.loadCard("test.json");
 		}
 		catch(Exception e){}
 		this.playerOne = new Player();

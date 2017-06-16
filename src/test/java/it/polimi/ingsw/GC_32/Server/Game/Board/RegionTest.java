@@ -47,7 +47,7 @@ public class RegionTest {
 	public void testCorrectNumberOfRegion(){
 		Setup setup = new Setup();
 		try{
-			setup.loadCard();
+			setup.loadCard("test.json");
 		}catch(Exception e){}
 		board = new Board();
 		
