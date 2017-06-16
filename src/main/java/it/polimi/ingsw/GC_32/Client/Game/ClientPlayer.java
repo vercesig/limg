@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ClientPlayer {
 

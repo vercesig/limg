@@ -6,7 +6,7 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ClientRegion {
 

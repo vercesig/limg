@@ -9,12 +9,30 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
+import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 
+/**
+ * allows to configure all the elements of the game in their initial state. For example the preparation of the decks and the consequently associations of them
+ * to the Board.
+ * 
+ * <p>
+ * 
+ * @see Game
+ * @author alessandro 
+ */
 public class Setup {
-
-	public void loadCard() throws IOException{		
+	
+	/**
+	 * this method encapsulate all the mechanisms which interest the management of the cards (both development card and excommunication card) before the 
+	 * start of the game (like the import of the cards from an external file and the preparation of the decks. Each deck contains only card belonging to one 
+	 * specific type, and, according to the rule of the game, each one is sorted by period). .
+	 *  
+	 * @see JsonImporter
+	 * @throws IOException
+	 */
+	public void loadCard() throws IOException{
 		// preparazione carte sviluppo
 		System.out.println("[SETUP] loading development card...");
 		Reader developmentCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("test.json"));

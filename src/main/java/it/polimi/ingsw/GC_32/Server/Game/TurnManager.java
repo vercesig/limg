@@ -1,12 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
-
-import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class TurnManager {
 	
@@ -39,6 +34,16 @@ public class TurnManager {
 		}catch(IndexOutOfBoundsException e){// il giro ricomincia
 			return game.getPlayerList().get(0); 
 		}
+		
+		//TODO: this is a mess
+		//ArrayList<Player> oldTurnOrder = new ArrayList<>();
+		//player che non hanno piazzato familiari nel councilregion
+		/*for(Player p : oldTurnOrder){
+			if(!newTurnOrder.contains(p)){
+				newTurnOrder.add(p);
+			}
+		}	
+		game.setPlayerOrder(newTurnOrder);*/		
 	}
 	
 	public boolean isRoundEnd(){

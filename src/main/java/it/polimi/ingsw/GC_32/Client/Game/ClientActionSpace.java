@@ -2,7 +2,7 @@ package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ClientActionSpace {
 

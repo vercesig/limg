@@ -5,9 +5,10 @@ import java.util.Iterator;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
-import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
+import com.eclipsesource.json.JsonValue;
 
 
 public class DevelopmentCard extends Card{
@@ -16,13 +17,15 @@ public class DevelopmentCard extends Card{
 	private ResourceSet requirments;
 	private int period;
 	private String type;
+	private int minimumActionValue;
 	
-	public DevelopmentCard(String name, int period, String type){
+	public DevelopmentCard(String name, int period, String type, int minimumActionValue){
 		super(name);
 		this.requirments = new ResourceSet();
 		this.cost = new ArrayList<ResourceSet>();
 		this.period = period;
 		this.type = type;
+		this.minimumActionValue = minimumActionValue;
 	}
 	
 	public ArrayList<ResourceSet> getCost(){
@@ -45,6 +48,7 @@ public class DevelopmentCard extends Card{
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("name: "+this.getName()+"\nperiod: "+period+"\ntype: "+type+"\n");
 		cost.forEach(cost -> tmp.append("cost :" +cost.toString()+"\n"));
+		tmp.append("requirements" +this.getRequirments()+'\n');
 		return new String(tmp);
 	}	
 	
@@ -56,6 +60,16 @@ public class DevelopmentCard extends Card{
 		while(jsonArray.hasNext()){
 			this.registerCost(jsonArray.next().asObject());
 		}
+	}
+	// discount e' resourceSet con valori negativi
+	public void discountCard(ResourceSet discount){
+		for(ResourceSet singleCost : this.cost){
+			singleCost.addResource(discount);
+		}
+	}
+	
+	public int getMinimumActionvalue(){
+		return this.minimumActionValue;
 	}
 	
 	public void setRequirments(JsonObject requirments){

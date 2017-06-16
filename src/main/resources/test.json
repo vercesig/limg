@@ -1,8 +1,12 @@
 [
 {
 	"name" : "Trading Town",
-	"cost" : null,
-	"requirments" : null,
+	"cost" : {
+		"WOOD": 4,
+		"COINS": 3,
+		"STONE": 1 
+	},
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -18,8 +22,12 @@
 },
 {
 	"name" : "Trading Town",
-	"cost" : null,
-	"requirments" : null,
+	"cost" : {
+		"WOOD": 4,
+		"COINS": 3,
+		"STONE": 1 
+	},
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -52,8 +60,12 @@
 },
 {
 	"name" : "Trading Town",
-	"cost" : null,
-	"requirments" : null,
+	"cost" : {
+		"WOOD": 4,
+		"COINS": 3,
+		"STONE": 1 
+	},
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -69,8 +81,12 @@
 },
 {
 	"name" : "Trading Town",
-	"cost" : null,
-	"requirments" : null,
+    "cost" : {
+		"WOOD": 4,
+		"COINS": 3,
+		"STONE": 1 
+	},
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "SERVANTS": 1,
@@ -89,7 +105,7 @@
 	"cost" : {
 	    "COINS" : 4
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": ["ADD", "ACTION"],
 	"instantPayload": [
 	  {
@@ -112,7 +128,7 @@
 	"cost" : {
 	    "COINS" : 4
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": ["ADD", "ACTION"],
 	"instantPayload": [
 	  {
@@ -135,7 +151,7 @@
 	"cost" : {
 	    "COINS" : 4
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": ["ADD", "ACTION"],
 	"instantPayload": [
 	  {
@@ -158,7 +174,7 @@
 	"cost" : {
 	    "COINS" : 4
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": ["ADD", "ACTION"],
 	"instantPayload": [
 	  {
@@ -182,7 +198,7 @@
 	    "WOOD" : 2,
 	    "STONE" : 1
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "VP":3
@@ -204,7 +220,7 @@
 	    "WOOD" : 2,
 	    "STONE" : 1
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "VP":3
@@ -226,7 +242,7 @@
 	    "WOOD" : 2,
 	    "STONE" : 1
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "VP":3
@@ -248,7 +264,7 @@
 	    "WOOD" : 2,
 	    "STONE" : 1
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "VP":3
@@ -269,7 +285,7 @@
 	"cost" : {
 	    "COINS" : 4
 	},
-	"requirments" : null,
+	"requirements" : null,
 	"instantEffect": null,
 	"instantPayload": null,
 	"permanentEffect" : "ACTION",
@@ -295,7 +311,7 @@
 	    "STONE" : 1,
 	    "COINS" : 2
 	    }],
-	"requirments" : {"MILITARY" : 4},
+	"requirements" : {"MILITARY" : 4},
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "FAITH" : 3
@@ -317,7 +333,7 @@
 	    "STONE" : 1,
 	    "COINS" : 2
 	    }],
-	"requirments" : {"MILITARY" : 4},
+	"requirements" : {"MILITARY" : 4},
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "FAITH" : 3
@@ -339,7 +355,7 @@
 	    "STONE" : 1,
 	    "COINS" : 2
 	    }],
-	"requirments" : {"MILITARY" : 4},
+	"requirements" : {"MILITARY" : 4},
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "FAITH" : 3
@@ -361,7 +377,7 @@
 	    "STONE" : 1,
 	    "COINS" : 2
 	    }],
-	"requirments" : {"MILITARY" : 4},
+	"requirements" : {"MILITARY" : 4},
 	"instantEffect": "ADD",
 	"instantPayload": {
 	    "FAITH" : 3

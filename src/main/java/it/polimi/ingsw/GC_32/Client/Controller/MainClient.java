@@ -1,7 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.Controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -15,9 +14,8 @@ import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Client.Network.NetworkClient;
-import it.polimi.ingsw.GC_32.Client.Network.SocketMsgConnection;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
 public class MainClient implements ClientInterface{
 

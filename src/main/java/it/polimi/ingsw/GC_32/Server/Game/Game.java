@@ -3,7 +3,6 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
@@ -14,6 +13,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+
 
 public class Game implements Runnable{
 
@@ -168,7 +168,7 @@ public class Game implements Runnable{
 							PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
 						}else{
 							System.out.println("[GAME] game end");
-							stopGame();
+							//stopGame();
 						}
 						break;
 					}
@@ -178,14 +178,18 @@ public class Game implements Runnable{
 		}
 	}
 	
-	private void stopGame(){
-		this.runGameFlag = false;
+	public TurnManager getTurnManager(){
+		return this.turnManager;
 	}
 	
 	public ArrayList<Player> getPlayerList(){
 		return this.playerList;
 	}
-		
+	
+	public void setPlayerOrder(ArrayList<Player> playerList){
+		this.playerList = playerList;
+	}
+	
 	public Board getBoard(){
 		return this.board;
 	}
@@ -193,9 +197,17 @@ public class Game implements Runnable{
 	public String getLock(){
 		return this.lock;
 	}
-		
+	
 	public Deck<DevelopmentCard> getDeck(String type){
 		return this.decks.get(type);
+	}
+	
+	public void setDeck(String type, Deck<DevelopmentCard> deck){
+		this.decks.put(type, deck);
+	}
+	
+	public void setExcommunicationCard(ExcommunicationCard card, int period){
+		this.excommunicationCards[period-1] = card;
 	}
 	
 	public ExcommunicationCard getExcommunicationCard(int period){
@@ -241,7 +253,7 @@ public class Game implements Runnable{
 	private void checkExcommunication(){
 		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 		playerList.forEach(player -> {
-			if(player.getResources().getResouce("VICTORY")<=excommunicationLevel){
+			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
 				System.out.println("TIE! beccati la scomunica!");
 			}
 		});

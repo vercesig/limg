@@ -1,12 +1,12 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
@@ -18,7 +18,7 @@ public class Player {
 	private String name;
     private ArrayList<Effect> effectList;
 	private ResourceSet resources;
-	//private PersonalBonusTile personalBonusTile;
+	private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
 	private final String uuid;
 	
@@ -31,6 +31,10 @@ public class Player {
 		for(int i=0; i<familyMemberList.length; i++){
 			familyMemberList[i] = new FamilyMember(this);	
 		}
+		familyMemberList[0].setColor(DiceColor.GREY);
+		familyMemberList[1].setColor(DiceColor.BLACK);
+		familyMemberList[2].setColor(DiceColor.WHITE);
+		familyMemberList[3].setColor(DiceColor.ORANGE);
 		this.uuid = UUID.randomUUID().toString();
 		this.effectList = new ArrayList<Effect>();
 	}
@@ -60,10 +64,11 @@ public class Player {
     }
     
     public void addEffect(String s){
+    	
     	this.effectList.add(EffectRegistry.getInstance().getEffect(s));
     }
 
-    public List<Effect> getEffectList(){
+    public ArrayList<Effect> getEffectList(){
         return this.effectList;
     }
     
@@ -99,6 +104,16 @@ public class Player {
     	TURNBGN.add("TYPE", "TOWER");
     	GameMessage message = new GameMessage(this.uuid,"TURNBGN", TURNBGN.toString());
     	MessageManager.getInstance().sendMessge(message);
+    }
+    public void moveFamilyMember(int i, Action a, Board b){
+    	FamilyMember f = this.getFamilyMember()[i];
+    	ActionSpace space = b.getRegion(a.getActionRegionId())
+    			.getActionSpace(a.getActionSpaceId());
+    	space.addFamilyMember(f);
+    }
+    
+    public PersonalBonusTile getPersonalBonusTile(){
+    	return this.personalBonusTile;
     }
     
 }

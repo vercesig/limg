@@ -1,18 +1,8 @@
 package it.polimi.ingsw.GC_32.Client.Network;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonObject.Member;
-
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
-import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 
 public class NetworkClient{
 

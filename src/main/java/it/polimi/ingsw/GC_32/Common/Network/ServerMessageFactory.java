@@ -6,10 +6,9 @@ import java.util.Map.Entry;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
-import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
-import it.polimi.ingsw.GC_32.Server.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.CouncilRegion;
@@ -123,7 +122,7 @@ public class ServerMessageFactory {
 		STATCHNGpayload.add("FAITH", 0);
 		STATCHNGpayload.add("MILITARY", 0);
 		STATCHNGpayload.add("VICTORY", 0);
-		STATCHNGpayload.add("COINS", player.getResources().getResouce("COINS"));
+		STATCHNGpayload.add("COINS", player.getResources().getResource("COINS"));
 		STATCHNG.add("PLAYERID", player.getUUID());
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());		
 		return new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
