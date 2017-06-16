@@ -35,7 +35,7 @@ public class ClientPlayerTest{
 		ResourceSet rs = new ResourceSet();
 		rs.addResource("WOOD", 10);
 		this.clientPlayer.addResources(rs);
-		assertEquals(10, this.clientPlayer.getPlayerResources().getResouce("WOOD"));
+		assertEquals(10, this.clientPlayer.getPlayerResources().getResource("WOOD"));
 	}
 	
 	@Test

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.util.ArrayList;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class TurnManager {
