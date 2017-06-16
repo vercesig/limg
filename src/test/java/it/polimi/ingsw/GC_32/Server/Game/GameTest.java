@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
@@ -23,9 +24,20 @@ public class GameTest {
 	public Game game;
 	public ArrayList<Player> playerList;
 	public Player playerOne;
+	
+	@Before
+	public void initTest(){
+		Setup setup = new Setup();
+		try{
+			setup.loadCard();
+		}
+		catch(IOException e){
+			
+		}
+	}
 		
 	@Test
-	public void checkGetPlayerList() throws IOException{
+	public void checkGetPlayerList(){
 		this.playerList = new ArrayList<Player>();
 		this.playerOne = new Player();
 		playerList.add(playerOne);
@@ -35,7 +47,7 @@ public class GameTest {
 	}
 	
 	@Test
-	public void checkGetBoard() throws IOException{
+	public void checkGetBoard(){
 		this.playerList = new ArrayList<Player>();
 		this.playerOne = new Player();
 		this.playerList.add(playerOne);
@@ -45,11 +57,7 @@ public class GameTest {
 	}
 			
 	@Test
-	public void checkGetDeck() throws IOException{
-		Setup setup = new Setup();
-		try{
-			setup.loadCard();
-		}catch(Exception e){}
+	public void checkGetDeck(){
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);
@@ -60,7 +68,7 @@ public class GameTest {
 	}
 		
 	@Test
-	public void checkGetExcomunitcationCard() throws IOException{
+	public void checkGetExcomunitcationCard(){
 		Setup setup = new Setup();
 		try{
 			setup.loadCard();
@@ -89,7 +97,7 @@ public class GameTest {
 	}
 	
 	@Test
-	public void checkLock() throws IOException{
+	public void checkLock(){
 		this.playerOne = new Player();
 		this.playerList = new ArrayList<Player>();
 		this.playerList.add(playerOne);

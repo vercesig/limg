@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
@@ -17,8 +19,8 @@ public class MoveCheckerTest {
 	JsonObject ja, jb, jc;
 	DevelopmentCard card;
 	
-	
-	public MoveCheckerTest(){
+	@Before
+	public void initTest(){
 		p = new Player();
 		b = new Board();
 		a1 = new Action("TEST", 3, 0, 5); // Tower
@@ -37,13 +39,12 @@ public class MoveCheckerTest {
 		
 		for(int i=0; i<1; i++){
 			p.getPersonalBoard().addCard(card);
-			}
+		}
 		p.getResources().addResource("WOOD", 1);
 	}
+	
 	@Test
 	public void checkFamilyColorTest(){
-		
-		
 		b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
 		assertEquals(false, moveChecker.checkMove(b, p, a1));
 		b.getRegion(1).getActionSpace(1).addFamilyMember(p.getFamilyMember()[1]);
@@ -53,6 +54,7 @@ public class MoveCheckerTest {
 		act.setAdditionalInfo(grey);
 		assertEquals(true, moveChecker.checkMove(b, p, act));
 	}
+	
 	@Test
 	public void checkIsFreeSingleSpaceTest(){
 		assertEquals(true, moveChecker.checkIsFreeSingleSpace(b, p, a1));
@@ -66,6 +68,7 @@ public class MoveCheckerTest {
 		assertEquals(true, moveChecker.checkIsFreeSingleSpace(b, p, a3));
 		assertEquals(false, moveChecker.checkIsFreeSingleSpace(b, p, new Action("",0,1,5)));
 	}
+	
 	@Test
 	public void checkCoinForTributeTest(){
 		p.getResources().addResource("WOOD", 1);
@@ -84,6 +87,7 @@ public class MoveCheckerTest {
 		p.getResources().addResource("COINS", 6);
 		assertEquals(true, moveChecker.checkMove(b, p, a1));
 	}
+	
 	@Test
 	public void checkActionValueTest(){
 		b.getRegion(5).getActionSpace(0).addFamilyMember(p.getFamilyMember()[0]);
@@ -96,5 +100,4 @@ public class MoveCheckerTest {
 		assertEquals(false, moveChecker.checkMove(b, p, new Action("", 3, 2, 4)));
 		assertEquals(true, moveChecker.checkMove(b, p, new Action("", 7, 3, 4)));
 	}
-
 }

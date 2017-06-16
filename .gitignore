@@ -62,3 +62,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+# Repo-specific Files
+cards.json
+excom_cards.json
