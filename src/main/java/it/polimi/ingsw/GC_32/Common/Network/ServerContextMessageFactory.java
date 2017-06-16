@@ -10,7 +10,7 @@ public class ServerContextMessageFactory {
 	
 	public static JsonObject buildServantMessage(Player p) {
 		JsonObject INFORMATION = new JsonObject();
-		INFORMATION.add("OPCODE", "SERVANTS").add("NUMBER", p.getResources().getResouce("SERVANTS"));
+		INFORMATION.add("OPCODE", "SERVANTS").add("NUMBER", p.getResources().getResource("SERVANTS"));
 		
 		return INFORMATION; 
 	} 
@@ -24,7 +24,7 @@ public class ServerContextMessageFactory {
 	
 	public static JsonObject buildExcommunicationMessage(Player p, int faithNeeded){
 		JsonObject INFORMATION = new JsonObject();
-		INFORMATION.add("OPCODE", "EXCOMMUNICATION").add("PLAYER_FAITH", p.getResources().getResouce("FAITH"))
+		INFORMATION.add("OPCODE", "EXCOMMUNICATION").add("PLAYER_FAITH", p.getResources().getResource("FAITH"))
 			.add("FAITH_NEEDED", faithNeeded);
 		return INFORMATION;
 	}

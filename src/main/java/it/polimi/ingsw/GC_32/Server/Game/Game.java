@@ -241,7 +241,7 @@ public class Game implements Runnable{
 	private void checkExcommunication(){
 		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 		playerList.forEach(player -> {
-			if(player.getResources().getResouce("VICTORY")<=excommunicationLevel){
+			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
 				System.out.println("TIE! beccati la scomunica!");
 			}
 		});

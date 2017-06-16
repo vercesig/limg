@@ -27,7 +27,7 @@ public class BonusEffect {
 		
 		BiFunction<Boolean,Player, Function<Player,Integer>> typeEffect = (typeCheck,p) -> {
 			if(typeCheck) return player -> ((Player) player).getPersonalBoard().getCardsOfType(forEach.asString()).size()/quantity.asInt();
-			return player -> ((Player) player).getResources().getResouce(forEach.asString())/quantity.asInt();
+			return player -> ((Player) player).getResources().getResource(forEach.asString())/quantity.asInt();
 		};
 	
 		Effect bonusEffect = (Board b, Player p, Action a) -> {

@@ -122,7 +122,7 @@ public class ServerMessageFactory {
 		STATCHNGpayload.add("FAITH", 0);
 		STATCHNGpayload.add("MILITARY", 0);
 		STATCHNGpayload.add("VICTORY", 0);
-		STATCHNGpayload.add("COINS", player.getResources().getResouce("COINS"));
+		STATCHNGpayload.add("COINS", player.getResources().getResource("COINS"));
 		STATCHNG.add("PLAYERID", player.getUUID());
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());		
 		return new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());

@@ -43,7 +43,7 @@ public class BonusEffectTest {
 
 		bonusCardTest.apply(null, testPlayer, null);
 		
-		assertEquals(8, testPlayer.getResources().getResouce("COINS"));	
+		assertEquals(8, testPlayer.getResources().getResource("COINS"));	
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class BonusEffectTest {
 		
 		bonusResourceTest.apply(null, testPlayer, null);
 		
-		assertEquals(6, testPlayer.getResources().getResouce("MILITARY"));
+		assertEquals(6, testPlayer.getResources().getResource("MILITARY"));
 	}
 	
 }

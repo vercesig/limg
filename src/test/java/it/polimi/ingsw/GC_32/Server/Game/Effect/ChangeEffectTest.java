@@ -46,10 +46,10 @@ public class ChangeEffectTest {
 		
 		chooseEffectTest.apply(null, testPlayer, testAction1);
 		
-		assertEquals(3, testPlayer.getResources().getResouce("WOOD"));
-		assertEquals(6, testPlayer.getResources().getResouce("COINS"));
-		assertEquals(18, testPlayer.getResources().getResouce("MILITARY"));
-		assertEquals(3, testPlayer.getResources().getResouce("SERVANTS"));
+		assertEquals(3, testPlayer.getResources().getResource("WOOD"));
+		assertEquals(6, testPlayer.getResources().getResource("COINS"));
+		assertEquals(18, testPlayer.getResources().getResource("MILITARY"));
+		assertEquals(3, testPlayer.getResources().getResource("SERVANTS"));
 		
 
 		Action testAction2 = new Action("HARVAST",5,2,2);
@@ -57,8 +57,8 @@ public class ChangeEffectTest {
 		
 		chooseEffectTest.apply(null, testPlayer, testAction2);
 		
-		assertEquals(22, testPlayer.getResources().getResouce("VICTORY"));
-		assertEquals(3, testPlayer.getResources().getResouce("FAITH"));
+		assertEquals(22, testPlayer.getResources().getResource("VICTORY"));
+		assertEquals(3, testPlayer.getResources().getResource("FAITH"));
 	}
 	
 }

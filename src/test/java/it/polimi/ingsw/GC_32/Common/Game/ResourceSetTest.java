@@ -21,7 +21,7 @@ public class ResourceSetTest{
 	public void checkResourceSetting(){
 		this.resourceSet = new ResourceSet();
 		this.resourceSet.setResource("WOOD", 10);
-		assertEquals(this.resourceSet.getResouce("WOOD"), 10);
+		assertEquals(this.resourceSet.getResource("WOOD"), 10);
 	}
 	
 	@Test
@@ -29,9 +29,9 @@ public class ResourceSetTest{
 		this.resourceSet= new ResourceSet();
 		this.resourceSet.setResource("WOOD", 10);
 		this.resourceSet.addResource("WOOD", 5);
-		assertEquals(this.resourceSet.getResouce("WOOD"), 15);
+		assertEquals(this.resourceSet.getResource("WOOD"), 15);
 		this.resourceSet.addResource("STONE", 17);
-		assertEquals(this.resourceSet.getResouce("STONE"), 17);
+		assertEquals(this.resourceSet.getResource("STONE"), 17);
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class ResourceSetTest{
 		ResourceSet newResource = new ResourceSet();
 		newResource.setResource("WOOD", 5);
 		this.resourceSet.addResource(newResource);
-		assertEquals(this.resourceSet.getResouce("WOOD"), 15);
+		assertEquals(this.resourceSet.getResource("WOOD"), 15);
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class ResourceSetTest{
 		JsonObject testObject = new JsonObject();
 		testObject.add("WOOD", 22);
 		this.resourceSet = new ResourceSet(testObject);
-		assertEquals(this.resourceSet.getResouce("WOOD"), 22);
+		assertEquals(this.resourceSet.getResource("WOOD"), 22);
 	}
 	
 	@Test
