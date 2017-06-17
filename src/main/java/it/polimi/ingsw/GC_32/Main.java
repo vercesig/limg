@@ -16,7 +16,7 @@ public class Main {
             	    	
     	LOGGER.log(Level.INFO, "starting main");
 		Setup setup = new Setup();
-		setup.loadCard("cards.json");
+		setup.loadCard("test.json");
     	
 		LOGGER.log(Level.INFO, "inizializing socket-side network...");
 		SocketListener socketListener = new SocketListener(9500);

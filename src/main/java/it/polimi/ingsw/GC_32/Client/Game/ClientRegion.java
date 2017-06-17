@@ -41,4 +41,8 @@ public class ClientRegion {
 	public ArrayList<ClientActionSpace> getActionSpaceList(){
 		return this.actionSpaces;
 	}
+	
+	public String getType(){
+		return this.type;
+	}
 }

@@ -12,8 +12,8 @@
         "permanentPayload": {
             "COINS": 3
         },
-        "minimumActionValue": "2",
-        "period": "3",
+        "minimumActionValue": 2,
+        "period": 3,
         "cardType": "TERRITORYCARD"
     }
 ]

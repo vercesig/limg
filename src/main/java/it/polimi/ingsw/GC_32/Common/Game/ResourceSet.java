@@ -117,7 +117,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
-			tmp.append("\n"+element.getKey()+" :"+element.getValue().toString());
+			tmp.append(" "+element.getKey()+" :"+element.getValue().toString());
 		}
 		return new String(tmp);
 	}

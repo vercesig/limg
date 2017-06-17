@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -17,6 +19,7 @@ import com.eclipsesource.json.JsonValue;
  * allows to import and parse (from JSON files) external file like card description's file or game configuration file.
  * @author alessandro
  */
+
 
 public class JsonImporter {
 	
