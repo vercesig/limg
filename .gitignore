@@ -64,5 +64,5 @@ gradle-app.setting
 .gradletasknamecache
 
 # Repo-specific Files
-cards.json
-excom_cards.json
+src/main/resources/cards.json
+src/main/resources/excom_cards.json
