@@ -32,50 +32,43 @@ public class ClientBoard {
 		this.orangeDice = orangeValue;
 	}
 	
+	private void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
+		for(int i=0; i<howManyTimes; i++){
+			stringBuilder.append(string);
+		}
+	}
+	
 	public String toString(){
 		ArrayList<ClientRegion> towerList = new ArrayList<ClientRegion>(region.subList(4, region.size()));
 		// dimensione delle torri
 		int towerWidth = 56;
 		String title = "LORENZO IL MAGNIFICO";
 		
-		StringBuilder tmpTower = new StringBuilder();
+		StringBuilder boardString = new StringBuilder();
 		
 		// title
-		tmpTower.append("+");
-		for(int i=0; i<towerWidth*towerList.size() - 6; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("+\n|");
+		boardString.append("+");
+		fillWith(boardString, towerWidth*towerList.size()-6,"-");
+		boardString.append("+\n|");
 		int titlePosition = (towerWidth*towerList.size() - title.length() -6)/2;
-		for(int i=0; i<titlePosition; i++){
-			tmpTower.append(" ");
-		}
-		tmpTower.append(title);
-		for(int i=0; i<titlePosition; i++){
-			tmpTower.append(" ");
-		}
-		tmpTower.append("|\n");
-		tmpTower.append("+");
-		for(int i=0; i<towerWidth*towerList.size() - 6; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("+\n");		
+		fillWith(boardString, titlePosition, " ");
+		boardString.append(title);
+		fillWith(boardString, titlePosition, " ");
+		boardString.append("|\n+");
+		fillWith(boardString, towerWidth*towerList.size() - 6, "-");
+		boardString.append("+\n");		
 			
 		// ********************************** towers
 		towerList.forEach(tower -> {
 			int tmpTowerWidth = towerWidth;
-			tmpTower.append("|");
-			int numberOfDashes = (tmpTowerWidth - tower.getType().length())/2;
-			for(int i=0; i<numberOfDashes-2; i++){ 
-				tmpTower.append("-");
-			}
-			tmpTower.append(" "+tower.getType()+" ");
-			for(int i=0; i<numberOfDashes-2; i++){
-				tmpTower.append("-");
-			}
-			tmpTower.append("|");
+			boardString.append("|");
+			int numberOfDashes = (tmpTowerWidth - tower.getType().length())/2 - 2;
+			fillWith(boardString, numberOfDashes, "-");
+			boardString.append(" "+tower.getType()+" ");
+			fillWith(boardString, numberOfDashes, "-");
+			boardString.append("|");
 			});
-		tmpTower.append("\n");
+		boardString.append("\n");
 
 		int numberOfActionSpaces = towerList.get(0).getActionSpaceList().size();
 		String[] infoContainerMask = {"regionID","actionSpaceID","actionValue","singleFlag","bonus","occupants","card"};
@@ -85,51 +78,38 @@ public class ClientBoard {
 				for(int j=0; j<towerList.size(); j++){ // tower
 					String item = towerList.get(j).getActionSpaceList().get(i).getInfoContainer()[w];
 					String field = infoContainerMask[w];
-					tmpTower.append("| "+field+": "+item);
+					boardString.append("| "+field+": "+item);
 					int numberOfWhiteSpaces = towerWidth - item.length() - field.length() - 6;
-					while(numberOfWhiteSpaces>0){
-						tmpTower.append(" ");
-						numberOfWhiteSpaces--;
-					}
-					tmpTower.append("|");
+					fillWith(boardString, numberOfWhiteSpaces, " ");
+					boardString.append("|");
 				}
-				tmpTower.append("\n");
+				boardString.append("\n");
 			}
 			for(int j=0; j<towerList.size(); j++){
-				tmpTower.append("|");
+				boardString.append("|");
 				int numberOfDashes = towerWidth - 3;
-				while(numberOfDashes>0){
-					tmpTower.append("-");
-					numberOfDashes--;
-				}
-				tmpTower.append("|");
+				fillWith(boardString, numberOfDashes, "-");
+				boardString.append("|");
 			}
-			tmpTower.append("\n");
+			boardString.append("\n");
 		}
 		
 		int halfBoardWidth = (towerWidth*towerList.size())/2;
 		
-		tmpTower.append("|");
+		boardString.append("|");
 		String productionTitle = region.get(0).getType();
 		int numberOfDashes = (halfBoardWidth - productionTitle.length())/2 -3;
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append(" "+productionTitle+" ");
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("||");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append(" "+productionTitle+" ");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append("||");
+		
 		String councilTitle = region.get(2).getType();
 		numberOfDashes = (halfBoardWidth - councilTitle.length())/2 - 3;
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append(" "+councilTitle+" ");
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("-|\n");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append(" "+councilTitle+" ");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append("-|\n");
 		
 		int singleActionSpaceWidth = halfBoardWidth/3;
 		int multipleActionSpaceWidth = halfBoardWidth - singleActionSpaceWidth;
@@ -137,87 +117,64 @@ public class ClientBoard {
 		for(int w=0; w<infoContainerMask.length-1; w++){
 			String field = infoContainerMask[w];
 			String item = region.get(0).getActionSpaceList().get(0).getInfoContainer()[w];
-			tmpTower.append("| "+field+": "+item);
+			boardString.append("| "+field+": "+item);
 			int numberOfWhiteSpaces = singleActionSpaceWidth - field.length() - item.length() - 4;
-			while(numberOfWhiteSpaces>0){
-				tmpTower.append(" ");
-				numberOfWhiteSpaces--;
-			}
-			tmpTower.append("|");
+			fillWith(boardString, numberOfWhiteSpaces, " ");
+			boardString.append("|");
 			item = region.get(0).getActionSpaceList().get(1).getInfoContainer()[w];
-			tmpTower.append("| "+field+": "+item);
+			boardString.append("| "+field+": "+item);
+			
 			numberOfWhiteSpaces = multipleActionSpaceWidth - field.length() - item.length() - 8;
-			while(numberOfWhiteSpaces>0){
-				tmpTower.append(" ");
-				numberOfWhiteSpaces--;
-			}
-			tmpTower.append("|");
+			fillWith(boardString, numberOfWhiteSpaces, " ");
+			boardString.append("|");
 			item = region.get(2).getActionSpaceList().get(0).getInfoContainer()[w];
-			tmpTower.append("| "+field+": "+item);
+			boardString.append("| "+field+": "+item);
 			numberOfWhiteSpaces = halfBoardWidth - field.length() - item.length() - 7;
-			while(numberOfWhiteSpaces>0){
-				tmpTower.append(" ");
-				numberOfWhiteSpaces--;
-			}
-			tmpTower.append("|\n");	
+			fillWith(boardString, numberOfWhiteSpaces, " ");
+			boardString.append("|\n");	
 		}
 		
 		int marketActionSpaceWidth = halfBoardWidth/4 + 2;
 		
-		tmpTower.append("|");
+		boardString.append("|");
 		String harvastTitle = region.get(1).getType();
 		numberOfDashes = (halfBoardWidth - harvastTitle.length())/2 -3;
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append(" "+harvastTitle+" ");
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("-||");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append(" "+harvastTitle+" ");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append("-||");
+		
 		String marketTitle = region.get(3).getType();
 		numberOfDashes = (halfBoardWidth - marketTitle.length())/2 - 3;
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append(" "+marketTitle+" ");
-		for(int i=0; i<numberOfDashes; i++){
-			tmpTower.append("-");
-		}
-		tmpTower.append("-|\n");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append(" "+marketTitle+" ");
+		fillWith(boardString, numberOfDashes, "-");
+		boardString.append("|\n");
 		
 		for(int w=0; w<infoContainerMask.length-1; w++){
 			String field = infoContainerMask[w];
 			String item = region.get(1).getActionSpaceList().get(0).getInfoContainer()[w];
-			tmpTower.append("| "+field+": "+item);
+			boardString.append("| "+field+": "+item);
 			int numberOfWhiteSpaces = singleActionSpaceWidth - field.length() - item.length() - 4;
-			while(numberOfWhiteSpaces>0){
-				tmpTower.append(" ");
-				numberOfWhiteSpaces--;
-			}
-			tmpTower.append("|");
+			fillWith(boardString, numberOfWhiteSpaces, " ");
+			boardString.append("|");
+			
 			item = region.get(1).getActionSpaceList().get(1).getInfoContainer()[w];
-			tmpTower.append("| "+field+": "+item);
+			boardString.append("| "+field+": "+item);
 			numberOfWhiteSpaces = multipleActionSpaceWidth - field.length() - item.length() - 8;
-			while(numberOfWhiteSpaces>0){
-				tmpTower.append(" ");
-				numberOfWhiteSpaces--;
-			}
-			tmpTower.append("|");
+			fillWith(boardString, numberOfWhiteSpaces, " ");
+			boardString.append("|");
 			for(int j=0; j<region.get(3).getActionSpaceList().size(); j++){
 				item = region.get(3).getActionSpaceList().get(j).getInfoContainer()[w];
-				tmpTower.append("| "+field+": "+item);
+				boardString.append("| "+field+": "+item);
 				numberOfWhiteSpaces = marketActionSpaceWidth - field.length() - item.length() - 7;
-				while(numberOfWhiteSpaces>0){
-					tmpTower.append(" ");
-					numberOfWhiteSpaces--;
-				}
+				fillWith(boardString, numberOfWhiteSpaces, " ");
 			}
-			tmpTower.append(" |\n");	
+			boardString.append(" |\n");	
 		}
 		
 		
-		return new String(tmpTower);
+		return new String(boardString);
 	}
 	
 	public ArrayList<ClientRegion> getRegionList(){
