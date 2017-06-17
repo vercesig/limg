@@ -2,6 +2,13 @@ import csv
 import json
 import sys
 
+def isInt(number):
+    try:
+        int(number)
+        return True
+    except ValueError:
+        return False
+
 def parse_csv(path):
     card_list = []
     with open(path) as csv_file:
@@ -14,7 +21,7 @@ def parse_json(card_list):
     for elem in card_list:
         for key in elem.keys():
             translated_str = elem[key].replace('\u201c', '"').replace('\u201c', '"')
-            if not (translated_str.startswith(('{','[')) or elem[key] == 'null'):
+            if not (translated_str.startswith(('{','[')) or elem[key] == 'null' or isInt(elem[key])):
                 translated_str = '"'+translated_str+'"'
             elem[key] = json.loads(translated_str)
     return card_list
