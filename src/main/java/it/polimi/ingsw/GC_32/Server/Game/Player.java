@@ -125,13 +125,6 @@ public class Player {
     	MessageManager.getInstance().sendMessge(message);
     }
     
-    // richiede di effettuare un azione
-    public void makeAction(){
-    	JsonObject TURNBGN = new JsonObject();
-    	TURNBGN.add("TYPE", "TOWER");
-    	GameMessage message = new GameMessage(this.uuid,"TURNBGN", TURNBGN.toString());
-    	MessageManager.getInstance().sendMessge(message);
-    }
     public void moveFamilyMember(int i, Action a, Board b){
     	FamilyMember f = this.getFamilyMember()[i];
     	ActionSpace space = b.getRegion(a.getActionRegionId())

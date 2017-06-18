@@ -50,6 +50,18 @@ public class Game implements Runnable{
 		}
 		LOGGER.log(Level.INFO, "decks succesfully loaded");
 		
+		LOGGER.log(Level.INFO, "setting first turn order");
+		Random randomGenerator = new Random();
+		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
+		int playerListSize = this.playerList.size();
+		
+		for(int i=0; i<playerListSize; i++){
+			int randomNumber = randomGenerator.nextInt(playerList.size());
+			startPlayerOrder.add(playerList.get(randomNumber));
+			playerList.remove(randomNumber);
+		}
+		playerList = startPlayerOrder;
+		
 		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
 		for(int i=0; i<playerList.size(); i++){
@@ -64,32 +76,15 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("MILITARY", 0);
 			
 		}
-		LOGGER.log(Level.INFO, "setting first turn order");
-		Random randomGenerator = new Random();
-		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
-		int playerListSize = this.playerList.size();
-		
-		for(int i=0; i<playerListSize; i++){
-			int randomNumber = randomGenerator.nextInt(playerList.size());
-			startPlayerOrder.add(playerList.get(randomNumber));
-			playerList.remove(randomNumber);
-		}
-		playerList = startPlayerOrder;
 		LOGGER.log(Level.INFO, "done");
 	}
 	
 	public void run(){
 		LOGGER.log(Level.INFO, "notifying connected players on game settings...");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
-		
-		// ********************* ESEMPIO 
-		ArrayList<DevelopmentCard> tmp = new ArrayList<DevelopmentCard>();
-		tmp.add(decks.get("TERRITORYCARD").drawElement());
-		// ********************* ESEMPIO
+
 		playerList.forEach(player -> {
 			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player));
-			// *********************** ESEMPIO
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), tmp));
 		});
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
@@ -137,7 +132,9 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "giving lock to the first player...");
 		setLock(playerList.get(0).getUUID());
 		LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-		PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+		
+		// ask action
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
 		
 		while(runGameFlag){
 			if(MessageManager.getInstance().hasMessage()){
@@ -176,7 +173,8 @@ public class Game implements Runnable{
 							LOGGER.log(Level.INFO, "giving lock to the next player");
 							setLock(turnManager.nextPlayer().getUUID());
 							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-							PlayerRegistry.getInstance().getPlayerFromID(getLock()).makeAction();
+							// ask action
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
 						}else{
 							LOGGER.log(Level.INFO, "game end");
 							//stopGame();

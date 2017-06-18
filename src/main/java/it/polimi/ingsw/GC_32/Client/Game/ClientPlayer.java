@@ -11,6 +11,7 @@ public class ClientPlayer {
 	private ResourceSet playerResources;
 	private HashMap<String, ArrayList<String>> cards;
 	private String name;
+	private ClientFamilyMember[] familyMembers = new ClientFamilyMember[4];
 	
 	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
@@ -23,14 +24,27 @@ public class ClientPlayer {
 		this.playerResources.setResource("MILITARY", 0);
 		this.playerResources.setResource("VICTORY", 0);
 		this.playerResources.setResource("FAITH", 0);
+		
+		for(int i=0; i<familyMembers.length; i++){
+			familyMembers[i] = new ClientFamilyMember(this.name);
+		}
+		
 	}
 		
 	public void setName(String name){
 		this.name = name;
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
 	public ResourceSet getPlayerResources(){
 		return this.playerResources;
+	}
+	
+	public ClientFamilyMember[] getFamilyMembers(){
+		return this.familyMembers;
 	}
 	
 	public void addCard(String cardType, String card){
@@ -52,7 +66,11 @@ public class ClientPlayer {
 	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
+		tmp.append(name+"\n");
 		tmp.append(playerResources.toString()+"\n");
+		for(ClientFamilyMember familiar : familyMembers){
+			tmp.append(familiar.toString());
+		}
 		for(Entry<String, ArrayList<String>> item : cards.entrySet()){
 			tmp.append(item.getKey()+" : ");
 			for(String card : item.getValue()){

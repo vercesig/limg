@@ -129,7 +129,9 @@ public class ServerMessageFactory {
 		STATCHNGpayload.add("COINS", player.getResources().getResource("COINS"));
 		STATCHNG.add("PLAYERID", player.getUUID());
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());		
-		return new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
+		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
+		STATCHNGmessage.setAsBroadcastMessage();
+		return STATCHNGmessage;
 	}
 	
 	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet addingResources){
@@ -141,7 +143,9 @@ public class ServerMessageFactory {
 		});
 		STATCHNG.add("PLAYERID", playerUUID);
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
-		return new GameMessage(playerUUID, "STATCHNG", STATCHNG.toString());		
+		GameMessage STATCHNGmessage = new GameMessage(null, "STATCHNG", STATCHNG.toString());
+		STATCHNGmessage.setAsBroadcastMessage();
+		return STATCHNGmessage;
 	}
 	
 	public static GameMessage buildSTATCHNGmessage(String playerUUID, List<DevelopmentCard> cards){
@@ -151,7 +155,9 @@ public class ServerMessageFactory {
 		cards.forEach(card -> STATCHNGpayload.add(card.getType(),card.getName()));
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
 		STATCHNG.add("PLAYERID", playerUUID);
-		return new GameMessage(playerUUID, "STATCHNG", STATCHNG.toString());	
+		GameMessage STATCHNGmessage = new GameMessage(null, "STATCHNG", STATCHNG.toString());
+		STATCHNGmessage.setAsBroadcastMessage();
+		return STATCHNGmessage;
 	}
 	
 	public static GameMessage buildNAMECHGmessage(String playerUUID, String name){
@@ -200,5 +206,13 @@ public class ServerMessageFactory {
 		GameMessage DICEROLLmessage = new GameMessage(null, "DICEROLL", DICEROLL.toString());
 		DICEROLLmessage.setAsBroadcastMessage();
 		return DICEROLLmessage;
+	}
+	
+	public static GameMessage buildTRNBGNmessage(String playerUUID){
+		JsonObject TRNBGN = new JsonObject();
+		TRNBGN.add("PLAYERID", playerUUID);
+		GameMessage TRNBGNmessage = new GameMessage(null, "TRNBGN", TRNBGN.toString());
+		TRNBGNmessage.setAsBroadcastMessage();
+		return TRNBGNmessage;
 	}
 }
