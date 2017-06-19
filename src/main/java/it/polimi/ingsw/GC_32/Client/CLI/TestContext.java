@@ -2,24 +2,27 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.Scanner;
 
-public class ActionContext implements Context{
+public class TestContext implements Context{
 
 	private Scanner in;
 	
-	public ActionContext(){
+	public TestContext(){
 		this.in = new Scanner(System.in);
 	}
 	
 	private boolean runFlag;
 	
-	public void run(){
+	String command;
+	
+	public void open(){
 		System.out.println("actionContext");
 		runFlag=true;
 		while(runFlag){
-			String i = in.nextLine();
-			System.out.println(i);
-			if(i.equals("exit")){
+			command = in.nextLine();
+			System.out.println(command);
+			if(command.equals("exit")){
 				close();
+				System.out.println("chiudo actionContext");
 			}
 		}
 	}

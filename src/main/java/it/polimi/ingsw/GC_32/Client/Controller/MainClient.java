@@ -212,6 +212,8 @@ public class MainClient{
 						/*int contextID = messagePayload.get("CONTEXTID").asInt();
 						String contextAdditionalInfo = messagePayload.get("CONTEXTPAYLOAD").asString();
 						client.getClientInterface().openScreen(contextID, contextAdditionalInfo);*/
+						// ***************************** ESEMPIO
+						client.getClientInterface().openScreen(messagePayload);
 						client.getClientInterface().openScreen(messagePayload);
 						break;
 				}

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
@@ -16,22 +14,19 @@ public class ClientCLI implements ClientInterface{
 	private ClientBoard boardReference;
 	private HashMap<String, ClientPlayer> playerListReference;
 	private String UUID;
-	
-	private Scanner in;
-	private PrintWriter out;
-	
 	private ConcurrentLinkedQueue<Object> contextQueue;
 	
 	private Context[] contextList;
+	private Thread zeroLevelContextThread;
+	
+	boolean idleRun = false;
 	
 	public ClientCLI(){
-		in = new Scanner(System.in);
-		out  = new PrintWriter(System.out);
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
 		this.contextList = new Context[5];
-		contextList[0] = new IdleContext(in); // idle
-		contextList[1] = new ActionContext(); // actioncontext
+		contextList[0] = new ZeroLevelContext(this); // idle
+		contextList[1] = new TestContext(); // actioncontext
 		
 	}
 	
@@ -46,34 +41,38 @@ public class ClientCLI implements ClientInterface{
 	public void registerUUID(String UUID){
 		this.UUID = UUID;
 	}
-		
-	Thread contextThread;
-	boolean idleRun = false;
 	
-	public void run(){
+	public ClientBoard getBoard(){
+		return this.boardReference;
+	}
+	
+	public HashMap<String, ClientPlayer> getPlayerList(){
+		return this.playerListReference;
+	}
 		
+	public void run(){		
 		while(true){
 			if(!idleRun){
 				idleRun=true;
-				contextThread = new Thread((Runnable) contextList[0]);
-				contextThread.start();
-				System.out.println("apro idle");
+				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
+				zeroLevelContextThread.start();
 			}
-			if(!contextQueue.isEmpty()){
-				System.out.println("chiduo idle");
+			
+			while(!contextQueue.isEmpty()){
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
-				contextList[contextMessage.get("CONTEXTID").asInt()].run();
+				contextList[contextMessage.get("CONTEXTID").asInt()].open();
 				idleRun=false;
-				// avvia il context indicato nel contextID del messaggio in testa alla coda
 			}
 		}
-		
 	}
 
 	public void displayMessage(String message){
-		out.println(message);
-		out.flush();
+		System.out.println(message);
+	}
+	
+	public void openScreen(JsonObject contextMessage){
+		this.contextQueue.add(contextMessage);
 	}
 	
 	@Override
@@ -86,16 +85,11 @@ public class ClientCLI implements ClientInterface{
 	@Override
 	public void openScreen(int screenId, String additionalData) {
 		
-	}
-
-	public void openScreen(JsonObject contextMessage){
-		this.contextQueue.add(contextMessage);
-	}
-	
+	}	
 	
 	@Override
 	public void registerContextPayloadQueue(ConcurrentLinkedQueue<Object> queue) {
-		this.contextQueue = queue;
+		
 	}
 
 	@Override
