@@ -136,6 +136,8 @@ public class Game implements Runnable{
 		// ask action
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
 		
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
+		
 		while(runGameFlag){
 			if(MessageManager.getInstance().hasMessage()){
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {

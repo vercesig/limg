@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
@@ -18,9 +20,19 @@ public class ClientCLI implements ClientInterface{
 	private Scanner in;
 	private PrintWriter out;
 	
+	private ConcurrentLinkedQueue<Object> contextQueue;
+	
+	private Context[] contextList;
+	
 	public ClientCLI(){
 		in = new Scanner(System.in);
 		out  = new PrintWriter(System.out);
+		contextQueue = new ConcurrentLinkedQueue<Object>();
+		
+		this.contextList = new Context[5];
+		contextList[0] = new IdleContext(in); // idle
+		contextList[1] = new ActionContext(); // actioncontext
+		
 	}
 	
 	public void registerBoard(ClientBoard board){
@@ -34,19 +46,26 @@ public class ClientCLI implements ClientInterface{
 	public void registerUUID(String UUID){
 		this.UUID = UUID;
 	}
+		
+	Thread contextThread;
+	boolean idleRun = false;
 	
 	public void run(){
-			
+		
 		while(true){
-			System.out.println("type a command");
-			String command = in.nextLine();
-			if(command.equals("board")){
-				System.out.println(this.boardReference.toString());
+			if(!idleRun){
+				idleRun=true;
+				contextThread = new Thread((Runnable) contextList[0]);
+				contextThread.start();
+				System.out.println("apro idle");
 			}
-			if(command.equals("players")){
-				playerListReference.forEach((UUID, player)->{
-					System.out.println(player.toString());
-				});
+			if(!contextQueue.isEmpty()){
+				System.out.println("chiduo idle");
+				contextList[0].close();
+				JsonObject contextMessage = (JsonObject) contextQueue.poll();
+				contextList[contextMessage.get("CONTEXTID").asInt()].run();
+				idleRun=false;
+				// avvia il context indicato nel contextID del messaggio in testa alla coda
 			}
 		}
 		
@@ -63,16 +82,20 @@ public class ClientCLI implements ClientInterface{
 		return 0;
 	}
 
+	// change context
 	@Override
 	public void openScreen(int screenId, String additionalData) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	public void openScreen(JsonObject contextMessage){
+		this.contextQueue.add(contextMessage);
+	}
+	
+	
 	@Override
 	public void registerContextPayloadQueue(ConcurrentLinkedQueue<Object> queue) {
-		// TODO Auto-generated method stub
-		
+		this.contextQueue = queue;
 	}
 
 	@Override

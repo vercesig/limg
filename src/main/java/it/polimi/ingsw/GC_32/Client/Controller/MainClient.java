@@ -146,6 +146,8 @@ public class MainClient{
 						client.graphicInterface.registerBoard(client.getBoard());
 						client.graphicInterface.registerPlayers(client.getPlayers());
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
+						
+						client.graphicInterface.openScreen(0, null);
 						//System.out.println("[MAINCLIENT] board correctly synchronized");
 						
 						Thread clientInterfaceThread = new Thread(client.getClientInterface());
@@ -167,7 +169,7 @@ public class MainClient{
 							iterable.forEachRemaining(card -> client.getPlayers().get(playerID).addCard(card.getName(), card.getValue().asString()));
 							//System.out.println("[MAINCLIENT] add new card to "+playerID);
 							
-							// ************************* ESEMPIO
+							// ************************ ESEMPIO
 							//System.out.println(client.getPlayers().get(client.myUUID).toString());
 						}
 						break;
@@ -206,7 +208,12 @@ public class MainClient{
 							client.getClientInterface().displayMessage("now is "+client.getPlayers().get(playerUUID).getName()+"'s turn");
 						}
 						break;
-						
+					case "CONTEXT":
+						/*int contextID = messagePayload.get("CONTEXTID").asInt();
+						String contextAdditionalInfo = messagePayload.get("CONTEXTPAYLOAD").asString();
+						client.getClientInterface().openScreen(contextID, contextAdditionalInfo);*/
+						client.getClientInterface().openScreen(messagePayload);
+						break;
 				}
 			}
 			

@@ -15,8 +15,8 @@ static EffectBuilder buildPrivilege = (JsonValue payload) -> {
 				int number = payload.asObject().get("NUMBER").asInt();
 		
 		Effect e = (Board b, Player p, Action a) ->	{
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildContextMessage(
-					ServerContextMessageFactory.buildPrivilegeMessage(number)));
+			/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(
+					ServerContextMessageFactory.buildPrivilegeMessage(number)));*/
 		};
 		return e;
 	};

@@ -189,12 +189,12 @@ public class ServerMessageFactory {
 		CHGBOARDSTATmessage.setAsBroadcastMessage();		
 		return CHGBOARDSTATmessage;
 	}
-	public static GameMessage buildContextMessage(JsonObject payload) {
-			
+	
+	public static GameMessage buildCONTEXTMessage(String playerUUID, JsonObject payload) {			
 		JsonObject CONTEXT = new JsonObject();
-		CONTEXT.add("PAYLOAD", payload.toString());				
-		
-		return new GameMessage(null, "CONTEXT", CONTEXT.toString()); 
+		CONTEXT.add("CONTEXTID", 1);
+		CONTEXT.add("CONTEXTPAYLOAD", "ciao");		
+		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString()); 
 	} 
 	
 	public static GameMessage buildDICEROLLmessage(int blackDice, int whiteDice, int orangeDice){

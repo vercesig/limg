@@ -3,6 +3,8 @@ package it.polimi.ingsw.GC_32.Client;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 
@@ -10,6 +12,7 @@ public interface ClientInterface extends Runnable{
 	//Context Management Section
 	public int getScreenId();
 	public void openScreen(int screenId, String additionalData);
+	public void openScreen(JsonObject contextPayload);
 	public void registerContextPayloadQueue(ConcurrentLinkedQueue<Object> queue);
 	
 	//Message Handling Session
