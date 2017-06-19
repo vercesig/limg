@@ -13,7 +13,7 @@ public class ActionContext implements Context{
 	private boolean runFlag;
 	
 	public void run(){
-		System.out.println("minchione");
+		System.out.println("actionContext");
 		runFlag=true;
 		while(runFlag){
 			String i = in.nextLine();

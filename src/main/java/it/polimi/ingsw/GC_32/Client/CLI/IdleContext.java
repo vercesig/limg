@@ -15,7 +15,7 @@ public class IdleContext implements Context,Runnable{
 	public void run(){
 		runFlag = true;
 		while(runFlag){
-			System.out.println("eccomi");
+			System.out.println("idle");
 			String i = in.nextLine();
 			if(i.equals("exit")){
 				System.out.println("uscendo");
