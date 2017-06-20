@@ -147,7 +147,7 @@ public class MainClient{
 						client.graphicInterface.registerPlayers(client.getPlayers());
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
 						
-						client.graphicInterface.openScreen(0, null);
+						client.graphicInterface.openContext(0, null);
 						//System.out.println("[MAINCLIENT] board correctly synchronized");
 						
 						Thread clientInterfaceThread = new Thread(client.getClientInterface());
@@ -213,8 +213,8 @@ public class MainClient{
 						String contextAdditionalInfo = messagePayload.get("CONTEXTPAYLOAD").asString();
 						client.getClientInterface().openScreen(contextID, contextAdditionalInfo);*/
 						// ***************************** ESEMPIO
-						client.getClientInterface().openScreen(messagePayload);
-						client.getClientInterface().openScreen(messagePayload);
+						client.getClientInterface().openContext(messagePayload);
+						client.getClientInterface().openContext(messagePayload);
 						break;
 				}
 			}
