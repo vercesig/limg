@@ -1,10 +1,13 @@
 package it.polimi.ingsw.GC_32.Common.Network;
 
+import java.util.LinkedList;
+
 import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class ServerContextMessageFactory {
 	
@@ -29,10 +32,10 @@ public class ServerContextMessageFactory {
 		return INFORMATION;
 	}
 	
-	public static JsonObject buildChangeMessage(ResourceSet in, ResourceSet out){
+	public static JsonObject buildChangeMessage(LinkedList<DevelopmentCard> cardlist){
 		JsonObject INFORMATION = new JsonObject();
-		INFORMATION.add("OPCODE", "CHANGE").add("RESOURCE_IN", in.toJson().toString())
-			.add("RESOURCE_OUT", out.toJson().toString());;
+		/*INFORMATION.add("OPCODE", "CHANGE").add("RESOURCE_IN", in.toJson().toString())
+			.add("RESOURCE_OUT", out.toJson().toString()); */
 		return INFORMATION;	
 	}
 	

@@ -197,6 +197,11 @@ public class ServerMessageFactory {
 		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString()); 
 	} 
 	
+	public static GameMessage buildACKCONTEXTMessage(String playerUUID) {					
+		return new GameMessage(playerUUID, "ACKCONTEXT", "CONTEXT OPERATION SUCCEDED!"); 
+	} 
+	
+	
 	public static GameMessage buildDICEROLLmessage(int blackDice, int whiteDice, int orangeDice){
 		JsonObject DICEROLL = new JsonObject();
 		DICEROLL.add("BLACKDICE", blackDice);
