@@ -6,33 +6,42 @@ import java.util.LinkedList;
 import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
 public class MoveChecker{
+	Logger log;
 	
-    public MoveChecker(){}
+    public MoveChecker(){
+    	this.log = Logger.getLogger("MoveCheckerLogger");
+    }
     
-    //FamilyColorCheck
+  //*******************************************************************************//  
+    
+    //FamilyColorCheck: check if the rule only one family member color is allowed
     private boolean checkFamilyColor(Board board, Player player, Action action){
     	try{
     		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
     			return true;
     		}
-    	} catch(NullPointerException e){};
+    	} 
+    	catch(NullPointerException e){};
       	for (FamilyMember f : player.getFamilyMember()){
     		try{
     			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
     				return false;
     			}
-    		}catch(NullPointerException e){};	
-    	}return true;
+    		}
+    		catch(NullPointerException e){};	
+    	}
+      	return true;
     }
-    //Free Action Space
+    
+    //Free Action Space: is this actionSpace free?
     boolean checkIsFreeSingleSpace(Board board, Player player, Action action){
-    	
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.isSingleActionSpace() && board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.isBusy()){
@@ -40,18 +49,19 @@ public class MoveChecker{
     	}else 
     		return true;
     }
-    // 3CoinsCheck
+    
+    // 3CoinsCheck: has the player 3 coins to pay the tribute if the tower is busy?
     private boolean checkCoinForTribute(Board board, Player player, Action action){
     	ResourceSet coins = new ResourceSet();
     	coins.addResource("COINS", 3);
-    	System.out.println("TowerBusy:" + ((TowerRegion) board.getRegion(action.getActionRegionId())).isTowerBusy());
-    	System.out.println("Compare to 3 Coins:" + player.getResources().compareTo(coins));
     	if (((TowerRegion) board.getRegion(action.getActionRegionId())).isTowerBusy() &&
     			player.getResources().compareTo(coins) < 0){
     		return false;
-    	} return true;
+    	} 
+    	return true;
     }
-    //ValueActionCheck
+    
+    //ValueActionCheck: FamilyMember actionValue > actionSpaceValue?
     private boolean checkActionValue(Board board, Player player, Action action){
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.getActionValue() <= action.getActionValue())
@@ -60,7 +70,7 @@ public class MoveChecker{
     		return false;
     }
     
-    //CostCheck
+    //CostCheck: can the player pay the cost of the card?
     private boolean checkCost(Board board, Player player, Action action){
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
     			.getTowerLayers()[action.getActionSpaceId()]
@@ -73,32 +83,21 @@ public class MoveChecker{
     			System.out.println("Player ha requirements!");
     			return true;
     		}
-    		System.out.println("Player NON soddisfa requirements");
-    		System.out.println(requirements.getResourceSet().keySet());
     		for (ResourceSet cost: costCard){
-				System.out.println(cost.getResourceSet().keySet());
     			if(cost.getResourceSet().keySet().containsAll(requirements.getResourceSet().keySet())){
-    				System.out.println(costCard.toString());
-    				System.out.println("rimuovo il Requirements");
     				costCard.remove(cost);
-    				System.out.println(costCard.toString());
     			}
     		}	
     	}
-    	else {
-    		System.out.println("CARTA SENZA REQUIREMENTS");
-    	}
-    	System.out.println(costCard.toString());
     	for(ResourceSet cost: costCard){
     	   if(player.getResources().compareTo(cost)>=0){
-    		   System.out.println(cost.toString());
-    		   System.out.println("Player OK!");
     		   return true;
     	   }
     	}
-        System.out.println("Player NON RIESCE A PAGARE I COSTI");
     	return false;
     }   
+    
+    //Territory check: has the player enough military points?
     private boolean checkTerrytoryRequirement(Board board, Player player, Action action){
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
     			.getTowerLayers()[action.getActionSpaceId()]
@@ -112,24 +111,30 @@ public class MoveChecker{
     		case 5 : if(point >= 18){return true;} else {return false;}  	
     		default : return true;
     		}
-    	} return true;	
+    	} 
+    	return true;	
     }
-    //CheckMaxCard
+    
+    //CheckMaxCard: is the player trying to take a seventh card?
     private boolean checkMaxCard(Board board, Player player, Action action){
         String cardType = ((TowerRegion) board.getRegion(action.getActionRegionId()))
         		.getTowerLayers()[action.getActionSpaceId()].getCard().getType();
         if(player.getPersonalBoard().getCardsOfType(cardType).size() < 6){
         	return true;
-        } return false;
+        }
+        return false;
     }
     
-    //StandardCheck
+  //*******************************************************************************//  
+    
+    //StandardCheck: valid parameters
     private boolean checkValidRegionID(Board board, Player player, Action action){	
 		if(board.getRegion(action.getActionRegionId()) == null){
 			return false;
 		}
 		return true;
 	}
+    
     private boolean checkValidActionSpaceID(Board board, Player player, Action action){	
 		if(board.getRegion(action.getActionRegionId())
 				.getActionSpace(action.getActionSpaceId()) == null){
@@ -152,87 +157,105 @@ public class MoveChecker{
 		}
 	}
     
+  //*******************************************************************************//  
     private boolean firstCheck(Board board, Player player, Action action){
     	boolean result = true;
     	while(result){
 			result = checkValidRegionID(board,player, action); // region ID valida
-			System.out.println("/******** CHECK validRegionID:\n" + result);
-			if(result==false){break;}
+			log.info("/******** CHECK: is a valid region id?\n" + result + "\n");
+			if(!result){
+				break;
+			}
 			result = checkValidActionSpaceID(board,player, action); // actionId valido
-			System.out.println("/******** CHECK aCtionSpaceID:\n" + result);
+			log.info("/******** CHECK: is a valid actionSpace id?\n" + result + "\n");
+			if(!result){
+				break;
+			}
 			result = checkValidActionType(board,player, action);
-			System.out.println("/******** CHECK validActionTYpe:\n" + result);
+			log.info("/******** CHECK: is a valid action type?\n" + result + "\n");
 			break;
-    	} return result;
+    	} 
+    	return result;
     }
-	// check da controllare sempre
+	
     private boolean checkStandardMove(Board board, Player player, Action action){ 
     		boolean result = true;
     		while(result){
     			result = firstCheck(board,player, action);
+    			if(!result){
+    				break;
+    			}
     			result = checkIsFreeSingleSpace(board,player, action); // family member su free SingleSpace
-    			System.out.println("/******** FreeSingleSpace: "+ result);
-    			if(result==false){break;}
+    			log.info("/******** CHECK: is a free actionSpace?"+ result + "\n");
+    			if(!result){
+    				break;
+    			}
     			result = checkActionValue(board,player, action); // actionValue azione >= actionValue space
-    			System.out.println("/******** ActionValue: " + result);
+    			log.info("/******** CHECK: is the action value of the action enough?" + result + "\n");
     			break;
-    	} return result;
+    	} 
+    		return result;
     }
 
     private boolean checkTowerMove(Board board, Player player, Action action){ 
 		boolean result = true;
 		while(result){
 			result = checkFamilyColor(board,player, action); // region ID valida
-			System.out.println("/******** CHECK FamilColor: PASSATO "+ result);
+			log.info("/******** CHECK: is the rule of Only one Family color respected?" + result + "\n");
 			if(!result)
 				break;
 			result = checkCoinForTribute(board,player, action);
-			System.out.println("/******** CHECK COINS: PASSATO "+ result);
+			log.info("/******** CHECK: has the player three coins because the tower is busy?"+ result + "\n");
 			if(!result)
 				break;
 			result = checkIsFreeSingleSpace(board,player, action); // actionId valido
-			System.out.println("/******** CHECK FreeSingleSpace:" + result);
+			log.info("/******** CHECK: is a free actionSpace?"+ result + "\n");
 			if(!result)
 				break;
 			result = checkMaxCard(board,player, action);
-			System.out.println("/******** CHECK MAxCard: "+ result );
+			log.info("/******** CHECK: has the player six card of the same type of the card he wants to buy?"+ result + "\n");
 			if(!result)
 				break;
 			result = checkTerrytoryRequirement(board,player, action); // family member su free SingleSpace
-			System.out.println("/******** CHECK Terrytory" + result);
+			log.info("/******** CHECK: has the player enough military points?"+ result + "\n");
 			if(!result)
 				break;
 			result = checkCost(board,player, action); // actionValue azione >= actionValue space
-			System.out.println("/******** CHECK checkCost: " + result);
+			log.info("/******** CHECK: can the player pay the cost of the card?"+ result + "\n");
 			break;
 		}
 		return result;
     }
+    
     private boolean checkProductionHarvestMove(Board board, Player player, Action action){
     	boolean result = true;
     	while(result){
 			result = checkFamilyColor(board,player, action); // region ID valida
-			System.out.println("/******** CHECK FamilColor :"+ result);
+			log.info("/******** CHECK: is the rule of Only one Family color respected?" + result + "\n");
 			break;
-    	} System.out.println("/******** CHECK FINE Step:"); 
+    	}
     	return result;
     }
     
-    // Check della Mossa
+  //*******************************************************************************//  
+    
     public boolean checkMove(Board board, Player player, Action action){
-    	System.out.println("/******** INIZIO CHECK");
+    	log.info("/******** STARTING THE CHECK\n");
     	boolean result = checkStandardMove(board,player, action);
-    	System.out.println("/******** STANDARD CHECK result :\n" + result);
+    	log.info("/******** STANDARD CHECK result :\n" + result + "\n");
 		if(action.getActionRegionId()<=1){
-			System.out.println("/********Check production/Harvest");
+			log.info("/******** STARTING CHECK for a Production/Harvest action\n");
 			result = result && checkProductionHarvestMove(board,player, action);
 		} if(action.getActionRegionId()>=4){
-			System.out.println("/********Check TOWER");
+			log.info("/******** STARTING CHECK for a Tower action\n");
 			result = result && checkTowerMove(board,player, action);
-		}System.out.println("/********Check FINITO result: " +result); 
+		}
+		log.info("/******** END OF THE CHECK: " + result + "\n"); 
 		return result; 
     }
     
+    //*******************************************************************************//  
+
     // Simulatore della Mossa
     public void Simulate (Game game, Player player, Action action){
     	Board board = game.getBoard();
