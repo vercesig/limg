@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -23,6 +24,7 @@ public class MainClient{
 
 	private MsgConnection network;
 	private ClientInterface graphicInterface;
+	private ConcurrentLinkedQueue<String> sendQueue;
 	
 	private HashMap<String,ClientPlayer> players;
 	private ClientBoard clientBoard;
@@ -31,6 +33,7 @@ public class MainClient{
 	
 	public MainClient(){
 		this.players = new HashMap<String, ClientPlayer>();		
+		this.sendQueue = new ConcurrentLinkedQueue<String>();
 	}
 		
 	public MsgConnection getNetwork(){
@@ -83,6 +86,10 @@ public class MainClient{
 		this.clientBoard = board;
 		//graphicInterface.registerBoard(clientBoard);
 	}
+	
+	private ConcurrentLinkedQueue<String> getSendQueue(){
+		return this.sendQueue;
+	}
 		
 	public static void main(String[] args) throws IOException{
 		
@@ -96,7 +103,7 @@ public class MainClient{
 			System.out.println("before start, choose the graphic interface you want use, type 'c' for Command Line Interface, type 'g' for Graphical User Interface");
 			clientInterfaceType = in.nextLine();
 		}
-		System.out.println("please enter yor name");
+		System.out.println("please enter your name");
 		String myName = in.nextLine();
 		String networkType = "";
 		while(!client.setNetwork(networkType)){
@@ -110,6 +117,12 @@ public class MainClient{
 		System.out.println("ok, now we are ready to play");		
 				
 			while(true){
+				
+				if(!client.getSendQueue().isEmpty()){
+					client.network.sendMessage(client.getSendQueue().poll());
+				}
+				
+				// elabora messaggi in entrata
 				if(network.hasMessage()){
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
@@ -131,6 +144,7 @@ public class MainClient{
 						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.getPlayers().get(client.getUUID()).getName()));
 						
 						client.graphicInterface.registerUUID(client.getUUID());
+						client.graphicInterface.registerSendMessageQueue(client.getSendQueue());
 						break;
 					case "GMSTRT":
 						JsonArray playerList = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();

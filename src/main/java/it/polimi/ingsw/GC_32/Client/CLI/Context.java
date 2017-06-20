@@ -1,8 +1,27 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-public interface Context{
+import java.util.Scanner;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-	public void open();
-	public void close();
+public class Context{
+	
+	protected Scanner in;
+	protected ConcurrentLinkedQueue<String> sendQueue;
+	protected boolean runFlag;
+	protected String command;
+	
+	public Context(){
+		this.in = new Scanner(System.in);
+	}
+	
+	public void registerSendQueue(ConcurrentLinkedQueue<String> sendQueue){
+		this.sendQueue = sendQueue;
+	}
+	
+	protected void open(Object object){}
+	
+	protected void close(){
+		this.runFlag = false;
+	}
 	
 }

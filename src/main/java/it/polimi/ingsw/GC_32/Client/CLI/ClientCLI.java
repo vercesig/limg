@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
@@ -11,22 +12,27 @@ import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 
 public class ClientCLI implements ClientInterface{
 
+	// game management
 	private ClientBoard boardReference;
 	private HashMap<String, ClientPlayer> playerListReference;
 	private String UUID;
-	private ConcurrentLinkedQueue<Object> contextQueue;
 	
+	// network management
+	private ConcurrentLinkedQueue<Object> contextQueue;
+	private ConcurrentLinkedQueue<String> sendQueue;
+	
+	// context management
 	private Context[] contextList;
 	private Thread zeroLevelContextThread;
 	
-	boolean idleRun = false;
+	private boolean idleRun = false;
 	
 	public ClientCLI(){
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
 		this.contextList = new Context[5];
-		contextList[0] = new ZeroLevelContext(this); // idle
-		contextList[1] = new TestContext(); // actioncontext
+		contextList[0] = new ZeroLevelContext(this); 
+		contextList[1] = new PrivilegeContext();
 		
 	}
 	
@@ -49,8 +55,18 @@ public class ClientCLI implements ClientInterface{
 	public HashMap<String, ClientPlayer> getPlayerList(){
 		return this.playerListReference;
 	}
+	
+	public void registerSendMessageQueue(ConcurrentLinkedQueue<String> queue) {
+		this.sendQueue = queue;
+		if(this.sendQueue!=null) System.out.println("sendQueue registered");
 		
-	public void run(){		
+	}
+	
+	public void displayMessage(String message){
+		System.out.println(message);
+	}
+	
+	public void run(){	
 		while(true){
 			if(!idleRun){
 				idleRun=true;
@@ -61,14 +77,11 @@ public class ClientCLI implements ClientInterface{
 			while(!contextQueue.isEmpty()){
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
-				contextList[contextMessage.get("CONTEXTID").asInt()].open();
+				contextList[contextMessage.get("CONTEXTID").asInt()].registerSendQueue(sendQueue);
+				contextList[contextMessage.get("CONTEXTID").asInt()].open(null);
 				idleRun=false;
 			}
 		}
-	}
-
-	public void displayMessage(String message){
-		System.out.println(message);
 	}
 	
 	@Override
@@ -95,12 +108,6 @@ public class ClientCLI implements ClientInterface{
 
 	@Override
 	public void receiveMessage(String playerID, String message) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void registerSendMessageQueue(ConcurrentLinkedQueue<String> queue) {
 		// TODO Auto-generated method stub
 		
 	}

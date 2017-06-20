@@ -1,45 +1,35 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.util.Scanner;
+public class ZeroLevelContext extends Context implements Runnable{
 
-public class ZeroLevelContext implements Context,Runnable{
-
-	Scanner in;
-	ClientCLI CLI;
+	private ClientCLI client;
 	
-	public ZeroLevelContext(ClientCLI CLI){
-		this.in = new Scanner(System.in);
-		this.CLI = CLI;
+	public ZeroLevelContext(ClientCLI client){
+		this.client = client;
 	}
-	
-	boolean runFlag = true;
-	String command;
-	
-	
+		
 	public void run(){
-		open();
+		open(null);
 	}
 	
-	public void open(){
+	public void open(Object object){
+		
 		runFlag = true;
+		
 		while(runFlag){
 			System.out.println("type a command:\n- board: display the board status\n- players: display players' status"
 					+ "\n- action: make an action (if isn't your turn your requests won't be applied)");
-			command = in.nextLine();
+			command = super.in.nextLine();
 			switch(command){
 			case "board":
-				System.out.println(this.CLI.getBoard().toString());
+				System.out.println(this.client.getBoard().toString());
 				break;
 			case "players":
-				this.CLI.getPlayerList().forEach((UUID, client) -> System.out.println(client.toString()));
+				this.client.getPlayerList().forEach((UUID, client) -> System.out.println(client.toString()));
 				break;
 				
 			}
 		}
-	}
-	
-	public void close(){
-		this.runFlag = false;
 	}
 	
 }
