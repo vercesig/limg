@@ -71,19 +71,20 @@ public class ClientCLI implements ClientInterface{
 		System.out.println(message);
 	}
 	
-	public void openScreen(JsonObject contextMessage){
+	@Override
+	public void openContext(JsonObject contextMessage){
 		this.contextQueue.add(contextMessage);
 	}
 	
 	@Override
-	public int getScreenId() {
+	public int getContextId() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	// change context
 	@Override
-	public void openScreen(int screenId, String additionalData) {
+	public void openContext(int screenId, String additionalData) {
 		
 	}	
 	
