@@ -22,12 +22,12 @@ public class ExcommunicationContext extends Context{
 			command = in.nextLine();
 			switch(command){
 			case "y":
-				response.add("APPLYEXCOMMUNICATION", true);
+				response.add("APPLYEXCOMMUNICATION", false);
 				sendQueue.add(response.toString());
 				close();
 				break;
 			case "n":
-				response.add("APPLYEXCOMMUNICATION", false);
+				response.add("APPLYEXCOMMUNICATION", true);
 				sendQueue.add(response.toString());
 				close();
 				break;
