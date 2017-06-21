@@ -113,9 +113,8 @@ public class Player {
     	return new String(tmp);
     }
     
-    // TODO: inserire gli opportuni check (o ci pensa il move checker??)
-    public void takeCard(Game game, Action action){
-    	TowerRegion selectedTower = (TowerRegion)game.getBoard().getRegion(action.getActionRegionId());
+    public void takeCard(Board board, Action action){
+    	TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
     }
     
