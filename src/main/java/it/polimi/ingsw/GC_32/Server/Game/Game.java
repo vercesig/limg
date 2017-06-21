@@ -35,6 +35,7 @@ public class Game implements Runnable{
 	private String lock;
 	
 	private TurnManager turnManager;
+	private MoveChecker mv;
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players){
@@ -48,7 +49,7 @@ public class Game implements Runnable{
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
-		LOGGER.log(Level.INFO, "decks succesfully loaded");
+		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting first turn order");
 		Random randomGenerator = new Random();
@@ -150,6 +151,7 @@ public class Game implements Runnable{
 						break;
 					case "ASKACT":
 						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
+						int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						int pawnID = Jsonmessage.get("PAWNID").asInt();
 						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 						
@@ -158,8 +160,16 @@ public class Game implements Runnable{
 						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
 						
 						Action action = new Action(actionType,actionValue,regionID,spaceID);
+						Player player = playerList.get(index);
 						
-						// MoveChecker
+						// MoveCheckerLogic ********************************************************
+						if(!mv.firstCheck(board, player, action)){	
+							//ERRORE
+						}
+						if(!mv.simulateWithCopy(this, mv.getCopy(board), mv.getCopy(player), player, mv.getCopy(action))){
+							//ERRORE
+						}
+						mv.simulate(this, board, player, action);
 						break;
 					case "TRNEND":
 						if(!turnManager.isGameEnd()){

@@ -7,6 +7,9 @@ import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
+import it.polimi.ingsw.GC_32.Server.Game.ActionHandler.MakeAction;
+import it.polimi.ingsw.GC_32.Server.Game.ActionHandler.makeHarvest;
+import it.polimi.ingsw.GC_32.Server.Game.ActionHandler.makeProduction;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -125,6 +128,39 @@ public class MoveChecker{
         return false;
     }
     
+	//CheckBlockedSpace: can the player access to that actionSpace?
+    private boolean checkBlockedZone(int numberOfPlayer, Action action){	
+    	// Can't access to: Harvest-1,Production-1 and Market 2-3
+    	if(numberOfPlayer < 3){
+    		if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
+    				(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    			return true;
+    		}
+    	}
+    	//  Can't access to: Market 2-3
+    	if(numberOfPlayer <4){
+    		if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2){
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+	
+    //Check on Servants: if player doesn't have enough Action value he uses all his servants to get it
+    private boolean useServants(Board board, Player player, Action action){
+    	if(checkActionValue(board, player, action)){
+    		return true;
+    	}
+    	while(!checkActionValue(board, player, action)){
+    		if(player.getResources().getResource("SERVANTS") <= 0){
+    			return false;
+    		}
+    		player.getResources().addResource("SERVANTS", -1);
+    		action.setActionValue(action.getActionValue() + 1);
+    	}
+    	return true;
+    }
+    
   //*******************************************************************************//  
     
     //StandardCheck: valid parameters
@@ -158,7 +194,7 @@ public class MoveChecker{
 	}
     
   //*******************************************************************************//  
-    private boolean firstCheck(Board board, Player player, Action action){
+    public boolean firstCheck(Board board, Player player, Action action){
     	boolean result = true;
     	while(result){
 			result = checkValidRegionID(board,player, action); // region ID valida
@@ -256,103 +292,108 @@ public class MoveChecker{
     
     //*******************************************************************************//  
 
-    // Simulatore della Mossa
-    public void Simulate (Game game, Player player, Action action){
-    	Board board = game.getBoard();
+    public Board getCopy(Board board){
+    	Cloner cloner = new Cloner();
+    	cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+    	return cloner.deepClone(board);
+    }
     	
-    	//check Zone Bloccate per insufficiente numero di Giocatori
-    	switch (game.getPlayerList().size()){
-    	case 2 : if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
-    			(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2))
-    			{return;} // zone bloccate: Harvest-1,Production-1 e Market 2-3
-    	case 3 : if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)
-				{return;} // zone bloccate Market 2-3
-    	default : break;
-    	}
-    	if(firstCheck(board, player, action)){
-    		Cloner cloner = new Cloner();
-    		cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-    		Board cloneBoard = cloner.deepClone(board);
-    		Player clonePlayer = cloner.deepClone(player);
-    		Action cloneAction = cloner.deepClone(action);
+    public Player getCopy(Player player){
+    	Cloner cloner = new Cloner();
+    	cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+    	return cloner.deepClone(player);
+    }
+    
+    public Action getCopy(Action action){
+    	Cloner cloner = new Cloner();
+    	cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+    	return cloner.deepClone(action);
+    }
+    
+    //*******************************************************************************//      
+    
+    // SimulateWithCopy: Try the Action with Copies of Board, Player, action. It returns a boolean and it does not change the state of the game
+    public boolean simulateWithCopy(Game game, Board board, Player clonePlayer,Player player,Action action){
+    		
+    		// Check: this is a BlockedSpace?
+    		if(checkBlockedZone(game.getPlayerList().size(), action)){
+    			return false;
+    		}
     		
     		//applico gli effetti sul player. Se ho effetti che negano l'azione ottengo una ImpossibleMoveException.
-    		try{
-    			for(Effect buff : player.getEffectList()){
-    				buff.apply(cloneBoard, clonePlayer, cloneAction);
-    			}
-    		}catch(ImpossibleMoveException e){return;};
+    		if(!MakeAction.usePermamentEffect(board, clonePlayer, player, action)){
+    			return false;
+    		}
+    		
+    		// uses the servants if the player can't pass the check on ActionValue
+    		if(!useServants(board, clonePlayer, action)){
+    			return false;
+    		}
     		
     		//prendo il bonus dell'actionSpace
-    		clonePlayer.getResources().addResource(cloneBoard.getRegion(cloneAction.getActionRegionId())
-    				.getActionSpace(cloneAction.getActionSpaceId()).getBonus());
+    		clonePlayer.getResources().addResource(board.getRegion(action.getActionRegionId())
+    				.getActionSpace(action.getActionSpaceId()).getBonus());
     		
     		// check l'azione
-    		if(checkMove(cloneBoard, clonePlayer, cloneAction)){
-    			
+    		if(!checkMove(board, clonePlayer, action)){
+    			return false;
+    		}
     			//effettuo l'azione
-    			switch(cloneAction.getActionType()){
+    		switch(action.getActionType()){
     			
     			case "PRODUCTION" : {
     				
-    				// sommo i bonus della tile 
-    				clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
-    				
-    				// move FamilyMember
-    				int familyIndex = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt(); // indice fm da spostare
-    				clonePlayer.getFamilyMember()[familyIndex].setPosition(cloneBoard.getRegion(cloneAction.getActionRegionId()).getActionSpace(cloneAction.getActionSpaceId()));
-    				
-    				//active cardEffect
-    				LinkedList<DevelopmentCard> cardlist = new LinkedList<DevelopmentCard>();
-    				cardlist = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-    				for (DevelopmentCard c : cardlist){
-    					if(c.getMinimumActionvalue() > cloneAction.getActionValue()){
-    						cardlist.remove(c);
-    					}
+    				return makeProduction.tryMake(board, player, action);
     				}
-    				//send Json with cardList to activate their effects
-    				// receive Json with cardList to activate
-    				// payload doppio array, primo cosa mettere dentro, secondo quello che esce fuori.
-    				// pacchetto cambio di conbte
-    				try{
-    					for(DevelopmentCard c : cardlist){
-    						c.getInstantEffect().apply(cloneBoard, clonePlayer, cloneAction);
-    						//gestione dell'effetto change
-    					}	
-    				}catch(ImpossibleMoveException e){return;} // failed
-    				// sostituisco copie con originali.
-    			}
     			case "HARVEST" : {
     				
-    				// sommo i bonus della tile 
-    				clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
-    				
-    				// move FamilyMember
-    				int familyIndex = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt(); // indice fm da spostare
-    				//cloneBoard.moveFamiliar(clonePlayer, familyIndex, cloneAction.getActionRegionId(), cloneAction.getActionSpaceId());
-    				clonePlayer.getFamilyMember()[familyIndex].setPosition(cloneBoard.getRegion(cloneAction.getActionRegionId()).getActionSpace(cloneAction.getActionSpaceId()));
-
-    				//active cardEffect
-    				LinkedList<DevelopmentCard> cardlist = new LinkedList<DevelopmentCard>();
-    				cardlist = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
-    				for(DevelopmentCard c : cardlist){
-						try {
-							c.getInstantEffect()
-							.apply(cloneBoard, clonePlayer, cloneAction);
-						} catch (ImpossibleMoveException e) {return;}
-					}
-    				// sostituisco copie con originali.
+    				return makeHarvest.tryMake(board, clonePlayer, action);
     			}
     			case "COUNCIL" : {}
     			case "MARKET" : {}
     			//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
-    			default : {}
+    			default : {return false;}
     			
     			}
     			//sostituisco le copie con le originali
     			//game.setPlayer(clonePlayer);
     			//game.setBoard(cloneBoard);
-    		}
-    	}
+    }
+
+    //*******************************************************************************//      
+    
+    //Simulate: SimulateWithCopy version using the original objects. It changes the state of the game.
+    public void simulate(Game game, Board board, Player player,Action action){
+    	
+		//applico gli effetti sul player. Se ho effetti che negano l'azione ottengo una ImpossibleMoveException.
+		MakeAction.usePermamentEffect(board, player, action);
+		
+		// uses the servants if the player can't pass the check on ActionValue
+		useServants(board, player, action);
+		
+		//prendo il bonus dell'actionSpace
+		player.getResources().addResource(board.getRegion(action.getActionRegionId())
+				.getActionSpace(action.getActionSpaceId()).getBonus());
+		
+		//effettuo l'azione
+		switch(action.getActionType()){
+			
+			case "PRODUCTION" : {
+				
+				makeProduction.make(game, board, player, action);
+				}
+			case "HARVEST" : {
+				
+				makeHarvest.make(board, player, action);
+			}
+			case "COUNCIL" : {}
+			case "MARKET" : {}
+			//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
+			
+			}
+			//sostituisco le copie con le originali
+			//game.setPlayer(clonePlayer);
+			//game.setBoard(cloneBoard);    	
+    	
     }
 }

@@ -57,7 +57,13 @@ public class ResourceSet implements Comparable<ResourceSet> {
     		this.addResource(entry.getKey(), entry.getValue());
     	}
     }
-
+    
+    public void subResource(ResourceSet resource){
+    	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
+    		this.addResource(entry.getKey(), -entry.getValue());
+    	}
+    }
+    
     public JsonObject toJson(){
     	JsonObject resource = new JsonObject();
     	for(String key : this.getResourceSet().keySet()){
