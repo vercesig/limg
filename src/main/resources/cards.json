@@ -1,5 +1,16 @@
 [
-    {
+    { 
+    	"name": "Trading Town",
+-        "cost": null,
+-        "requirements": null,
+-        "instantEffect": "ADD",
+         "instantPayload": {
+-            "SERVANTS": 1,
+-            "COINS": 1
++            "COINS": 1,
++            "SERVANTS": 1
+         },
+-       "permanentEffect": "ADD",
         "instantPayload": {
             "COINS": 1,
             "SERVANTS": 1
