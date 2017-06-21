@@ -189,13 +189,30 @@ public class ServerMessageFactory {
 		CHGBOARDSTATmessage.setAsBroadcastMessage();		
 		return CHGBOARDSTATmessage;
 	}
-	
-	public static GameMessage buildCONTEXTMessage(String playerUUID, JsonObject payload) {			
+		
+	public static GameMessage buildCONTEXTmessage(String playerUUID, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
-		CONTEXT.add("CONTEXTID", 1);
-		CONTEXT.add("CONTEXTPAYLOAD", "ciao");		
-		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString()); 
-	} 
+		CONTEXT.add("CONTEXTID", type.getContextID());		
+		switch(type){
+		case PRIVILEGE:
+			int numberOfPrivilege = (int) payload[0];
+			CONTEXT.add("NUMBER", numberOfPrivilege);
+			break;
+		case SERVANT:
+			CONTEXT.add("NUMBER_SERVANTS", (int) payload[0]);
+			CONTEXT.add("ACTIONTYPE", (String) payload[1]);
+			break;
+		case EXCOMMUNICATION:
+			CONTEXT.add("PLAYER_FAITH", (int) payload[0]);
+			CONTEXT.add("FAITH_NEEDED", (int) payload[1]);
+			break;
+		case BONUS:
+			break;
+		}
+		
+		
+		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString());
+	}
 	
 	public static GameMessage buildDICEROLLmessage(int blackDice, int whiteDice, int orangeDice){
 		JsonObject DICEROLL = new JsonObject();
