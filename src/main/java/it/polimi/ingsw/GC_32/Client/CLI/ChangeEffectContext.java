@@ -52,8 +52,9 @@ public class ChangeEffectContext extends Context{
 				System.out.println(new String(changeString));
 				
 				command = in.nextLine();
-				while(!(Integer.parseInt(command)<=maxIndexChangeEffect.get(tmpList.indexOf(changeString)))||!command.equals("n")){
+				while(!(Integer.parseInt(command)<=maxIndexChangeEffect.get(tmpList.indexOf(changeString)))&&!command.equals("n")){
 					System.out.println("enter a valid index for this card, or type 'n' if you don't want to apply any changes");
+					command = in.nextLine();
 				}
 				if(!command.equals("n"))
 					response.add(JsonPayload.get(tmpList.indexOf(changeString)+Integer.parseInt(command)));
