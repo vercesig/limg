@@ -1,19 +1,19 @@
 [
     {
-        "name": "Trading Town",
+        "instantPayload": {
+            "COINS": 1,
+            "SERVANTS": 1
+        },
+        "instantEffect": "ADD",
         "cost": null,
         "requirements": null,
-        "instantEffect": "ADD",
-        "instantPayload": {
-            "SERVANTS": 1,
-            "COINS": 1
-        },
-        "permanentEffect": "ADD",
+        "cardType": "TERRITORYCARD",
         "permanentPayload": {
             "COINS": 3
         },
         "minimumActionValue": 2,
-        "period": 3,
-        "cardType": "TERRITORYCARD"
+        "name": "Trading Town",
+        "permanentEffect": "ADD",
+        "period": 3
     }
 ]

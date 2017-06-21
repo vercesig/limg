@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.util.ArrayList;
-
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
@@ -179,12 +177,20 @@ public class Check {
     
   // 3) CostCheck: can the player pay the cost of the card?
     public static boolean checkCost(Board board, Player player, Action action){
-    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+    	
+      	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
+    	if(player.getResources().compareTo(cost) >=0 ){
+    		player.getResources().subResource(cost);
+    		return true;
+    	}
+    	return false;
+    	
+    /*	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
     			.getTowerLayers()[action.getActionSpaceId()]
     					.getCard();
     	
-    	ArrayList<ResourceSet> costCard = card.getCost();
-    	ResourceSet requirements = card.getRequirments();
+     	ArrayList<ResourceSet> costCard = card.getCost();
+ 		ResourceSet requirements = card.getRequirments();
     	if(!requirements.getResourceSet().isEmpty()){
     		if(player.getResources().compareTo(requirements)>=0){
     		}
@@ -212,7 +218,6 @@ public class Check {
     	default:
     		break;
     	}
-    	//CONTEXT > 1 cost!!!
-    	return false;
+    	return false;*/
     }   
 }

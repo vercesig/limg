@@ -8,12 +8,15 @@ import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
@@ -163,13 +166,23 @@ public class Game implements Runnable{
 						Player player = playerList.get(index);
 						
 						// MoveCheckerLogic ********************************************************
-						if(!mv.firstCheck(board, player, action)){	
-							//ERRORE
-						}
-						if(!mv.simulateWithCopy(this, mv.getCopy(board), mv.getCopy(player), player, mv.getCopy(action))){
-							//ERRORE
-						}
-						mv.simulate(this, board, player, action);
+						
+						Cloner cloner = new Cloner();
+						cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+			    		Board cloneBoard = cloner.deepClone(this.board);
+			    		Player clonePlayer = cloner.deepClone(player);
+			    		Action cloneAction = cloner.deepClone(action);
+						
+			    		if(!mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){
+			    			return; // non valida
+			    		}
+			    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
+			    			if(mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
+			    				mv.simulate(this, board, player, action); // apply degli originali
+			    				return;
+			    			}
+			    		}
+			    		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della mv.list
 						break;
 					case "TRNEND":
 						if(!turnManager.isGameEnd()){
@@ -192,7 +205,12 @@ public class Game implements Runnable{
 							//stopGame();
 						}
 						break;
+					case "CONTEXTREPLY" :
+						JsonValue contextReply = Json.parse(message.getMessage());
+						mv.contextPull(contextReply);
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
 					}
+					
 				});
 				MessageManager.getInstance().getRecivedQueue().clear();
 			}
