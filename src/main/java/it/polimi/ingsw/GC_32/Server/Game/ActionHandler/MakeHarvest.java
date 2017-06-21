@@ -8,9 +8,9 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.ImpossibleMoveException;
 
-public class makeHarvest {
+public class MakeHarvest {
 	
-	public makeHarvest(){}
+	public MakeHarvest(){}
 	
 	public static boolean tryMake(Board board, Player player, Action action){
 		

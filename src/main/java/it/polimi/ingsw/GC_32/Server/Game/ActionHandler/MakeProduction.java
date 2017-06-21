@@ -19,7 +19,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.ImpossibleMoveException;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
-public class makeProduction {
+public class MakeProduction {
 	
 	public static boolean tryMake(Board board, Player player, Action action){
 		player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus());
