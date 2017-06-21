@@ -219,7 +219,6 @@ public class ServerMessageFactory {
 			List<DevelopmentCard> changeCards = (ArrayList<DevelopmentCard>) payload[0];
 			
 			JsonArray CONTEXTchangeArray = new JsonArray();			
-			int counter = 1;
 			
 			for(DevelopmentCard card : changeCards){
 				JsonObject jsonCard = null;
@@ -227,25 +226,40 @@ public class ServerMessageFactory {
 					jsonCard = (JsonObject) JsonImporter.importSingleCard(cardFile, card.getName());
 				}catch(IOException e) {}
 				
-				Iterator<Member> changePayload = jsonCard.get("permanentPayload").asObject().iterator();
+				JsonValue permanentPayload = jsonCard.get("permanentPayload");
+				JsonArray tmp = new JsonArray();
+				
+				if(permanentPayload.isArray())
+					tmp = (JsonArray) permanentPayload;
+				else
+					tmp.add(permanentPayload);
 				
 				JsonArray cardPacket = new JsonArray();
-				cardPacket.add(counter);
+				cardPacket.add(changeCards.indexOf(card)); // indice carta nell'array
 				
-				JsonObject cost = new JsonObject();
-				JsonObject benefit = new JsonObject();
-				
-				while(changePayload.hasNext()){
-					Member item = changePayload.next();
-					if(item.getValue().asInt()<0)
-						cost.add(item.getName(), item.getValue().asInt());
-					else
-						benefit.add(item.getName(), item.getValue().asInt());
+				int effectID = 0;
+				for(JsonValue v : permanentPayload.asArray()){
+					Iterator<Member> changePayload = v.asObject().iterator();
+					
+					JsonObject cost = new JsonObject();
+					JsonObject benefit = new JsonObject();
+					
+					while(changePayload.hasNext()){
+						Member item = changePayload.next();
+						if(item.getValue().asInt()<0)
+							cost.add(item.getName(), item.getValue().asInt());
+						else
+							benefit.add(item.getName(), item.getValue().asInt());
+					}
+					cardPacket.add(effectID);
+					cardPacket.add(cost.toString());
+					cardPacket.add(benefit.toString());
+					
+					cardPacket.add(card.getName());
+					
+					CONTEXTchangeArray.add(cardPacket);
+					effectID++;
 				}
-				cardPacket.add(cost.toString());
-				cardPacket.add(benefit.toString());
-				
-				counter++;
 			}
 			CONTEXT.add("CHANGEARRAY", CONTEXTchangeArray.toString());
 			break;

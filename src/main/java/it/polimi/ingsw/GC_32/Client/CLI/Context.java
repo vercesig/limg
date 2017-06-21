@@ -3,7 +3,7 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Context{
+public abstract class Context{
 	
 	protected Scanner in;
 	protected ConcurrentLinkedQueue<String> sendQueue;
@@ -18,7 +18,7 @@ public class Context{
 		this.sendQueue = sendQueue;
 	}
 	
-	protected void open(Object object){}
+	public abstract void open(Object object);
 	
 	protected void close(){
 		this.runFlag = false;
