@@ -1,5 +1,9 @@
 package it.polimi.ingsw.GC_32.Common.Network;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -7,6 +11,8 @@ import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonObject.Member;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -17,10 +23,13 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.CouncilRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ServerMessageFactory {
 	
 	private final static Logger LOGGER = Logger.getLogger(ServerMessageFactory.class.getName());
+	
+	private static InputStreamReader cardFile = new InputStreamReader(ServerMessageFactory.class.getClassLoader().getResourceAsStream("test.json"));
 	
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();
@@ -206,11 +215,41 @@ public class ServerMessageFactory {
 			CONTEXT.add("PLAYER_FAITH", (int) payload[0]);
 			CONTEXT.add("FAITH_NEEDED", (int) payload[1]);
 			break;
-		case BONUS:
+		case CHANGE:
+			List<DevelopmentCard> changeCards = (ArrayList<DevelopmentCard>) payload[0];
+			
+			JsonArray CONTEXTchangeArray = new JsonArray();			
+			int counter = 1;
+			
+			for(DevelopmentCard card : changeCards){
+				JsonObject jsonCard = null;
+				try {
+					jsonCard = (JsonObject) JsonImporter.importSingleCard(cardFile, card.getName());
+				}catch(IOException e) {}
+				
+				Iterator<Member> changePayload = jsonCard.get("permanentPayload").asObject().iterator();
+				
+				JsonArray cardPacket = new JsonArray();
+				cardPacket.add(counter);
+				
+				JsonObject cost = new JsonObject();
+				JsonObject benefit = new JsonObject();
+				
+				while(changePayload.hasNext()){
+					Member item = changePayload.next();
+					if(item.getValue().asInt()<0)
+						cost.add(item.getName(), item.getValue().asInt());
+					else
+						benefit.add(item.getName(), item.getValue().asInt());
+				}
+				cardPacket.add(cost.toString());
+				cardPacket.add(benefit.toString());
+				
+				counter++;
+			}
+			CONTEXT.add("CHANGEARRAY", CONTEXTchangeArray.toString());
 			break;
-		}
-		
-		
+		}		
 		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString());
 	}
 	
