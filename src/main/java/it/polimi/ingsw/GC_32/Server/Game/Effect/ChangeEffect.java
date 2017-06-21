@@ -36,17 +36,16 @@ public class ChangeEffect {
 			chanches.add(resourceSet);
 		});
 		
-		Effect bonusEffect = (Board b, Player p, Action a) -> {
+		Effect changeEffect = (Board b, Player p, Action a) -> {
 				ArrayList<ResourceSet> changeList = chanches;
 				try{
 					p.getResources().addResource(changeList.get(a.getAdditionalInfo().get("INDEX_EFFECT").asInt()));
 					if(p.getResources().hasNegativeValue()){throw new ImpossibleMoveException(); }
 				}catch(NullPointerException e){
 					Logger.getLogger("").log(Level.SEVERE, "context", e);
-					System.err.println("resource index not valid");
 				}
 			};	
-		return bonusEffect;
+		return changeEffect;
 	};
 	
 	public static void loadBuilder(){

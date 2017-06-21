@@ -132,6 +132,21 @@ public class JsonImporter {
 		
 		return cardList;
 	}
+	
+	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
+		
+		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
+		JsonArray JsonCardList = Json.parse(fileReader).asArray();
+		
+		for(JsonValue item : JsonCardList){
+			JsonObject card = item.asObject();
+			if(card.get("name").equals(cardName)){
+				return card;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * perform the parsing of the configuration file
 	 * @param fileReader  contains the FileReader object relative to the external file to parse
@@ -139,4 +154,6 @@ public class JsonImporter {
 	public static void importConfigurationFile(Reader fileReader){
 		
 	}
+	
+	
 }
