@@ -201,16 +201,18 @@ public class MoveChecker{
     	if(!moveFamilyMember(game, cloneBoard, clonePlayer, cloneAction)){
     		return false;
     	}
-    		//prendo il bonus dell'actionSpace
-    	clonePlayer.getResources().addResource(cloneBoard.getRegion(cloneAction.getActionRegionId())
-    			.getActionSpace(cloneAction.getActionSpaceId()).getBonus());
-    	
+    	//prendo il bonus dell'actionSpace
+    	if(cloneBoard.getRegion(cloneAction.getActionRegionId()).getActionSpace(cloneAction.getActionSpaceId()).getBonus()!=null){
+    		clonePlayer.getResources().addResource(cloneBoard.getRegion(cloneAction.getActionRegionId())
+    				   .getActionSpace(cloneAction.getActionSpaceId()).getBonus());
+    	}
     	System.out.println("entro nello switch");
     	switch(cloneAction.getActionType()){	
     			
     		case "PRODUCTION" : {
     			
-    			clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+    			// TODO: assegnare personalBonusTile
+    			//clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
     				
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextManager.containsKey("SERVANT")){
@@ -390,6 +392,7 @@ public class MoveChecker{
 		// notifico i cambiamenti
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), player.getResources()));
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), newCards));
+		System.out.println("fine moveChecker");
 		
     }
 }

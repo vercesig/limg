@@ -34,6 +34,9 @@ public class ClientCLI implements ClientInterface{
 		this.contextList = new Context[5];
 		contextList[0] = new ZeroLevelContext(this);
 		contextList[1] = new PrivilegeContext();
+		contextList[2] = new ServantContext();
+		contextList[3] = new ExcommunicationContext();
+		contextList[4] = new ChangeEffectContext();
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		
@@ -87,7 +90,7 @@ public class ClientCLI implements ClientInterface{
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
 				contextList[contextMessage.get("CONTEXTID").asInt()].registerSendQueue(sendQueue);
-				contextList[contextMessage.get("CONTEXTID").asInt()].open(null);
+				contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD"));
 				idleRun=false;
 			}
 			

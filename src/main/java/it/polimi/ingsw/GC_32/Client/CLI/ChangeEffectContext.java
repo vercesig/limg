@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
@@ -15,7 +16,8 @@ public class ChangeEffectContext extends Context{
 	public void open(Object object) {
 		
 		runFlag = true;
-		JsonArray JsonPayload = (JsonArray) object;
+		JsonObject jsonObject = (JsonObject) object;
+		JsonArray JsonPayload = Json.parse(jsonObject.get("CHANGEARRAY").asString()).asArray();
 		
 		System.out.println("you have some change effect to apply. For each card you can choose the effect you want to apply just typing the corresponding "
 				+ "number\nType 'n' if you don't want to apply the change for one specific card");
@@ -46,8 +48,11 @@ public class ChangeEffectContext extends Context{
 			
 		}
 		
-		JsonArray response = new JsonArray();
-		
+		JsonObject CONTEXTREPLY = new JsonObject();
+		CONTEXTREPLY.add("MESSAGETYPE", "CHANGE");
+		JsonObject CONTEXTREPLYpayload = new JsonObject();
+		JsonArray CONTEXTREPLYpayloadArray = new JsonArray();
+				
 		while(runFlag){
 			tmpList.forEach(changeString -> {
 				System.out.println(new String(changeString));
@@ -58,10 +63,13 @@ public class ChangeEffectContext extends Context{
 					command = in.nextLine();
 				}
 				if(!command.equals("n"))
-					response.add(JsonPayload.get(tmpList.indexOf(changeString)+Integer.parseInt(command)));
+					CONTEXTREPLYpayloadArray.add(JsonPayload.get(tmpList.indexOf(changeString)+Integer.parseInt(command)));
 			});
 			
-			sendQueue.add(response.toString());
+			CONTEXTREPLYpayload.add("RESOURCEARRAY", CONTEXTREPLYpayloadArray);
+			CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
+			
+			sendQueue.add(CONTEXTREPLY.toString());
 			close();
 		}
 	}

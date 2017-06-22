@@ -223,10 +223,11 @@ public class Game implements Runnable{
 						
 						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						Player playerRetry = playerList.get(indexRetry);
+						System.out.println("contextreply ricevuto");
 						
-						if(mv.contextPull(contextReply, this, playerRetry)){
+						mv.contextPull(contextReply, this, playerRetry);
 							
-						}
+						
 
 						/*Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
 						

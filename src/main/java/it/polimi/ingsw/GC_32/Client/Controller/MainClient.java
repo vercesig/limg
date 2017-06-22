@@ -118,7 +118,6 @@ public class MainClient{
 			while(true){
 							
 				if(!client.getSendQueue().isEmpty()){
-					System.out.println("coda non vouta");
 					client.network.sendMessage(client.getSendQueue().poll());
 				}	
 				
@@ -223,10 +222,7 @@ public class MainClient{
 						}
 						break;
 					case "CONTEXT":
-						/*int contextID = messagePayload.get("CONTEXTID").asInt();
-						String contextAdditionalInfo = messagePayload.get("CONTEXTPAYLOAD").asString();
-						client.getClientInterface().openScreen(contextID, contextAdditionalInfo);*/
-						// ***************************** ESEMPIO
+						client.getClientInterface().openContext(messagePayload);
 						break;
 				}
 			}

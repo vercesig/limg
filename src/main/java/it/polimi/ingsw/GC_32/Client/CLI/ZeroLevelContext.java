@@ -129,6 +129,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 				
 				System.out.println("action sent to the server... waiting for response");
 				
+				try{ // do tempo ad eventuali context di aprirsi
+					Thread.sleep(200);
+				}catch(Exception e){}
 				break;
 				
 			}

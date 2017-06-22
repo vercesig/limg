@@ -28,7 +28,6 @@ public class SocketMsgConnection implements MsgConnection{
 	}
 	
 	public void sendMessage(String message){
-		System.out.println("inviato "+message);
 		out.println(message);
 		out.flush();
 	}
