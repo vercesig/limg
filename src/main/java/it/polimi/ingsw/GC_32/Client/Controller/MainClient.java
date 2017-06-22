@@ -84,7 +84,6 @@ public class MainClient{
 	
 	private void setClientBoard(ClientBoard board){
 		this.clientBoard = board;
-		//graphicInterface.registerBoard(clientBoard);
 	}
 	
 	private ConcurrentLinkedQueue<String> getSendQueue(){
@@ -117,10 +116,11 @@ public class MainClient{
 		System.out.println("ok, now we are ready to play");		
 				
 			while(true){
-				
+							
 				if(!client.getSendQueue().isEmpty()){
+					System.out.println("coda non vouta");
 					client.network.sendMessage(client.getSendQueue().poll());
-				}
+				}	
 				
 				// elabora messaggi in entrata
 				if(network.hasMessage()){
@@ -171,9 +171,9 @@ public class MainClient{
 					case "STATCHNG":
 						playerID = messagePayload.get("PLAYERID").asString();
 						if(messagePayload.get("TYPE").asString().equals("RESOURCE")){
-							JsonObject addingResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-							client.getPlayers().get(playerID).addResources(new ResourceSet(addingResources));
-							//System.out.println("[MAINCLIENT] player "+playerID+" change resources");
+							JsonObject newResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
+							client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));
+							System.out.println("[MAINCLIENT] player "+playerID+" change resources");
 							
 							// ************************* ESEMPIO
 							//System.out.println(client.getPlayers().get(client.myUUID).toString());
@@ -227,12 +227,9 @@ public class MainClient{
 						String contextAdditionalInfo = messagePayload.get("CONTEXTPAYLOAD").asString();
 						client.getClientInterface().openScreen(contextID, contextAdditionalInfo);*/
 						// ***************************** ESEMPIO
-						client.getClientInterface().openContext(messagePayload);
-						client.getClientInterface().openContext(messagePayload);
 						break;
 				}
 			}
-			
 		}
 	}
 }

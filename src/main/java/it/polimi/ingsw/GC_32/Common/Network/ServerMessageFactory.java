@@ -143,11 +143,11 @@ public class ServerMessageFactory {
 		return STATCHNGmessage;
 	}
 	
-	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet addingResources){
+	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet newResources){
 		JsonObject STATCHNG = new JsonObject();
 		JsonObject STATCHNGpayload = new JsonObject();
 		STATCHNG.add("TYPE", "RESOURCE");
-		addingResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
+		newResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
 			STATCHNG.add(resourceName, resourceQuantity);
 		});
 		STATCHNG.add("PLAYERID", playerUUID);

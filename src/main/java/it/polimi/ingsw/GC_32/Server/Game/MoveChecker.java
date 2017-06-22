@@ -9,10 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.ActionHandler.MakeAction;
@@ -24,26 +27,77 @@ import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
 public class MoveChecker{
 	Logger log;
-	Set <String> list;
-	Map <String, JsonValue> contextManager;
+	private Set <String> list;
+	private Map <String, JsonValue> contextManager;
+	
+	// cloning handling
+	private Cloner cloner = new Cloner();
+	private Board cloneBoard;
+	private Player clonePlayer;
+	private Action cloneAction;
+	
+	private Action action;
 	
     public MoveChecker(){
     	this.log = Logger.getLogger("MoveCheckerLogger");
     	this.list = new HashSet <String> ();
-    	this.contextManager = new HashMap <String, JsonValue>();
+    	this.contextManager = new HashMap <String, JsonValue>();   	
+    	cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning 	
     } 
+    
+    public void firstStepCheck(Game game, Player player, Action action){
+    	
+    	System.out.println("firstStepCheck");
+    	
+    	this.cloneBoard = cloner.deepClone(game.getBoard());
+    	this.clonePlayer = cloner.deepClone(player);
+    	this.cloneAction = cloner.deepClone(action);
+    	
+    	this.action = action;
+    	
+		// checking if is a valid action
+		if(!simulateWithCopy(game, cloneBoard, clonePlayer, player, cloneAction)){		
+			
+			System.out.println("azione non valida");
+			// inviare ACKCHK negativo
+			
+			return; // non valida
+		}
+		System.out.println("azionevalida");
+		// azione valida...
+		
+		// non ci sono context attivi (simulateWithCopy non ha generato alcun context)
+		if(this.list.isEmpty()){
+			//if(simulateWithCopy(game, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
+				simulate(game, game.getBoard(), player, action); // apply degli originali
+			//}
+		}
+		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della context list
+    }
     
     public Set<String> getList(){
     	return this.list;
     }
     
-    public boolean contextPull(JsonValue payload){
+    public boolean contextPull(JsonValue payload, Game game, Player player){
     	this.list.remove(payload.asObject().get("CONTEXT_TYPE"));
     	this.contextManager.put(payload.asObject().get("CONTEXT_TYPE").asString(), payload.asObject().get("PAYLOAD"));
     	
+		if(this.list.isEmpty()){  // non ci sono ulteriori context attivi
+			if(simulateWithCopy(game, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
+				simulate(game, game.getBoard(), player, action); // apply degli originali
+				return true;
+			}
+		}
+		return false;   	
     }
+        
   //*******************************************************************************//  
     public boolean firstCheck(Board board, Player player, Action action){
+    	
+    	
+    	System.out.println(!Check.checkValidRegionID(board, player, action));
+    	System.out.println(!Check.checkValidActionSpaceID(board, player, action));
     	
     	log.info("/******** CHECK: is a valid region id?\n" + Check.checkValidRegionID(board, player, action) + "\n");
     	if(!Check.checkValidRegionID(board, player, action)){
@@ -55,10 +109,6 @@ public class MoveChecker{
 			return false;
 		}
 		
-		log.info("/******** CHECK: is a valid action type?\n" + Check.checkValidActionType(board,player, action) + "\n");
-		if(!Check.checkValidActionType(board,player, action)){
-			return false;
-    	} 
     	return true;
     }
     
@@ -68,27 +118,39 @@ public class MoveChecker{
    	    if(!Check.familyColor(board, player, action)){
 			return false;
 		}
+   	    
+   	    System.out.println("familycolor");
    	
    	    log.info("/******** CHECK: is a free actionSpace?"+ Check.isFreeSingleSpace(board, player, action) + "\n");
 		if(!Check.isFreeSingleSpace(board, player, action)){
 			return false;
 		}
+		
+   	    System.out.println("freesingle");
    	
+   	    
+   	    
 		log.info("/******** CHECK: is a space blocked?"+ Check.checkBlockedZone(game.getPlayerList().size(), action) + "\n");
-		if(!Check.checkBlockedZone(game.getPlayerList().size(), action)){
+		if(Check.checkBlockedZone(game.getPlayerList().size(), action)){
 			return false;
 		}
+		
+   	    System.out.println("blockedzone");
 		
 		log.info("/******** CHECK: can the player use servants to positionate the family member?"+ Check.useServants(board, player, action) + "\n");
 		if(!Check.useServants(board, player, action)){ // change the state of the game
 			return false;
 		}
 		
+   	    System.out.println("servant");
+		
 		log.info("/******** CHECK: has the player three coins because the tower is busy?"+ Check.checkCoinForTribute(board, player, action) + "\n");
 		if(!Check.checkCoinForTribute(board, player, action)){ // change the state of the game
 			return false;
 		}
 	
+   	    System.out.println("coinfortribute");
+		
 	int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
 	game.moveFamiliar(player, board,  pawnID, action); // change the state of the game
    	return true;
@@ -122,22 +184,28 @@ public class MoveChecker{
    
     public boolean simulateWithCopy(Game game, Board cloneBoard, Player clonePlayer, Player player, Action cloneAction){
     		
+    	System.out.println("simulateWithCopy");
+    	
     	// are valid arguments?
     	if(!firstCheck(cloneBoard, clonePlayer, cloneAction)){
     		return false;
     	}
+    	System.out.println("firstcheck passato");
     	//applico gli effetti sul player. Se ho effetti che negano l'azione ottengo una ImpossibleMoveException.
     	if(!MakeAction.usePermamentEffect(cloneBoard, clonePlayer, player, cloneAction)){
     		return false;
     	}
-    		
+    	System.out.println("usePermanenteffect passato");
+    	
+    	//System.out.println(!moveFamilyMember(game, cloneBoard, clonePlayer, cloneAction));
     	if(!moveFamilyMember(game, cloneBoard, clonePlayer, cloneAction)){
     		return false;
     	}
     		//prendo il bonus dell'actionSpace
     	clonePlayer.getResources().addResource(cloneBoard.getRegion(cloneAction.getActionRegionId())
     			.getActionSpace(cloneAction.getActionSpaceId()).getBonus());
-    		
+    	
+    	System.out.println("entro nello switch");
     	switch(cloneAction.getActionType()){	
     			
     		case "PRODUCTION" : {
@@ -149,7 +217,7 @@ public class MoveChecker{
     				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
     				this.list.add("SERVANT");
     			}
-    			else{
+    			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				cloneAction.setActionValue(cloneAction.getActionValue() + contextManager.get("SERVANT").asInt());
     			}
     			
@@ -167,7 +235,7 @@ public class MoveChecker{
     				this.list.add("CHANGE");
     			}
     			
-    			else {
+    			else { // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				JsonArray payloadChange = this.contextManager.get("CHANGE").asObject().get("RESOURCE_IN").asArray();
     				ArrayList <ResourceSet> resourceIn = new ArrayList <ResourceSet>();
     				payloadChange.forEach(resourceJs -> {
@@ -193,7 +261,7 @@ public class MoveChecker{
     				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
     				this.list.add("SERVANT");
     			}
-    			else{
+    			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				cloneAction.setActionValue(cloneAction.getActionValue() + contextManager.get("SERVANT").asInt());
     			}
     			return true;
@@ -208,7 +276,7 @@ public class MoveChecker{
     				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 1));
     				this.list.add("PRIVILEGE");
     			}
-    			else{
+    			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				clonePlayer.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
     			}
     			return true;
@@ -222,22 +290,22 @@ public class MoveChecker{
         				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 2));
         				this.list.add("PRIVILEGE");
         			}
-        			else{
+        			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
         				clonePlayer.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
         			}
     			}
     			return true;
     		}
     			
-    		//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
+    		//case  of "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
     		default : {
-   	
+    			System.out.println("takeCard");
     			return takeCard(game, cloneBoard, clonePlayer, cloneAction);
     		}
     		
     	}
     }	
-
+    
     //Simulate: SimulateWithCopy version using the original objects. It changes the state of the game.
     public void simulate(Game game, Board board, Player player,Action action){
     	
@@ -250,6 +318,8 @@ public class MoveChecker{
 		//prendo il bonus dell'actionSpace
 		player.getResources().addResource(board.getRegion(action.getActionRegionId())
 				.getActionSpace(action.getActionSpaceId()).getBonus());
+		
+		ArrayList<DevelopmentCard> newCards = new ArrayList<DevelopmentCard>();
 		
 		//effettuo l'azione
 		switch(action.getActionType()){
@@ -305,7 +375,8 @@ public class MoveChecker{
 				
 				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
 		    	DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
-		    	
+				newCards.add(card);
+				
 		    	takeCard(game, board, player, action);
 		    	player.addEffect(card.getPermanentEffect());
 		    	try {
@@ -315,5 +386,10 @@ public class MoveChecker{
 		    	}
 			}
 		}
+		
+		// notifico i cambiamenti
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), player.getResources()));
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), newCards));
+		
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Common.Game;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.eclipsesource.json.JsonObject;
@@ -23,6 +24,11 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	}
     }
 
+    public void replaceResourceSet(ResourceSet resourceSet){
+    	this.resourceSet.clear();
+    	this.addResource(resourceSet);
+    }
+    
 	public HashMap<String, Integer> getResourceSet(){
     	return this.resourceSet;
     }
@@ -71,6 +77,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	}
     	return resource;
     }	
+    
      /**
      * It returns a comparison between two ResourceSet.
 	 * <ul>

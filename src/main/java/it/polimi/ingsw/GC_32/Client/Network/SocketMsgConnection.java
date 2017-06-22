@@ -28,6 +28,7 @@ public class SocketMsgConnection implements MsgConnection{
 	}
 	
 	public void sendMessage(String message){
+		System.out.println("inviato "+message);
 		out.println(message);
 		out.flush();
 	}
@@ -36,8 +37,8 @@ public class SocketMsgConnection implements MsgConnection{
 		return in.nextLine();
 	}
 	
-	public boolean hasMessage(){
-		return in.hasNextLine();
+	public boolean hasMessage() throws IOException{
+		return socket.getInputStream().available()!=0;
 	}
 			
 }

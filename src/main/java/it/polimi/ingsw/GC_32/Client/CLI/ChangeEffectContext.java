@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;

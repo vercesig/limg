@@ -8,6 +8,6 @@ public interface MsgConnection {
 	public void close() throws IOException;
 	public void sendMessage(String message);
 	public String getMessage();
-	public boolean hasMessage();
+	public boolean hasMessage() throws IOException;
 	
 }

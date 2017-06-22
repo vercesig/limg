@@ -40,10 +40,12 @@ public class Game implements Runnable{
 	private TurnManager turnManager;
 	private MoveChecker mv;
 	private HashMap <String, Action> suspendedAction;
+	
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players){
 		
+		this.mv = new MoveChecker();
 		this.suspendedAction = new HashMap <String, Action>();
 		
 		LOGGER.log(Level.INFO, "setting up game...");
@@ -159,7 +161,7 @@ public class Game implements Runnable{
 					case "ASKACT":
 						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 						int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						int pawnID = Jsonmessage.get("PAWNID").asInt();
+						int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
 						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 						
 						int regionID = Jsonmessage.get("REGIONID").asInt();
@@ -167,12 +169,16 @@ public class Game implements Runnable{
 						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
 						
 						Action action = new Action(actionType,actionValue,regionID,spaceID);
+						action.setAdditionalInfo(Jsonmessage); // da raffinare
 						Player player = playerList.get(index);
 						
-						suspendedAction.put(player.getUUID(), action); // salva azione
+						//suspendedAction.put(player.getUUID(), action); // salva azione
+						
+						mv.firstStepCheck(this, player, action);
+						
 						// MoveCheckerLogic ********************************************************
 						
-						Cloner cloner = new Cloner();
+						/*Cloner cloner = new Cloner();
 						cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
 			    		Board cloneBoard = cloner.deepClone(this.board);
 			    		Player clonePlayer = cloner.deepClone(player);
@@ -188,7 +194,7 @@ public class Game implements Runnable{
 			    				suspendedAction.remove(player); // andata a buon fine. posso cancellarla
 			    				break;
 			    			}
-			    		}
+			    		}*/
 			    		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della mv.list
 						break;
 					case "TRNEND":
@@ -214,11 +220,15 @@ public class Game implements Runnable{
 						break;
 					case "CONTEXTREPLY" :
 						JsonValue contextReply = Json.parse(message.getMessage());
-						mv.contextPull(contextReply);
 						
 						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						Player playerRetry = playerList.get(indexRetry);
-						Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
+						
+						if(mv.contextPull(contextReply, this, playerRetry)){
+							
+						}
+
+						/*Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
 						
 						// MoveCheckerLogic ********************************************************
 						Cloner clonerRetry = new Cloner();
@@ -238,7 +248,7 @@ public class Game implements Runnable{
 				    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
 			    				break;
 			    			}
-			    		}
+			    		}*/
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
 					}
 					

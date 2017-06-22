@@ -20,6 +20,7 @@ public class ClientCLI implements ClientInterface{
 	// network management
 	private ConcurrentLinkedQueue<Object> contextQueue;
 	private ConcurrentLinkedQueue<String> sendQueue;
+	private ConcurrentLinkedQueue<String> clientsendQueue;
 	
 	// context management
 	private Context[] contextList;
@@ -31,8 +32,10 @@ public class ClientCLI implements ClientInterface{
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
 		this.contextList = new Context[5];
-		contextList[0] = new ZeroLevelContext(this); 
+		contextList[0] = new ZeroLevelContext(this);
 		contextList[1] = new PrivilegeContext();
+		
+		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		
 	}
 	
@@ -52,14 +55,16 @@ public class ClientCLI implements ClientInterface{
 		return this.boardReference;
 	}
 	
+	public String getUUID(){
+		return this.UUID;
+	}
+		
 	public HashMap<String, ClientPlayer> getPlayerList(){
 		return this.playerListReference;
 	}
 	
 	public void registerSendMessageQueue(ConcurrentLinkedQueue<String> queue) {
-		this.sendQueue = queue;
-		if(this.sendQueue!=null) System.out.println("sendQueue registered");
-		
+		this.sendQueue = queue;		
 	}
 	
 	public void displayMessage(String message){
@@ -67,6 +72,10 @@ public class ClientCLI implements ClientInterface{
 	}
 	
 	public void run(){	
+		
+		contextList[0].registerSendQueue(sendQueue);
+		
+	
 		while(true){
 			if(!idleRun){
 				idleRun=true;
@@ -81,7 +90,17 @@ public class ClientCLI implements ClientInterface{
 				contextList[contextMessage.get("CONTEXTID").asInt()].open(null);
 				idleRun=false;
 			}
+			
+			if(!clientsendQueue.isEmpty())
+				clientsendQueue.forEach(message -> {
+					System.out.println("Client CLI"+message);
+					
+					sendQueue.add(message);
+				});
+			clientsendQueue.clear();
+			
 		}
+		
 	}
 	
 	@Override
