@@ -37,7 +37,7 @@ public class MoveChecker{
     	return this.list;
     }
     
-    public boolean contextPull(JsonValue payload){
+    public void contextPull(JsonValue payload){
     	this.list.remove(payload.asObject().get("CONTEXT_TYPE"));
     	this.contextManager.put(payload.asObject().get("CONTEXT_TYPE").asString(), payload.asObject().get("PAYLOAD"));
     	
