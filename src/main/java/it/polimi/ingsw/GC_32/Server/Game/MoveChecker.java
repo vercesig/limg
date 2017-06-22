@@ -37,9 +37,10 @@ public class MoveChecker{
     	return this.list;
     }
     
-    public void contextPull(JsonValue payload){
+    public boolean contextPull(JsonValue payload){
     	this.list.remove(payload.asObject().get("CONTEXT_TYPE"));
     	this.contextManager.put(payload.asObject().get("CONTEXT_TYPE").asString(), payload.asObject().get("PAYLOAD"));
+    	
     }
   //*******************************************************************************//  
     public boolean firstCheck(Board board, Player player, Action action){
@@ -142,8 +143,7 @@ public class MoveChecker{
     		case "PRODUCTION" : {
     			
     			clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
-    			
-    			
+    				
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextManager.containsKey("SERVANT")){
     				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
