@@ -234,7 +234,7 @@ public class MoveChecker{
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				//System.out.println("prendo SERVANT");
-    				cloneAction.setActionValue(cloneAction.getActionValue() + contextManager.get("SERVANT").asInt());
+    				cloneAction.setActionValue(cloneAction.getActionValue() + contextManager.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
     			}
     			
     			//CONTEXT MESSAGE HANDLER: CHANGE
@@ -351,20 +351,24 @@ public class MoveChecker{
 			
 			case "PRODUCTION" : {
 				
-    			player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
-				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				// TODO: assegnare personalBonus
+    			//player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				
-				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
+				if(contextManager.containsKey("CHANGE")){
+					LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
+					JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
 				
-				for( JsonValue json: cardlist){
-					try {
-						playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
-					} 
-					catch (ImpossibleMoveException e) {
-						log.severe("ERRORE"); // ERRORE GRAVE!
+					for( JsonValue json: cardlist){
+						try {
+							playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+						} 
+						catch (ImpossibleMoveException e) {
+							log.severe("ERRORE"); // ERRORE GRAVE!
+						}
 					}
 				}
+				break;
 			}	
 			case "HARVEST" : {
 				
@@ -382,11 +386,14 @@ public class MoveChecker{
 						}
 					}
 				}
+				break;
 			}
 			case "COUNCIL" : {
 				
     			player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+				
+				break;
 
 			}
 			case "MARKET" : {
@@ -394,6 +401,7 @@ public class MoveChecker{
 				if(action.getActionSpaceId() == 3){
 					player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
 				}
+				break;
 			}
 			//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
 			default:{
@@ -409,12 +417,16 @@ public class MoveChecker{
 		    	} catch (ImpossibleMoveException e) {
 					log.severe("ERRORE!");
 		    	}
+		    	
+		    	break;
 			}
 		}
 		
 		waitForChangeFlag = true;
 		
 		// notifico i cambiamenti
+		System.out.println(player.getResources().toString());
+		
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), player.getResources()));
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), newCards));
 		System.out.println("fine moveChecker");

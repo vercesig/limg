@@ -60,7 +60,10 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     public void addResource(ResourceSet resource){
     	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
-    		this.addResource(entry.getKey(), entry.getValue());
+    		if(this.resourceSet.containsKey(entry.getKey()))
+    			this.addResource(entry.getKey(), entry.getValue());
+    		else
+    			this.setResource(entry.getKey(), entry.getValue());
     	}
     }
     

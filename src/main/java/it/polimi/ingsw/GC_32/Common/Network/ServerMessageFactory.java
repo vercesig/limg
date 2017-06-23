@@ -149,7 +149,7 @@ public class ServerMessageFactory {
 		JsonObject STATCHNGpayload = new JsonObject();
 		STATCHNG.add("TYPE", "RESOURCE");
 		newResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
-			STATCHNG.add(resourceName, resourceQuantity);
+			STATCHNGpayload.add(resourceName, resourceQuantity);
 		});
 		STATCHNG.add("PLAYERID", playerUUID);
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
