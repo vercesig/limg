@@ -66,4 +66,4 @@ gradle-app.setting
 # Repo-specific Files
 cards.json
 excom_cards.json
-*.csv#
+*.csv\#
