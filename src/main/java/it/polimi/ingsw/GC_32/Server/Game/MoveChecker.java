@@ -9,13 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
-import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.ActionHandler.MakeAction;
@@ -43,7 +41,7 @@ public class MoveChecker{
     	this.contextManager = new HashMap<String, JsonValue>();
     	//Effects cannot be deepcloned
     	cloner.dontCloneInstanceOf(Effect.class);
-    } 
+    }
     
     public boolean firstStepCheck(Game game, Player player, Action action){
     	logger.info("firstStepCheck");
@@ -51,6 +49,7 @@ public class MoveChecker{
     	this.cloneBoard = cloner.deepClone(game.getBoard());
     	this.clonePlayer = cloner.deepClone(player);
     	this.cloneAction = cloner.deepClone(action);
+    	
     	this.action = action;
     	
 		// checking if is a valid action
@@ -70,12 +69,18 @@ public class MoveChecker{
     }
     
     public boolean contextPull(JsonValue payload, Game game, Player player){
-    	this.list.remove(payload.asObject().get("CONTEXT_TYPE"));
+    	this.list.remove(payload.asObject().get("CONTEXT_TYPE").asString());
     	this.contextManager.put(payload.asObject().get("CONTEXT_TYPE").asString(), payload.asObject().get("PAYLOAD"));
     	
+    	System.out.println("context pull, rimuovo da list "+payload.asObject().get("CONTEXT_TYPE").asString());
+    	System.out.println(list.toString());
+    	System.out.println(payload.toString());
+    	System.out.println();
+    	
 		if(this.list.isEmpty()){  // non ci sono ulteriori context attivi
-			waitForChangeFlag = false;
+			waitForChangeFlag = false; // ok possiamo toccare il model
 			if(simulateWithCopy(game, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
+				System.out.println("sto simulando");
 				simulate(game, game.getBoard(), player, action); // apply degli originali
 				return true;
 			}
@@ -290,16 +295,19 @@ public class MoveChecker{
 			
 			case "PRODUCTION" : {
 				
-    			player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
-				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				// TODO: assegnare personalBonus
+    			//player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				
-				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
-				
-				for( JsonValue json: cardlist){
-					playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+				if(contextManager.containsKey("CHANGE")){
+					LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
+					JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
+					for( JsonValue json: cardlist){
+						playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+					}
 				}
-			}	
+			}
+
 			case "HARVEST" : {
 				
     			player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
@@ -338,7 +346,7 @@ public class MoveChecker{
 			}
 		}
 		
-		waitForChangeFlag = false;
+		waitForChangeFlag = true;
 		
 		// notifico i cambiamenti
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), player.getResources()));
@@ -347,13 +355,13 @@ public class MoveChecker{
 		
     }
     
-    private boolean checkValidRegionID(Board board, Action action){	
+	private boolean checkValidRegionID(Board board, Action action){	
 		if(board.getRegion(action.getActionRegionId()) == null){
 			return false;
 		}
 		return true;
 	}
-    
+
 	private boolean checkValidActionSpaceID(Board board, Action action){	
 		if(board.getRegion(action.getActionRegionId())
 				.getActionSpace(action.getActionSpaceId()) == null){
