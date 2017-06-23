@@ -125,7 +125,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 				}
 				
 				// sending ASKACT message
-				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, regionID, spaceID));
+				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID));
 				
 				System.out.println("action sent to the server... waiting for response");
 				

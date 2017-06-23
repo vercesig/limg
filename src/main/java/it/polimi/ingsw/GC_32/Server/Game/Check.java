@@ -60,6 +60,7 @@ public class Check {
     	if(numberOfPlayer < 3){
     		if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
     				(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    			System.out.println(action.getActionRegionId()+"|"+action.getActionSpaceId());
     			return true;
     		}
     	}

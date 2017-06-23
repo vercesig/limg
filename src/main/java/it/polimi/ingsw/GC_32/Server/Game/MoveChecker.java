@@ -221,7 +221,7 @@ public class MoveChecker{
     		
     		case "HARVEST" : {
     			
-    			clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+    			//clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
     			
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextManager.containsKey("SERVANT")){
