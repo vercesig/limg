@@ -1,2 +1,0 @@
-name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType
-Trading Town,null,null,ADD,"{""SERVANTS"": 1, ""COINS"": 1}",ADD,"{""COINS"":3}",2,3,TERRITORYCARD

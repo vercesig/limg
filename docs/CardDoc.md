@@ -108,7 +108,8 @@ per 1 servitore e 1 punto militare. Se lo scambio non offre possibilità di scel
     "BONUSACTIONVALUE" : 3,
     "BONUSRESOURCE" : {"WOOD" : -1,
                        "COINS" -1},
-    "EXCLUSIVEBONUS" : true}},
+    "EXCLUSIVEBONUS" : true,
+    "FLAGREGION": "ALL" } // serve per mappare alcuni effetti che toccano tutte le torri
 ```
 
 * BONUS: per ogni QUANTITY di CARTA o RISORSA posseduta consente di incrementare
@@ -127,7 +128,16 @@ carta personaggio posseduta.
 ```
 { "NUMBER" : 1}
 ```
+* PERMANENT: effetti permanenti delle carte Character. danno bonus ai tipi di azione:
 
+{ "TYPE" : HARVESTACTION ,
+    "REGIONID" : 5,
+    "BONUSACTIONVALUE" : 3,
+    "BONUSRESOURCE" : [{"WOOD" : -1,
+                       "COINS" -1},{"STONE" : -1}], // JSONARRAY
+    "EXCLUSIVEBONUS" : true, // FLAG
+	"FLAGREGION": "ALL" } // serve per mappare alcuni effetti che toccano tutte le torri
+	
 Secondo questo formato carte più complesse sono cosi rappresentate:
 
 ```
