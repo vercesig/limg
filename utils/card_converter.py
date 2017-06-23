@@ -18,12 +18,19 @@ def parse_csv(path):
     return card_list
 
 def parse_json(card_list):
+    i = 2
     for elem in card_list:
         for key in elem.keys():
-            translated_str = elem[key].replace('\u201c', '"').replace('\u201c', '"')
+            translated_str = elem[key].replace('\u201c', '"').replace('\u201d', '"').replace('\u2018', "'").replace('\u2019',"'")
             if not (translated_str.startswith(('{','[')) or elem[key] == 'null' or isInt(elem[key])):
                 translated_str = '"'+translated_str+'"'
-            elem[key] = json.loads(translated_str)
+            try:
+                elem[key] = json.loads(translated_str)
+            except json.decoder.JSONDecodeError:
+                print("Parsing Error on line {}, cell {}".format(i, key))
+                print("Cell content: {}".format(elem[key]))
+                break
+        i += 1
     return card_list
 
 def write_json(json_list, path):
