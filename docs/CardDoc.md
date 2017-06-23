@@ -7,22 +7,20 @@ cosi astratta:
 
 ```
 {
-"name" : "Trading Town",
-"cost" : null,
-"requirments" : null,
-"instantEffect": "ADD",
-"instantPayload": {
-    "SERVANTS": 1,
-    "COINS":1
-},
-"permanentEffect" : "ADD",
-"permanentPayload" : {
-    "COINS":3
-},
-"minimumActionValue" : 1,
-"period" : 3,
-"cardType" : "TERRITORYCARD"
-}
+        "minimumActionValue": 1,
+        "name": "Commercial Hub",
+        "instantEffect": null,
+        "permanentPayload": {
+            "COINS": 1
+        },
+        "cost": null,
+        "exclusivePermanentEffect": "TRUE",
+        "period": 1,
+        "instantPayload": null,
+        "permanentEffect": "ADD",
+        "cardType": "TERRITORYCARD",
+        "requirements": null
+    },
 ```
 
 la semantica dei vari attribuit è la seguente:
@@ -42,6 +40,7 @@ parser si occuperà di associare l'effetto alla carta
 permanenti della carta.
 * **period**: il periodo della carta.
 * **cardType**: la tipologia di carta
+* **exclusivePermanentEffect**: se true si puo' attivare solo un effetto permanente. 
 
 tale formato può essere esteso al caso di carte con più effetti istantanei, ecco un esempio:
 
@@ -67,6 +66,7 @@ tale formato può essere esteso al caso di carte con più effetti istantanei, ec
 "minimumActionValue" : null,
 "period" : 3,
 "cardType" : "CHARACTERCARD"
+"exclusivePermanentEffect" : "true"  // si puo' attivare solo uno dei piu' effetti permanenti
 }
 ```
 la carta Cardinal possiede due effetti immediati, uno di tipo ADD e l'altro di tipo ACTION.
