@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
 

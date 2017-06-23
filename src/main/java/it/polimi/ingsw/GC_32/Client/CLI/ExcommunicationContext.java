@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.eclipsesource.json.JsonObject;
 
 public class ExcommunicationContext extends Context{
