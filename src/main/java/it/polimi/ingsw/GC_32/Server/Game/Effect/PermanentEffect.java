@@ -11,12 +11,13 @@ public class PermanentEffect {
 	
 	static EffectBuilder bonusPermanentEffect = (JsonValue payload) -> {
 		
-		String actionType = payload.asObject().get("actionType").asString();
-		int actionValueBonus = payload.asObject().get("actionValueBonus").asInt();
-		JsonValue flag = payload.asObject().get("flagCost");
+		String actionType = payload.asObject().get("TYPE").asString();
+		int regionID = payload.asObject().get("REGIONID").asInt();
+		int actionValueBonus = payload.asObject().get("BONUSACTIONVALUE").asInt();
+		JsonValue flag = payload.asObject().get("EXCLUSIVEBONUS");
 		
 		ArrayList<ResourceSet> discountList = new ArrayList<>();
-		JsonValue cost = payload.asObject().get("cost");
+		JsonValue cost = payload.asObject().get("BONUSRESOURCE");
 		
 		try{
 			cost.asArray().forEach( item -> {
@@ -29,7 +30,8 @@ public class PermanentEffect {
 			});	
 		} catch(NullPointerException e){};
 		Effect permanentEffect = (b, p, a) -> {
-			if(!a.getActionType().equals(actionType)){ // Action a is not the ActionType of the permanentEffect  
+			
+			if(!(a.getActionType().equals(actionType)&& a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
 				return;
 			}
 			a.setActionValue(a.getActionValue() + actionValueBonus);
