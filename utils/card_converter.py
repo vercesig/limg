@@ -20,7 +20,10 @@ def parse_csv(path):
 def parse_json(card_list):
     i = 2
     for elem in card_list:
-        for key in elem.keys():
+        for key in list(elem.keys()):
+            if(elem[key] == ''):
+                elem.pop(key, None)
+                continue
             translated_str = elem[key].replace('\u201c', '"').replace('\u201d', '"').replace('\u2018', "'").replace('\u2019',"'")
             if not (translated_str.startswith(('{','[')) or elem[key] == 'null' or isInt(elem[key])):
                 translated_str = '"'+translated_str+'"'
