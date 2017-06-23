@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType,exclusivePermanentEffect
 Commercial Hub,null,null,null,null,ADD,"{""COINS"":1}",1,1,TERRITORYCARD,TRUE
 Woods,null,null,ADD,{“WOOD” : 1},ADD,{“WOOD”:1},2,1,TERRITORYCARD,TRUE
@@ -95,3 +96,102 @@ Military Conquest,{“MILITARY_POINTS”: 6},{“MILITARY_POINTS”: 12},ADD,"{�
 Improving the Roads,"{“SERVANTS”:3, “COINS”: 4}",null,ACTION,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”:3, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",ADD,{“VICTORY_POINTS”: 5},0,3,VENTURECARD,TRUE
 Sacred War,{“MILITARY_POINTS”: 8},{“MILITARY_POINTS”: 15},ADD,"{""FAITH_POINTS"":4}",ADD,{“VICTORY_POINTS”: 8},0,3,VENTURECARD,TRUE
 Support to the Pope**,"[{“MILITARY_POINTS”: 5}, {“WOOD”: 3, “STONE”:3, “COINS”: 4}]",{“MILITARY_POINTS”: 10},ADD,"{""FAITH_POINTS"":2}",ADD,{“VICTORY_POINTS”: 10},0,3,VENTURECARD,TRUE
+=======
+name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType
+Commercial Hub,,,,,ADD,"{""COINS"":1}",1,1,TERRITORYCARD
+Woods,,,ADD,{“WOOD” : 1},ADD,{“WOOD”:1},2,1,TERRITORYCARD
+Village,,,,,ADD,"{""COINS"":1, “SERVANTS”:1}",3,1,TERRITORYCARD
+Gravel Pit,,,ADD,{“STONE”:2},ADD,{“STONE”:2},4,1,TERRITORYCARD
+Forest,,,ADD,{“WOOD” : 1},ADD,{“WOOD”:3},5,1,TERRITORYCARD
+Monastery,,,ADD,"{“SERVANTS”: 1, “MILITARY_POINTS”:2}",ADD,"{""FAITH_POINTS"":1, “STONE”:1}",6,1,TERRITORYCARD
+Citadel,,,,,ADD,"{“MILITARY_POINTS”:2, “STONE”:1}",5,1,TERRITORYCARD
+City,,,ADD,{“COINS”:3},PRIVILEGE,"{""NUMBER"":1}",6,1,TERRITORYCARD
+Gold Mine,,,ADD,{“COINS”:1},ADD,"{""COINS"":2}",1,2,TERRITORYCARD
+Mountain Town,,,ADD,{“SERVANTS”: 1},ADD,"{“MILITARY_POINTS”:1, “WOOD”:2}",3,2,TERRITORYCARD
+Mining Town,,,ADD,"{“SERVANTS”: 2, “STONE”:1}",ADD,"{“SERVANTS”: 1, “STONE”:2}",4,2,TERRITORYCARD
+Rock Pit,,,ADD,{“WOOD” : 1},ADD,{“STONE”:3},3,2,TERRITORYCARD
+Estate,,,ADD,"{“SERVANTS”: 2, “WOOD”:1}",ADD,"{""COINS"":1, “WOOD”:2}",4,2,TERRITORYCARD
+Hermitage,,,ADD,"{""FAITH_POINTS"":1}",ADD,"{""FAITH_POINTS"":1}",2,2,TERRITORYCARD
+Manor House,,,,,ADD,"{“SERVANTS”: 2, “MILITARY_POINTS”:2}",5,2,TERRITORYCARD
+Dukedom,,,ADD,{“COINS”:4},ADD,"{""COINS"":1, “WOOD”:2, “STONE”:1}",6,2,TERRITORYCARD
+Trading Town,,,ADD,"{“SERVANTS”: 1, “COINS”:1}",ADD,{“COINS”:3},1,3,TERRITORYCARD
+Farm,,,ADD,"{“VICTORY_POINTS”: 1, “WOOD”:1}",ADD,"{“VICTORY_POINTS”: 2, “WOOD”:2}",3,3,TERRITORYCARD
+Colony,,,ADD,{“MILITARY_POINTS”:2},ADD,"{“VICTORY_POINTS”: 4, “WOOD”:1}",5,3,TERRITORYCARD
+Marble Pit,,,ADD,{“VICTORY_POINTS”: 3},ADD,"{“VICTORY_POINTS”: 1, “STONE”:2}",2,3,TERRITORYCARD
+Province,,,ADD****,{“STONE”:1},ADD,"{“VICTORY_POINTS”: 4, “STONE”:1}",6,3,TERRITORYCARD
+Sanctuary,,,ADD,"{""FAITH_POINTS"":1}",ADD,"{“COINS”:1,""FAITH_POINTS"":1}",1,3,TERRITORYCARD
+Castle,,,ADD,"{“VICTORY_POINTS”: 2, “COINS”:2}",ADD,"{“SERVANTS”: 1, “MILITARY_POINTS”:3}",4,3,TERRITORYCARD
+Fortified Town,,,ADD,"{“SERVANTS”: 1, “MILITARY_POINTS”:2}",ADD,"{“SERVANTS”: 2, “MILITARY_POINTS”:1}",2,3,TERRITORYCARD
+Mint,"{“WOOD”: 1, “STONE”:3}",,ADD,{“VICTORY_POINTS”: 5},BONUS,"{“TYPE”: “CARD”, “FOREACH”: “BUILDINGCARD”, “QUANTITY”:1, “INCREASE”: “COINS”, “INCREASINGQUANTITY”: 1 }",5,1,BUILDINGCARD
+Tax Office,"{“WOOD”: 3, “STONE”:1}",,ADD,{“VICTORY_POINTS”: 5},BONUS,"{“TYPE”: “CARD”, “FOREACH”: “TERRITORYCARD”, “QUANTITY”:1, “INCREASE”: “COINS”, “INCREASINGQUANTITY”: 1 }",5,1,BUILDINGCARD
+Triumphal Arch,"{“COINS”: 2, “STONE”:2}",,ADD,{“VICTORY_POINTS”: 6},BONUS,"{“TYPE”: “CARD”, “FOREACH”: “VENTURECARD”, “QUANTITY”:1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 1 }",6,1,BUILDINGCARD
+Theater,"{“COINS”: 2, “WOOD”:2}",,ADD,{“VICTORY_POINTS”: 6},BONUS,"{“TYPE”: “CARD”, “FOREACH”: “CHARACTERCARD”, “QUANTITY”:1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 1 }",6,1,BUILDINGCARD
+Carpenter’s Shop,"{“COINS”: 1, “WOOD”:2}",,ADD,{“VICTORY_POINTS”: 3},CHANGE****,,3,1,BUILDINGCARD
+Stonemason’s Shop,"{“COINS”: 1, “STONE”:2}",,ADD,{“VICTORY_POINTS”: 2},CHANGE*****,,3,1,BUILDINGCARD
+Chapel,{“WOOD”: 2},,ADD,"{""FAITH_POINTS"":1}",CHANGE ,"{“RESOURCEOUT”: {""FAITH_POINTS"":1}, “RESOURCEIN” : {""COINS"":1} }",2,1,BUILDINGCARD
+Residence,{“STONE”:2},,ADD,{“VICTORY_POINTS”: 1},CHANGE **,"{“RESOURCEOUT”: null, “RESOURCEIN” : {""COINS"":1} }",1,1,BUILDINGCARD
+Marketplace,"{“WOOD”: 2, “STONE”:1}",,ADD,{“VICTORY_POINTS”: 3},CHANGE,"{“RESOURCEOUT”: { “WOOD”:2, “STONE”:2 }, “RESOURCEIN” : {""COINS"":3} }",3,2,BUILDINGCARD
+Treasury,{“WOOD”: 3},,ADD,{“VICTORY_POINTS”: 4},CHANGE*****,,3,2,BUILDINGCARD
+Painters’ Guild,{“WOOD”: 4},,ADD,{“VICTORY_POINTS”: 5},CHANGE*****,,4,2,BUILDINGCARD
+Sculptors’ Guild,{“STONE”: 4},,ADD,{“VICTORY_POINTS”: 6},CHANGE*****,,5,2,BUILDINGCARD
+Stonemasons’ Guild,"{“WOOD”: 1, “STONE”:2}",,ADD,{“VICTORY_POINTS”: 4},CHANGE,"{“RESOURCEOUT”: { “VICTORY_POINTS”: 6 }, “RESOURCEIN” : {“SERVANTS”: 1, “STONE”:1, “WOOD”:1 } }",4,2,BUILDINGCARD
+Baptistery,{“STONE”: 3},,ADD,"{“VICTORY_POINTS”: 2, ""FAITH_POINTS"":1}",CHANGE,"{“RESOURCEOUT”: { “VICTORY_POINTS”: 2, “COINS”:2 }, “RESOURCEIN” : {""FAITH_POINTS"":1} }",2,2,BUILDINGCARD
+Barracks,"{“WOOD”: 1, “STONE”:1}",,ADD,{“VICTORY_POINTS”: 3},CHANGE,"{“RESOURCEOUT”: {“MILITARY_POINTS”:3}, “RESOURCEIN” : {""SERVANTS"":1} }",1,2,BUILDINGCARD
+Stronghold,"{“WOOD”: 2, “STONE”:2, “COINS”: 2}",,ADD,{“VICTORY_POINTS”: 8},ADD,"{“VICTORY_POINTS”: 2, “MILITARY_POINTS”:2}",6,2,BUILDINGCARD
+Bank,"{“WOOD”: 1, “STONE”:3, “COINS”: 3}",,ADD,{“VICTORY_POINTS”: 7},ADD,"{""COINS"":5}",2,3,BUILDINGCARD
+Fair,"{“COINS”: 4, “WOOD”:3}",,ADD,{“VICTORY_POINTS”: 8},CHANGE,"{“RESOURCEOUT”: { “WOOD”:3, “STONE”:3 }, “RESOURCEIN” : {""COINS"":4} }",4,3,BUILDINGCARD
+Garden,"{“WOOD”: 4, “STONE”:2, “SERVANTS”: 2}",,ADD,{“VICTORY_POINTS”: 10},ADD,{“VICTORY_POINTS”: 3},1,3,BUILDINGCARD
+Fortress,"{“WOOD”: 2, “STONE”: 4, “COINS”: 2}",,ADD,{“VICTORY_POINTS”: 9},ADD **,{“VICTORY_POINTS”: 2},5,3,BUILDINGCARD
+Palace,"{“WOOD”: 3, “STONE”:1, “COINS”: 3}",,ADD,{“VICTORY_POINTS”: 9},CHANGE,"{“RESOURCEOUT”: { “VICTORY_POINTS”: 4, “SERVANTS”:2 }, “RESOURCEIN” : {""COINS"":1} }",6,3,BUILDINGCARD
+Church,"{“WOOD”: 1, “STONE”:4}",,ADD,"{“VICTORY_POINTS”: 5, ""FAITH_POINTS"":1}",CHANGE,*****,1,3,BUILDINGCARD
+Military Academy,"{“WOOD”: 2, “STONE”:2, “SERVANTS”: 1}",,ADD,{“VICTORY_POINTS”: 7},CHANGE,"{“RESOURCEOUT”: { “VICTORY_POINTS”: 1, “MILITARY_POINTS”:3 }, “RESOURCEIN” : {""SERVANTS"":1} }",3,3,BUILDINGCARD
+Cathedral,"{“WOOD”: 4, “STONE”:4}",,ADD,"{“VICTORY_POINTS”: 7, ""FAITH_POINTS"":3}",ADD,{“VICTORY_POINTS”: 1},2,3,BUILDINGCARD
+Warlord,"{""COINS"":2}",,ADD,{“MILITARY_POINTS”:3},PERMANENT,"{“TYPE”: “TOWER”, “REGIONID”: 4, “BONUSACTIONVALUE”:2,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,CHARACTERCARD
+Stonemason,"{""COINS"":4}",,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 6, “BONUSACTIONVALUE”:2,“BONUSRESOURCE”: {“STONE”:1,“WOOD”: 1}, “EXCLUSIVEBONUS”:true, “FLAGREGION”: null}",,1,CHARACTERCARD
+Dame,"{""COINS"":4}",,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”:2,“BONUSRESOURCE”: {“COINS”:1}, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,CHARACTERCARD
+Knight,"{""COINS"":2}",,PRIVILEGE,{“NUMBER”: 1},PERMANENT,"{“TYPE”: “TOWER”,“REGIONID”: 7, “BONUSACTIONVALUE”:2, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,CHARACTERCARD
+Farmer,"{""COINS"":3}",,,,PERMANENT,"{“TYPE”: “HARVEST”, “REGIONID”: 1, “BONUSACTIONVALUE”:2, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,CHARACTERCARD
+Artisan,"{""COINS"":3}",,,,PERMANENT,"{“TYPE”: “PRODUCTION”, “REGIONID”: 0, “BONUSACTIONVALUE”:2, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,CHARACTERCARD
+Preacher,"{""COINS"":2}",,ADD,"{""FAITH_POINTS"":4}",NO_TOWER_BONUS,,,1,CHARACTERCARD
+Abbess,"{""COINS"":3}",,ADD ****,"{""FAITH_POINTS"":1}",,,,1,CHARACTERCARD
+Captain,"{""COINS"":4}",,ADD ****,{“MILITARY_POINTS”:2},,,,2,CHARACTERCARD
+Architect,"{""COINS"":4}",,ACTION,"{“TYPE”: “TOWER”,  “REGIONID”: 6, “BONUSACTIONVALUE”:6, “BONUSRESOURCE”: {“STONE”:1, “WOOD”:1}, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",,,,2,CHARACTERCARD
+Patron,"{""COINS"":3}",,ACTION,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”:6,  “BONUSRESOURCE”: {“COINS”:2}, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",,,,2,CHARACTERCARD
+Hero,"{""COINS"":4}",,ACTION **,"{“TYPE”: “TOWER”,  “REGIONID”: 7, “BONUSACTIONVALUE”:6,  “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",,,,2,CHARACTERCARD
+Peasant,"{""COINS"":4}",,,,PERMANENT,"{“TYPE”: “HARVEST”, “REGIONID”: 1, “BONUSACTIONVALUE”:3, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,CHARACTERCARD
+Scholar,"{""COINS"":4}",,,,PERMANENT,"{“TYPE”: “PRODUCTION”, “REGIONID”: 0, “BONUSACTIONVALUE”:3, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,CHARACTERCARD
+Papal Messenger,"{""COINS"":5}",,ADD,"{""FAITH_POINTS"":3}",,,,2,CHARACTERCARD
+Royal Messenger,"{""COINS"":5}",,PRIVILEGE,{“NUMBER”: 3},,,,2,CHARACTERCARD
+Noble,"{""COINS"":6}",,BONUS,"{“TYPE”: “CARD”, “FOREACH”: “TERRITORYCARD”, “QUANTITY”: 1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 2 }",,,,3,CHARACTERCARD
+Governor,"{""COINS"":6}",,BONUS,"{“TYPE”: “CARD”, “FOREACH”: “BUILDINGCARD”, “QUANTITY”: 1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 2 }",,,,3,CHARACTERCARD
+Paramour,"{""COINS"":7}",,BONUS,"{“TYPE”: “CARD”, “FOREACH”: “CHARACTERCARD”, “QUANTITY”: 1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 2 }",,,,3,CHARACTERCARD
+Herald,"{""COINS"":6}",,BONUS,"{“TYPE”: “CARD”, “FOREACH”: “VENTURECARD”, “QUANTITY”: 1, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 2 }",,,,3,CHARACTERCARD
+Cardinal,"{""COINS"":4}",,ADD ****,"{""FAITH_POINTS"":2}",,,,3,CHARACTERCARD
+Bishop,"{""COINS"":5}",,ADD ****,"{""FAITH_POINTS"":1}",,,,3,CHARACTERCARD
+General,"{""COINS"":5}",,BONUS,"{“TYPE”: “RESOURCE”, “FOREACH”: “MILITARY_POINTS”, “QUANTITY”: 2, “INCREASE”: “VICTORY_POINTS”, “INCREASINGQUANTITY”: 1}",,,,3,CHARACTERCARD
+Ambassador,"{""COINS"":6}",,ACTION **,"{“TYPE”: “TOWER”,  “REGIONID”: null, “BONUSACTIONVALUE”:7, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: true}",,,,3,CHARACTERCARD
+Hiring Recruits,"{""COINS"":4}",,ADD,{“MILITARY_POINTS”:2},ADD,{“VICTORY_POINTS”: 4},0,1,VENTURECARD
+Repairing the Church,"{“WOOD”: 1, “STONE”:1, “COINS”: 1}",,ADD,"{""FAITH_POINTS"":1}",ADD,{“VICTORY_POINTS”: 5},0,1,VENTURECARD
+Building the Walls,{“STONE”: 3},,ADD****,{“MILITARY_POINTS”:2},ADD,{“VICTORY_POINTS”: 3},0,1,VENTURECARD
+Raising a Statue,"{“WOOD”: 2, “STONE”:2}",,PRIVILEGE,{“NUMBER”: 2},ADD,{“VICTORY_POINTS”: 4},0,1,VENTURECARD
+Military Campaign,{“MILITARY_POINTS”:2},{“MILITARY_POINTS”:3},ADD,{“COINS”:3},ADD,{“VICTORY_POINTS”: 5},0,1,VENTURECARD
+Hosting Panhandlers,{“WOOD”: 3},,ADD,{“SERVANTS”: 4},ADD,{“VICTORY_POINTS”: 4},0,1,VENTURECARD
+Fighting Heresies,{“MILITARY_POINTS”:3},{“MILITARY_POINTS”:5},ADD,"{""FAITH_POINTS"":2}",ADD,{“VICTORY_POINTS”: 5},0,1,VENTURECARD
+Support to the Bishop **,{“MILITARY_POINTS”:2},{“MILITARY_POINTS”:4},ADD,"{""FAITH_POINTS"":3}",ADD,{“VICTORY_POINTS”: 1},0,1,VENTURECARD
+Hiring Soldiers,"{""COINS"":6}",,ADD,{“MILITARY_POINTS”:6},ADD,{“VICTORY_POINTS”: 5},0,2,VENTURECARD
+Repairing the Abbey,"{“WOOD”: 2, “STONE”:2, “COINS”: 2}",,ADD,"{""FAITH_POINTS"":2}",ADD,{“VICTORY_POINTS”: 6},0,2,VENTURECARD
+Building the Bastions,{“STONE”: 4},,ADD****,{“MILITARY_POINTS”:3},ADD,{“VICTORY_POINTS”: 2},0,2,VENTURECARD
+Support to the King,{“MILITARY_POINTS”:3},{“MILITARY_POINTS”:6},ADD,{“COINS”:5},ADD,{“VICTORY_POINTS”: 3},0,2,VENTURECARD
+Improving the Canals,"{“SERVANTS”:2, “COINS”: 3}",,ACTION,"{“TYPE”: “HARVEST”,  “REGIONID”: 1, “BONUSACTIONVALUE”:4, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",ADD,{“VICTORY_POINTS”: 5},0,2,VENTURECARD
+Hosting Foreigners,{“WOOD”: 4},,ADD,{“SERVANTS”: 5},ADD,{“VICTORY_POINTS”: 4},0,2,VENTURECARD
+Crusade,{“MILITARY_POINTS”:4},{“MILITARY_POINTS”:8},ADD,"{“COINS”:5, ""FAITH_POINTS"":1}",ADD,{“VICTORY_POINTS”: 5},0,2,VENTURECARD
+Support to the Cardinal**,{“MILITARY_POINTS”:4},{“MILITARY_POINTS”:7},ADD,"{""FAITH_POINTS"":3}",ADD,{“VICTORY_POINTS”: 4},0,2,VENTURECARD
+Hiring Mercenaries,"{""COINS"":8}",,ADD,{“MILITARY_POINTS”:7},ADD,{“VICTORY_POINTS”: 6},0,3,VENTURECARD
+Repairing the Cathedral,"{“WOOD”: 3, “STONE”:3, “COINS”: 3}",,ACTION **,"{“TYPE”: “TOWER”,  “REGIONID”: null, “BONUSACTIONVALUE”:7, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: true}",ADD,{“VICTORY_POINTS”: 5},0,3,VENTURECARD
+Building the Towers,{“STONE”: 6},,ADD ****,{“MILITARY_POINTS”:4},ADD,{“VICTORY_POINTS”: 4},0,3,VENTURECARD
+Promoting Sacred Art,{“WOOD”: 6},,ADD,"{""FAITH_POINTS"":3}",ADD,{“VICTORY_POINTS”: 3},0,3,VENTURECARD
+Military Conquest,{“MILITARY_POINTS”: 6},{“MILITARY_POINTS”: 12},ADD,"{“WOOD”: 3, “STONE”:3, “COINS”: 3}",ADD,{“VICTORY_POINTS”: 7},0,3,VENTURECARD
+Improving the Roads,"{“SERVANTS”:3, “COINS”: 4}",,ACTION,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”:3, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",ADD,{“VICTORY_POINTS”: 5},0,3,VENTURECARD
+Sacred War,{“MILITARY_POINTS”: 8},{“MILITARY_POINTS”: 15},ADD,"{""FAITH_POINTS"":4}",ADD,{“VICTORY_POINTS”: 8},0,3,VENTURECARD
+Support to the Pope**,{“MILITARY_POINTS”: 5},{“MILITARY_POINTS”: 10},ADD,"{""FAITH_POINTS"":2}",ADD,{“VICTORY_POINTS”: 10},0,3,VENTURECARD
+>>>>>>> ce3b9b2ffc9bd95a2200a3bceedf623872cf9deb
