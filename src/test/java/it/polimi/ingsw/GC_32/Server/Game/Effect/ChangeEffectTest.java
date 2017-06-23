@@ -13,7 +13,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class ChangeEffectTest {
 	
 	@Test
-	public void checkChangeEffect() throws ImpossibleMoveException{
+	public void checkChangeEffect(){
 		
 		JsonArray payloadArray = new JsonArray();
 		JsonObject choose1 = new JsonObject();

@@ -58,13 +58,13 @@ public class MoveCheckerTest {
 	@Test
 	public void checkFamilyColorTest(){
 		b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
-		assertEquals(false, moveChecker.firstCheck(b, p, a1));
+		assertEquals(false, moveChecker.checkValidID(b, a1));
 		b.getRegion(1).getActionSpace(1).addFamilyMember(p.getFamilyMember()[1]);
 		Action act = new Action("TEST", 1, 0, 1);
 		JsonObject grey = new JsonObject();
 		grey.add("FAMILYMEMBER_ID", 0);
 		act.setAdditionalInfo(grey);
-		assertEquals(true, Check.familyColor(b, p, act));
+		assertEquals(true, Check.checkFamilyColor(b, p, act));
 	}
 	
 	@Test

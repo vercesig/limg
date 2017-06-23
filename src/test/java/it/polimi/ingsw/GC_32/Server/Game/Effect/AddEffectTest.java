@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class AddEffectTest {
 	
 	@Test
-	public void checkAddEffectBuilder() throws ImpossibleMoveException{
+	public void checkAddEffectBuilder(){
 		JsonObject payload = new JsonObject();
 		payload.add("WOOD", 2);
 		payload.add("COINS", 4);

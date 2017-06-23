@@ -9,14 +9,15 @@ public class Action{
     private int actionSpaceId;
     private int actionRegionId;
     private JsonObject additionalInfo;
+    private boolean valid;
     
-    public Action(String type, int actionValue, int actionSpaceId, int actionRegionId ){
-    	
+    public Action(String type, int actionValue, int actionSpaceId, int actionRegionId){	
     	this.type = type;
     	this.actionValue = actionValue;
     	this.actionSpaceId = actionSpaceId;
     	this.actionRegionId = actionRegionId;
     	this.additionalInfo = new JsonObject();
+    	this.valid = true;
     }
     
     public void setAdditionalInfo(JsonObject info){
@@ -44,9 +45,15 @@ public class Action{
     	return this.actionRegionId;
     }
     
-    	// to String
+    public boolean isValid(){
+    	return this.valid;
+    }
+    
+    public void invalidate(){
+    	this.valid = false;
+    }
+    
     public String toString(){
-    	
     	StringBuilder stringBuilder = new StringBuilder();
     	stringBuilder.append(" Action:");
     	stringBuilder.append("type:" + type + " actionValue:"

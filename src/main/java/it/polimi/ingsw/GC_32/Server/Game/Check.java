@@ -6,29 +6,6 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class Check {
-
-	//--------------Correct Parameters Check -------------------
-    
-	//1)
-	static public boolean checkValidRegionID(Board board, Player player, Action action){	
-		if(board.getRegion(action.getActionRegionId()) == null){
-			return false;
-		}
-		return true;
-	}
-    
-	//2)
-	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){	
-		if(board.getRegion(action.getActionRegionId())
-				.getActionSpace(action.getActionSpaceId()) == null){
-			return false;
-		}
-		return true;
-	}
-    
-    //--------------Fundamental Check -------------------
-    
-    //1) ValueActionCheck: FamilyMember actionValue > actionSpaceValue?
     static public boolean checkActionValue(Board board, Player player, Action action){
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.getActionValue() <= action.getActionValue())
@@ -37,22 +14,24 @@ public class Check {
     		return false;
     }
    
-    //--------------MoveFamilyMember Check -------------------
-	
-	// 1) FamilyColorCheck: check if the rule only one family member color is allowed
-    public static boolean familyColor(Board board, Player player, Action action){
+    /**
+     * Checks if the family member is allowed to 
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    public static boolean checkFamilyColor(Board board, Player player, Action action){
     	
     	// Non si applica per azioni Council e Market
     	if(action.getActionRegionId() == 2 || action.getActionRegionId() == 3){
     		return true;
     	}
-    
-    	//try{ // familiare neutro
-    		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
-    			return true;
-    		}
-    	//} 
-    	//catch(NullPointerException e){};
+
+    	if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
+    		return true;
+    	}
+
       	for (FamilyMember f : player.getFamilyMember()){
     		try{
     			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
@@ -65,7 +44,6 @@ public class Check {
       	return true;
     }
 
-    // 2) Free Action Space: is this actionSpace free?
     public static boolean isFreeSingleSpace(Board board, Player player, Action action){
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.isSingleActionSpace() && board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())

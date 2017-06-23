@@ -11,5 +11,5 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  */
 @FunctionalInterface
 public interface Effect{
-	void apply(Board b, Player p, Action a) throws ImpossibleMoveException;
+	void apply(Board b, Player p, Action a);
 }
