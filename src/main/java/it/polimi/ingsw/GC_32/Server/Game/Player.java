@@ -3,7 +3,6 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
