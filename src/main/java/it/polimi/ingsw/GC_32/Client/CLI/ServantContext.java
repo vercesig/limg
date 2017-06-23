@@ -1,7 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.eclipsesource.json.JsonObject;
 
 public class ServantContext extends Context{
@@ -14,7 +12,9 @@ public class ServantContext extends Context{
 		JsonObject CONTEXTREPLY = new JsonObject();
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
 		JsonObject CONTEXTREPLYpayload = new JsonObject();
-		CONTEXTREPLYpayload.add("MESSAGETYPE", "SERVANT");
+		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
+		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
+		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "SERVANT");
 		
 		System.out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
 				+ "\nDo you want to spend any of these?? type 0 if you don't want spend any servant, "
@@ -24,7 +24,7 @@ public class ServantContext extends Context{
 			command = in.nextLine();
 			try{
 				if(Integer.parseInt(command)<=numberOfServants){
-					CONTEXTREPLYpayload.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
+					CONTEXTREPLYpayloadinfo.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
 					
 					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 					sendQueue.add(CONTEXTREPLY.toString());

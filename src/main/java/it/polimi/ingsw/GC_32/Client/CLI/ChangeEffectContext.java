@@ -49,8 +49,9 @@ public class ChangeEffectContext extends Context{
 		}
 		
 		JsonObject CONTEXTREPLY = new JsonObject();
-		CONTEXTREPLY.add("MESSAGETYPE", "CHANGE");
+		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
 		JsonObject CONTEXTREPLYpayload = new JsonObject();
+		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "CHANGE");
 		JsonArray CONTEXTREPLYpayloadArray = new JsonArray();
 				
 		while(runFlag){

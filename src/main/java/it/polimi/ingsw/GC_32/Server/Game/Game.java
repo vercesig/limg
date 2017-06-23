@@ -250,7 +250,7 @@ public class Game implements Runnable{
 			    				break;
 			    			}
 			    		}*/
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
+						//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
 					}
 					
 				});
