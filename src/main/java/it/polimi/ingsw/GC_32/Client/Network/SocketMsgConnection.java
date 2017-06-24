@@ -37,7 +37,7 @@ public class SocketMsgConnection implements MsgConnection{
 	}
 	
 	public boolean hasMessage(){
-		return in.hasNextLine();
+		return in.getInputStream().available()!=0;
 	}
 			
 }
