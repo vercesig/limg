@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Common.Network;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

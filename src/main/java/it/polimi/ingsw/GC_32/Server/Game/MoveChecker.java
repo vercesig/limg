@@ -96,7 +96,7 @@ public class MoveChecker{
     	return false;
     }
     
-   public boolean moveFamilyMember(Game game, Board board, Player player, Action action){ 
+    public boolean moveFamilyMember(Game game, Board board, Player player, Action action){ 
    	    if(!Check.checkFamilyColor(board, player, action)){
 			return false;
 		}
@@ -116,37 +116,31 @@ public class MoveChecker{
 		if(!Check.checkCoinForTribute(board, player, action)){ // change the state of the game
 			return false;
 		}
-	
-   	    System.out.println("coinfortribute");
-	
+
    	    if(!waitForChangeFlag){
    	    	int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
    	    	game.moveFamiliar(player, board,  pawnID, action); // change the state of the game
    	    }
    	    return true;
-   }
+    }
         
-   public boolean takeCard(Game game, Board board, Player player, Action action){
-	   if(!Check.checkTerrytoryRequirement(board, player, action)){
-		   return false;
-	   }
-	   
-	   logger.info("/******** CHECK: has the player six card of the same type of the card he wants to buy?"+ Check.checkMaxCard(board, player, action) + "\n");
+    public boolean takeCard(Game game, Board board, Player player, Action action){
+    	if(!Check.checkTerrytoryRequirement(board, player, action)){
+    		return false;
+    	}
+
 		if(!Check.checkMaxCard(board, player, action)){
 			return false;
 		}
-		
-		logger.info("/******** CHECK: can the player pay the cost of the card?"+ Check.checkCost(board, player, action) + "\n");
+
 		if(!Check.checkCost(board, player, action)){ //change the state of the game
 			return false;
 		}
 		if(!waitForChangeFlag)
 			game.takeCard(player, board, action); // change the state of the game
 		return true;
-   }
-   
-//*******************************************************************************//  
-    
+    }
+
    /** SimulateWithCopy: Try the Action with Copies of Board, Player, action. It returns a boolean and it does not change the state of the game
     *  Everything with Effect will produce an exception with copies.
     */

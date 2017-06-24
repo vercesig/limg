@@ -9,7 +9,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 public class PrivilegeEffect {
 	
 static EffectBuilder buildPrivilege = (JsonValue payload) -> {
-				int number = payload.asObject().get("NUMBER").asInt();
+		int number = payload.asObject().get("NUMBER").asInt();
 		
 		Effect e = (Board b, Player p, Action a) ->	{
 			/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(

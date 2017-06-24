@@ -2,8 +2,6 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.eclipsesource.json.JsonObject;
 
 public class PrivilegeContext extends Context{
