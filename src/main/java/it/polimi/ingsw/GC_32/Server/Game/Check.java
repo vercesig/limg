@@ -6,6 +6,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class Check {
+		
     static public boolean checkActionValue(Board board, Player player, Action action){
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.getActionValue() <= action.getActionValue())

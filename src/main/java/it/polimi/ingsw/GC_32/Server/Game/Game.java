@@ -159,8 +159,6 @@ public class Game implements Runnable{
 		// ask action
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
 		
-		//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
-		
 		while(runGameFlag){
 			
 			// controllo se ci sono context da aprire context, in caso positivo li apro
@@ -195,30 +193,11 @@ public class Game implements Runnable{
 						action.setAdditionalInfo(Jsonmessage); // da raffinare
 						Player player = playerList.get(index);
 						
-						//suspendedAction.put(player.getUUID(), action); // salva azione
-						
+						// MoveChecker
 						mv.firstStepCheck(this, player, action);
 						
-						// MoveCheckerLogic ********************************************************
+						// notificare cambiamenti ai client (caso in cui non si siano aperti context)
 						
-						/*Cloner cloner = new Cloner();
-						cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-			    		Board cloneBoard = cloner.deepClone(this.board);
-			    		Player clonePlayer = cloner.deepClone(player);
-			    		Action cloneAction = cloner.deepClone(action);
-						
-			    		if(!mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){
-			    			suspendedAction.remove(player.getUUID());
-			    			break; // non valida
-			    		}
-			    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
-			    			if(mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
-			    				mv.simulate(this, board, player, action); // apply degli originali
-			    				suspendedAction.remove(player); // andata a buon fine. posso cancellarla
-			    				break;
-			    			}
-			    		}*/
-			    		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della mv.list
 						break;
 					case "TRNEND":
 						if(!turnManager.isGameEnd()){
@@ -246,7 +225,6 @@ public class Game implements Runnable{
 						
 						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						Player playerRetry = playerList.get(indexRetry);
-						System.out.println("contextreply ricevuto");
 						
 						this.waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
 				    	this.contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD").asObject());
@@ -254,42 +232,16 @@ public class Game implements Runnable{
 						
 						if(this.waitingContextResponseSet.isEmpty()){
 							mv.setWaitFlag(false);; // ok possiamo toccare il model
-							if(mv.simulateWithCopy(/*game, cloneBoard, clonePlayer, player, cloneAction*/ playerRetry, this)){ // simulazione completa
-								System.out.println("sto simulando");
+							if(mv.simulateWithCopy(playerRetry, this)){ // simulazione completa
 								mv.simulate(this, this.getBoard(), playerRetry); // apply degli originali
-								// invio risposte di modifica al client
+								// notifico i cambiamenti (nuovo stato del player)
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(playerRetry.getUUID(), playerRetry.getResources()));
+								// ......
+								
 								// invio esito positivo
 							}
 							// invio esito negativo
 						}
-						
-						
-						//mv.contextPull(contextReply, this, playerRetry);
-							
-						
-
-						/*Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
-						
-						// MoveCheckerLogic ********************************************************
-						Cloner clonerRetry = new Cloner();
-						clonerRetry.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-						Board cloneBoardRetry = clonerRetry.deepClone(this.board);
-			    		Player clonePlayeRetry = clonerRetry.deepClone(playerRetry);
-			    		Action cloneActionRetry = clonerRetry.deepClone(actionRetry);
-						
-			    		//retry the MoveChecker
-			    		if(!mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){
-			    			suspendedAction.remove(playerRetry.getUUID()); // Test Failed; Cancello l'azioneSalvata.
-			    			break;
-			    		}
-			    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
-			    			if(mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){ // simulazione completa
-			    				mv.simulate(this, board, playerRetry, actionRetry); // apply degli originali
-				    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
-			    				break;
-			    			}
-			    		}*/
-						//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
 					}
 					
 				});
