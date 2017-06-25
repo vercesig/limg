@@ -1,8 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +13,7 @@ public class TurnManager {
 	private int turnID;
 	private int roundID;
 	
-	private ConcurrentLinkedQueue<String> turnOrderQueue;
+	private LinkedList<String> turnOrderQueue;
 	
 	private Game game;
 	
@@ -23,7 +23,7 @@ public class TurnManager {
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		this.turnOrderQueue = new ConcurrentLinkedQueue<String>();
+		this.turnOrderQueue = new LinkedList<String>();
 		
 		LOGGER.log(Level.INFO, "setting first turn order");
 		
