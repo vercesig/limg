@@ -19,7 +19,7 @@ import com.eclipsesource.json.JsonValue;
 
 
 public class JsonImporter {
-	
+		
 	/**
 	 * method which return a list of development card from an external file correctly formatted. The method accept a FileReader object as parameter, 
 	 * then parse it and finally returns the list of card (which can be passed to the Deck's constructor to generate an effectively deck structure)
@@ -41,69 +41,76 @@ public class JsonImporter {
 			String cardType = card.get("cardType").asString();
 			Integer period = card.get("period").asInt();
 			Integer actionValue;
-			JsonValue action = card.get("minimumActionValue");
-	
-			if(!action.isNull())
-				actionValue = action.asInt();
-			else 
-				actionValue = 0;
 			
+			try{
+				JsonValue action = card.get("minimumActionValue");	
+				actionValue = action.asInt();
+				actionValue = 0;
+			}catch(NullPointerException e){
+				actionValue = 0;
+			}
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
 			
 			// registrazione costi e requisiti
-			JsonValue requirements = card.get("requirements");
-			JsonValue resourceCost = card.get("cost");
-			if(!resourceCost.isNull()){
-				JsonArray resourceArray = new JsonArray();
-				if( resourceCost.isObject() ){ // Carta con costo singolo
-					resourceArray.add(resourceCost);
+			try{
+				JsonValue resourceCost = card.get("cost");
+				if(!resourceCost.isNull()){
+					JsonArray resourceArray = new JsonArray();
+					if( resourceCost.isObject() ){ // Carta con costo singolo
+						resourceArray.add(resourceCost);
+					}
+					if( resourceCost.isArray() ){ // Carta con costo multiplo
+						resourceArray = resourceCost.asArray();
+					}
+					newCard.registerCost(resourceArray.iterator());
 				}
-				if( resourceCost.isArray() ){ // Carta con costo multiplo
-					resourceArray = resourceCost.asArray();
-				}
-				newCard.registerCost(resourceArray.iterator());
+			}catch(NullPointerException e){}
+			
+			try{
+				JsonValue requirements = card.get("requirements");
+				if(requirements != null && !requirements.isNull())
+					newCard.setRequirments(requirements.asObject());
 			}
-			if(requirements != null && !requirements.isNull())
-				newCard.setRequirments(requirements.asObject());
+			catch(NullPointerException e){}
+			
 			
 			// registrazione effetti
-			JsonValue instantEffect = card.get("instantEffect");
-			JsonArray instantEffectArray = new JsonArray();
-			JsonValue instantPayload = card.get("instantPayload");
-			JsonArray instantPayloadArray = new JsonArray();			
-			if(!instantEffect.isNull()&&!instantPayload.isNull()){
-				if(instantEffect.isArray()){
-					instantEffectArray = instantEffect.asArray();
-					instantPayloadArray = instantPayload.asArray();
-				}else{
-					instantEffectArray.add(instantEffect);
-					instantPayloadArray.add(instantPayload);
+			try{
+				JsonValue instantEffect = card.get("instantEffect");
+				JsonArray instantEffectArray = new JsonArray();
+				JsonValue instantPayload = card.get("instantPayload");
+				JsonArray instantPayloadArray = new JsonArray();			
+				if(!instantEffect.isNull()&&!instantPayload.isNull()){
+					if(instantEffect.isArray()){
+						instantEffectArray = instantEffect.asArray();
+						instantPayloadArray = instantPayload.asArray();
+					}else{
+						instantEffectArray.add(instantEffect);
+						instantPayloadArray.add(instantPayload);
+					}
+					for(int i=0; i<instantEffectArray.size(); i++){
+						newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffectArray.get(i).asString(), instantPayloadArray.get(i)));
+					}
+				}	
+			}catch(NullPointerException e){}
+			try{
+				JsonValue permanentEffect = card.get("permanentEffect");
+				JsonArray permanentEffectArray = new JsonArray();
+				JsonValue permanentPayload = card.get("permanentPayload");
+				JsonArray permanentPayloadArray = new JsonArray();
+				if(!permanentEffect.isNull()&&!permanentPayload.isNull()){
+					if(permanentEffect.isArray()){
+						permanentEffectArray = permanentEffect.asArray();
+						permanentPayloadArray = permanentPayload.asArray();
+					}else{
+						permanentEffectArray.add(permanentEffect);
+						permanentPayloadArray.add(permanentPayload);
+					}
+					for(int i=0; i<permanentEffectArray.size(); i++){
+						newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffectArray.get(i).asString(), permanentPayloadArray.get(i)));
+					}
 				}
-				for(int i=0; i<instantEffectArray.size(); i++){
-					newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffectArray.get(i).asString(), instantPayloadArray.get(i)));
-				}
-			}	
-			JsonValue permanentEffect = card.get("permanentEffect");
-			JsonArray permanentEffectArray = new JsonArray();
-			JsonValue permanentPayload = card.get("permanentPayload");
-			JsonArray permanentPayloadArray = new JsonArray();
-			if(!permanentEffect.isNull()&&!permanentPayload.isNull()){
-				if(permanentEffect.isArray()){
-					permanentEffectArray = permanentEffect.asArray();
-					permanentPayloadArray = permanentPayload.asArray();
-				}else{
-					permanentEffectArray.add(permanentEffect);
-					permanentPayloadArray.add(permanentPayload);
-				}
-				for(int i=0; i<permanentEffectArray.size(); i++){
-					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffectArray.get(i).asString(), permanentPayloadArray.get(i)));
-				}
-				/*if(permanentPayload.isNull()){ //effetto custom
-					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString())); //effetto permanente custom
-				}else{
-					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString(), permanentPayload));
-				}*/
-			}
+			}catch(NullPointerException e){}
 			
 			cardList.add(newCard);		
 		}
