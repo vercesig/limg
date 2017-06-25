@@ -12,7 +12,7 @@ public class UniqueEffect {
 	// No Market Action
 	static Effect noMarketAction = (b, p, a) -> {
 		if(a.getActionRegionId() == b.getMarketRegion().getRegionID()){
-			throw new ImpossibleMoveException(); 
+			a.invalidate();
 		}
 	};
 	

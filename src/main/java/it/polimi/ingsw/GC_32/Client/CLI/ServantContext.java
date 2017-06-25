@@ -9,7 +9,12 @@ public class ServantContext extends Context{
 		int numberOfServants = JsonPayload.get("NUMBER_SERVANTS").asInt();
 		String actionType = JsonPayload.get("ACTIONTYPE").asString();
 		
-		JsonObject response = new JsonObject();
+		JsonObject CONTEXTREPLY = new JsonObject();
+		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
+		JsonObject CONTEXTREPLYpayload = new JsonObject();
+		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
+		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
+		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "SERVANT");
 		
 		System.out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
 				+ "\nDo you want to spend any of these?? type 0 if you don't want spend any servant, "
@@ -17,12 +22,18 @@ public class ServantContext extends Context{
 		runFlag = true;
 		while(runFlag){
 			command = in.nextLine();
-			if(Integer.parseInt(command)<=numberOfServants){
-				response.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
-				sendQueue.add(response.toString());
-				close();
-			}else{
-				System.out.println("type a valid quantity");
+			try{
+				if(Integer.parseInt(command)<=numberOfServants){
+					CONTEXTREPLYpayloadinfo.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
+					
+					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
+					sendQueue.add(CONTEXTREPLY.toString());
+					close();
+				}else{
+					System.out.println("type a valid quantity");
+				}
+			}catch(NumberFormatException e){
+				System.out.println("type a valid number");
 			}
 		}
 		

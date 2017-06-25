@@ -2,21 +2,24 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import com.rits.cloning.Cloner;
 
+import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
-import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
@@ -38,13 +41,25 @@ public class Game implements Runnable{
 	private String lock;
 	
 	private TurnManager turnManager;
+	
 	private MoveChecker mv;
-	private HashMap <String, Action> suspendedAction;
+	
+	// context management
+	private HashMap<ContextType , Object[]> contextQueue;
+	private HashSet<String> waitingContextResponseSet;
+	private HashMap<String, JsonValue> contextInfoContainer;
+	
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players){
 		
-		this.suspendedAction = new HashMap <String, Action>();
+		this.mv = new MoveChecker();
+		this.contextQueue = new HashMap<ContextType, Object[]>();
+		mv.registerContextQueue(contextQueue);
+		waitingContextResponseSet = new HashSet<String>();
+		mv.registerContextResponseSet(waitingContextResponseSet);
+		contextInfoContainer = new HashMap<String, JsonValue>();
+		mv.registerContextInfoContainer(contextInfoContainer);
 		
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
@@ -147,6 +162,16 @@ public class Game implements Runnable{
 		//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
 		
 		while(runGameFlag){
+			
+			// controllo se ci sono context da aprire context, in caso positivo li apro
+			if(!this.contextQueue.isEmpty()){
+				for(Entry<ContextType, Object[]> context : contextQueue.entrySet()){
+					waitingContextResponseSet.add(context.getKey().toString());
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(getLock(), context.getKey(), context.getValue()));
+				}
+				contextQueue.clear();
+			}
+			
 			if(MessageManager.getInstance().hasMessage()){
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
@@ -159,7 +184,7 @@ public class Game implements Runnable{
 					case "ASKACT":
 						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 						int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						int pawnID = Jsonmessage.get("PAWNID").asInt();
+						int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
 						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 						
 						int regionID = Jsonmessage.get("REGIONID").asInt();
@@ -167,12 +192,16 @@ public class Game implements Runnable{
 						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
 						
 						Action action = new Action(actionType,actionValue,regionID,spaceID);
+						action.setAdditionalInfo(Jsonmessage); // da raffinare
 						Player player = playerList.get(index);
 						
-						suspendedAction.put(player.getUUID(), action); // salva azione
+						//suspendedAction.put(player.getUUID(), action); // salva azione
+						
+						mv.firstStepCheck(this, player, action);
+						
 						// MoveCheckerLogic ********************************************************
 						
-						Cloner cloner = new Cloner();
+						/*Cloner cloner = new Cloner();
 						cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
 			    		Board cloneBoard = cloner.deepClone(this.board);
 			    		Player clonePlayer = cloner.deepClone(player);
@@ -188,7 +217,7 @@ public class Game implements Runnable{
 			    				suspendedAction.remove(player); // andata a buon fine. posso cancellarla
 			    				break;
 			    			}
-			    		}
+			    		}*/
 			    		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della mv.list
 						break;
 					case "TRNEND":
@@ -214,11 +243,32 @@ public class Game implements Runnable{
 						break;
 					case "CONTEXTREPLY" :
 						JsonValue contextReply = Json.parse(message.getMessage());
-						mv.contextPull(contextReply);
 						
 						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						Player playerRetry = playerList.get(indexRetry);
-						Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
+						System.out.println("contextreply ricevuto");
+						
+						this.waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
+				    	this.contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD").asObject());
+				    	System.out.println(contextInfoContainer.toString());
+						
+						if(this.waitingContextResponseSet.isEmpty()){
+							mv.setWaitFlag(false);; // ok possiamo toccare il model
+							if(mv.simulateWithCopy(/*game, cloneBoard, clonePlayer, player, cloneAction*/ playerRetry, this)){ // simulazione completa
+								System.out.println("sto simulando");
+								mv.simulate(this, this.getBoard(), playerRetry); // apply degli originali
+								// invio risposte di modifica al client
+								// invio esito positivo
+							}
+							// invio esito negativo
+						}
+						
+						
+						//mv.contextPull(contextReply, this, playerRetry);
+							
+						
+
+						/*Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
 						
 						// MoveCheckerLogic ********************************************************
 						Cloner clonerRetry = new Cloner();
@@ -238,8 +288,8 @@ public class Game implements Runnable{
 				    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
 			    				break;
 			    			}
-			    		}
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
+			    		}*/
+						//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
 					}
 					
 				});

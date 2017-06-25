@@ -2,8 +2,8 @@ package it.polimi.ingsw.GC_32.Common.Network;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -143,12 +143,12 @@ public class ServerMessageFactory {
 		return STATCHNGmessage;
 	}
 	
-	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet addingResources){
+	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet newResources){
 		JsonObject STATCHNG = new JsonObject();
 		JsonObject STATCHNGpayload = new JsonObject();
 		STATCHNG.add("TYPE", "RESOURCE");
-		addingResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
-			STATCHNG.add(resourceName, resourceQuantity);
+		newResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
+			STATCHNGpayload.add(resourceName, resourceQuantity);
 		});
 		STATCHNG.add("PLAYERID", playerUUID);
 		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
@@ -201,22 +201,23 @@ public class ServerMessageFactory {
 		
 	public static GameMessage buildCONTEXTmessage(String playerUUID, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
-		CONTEXT.add("CONTEXTID", type.getContextID());		
+		CONTEXT.add("CONTEXTID", type.getContextID());	
+		JsonObject CONTEXTpayload = new JsonObject();
 		switch(type){
 		case PRIVILEGE:
 			int numberOfPrivilege = (int) payload[0];
-			CONTEXT.add("NUMBER", numberOfPrivilege);
+			CONTEXTpayload.add("NUMBER", numberOfPrivilege);
 			break;
 		case SERVANT:
-			CONTEXT.add("NUMBER_SERVANTS", (int) payload[0]);
-			CONTEXT.add("ACTIONTYPE", (String) payload[1]);
+			CONTEXTpayload.add("NUMBER_SERVANTS", (int) payload[0]);
+			CONTEXTpayload.add("ACTIONTYPE", (String) payload[1]);
 			break;
 		case EXCOMMUNICATION:
-			CONTEXT.add("PLAYER_FAITH", (int) payload[0]);
-			CONTEXT.add("FAITH_NEEDED", (int) payload[1]);
+			CONTEXTpayload.add("PLAYER_FAITH", (int) payload[0]);
+			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[1]);
 			break;
 		case CHANGE:
-			List<DevelopmentCard> changeCards = (ArrayList<DevelopmentCard>) payload[0];
+			List<DevelopmentCard> changeCards = (LinkedList<DevelopmentCard>) payload[0];
 			
 			JsonArray CONTEXTchangeArray = new JsonArray();			
 			
@@ -261,9 +262,10 @@ public class ServerMessageFactory {
 					effectID++;
 				}
 			}
-			CONTEXT.add("CHANGEARRAY", CONTEXTchangeArray.toString());
+			CONTEXTpayload.add("CHANGEARRAY", CONTEXTchangeArray.toString());
 			break;
-		}		
+		}	
+		CONTEXT.add("PAYLOAD", CONTEXTpayload);
 		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString());
 	}
 	

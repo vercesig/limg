@@ -4,6 +4,7 @@ import com.eclipsesource.json.JsonObject;
 
 public class ExcommunicationContext extends Context{
 
+	
 	public void open(Object object){
 		
 		runFlag = true;

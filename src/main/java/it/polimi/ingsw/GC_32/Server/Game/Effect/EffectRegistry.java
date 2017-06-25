@@ -39,6 +39,7 @@ public class EffectRegistry{
             ActionEffect.loadBuilder();
             PermanentEffect.loadBuilder();
             UniqueEffect.loadBuilder();
+            PrivilegeEffect.loadBuilder();
         }
         return instance;
     }
