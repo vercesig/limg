@@ -12,7 +12,7 @@ public class PrivilegeEffect {
 static EffectBuilder buildPrivilege = (JsonValue payload) -> {
 		int number = payload.asObject().get("NUMBER").asInt();
 		ResourceSet cost = new ResourceSet(payload.asObject().get("COST").asObject());
-		
+		 
 		Effect e = (Board b, Player p, Action a) ->	{
 			/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(
 					ServerContextMessageFactory.buildPrivilegeMessage(number)));*/
