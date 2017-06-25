@@ -2,8 +2,10 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +43,11 @@ public class Game implements Runnable{
 	private TurnManager turnManager;
 	
 	private MoveChecker mv;
-	private HashMap<ContextType , Object[]> contextQueue; // context management
+	
+	// context management
+	private HashMap<ContextType , Object[]> contextQueue;
+	private HashSet<String> waitingContextResponseSet;
+	private HashMap<String, JsonValue> contextInfoContainer;
 	
 	private boolean runGameFlag = true;
 	
@@ -50,6 +56,10 @@ public class Game implements Runnable{
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
 		mv.registerContextQueue(contextQueue);
+		waitingContextResponseSet = new HashSet<String>();
+		mv.registerContextResponseSet(waitingContextResponseSet);
+		contextInfoContainer = new HashMap<String, JsonValue>();
+		mv.registerContextInfoContainer(contextInfoContainer);
 		
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
@@ -153,9 +163,10 @@ public class Game implements Runnable{
 		
 		while(runGameFlag){
 			
-			// controllo se ci sono da aprire context, in caso positivo li apro
+			// controllo se ci sono context da aprire context, in caso positivo li apro
 			if(!this.contextQueue.isEmpty()){
 				for(Entry<ContextType, Object[]> context : contextQueue.entrySet()){
+					waitingContextResponseSet.add(context.getKey().toString());
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(getLock(), context.getKey(), context.getValue()));
 				}
 				contextQueue.clear();
@@ -237,7 +248,23 @@ public class Game implements Runnable{
 						Player playerRetry = playerList.get(indexRetry);
 						System.out.println("contextreply ricevuto");
 						
-						mv.contextPull(contextReply, this, playerRetry);
+						this.waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
+				    	this.contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD").asObject());
+				    	System.out.println(contextInfoContainer.toString());
+						
+						if(this.waitingContextResponseSet.isEmpty()){
+							mv.setWaitFlag(false);; // ok possiamo toccare il model
+							if(mv.simulateWithCopy(/*game, cloneBoard, clonePlayer, player, cloneAction*/ playerRetry, this)){ // simulazione completa
+								System.out.println("sto simulando");
+								mv.simulate(this, this.getBoard(), playerRetry); // apply degli originali
+								// invio risposte di modifica al client
+								// invio esito positivo
+							}
+							// invio esito negativo
+						}
+						
+						
+						//mv.contextPull(contextReply, this, playerRetry);
 							
 						
 
