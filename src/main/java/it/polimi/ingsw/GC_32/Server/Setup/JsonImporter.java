@@ -84,13 +84,25 @@ public class JsonImporter {
 				}
 			}	
 			JsonValue permanentEffect = card.get("permanentEffect");
-			if(!permanentEffect.isNull()){
-				JsonValue permanentPayload = card.get("permanentPayload");
-				if(permanentPayload.isNull()){ //effetto custom
+			JsonArray permanentEffectArray = new JsonArray();
+			JsonValue permanentPayload = card.get("permanentPayload");
+			JsonArray permanentPayloadArray = new JsonArray();
+			if(!permanentEffect.isNull()&&!permanentPayload.isNull()){
+				if(permanentEffect.isArray()){
+					permanentEffectArray = permanentEffect.asArray();
+					permanentPayloadArray = permanentPayload.asArray();
+				}else{
+					permanentEffectArray.add(permanentEffect);
+					permanentPayloadArray.add(permanentPayload);
+				}
+				for(int i=0; i<permanentEffectArray.size(); i++){
+					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffectArray.get(i).asString(), permanentPayloadArray.get(i)));
+				}
+				/*if(permanentPayload.isNull()){ //effetto custom
 					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString())); //effetto permanente custom
 				}else{
 					newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect.asString(), permanentPayload));
-				}
+				}*/
 			}
 			
 			cardList.add(newCard);		

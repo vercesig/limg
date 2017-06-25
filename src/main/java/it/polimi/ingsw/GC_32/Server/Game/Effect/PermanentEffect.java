@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import java.util.ArrayList;
+
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
@@ -18,9 +20,14 @@ public class PermanentEffect {
 		
 		ArrayList<ResourceSet> discountList = new ArrayList<>();
 		JsonValue cost = payload.asObject().get("BONUSRESOURCE");
+		JsonArray costArray = new JsonArray();
+		if(cost.isArray())
+			costArray = cost.asArray();
+		else
+			costArray.add(cost);
 		
-		try{
-			cost.asArray().forEach( item -> {
+		if(!cost.isNull()){
+			costArray.forEach( item -> {
 				JsonObject resObject = item.asObject();
 				ResourceSet discount = new ResourceSet(resObject);
 			//	resObject.iterator().forEachRemaining(resource -> {
@@ -28,7 +35,7 @@ public class PermanentEffect {
 			//	});
 			discountList.add(discount);
 			});	
-		} catch(NullPointerException e){};
+		}
 		Effect permanentEffect = (b, p, a) -> {
 			
 			if(!(a.getActionType().equals(actionType)&& a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  

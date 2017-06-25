@@ -30,9 +30,16 @@ public class ChangeEffect {
 			JsonObject obj = item.asObject();
 			ResourceSet resourceSet = new ResourceSet();
 			
-			obj.iterator().forEachRemaining(resource -> {
-				resourceSet.setResource(resource.getName(), resource.getValue().asInt());
+			JsonObject resourceIn = obj.get("RESOURCEIN").asObject();
+			resourceIn.iterator().forEachRemaining(resource -> {
+				resourceSet.addResource(resource.getName(), resource.getValue().asInt());
 			});
+			
+			JsonObject resourceOut = obj.get("RESOURCEOUT").asObject();
+			resourceOut.iterator().forEachRemaining(resource -> {
+				resourceSet.subResource(resource.getName(), resource.getValue().asInt());
+			});
+			
 			chanches.add(resourceSet);
 		});
 		

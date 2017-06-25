@@ -68,7 +68,19 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     public void subResource(ResourceSet resource){
     	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
-    		this.addResource(entry.getKey(), -entry.getValue());
+    		if(this.resourceSet.containsKey(entry.getKey()))
+    			this.addResource(entry.getKey(), -entry.getValue());
+    		else
+    			this.setResource(entry.getKey(), -entry.getValue());
+    	}
+    }
+    
+    public void subResource(String resourceName, int quantity){
+    	if(this.resourceSet.containsKey(resourceName)){
+    		int prevValue = this.resourceSet.get(resourceName);
+    		this.resourceSet.put(resourceName, prevValue - quantity);
+    	} else {
+    		this.setResource(resourceName, -quantity);
     	}
     }
     
