@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,10 +21,12 @@ import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
+import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 
 public class Game implements Runnable{
@@ -51,7 +56,7 @@ public class Game implements Runnable{
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players){
+	public Game(ArrayList<Player> players) throws IOException{
 		
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
@@ -75,6 +80,12 @@ public class Game implements Runnable{
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
+		
+		Reader bonusTileReader = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("bonus_tile.json"));
+		ArrayList<PersonalBonusTile> bonusTile = JsonImporter.importPersonalBonusTile(bonusTileReader);
+		
+		Random randomGenerator = new Random();
+		
 		for(int i=0; i<playerList.size(); i++){
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
@@ -86,6 +97,9 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("VICTORY", 0);
 			playerList.get(i).getResources().setResource("MILITARY", 0);
 			
+			int randomBonusTile = randomGenerator.nextInt(bonusTile.size());
+			playerList.get(i).setPersonalBonusTile(bonusTile.get(randomBonusTile));
+			bonusTile.remove(randomBonusTile);			
 		}
 		LOGGER.log(Level.INFO, "done");
 	}

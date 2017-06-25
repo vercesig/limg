@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
+import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 
@@ -151,16 +152,29 @@ public class JsonImporter {
 	
 	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
 		
-		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
 		JsonArray JsonCardList = Json.parse(fileReader).asArray();
 		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
-			if(card.get("name").equals(cardName)){
+			if(card.get("name").asString().equals(cardName)){
 				return card;
 			}
 		}
 		return null;
+	}
+	
+	public static ArrayList<PersonalBonusTile> importPersonalBonusTile(Reader fileReader) throws IOException{
+		
+		JsonArray personalBonusTileList = Json.parse(fileReader).asArray();
+		ArrayList<PersonalBonusTile> tmpList = new ArrayList<PersonalBonusTile>();
+		
+		for(JsonValue item : personalBonusTileList){
+			JsonObject bonusTile = item.asObject();
+			
+			PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(), bonusTile.get("HARVEST").asObject(), false);
+			tmpList.add(personalBonus);			
+		}
+		return tmpList;		
 	}
 	
 	/**

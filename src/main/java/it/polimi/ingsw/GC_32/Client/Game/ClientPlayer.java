@@ -12,6 +12,7 @@ public class ClientPlayer {
 	private HashMap<String, ArrayList<String>> cards;
 	private String name;
 	private ClientFamilyMember[] familyMembers = new ClientFamilyMember[4];
+	private String bonusTile;
 	
 	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
@@ -33,6 +34,10 @@ public class ClientPlayer {
 		
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public void setPersonalBonusTile(String bonusTile){
+		this.bonusTile = bonusTile;
 	}
 	
 	public String getName(){
@@ -79,6 +84,7 @@ public class ClientPlayer {
 			}
 			tmp.append("\n");
 		}
+		tmp.append(bonusTile+"\n---------------------------------------------");
 		return new String(tmp);
 	}
 	

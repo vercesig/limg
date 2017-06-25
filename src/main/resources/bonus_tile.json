@@ -1,0 +1,57 @@
+[
+	{
+		"HARVEST" : {
+				"WOOD" : 1,
+				"STONE" : 1,
+				"SERVANTS" : 1
+			},
+		"PRODUCTION" : {
+				"COINS" : 2,
+				"MILITARY" : 1
+			}	
+	},
+	{
+		"HARVEST" : {
+				"WOOD" : 1,
+				"STONE" : 1,
+				"MILITARY" : 1
+			},
+		"PRODUCTION" : {
+				"COINS" : 1,
+				"SERVANTS" : 2
+			}	
+	},
+	{
+		"HARVEST" : {
+				"WOOD" : 1,
+				"STONE" : 1,
+				"SERVANTS" : 1
+			},
+		"PRODUCTION" : {
+				"COINS" : 1,
+				"MILITARY" : 2
+			}	
+	},
+	{
+		"HARVEST" : {
+				"WOOD" : 1,
+				"STONE" : 1,
+				"MILITARY" : 1
+			},
+		"PRODUCTION" : {
+				"COINS" : 2,
+				"SERVANTS" : 1
+			}	
+	},
+	{
+		"HARVEST" : {
+				"WOOD" : 1,
+				"STONE" : 1,
+				"COINS" : 1
+			},
+		"PRODUCTION" : {
+				"SERVANTS" : 1,
+				"MILITARY" : 2
+			}	
+	}
+]

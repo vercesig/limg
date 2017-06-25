@@ -140,6 +140,7 @@ public class ServerMessageFactory {
 			STATCHNGCardpayload.add(type, tmpCardArray);
 		});
 		
+		STATCHNG.add("BONUSTILE", player.getPersonalBonusTile().toString());
 		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
 		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
 		STATCHNGmessage.setAsBroadcastMessage();

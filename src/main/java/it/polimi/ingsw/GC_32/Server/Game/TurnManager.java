@@ -34,7 +34,7 @@ public class TurnManager {
 		ArrayList<String> tmp = new ArrayList<String>();
 		
 		for(int i=0; i<playerListSize; i++){
-			int randomNumber = randomGenerator.nextInt(game.getPlayerList().size());
+			int randomNumber = randomGenerator.nextInt(tmpPlayerList.size());
 			tmp.add(game.getPlayerList().get(randomNumber).getUUID());
 			tmpPlayerList.remove(randomNumber);
 		}

@@ -171,8 +171,7 @@ public class MainClient{
 						playerID = messagePayload.get("PLAYERID").asString();
 						JsonObject newResources = Json.parse(messagePayload.get("RESOURCE").asString()).asObject();
 						client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));	
-						System.out.println("[MAINCLIENT] player "+playerID+" change resources");
-						
+												
 						JsonObject cardList = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
 						Iterator<Member> cardListIterator = cardList.iterator();
 						cardListIterator.forEachRemaining(cards -> {
@@ -180,6 +179,7 @@ public class MainClient{
 							if(!cardListArray.isNull())
 								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
 						});
+						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
