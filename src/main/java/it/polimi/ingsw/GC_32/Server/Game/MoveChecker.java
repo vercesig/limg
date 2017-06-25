@@ -66,14 +66,16 @@ public class MoveChecker{
     	this.action = action;
     	
 		// checking if is a valid action
-		if(simulateWithCopy(player,game)){		
-			return false;
-		}
-
-		if(this.waitingContextResponseSet.isEmpty()){
+		if(simulateWithCopy(player,game)){
 			waitBeforeChangeFlag = false;
 			simulate(game, game.getBoard(), player);
+			//return false;
 		}
+
+		/*if(this.waitingContextResponseSet.isEmpty()){
+			waitBeforeChangeFlag = false;
+			simulate(game, game.getBoard(), player);
+		}*/
 		return true;
     }
     
@@ -233,9 +235,9 @@ public class MoveChecker{
     	}
     	
     	if(waitingContextResponseSet.isEmpty())
-			return true;
-		else
 			return false;
+		else
+			return true;
     }	
     
     //Simulate: SimulateWithCopy version using the original objects. It changes the state of the game.
