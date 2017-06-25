@@ -58,27 +58,27 @@ public class MoveCheckerTest {
 	@Test
 	public void checkFamilyColorTest(){
 		b.getRegion(5).getActionSpace(2).addFamilyMember(p.getFamilyMember()[2]);
-		assertEquals(false, moveChecker.firstCheck(b, p, a1));
+		assertEquals(false, moveChecker.checkValidIDs(b, p, a1));
 		b.getRegion(1).getActionSpace(1).addFamilyMember(p.getFamilyMember()[1]);
 		Action act = new Action("TEST", 1, 0, 1);
 		JsonObject grey = new JsonObject();
 		grey.add("FAMILYMEMBER_ID", 0);
 		act.setAdditionalInfo(grey);
-		assertEquals(true, Check.familyColor(b, p, act));
+		assertEquals(true, MoveUtils.familyColor(b, p, act));
 	}
 	
 	@Test
 	public void checkIsFreeSingleSpaceTest(){
-		assertEquals(true, Check.isFreeSingleSpace(b, p, a1));
+		assertEquals(true, MoveUtils.isFreeSingleSpace(b, p, a1));
 		b.getRegion(5).getActionSpace(0).addFamilyMember(p.getFamilyMember()[0]);
 		b.getRegion(5).getActionSpace(1).addFamilyMember(p.getFamilyMember()[1]);
 		b.getRegion(1).getActionSpace(1).addFamilyMember(p.getFamilyMember()[2]);
 		b.getRegion(2).getActionSpace(0).addFamilyMember(p.getFamilyMember()[3]);
 
-		assertEquals(false, Check.isFreeSingleSpace(b, p, a1));
-		assertEquals(true, Check.isFreeSingleSpace(b, p, a2));
-		assertEquals(true, Check.isFreeSingleSpace(b, p, a3));
-		assertEquals(false, Check.isFreeSingleSpace(b, p, new Action("",0,1,5)));
+		assertEquals(false, MoveUtils.isFreeSingleSpace(b, p, a1));
+		assertEquals(true, MoveUtils.isFreeSingleSpace(b, p, a2));
+		assertEquals(true, MoveUtils.isFreeSingleSpace(b, p, a3));
+		assertEquals(false, MoveUtils.isFreeSingleSpace(b, p, new Action("",0,1,5)));
 	}
 	
 	@Test
@@ -88,31 +88,31 @@ public class MoveCheckerTest {
 
 		System.out.println(p.toString());
 		p.getResources().addResource("COINS", -3);
-		assertEquals(false, Check.checkCoinForTribute(b, p, a1));
+		assertEquals(false, MoveUtils.checkCoinForTribute(b, p, a1));
 		p.getResources().addResource("MILITARY_POINTS", 3);
 		p.getResources().addResource("COINS", 3);
 		
-		assertEquals(true, Check.checkCoinForTribute(b, p, a1));
+		assertEquals(true, MoveUtils.checkCoinForTribute(b, p, a1));
 		p.getResources().addResource("SERVANTS", 5);
 		Player p2 = new Player();
 		p.getResources().addResource("COINS", -3);
 		b.getRegion(5).getActionSpace(1).addFamilyMember(p2.getFamilyMember()[1]);
-		assertEquals(false, Check.checkCoinForTribute(b, p, a1));
+		assertEquals(false, MoveUtils.checkCoinForTribute(b, p, a1));
 		p.getResources().addResource("COINS", 6);
-		assertEquals(true, Check.checkCoinForTribute(b, p, a1));
+		assertEquals(true, MoveUtils.checkCoinForTribute(b, p, a1));
 	}
 	
 	@Test
 	public void checkActionValueTest(){
 		b.getRegion(5).getActionSpace(0).addFamilyMember(p.getFamilyMember()[0]);
 		
-		assertEquals(true, Check.checkActionValue(b, p, a1));
-		assertEquals(false, Check.checkActionValue(b, p, a2));
-		assertEquals(true, Check.checkActionValue(b, p, a3));
+		assertEquals(true, MoveUtils.checkActionValue(b, a1));
+		assertEquals(false, MoveUtils.checkActionValue(b, a2));
+		assertEquals(true, MoveUtils.checkActionValue(b, a3));
 		((TowerRegion) b.getRegion(4)).getTowerLayers()[3].setCard(card); 
-		assertEquals(false, Check.checkActionValue(b, p, new Action("", 1, 3, 4)));
-		assertEquals(false, Check.checkActionValue(b, p, new Action("", 3, 2, 4)));
-		assertEquals(true, Check.checkActionValue(b, p, new Action("", 7, 3, 4)));
+		assertEquals(false, MoveUtils.checkActionValue(b, new Action("", 1, 3, 4)));
+		assertEquals(false, MoveUtils.checkActionValue(b, new Action("", 3, 2, 4)));
+		assertEquals(true, MoveUtils.checkActionValue(b, new Action("", 7, 3, 4)));
 
 	}
 }

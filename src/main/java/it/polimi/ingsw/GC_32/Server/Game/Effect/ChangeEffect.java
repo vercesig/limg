@@ -40,7 +40,9 @@ public class ChangeEffect {
 				ArrayList<ResourceSet> changeList = chanches;
 				try{
 					p.getResources().addResource(changeList.get(a.getAdditionalInfo().get("INDEX_EFFECT").asInt()));
-					if(p.getResources().hasNegativeValue()){throw new ImpossibleMoveException(); }
+					if(p.getResources().hasNegativeValue()){
+						a.invalidate(); 
+					}
 				}catch(NullPointerException e){
 					Logger.getLogger("").log(Level.SEVERE, "context", e);
 				}

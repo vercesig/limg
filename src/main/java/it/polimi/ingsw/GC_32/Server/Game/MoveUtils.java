@@ -1,0 +1,214 @@
+package it.polimi.ingsw.GC_32.Server.Game;
+
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+
+public class MoveUtils {
+	public MoveUtils(){}
+	
+	static public boolean checkValidRegionID(Board board, Player player, Action action){	
+		if(board.getRegion(action.getActionRegionId()) == null){
+			return false;
+		}
+		return true;
+	}
+
+	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){	
+		if(board.getRegion(action.getActionRegionId())
+				.getActionSpace(action.getActionSpaceId()) == null){
+			return false;
+		}
+		return true;
+	}
+
+    static public boolean checkValidActionType(Action action){	
+		switch (action.getActionType()){
+		case "PRODUCTION" :
+			return (action.getActionRegionId() == 0);
+		case "HARVEST":
+			return (action.getActionRegionId() == 1);
+		case "COUNCIL":
+			return (action.getActionRegionId() == 2);
+		case "MARKET":
+			return (action.getActionRegionId() == 3);
+		case "TOWER_GREEN":
+			return (action.getActionRegionId() == 4);
+		case "TOWER_BLUE":
+			return (action.getActionRegionId() == 5);
+		case "TOWER_YELLOW":
+			return (action.getActionRegionId() == 6);
+		case "TOWER_PURPLE" :
+			return (action.getActionRegionId() == 7);
+		default : 
+			return false;
+		}
+	} 
+
+    /** checks if the action value is greater than or equal
+     * to the actionspace value
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    static public boolean checkActionValue(Board board, Action action){
+    	return (board.getRegion(action.getActionRegionId())
+    				 .getActionSpace(action.getActionSpaceId())
+    				 .getActionValue() <= action.getActionValue());
+    }
+ 
+    /** checks if the region is already occupied by a familiar of the same color
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    public static boolean familyColor(Board board, Player player, Action action){
+    	if(action.getActionRegionId() == 2 || action.getActionRegionId() == 3){
+    		return true;
+    	}
+    
+    	try{
+    		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
+    			return true;
+    		}
+    	} 
+    	catch(NullPointerException e){};
+      	for (FamilyMember f : player.getFamilyMember()){
+    		try{
+    			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
+    				return false;
+    			}
+    		}
+    		catch(NullPointerException e){};	
+    	}
+      	return true;
+    }
+
+    /** Checks if the actionspace is free
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    public static boolean isFreeSingleSpace(Board board, Player player, Action action){
+    	return !(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
+    			 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
+    }
+    
+    /** CheckBlockedSpace: checks player count and the presence of additional
+     *  production/harvest/market spaces
+     * @param numberOfPlayer
+     * @param action
+     * @return
+     */
+    public static boolean checkBlockedZone(int numberOfPlayer, Action action){	
+    	// Can't access to: Harvest-1,Production-1 and Market 2-3
+    	if(numberOfPlayer < 3){
+    		if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
+    				(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    			return true;
+    		}
+    	}
+    	//  Can't access to: Market 2-3
+    	if(numberOfPlayer <4){
+    		if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2){
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+    
+    /** checks if the player has enough servants to meet the actionspace requirements
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    public static boolean checkServants(Board board, Player player, Action action){
+    	if(checkActionValue(board, action)){
+    		return true;
+    	}
+    	int actionDiff = action.getActionValue() -
+    					 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
+    	player.getResources().addResource("SERVANTS", actionDiff);
+    	return player.getResources().isValid();
+    }
+    
+    /** checks if the tower is already occupied and if so, if the player can pay the 3 coin tribute
+     */
+    public static boolean checkCoinForTribute(Board board, Player player, Action action){
+    	if(action.getActionRegionId() < 4 || 										   //Not a tower action
+    	   !((TowerRegion)board.getRegion(action.getActionRegionId())).isTowerBusy()){ //Tower is empty
+    		return true;
+    	}
+    	player.getResources().addResource("COINS", -3);
+    	return player.getResources().isValid();
+    }
+    
+    /** checks if the card can be inserted into the personalBoard
+     */
+    public static boolean checkPersonalBoardRequirement(Board board, Player player, Action action){
+    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+    											  .getTowerLayers()[action.getActionSpaceId()]
+    											  .getCard();
+    	String cardType = card.getType();
+    	if(cardType.equals("TERRITORYCARD") || cardType.equals("BUILDINGCARD")){
+    		if(player.getPersonalBoard().getCardsOfType(cardType).size() == 6){
+    			return false;
+    		}
+    	}
+    	if(card.getType().equals("TERRITORYCARD")){
+    		int milPoints = player.getResources().getResource("MILITARY_POINTS");
+    		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){
+    		case 2: 
+    			return milPoints >= 3; 
+    		case 3:
+    			return milPoints >= 7;
+    		case 4:
+    			return milPoints >= 12;
+    		case 5:
+    			return milPoints >= 18;
+    		default:
+    			return true;
+    		}
+    	} 
+    	return true;	
+    }
+    
+    /** Checks if the player can buy the card
+     * @param board
+     * @param player
+     * @param action
+     * @return
+     */
+    public static boolean checkCardCost(Board board, Player player, Action action){
+      	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
+    	if(player.getResources().compareTo(cost) >=0 ){
+    		player.getResources().subResource(cost);
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public static void applyEffects(Board board, Player player, Action action){
+    	for(Effect buff : player.getEffectList()){
+			buff.apply(board, player, action);
+    	}
+	}
+	
+	public static void cloneApplyEffects(Board board, Player playerCopy, Player player, Action action){
+		for(Effect buff : player.getEffectList()){
+			buff.apply(board, playerCopy, action);
+		}
+	}
+	
+	public static void addActionSpaceBonus(Board board, Player player, Action action){
+		player.getResources().addResource(board.getRegion(action.getActionRegionId())
+			  .getActionSpace(action.getActionSpaceId())
+			  .getBonus());
+	}
+}

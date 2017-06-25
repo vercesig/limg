@@ -9,6 +9,7 @@ public class Action{
     private int actionSpaceId;
     private int actionRegionId;
     private JsonObject additionalInfo;
+    private boolean isValid;
     
     public Action(String type, int actionValue, int actionSpaceId, int actionRegionId ){
     	
@@ -17,6 +18,7 @@ public class Action{
     	this.actionSpaceId = actionSpaceId;
     	this.actionRegionId = actionRegionId;
     	this.additionalInfo = new JsonObject();
+    	this.isValid = true;
     }
     
     public void setAdditionalInfo(JsonObject info){
@@ -42,6 +44,14 @@ public class Action{
     }
     public int getActionRegionId(){
     	return this.actionRegionId;
+    }
+    
+    public boolean isValid(){
+    	return this.isValid;
+    }
+    
+    public void invalidate(){
+    	this.isValid = false;
     }
     
     	// to String

@@ -2,18 +2,22 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.rits.cloning.Cloner;
 
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
@@ -23,7 +27,7 @@ import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class Game implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final Logger LOGGER = Logger.getLogger(this.getClass().toString());
 	
 	private ArrayList<Player> playerList;
 	private Board board;
@@ -151,99 +155,78 @@ public class Game implements Runnable{
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 					switch(message.getOpcode()){
-					case "CHGNAME":
-						int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
-						this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
-						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
-						break;
-					case "ASKACT":
-						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
-						int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						int pawnID = Jsonmessage.get("PAWNID").asInt();
-						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
-						
-						int regionID = Jsonmessage.get("REGIONID").asInt();
-						int spaceID = Jsonmessage.get("SPACEID").asInt();
-						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
-						
-						Action action = new Action(actionType,actionValue,regionID,spaceID);
-						Player player = playerList.get(index);
-						
-						suspendedAction.put(player.getUUID(), action); // salva azione
-						// MoveCheckerLogic ********************************************************
-						
-						Cloner cloner = new Cloner();
-						cloner.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-			    		Board cloneBoard = cloner.deepClone(this.board);
-			    		Player clonePlayer = cloner.deepClone(player);
-			    		Action cloneAction = cloner.deepClone(action);
-						
-			    		if(!mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){
-			    			suspendedAction.remove(player.getUUID());
-			    			break; // non valida
-			    		}
-			    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
-			    			if(mv.simulateWithCopy(this, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
-			    				mv.simulate(this, board, player, action); // apply degli originali
-			    				suspendedAction.remove(player); // andata a buon fine. posso cancellarla
-			    				break;
-			    			}
-			    		}
-			    		// l'azione e' sospesa: si aspettano dei ContextReply per tappare i buchi della mv.list
-						break;
-					case "TRNEND":
-						if(!turnManager.isGameEnd()){
-							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
+						case "CHGNAME":
+							int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
+							this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
+							LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
+						case "ASKACT":
+							LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
+							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
+							int pawnID = Jsonmessage.get("PAWNID").asInt();
+							int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 							
-							if(turnManager.isRoundEnd()){
-								LOGGER.log(Level.INFO, "round end");
+							int regionID = Jsonmessage.get("REGIONID").asInt();
+							int spaceID = Jsonmessage.get("SPACEID").asInt();
+							String actionType = Jsonmessage.get("ACTIONTYPE").asString();
+							
+							Action action = new Action(actionType,actionValue,regionID,spaceID);
+							Player player = playerList.get(index);
+							
+							suspendedAction.put(player.getUUID(), action);
+				    		if(mv.checkMove(this, player, action)){
+				    			makeMove(player, action);
+				    		}
+						case "TRNEND":
+							if(!turnManager.isGameEnd()){
+								LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 								
-								if(turnManager.isPeriodEnd()){
-									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
+								if(turnManager.isRoundEnd()){
+									LOGGER.log(Level.INFO, "round end");
+									
+									if(turnManager.isPeriodEnd()){
+										LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
+									}
 								}
+								LOGGER.log(Level.INFO, "giving lock to the next player");
+								setLock(turnManager.nextPlayer().getUUID());
+								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+								// ask action
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
+							}else{
+								LOGGER.log(Level.INFO, "game end");
+								//stopGame();
 							}
-							LOGGER.log(Level.INFO, "giving lock to the next player");
-							setLock(turnManager.nextPlayer().getUUID());
-							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-							// ask action
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
-						}else{
-							LOGGER.log(Level.INFO, "game end");
-							//stopGame();
-						}
-						break;
-					case "CONTEXTREPLY" :
-						JsonValue contextReply = Json.parse(message.getMessage());
-						mv.contextPull(contextReply);
-						
-						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						Player playerRetry = playerList.get(indexRetry);
-						Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
-						
-						// MoveCheckerLogic ********************************************************
-						Cloner clonerRetry = new Cloner();
-						clonerRetry.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-						Board cloneBoardRetry = clonerRetry.deepClone(this.board);
-			    		Player clonePlayeRetry = clonerRetry.deepClone(playerRetry);
-			    		Action cloneActionRetry = clonerRetry.deepClone(actionRetry);
-						
-			    		//retry the MoveChecker
-			    		if(!mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){
-			    			suspendedAction.remove(playerRetry.getUUID()); // Test Failed; Cancello l'azioneSalvata.
-			    			break;
-			    		}
-			    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
-			    			if(mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){ // simulazione completa
-			    				mv.simulate(this, board, playerRetry, actionRetry); // apply degli originali
-				    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
-			    				break;
-			    			}
-			    		}
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
+						/*case "CONTEXTREPLY" :{
+							JsonValue contextReply = Json.parse(message.getMessage());
+							contextPull(contextReply);
+							
+							int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
+							Player playerRetry = playerList.get(indexRetry);
+							Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
+							
+							// MoveCheckerLogic ********************************************************
+							Cloner clonerRetry = new Cloner();
+							clonerRetry.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+							Board cloneBoardRetry = clonerRetry.deepClone(this.board);
+				    		Player clonePlayeRetry = clonerRetry.deepClone(playerRetry);
+				    		Action cloneActionRetry = clonerRetry.deepClone(actionRetry);
+							
+				    		//retry the MoveChecker
+				    		if(!mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){
+				    			suspendedAction.remove(playerRetry.getUUID()); // Test Failed; Cancello l'azioneSalvata.
+				    			break;
+				    		}
+				    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
+				    			if(mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){ // simulazione completa
+				    				mv.simulate(this, board, playerRetry, actionRetry); // apply degli originali
+					    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
+				    				break;
+				    			}
+				    		}
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
+						}*/
 					}
-					
 				});
-				MessageManager.getInstance().getRecivedQueue().clear();
 			}
 		}
 	}
@@ -304,18 +287,63 @@ public class Game implements Runnable{
 		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 		playerList.forEach(player -> {
 			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
-				System.out.println("TIE! beccati la scomunica!");
+				LOGGER.info("TIE! beccati la scomunica!");
 			}
 		});
 	}
 	
-	public void moveFamiliar(Player player, Board board, int pawnID, Action action){
+	public void moveFamiliar(Board board, Player player, Action action){
+		int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
 		player.moveFamilyMember(pawnID, action, board); // calls: player's moveFamilyMember and sets the position of this familyMember
 															// calls: action's space addFamilyMember and sets this familymember as an occupant.
 	}
 	
-	public void takeCard(Player player, Board board, Action action){
+	public void takeCard(Board board, Player player, Action action){
 		 // calls: player's moveFamilyMember and sets the position of this familyMember
 		player.takeCard(board, action);													// calls: action's space addFamilyMember and sets this familymember as an occupant.
+	}
+	
+	public void makeMove(Player player, Action action){
+		MoveUtils.applyEffects(this.board, player, action);
+		MoveUtils.addActionSpaceBonus(this.board, player, action);
+		moveFamiliar(this.board, player, action);
+		switch(action.getActionType()){
+			case "PRODUCTION":{
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
+				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
+				for( JsonValue json: cardlist){
+					playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+				}
+			}	
+			case "HARVEST" : {
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
+				for(DevelopmentCard card : playerCard){
+					if(card.getMinimumActionvalue() <= action.getActionValue()){
+						card.getInstantEffect().apply(board, player, action);
+					}
+				}
+			}
+			case "COUNCIL" : {
+				player.getResources().addResource("COINS", 1);
+				player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+
+			}
+			case "MARKET" : {
+				if(action.getActionSpaceId() == 3){
+					player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+				}
+			} 
+			default:{ //case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE"
+				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
+				takeCard(this.board, player, action);
+				player.addEffect(card.getPermanentEffect());
+	    		card.getInstantEffect().apply(board, player, action);
+			}
+		}
 	}
 }
