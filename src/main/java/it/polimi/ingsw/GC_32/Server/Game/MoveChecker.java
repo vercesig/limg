@@ -25,8 +25,6 @@ import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
 public class MoveChecker{
 	final Logger LOGGER = Logger.getLogger(this.getClass().getName());
-	//private Set<String> list;
-	//private Map<String, JsonValue> contextManager;
 	
 	private HashMap<ContextType, Object[]> contextQueue; // use this map if you want to open context
 	private HashMap<String, JsonValue> contextInfoContainer; // use this map if you want have access to context response
@@ -41,8 +39,6 @@ public class MoveChecker{
 	public boolean waitBeforeChangeFlag = true;
 	
     public MoveChecker(){
-    	//this.list = new HashSet <String>();
-    	//this.contextManager = new HashMap<String, JsonValue>();
     	//Effects cannot be deepcloned
     	cloner.dontCloneInstanceOf(Effect.class);
     }
@@ -62,8 +58,6 @@ public class MoveChecker{
     public boolean firstStepCheck(Game game, Player player, Action action){
     	LOGGER.info("firstStepCheck");
     	
-    	System.out.println("firststepcheck");
-    	
     	this.cloneBoard = cloner.deepClone(game.getBoard());
     	this.clonePlayer = cloner.deepClone(player);
     	this.cloneAction = cloner.deepClone(action);
@@ -71,15 +65,13 @@ public class MoveChecker{
     	this.action = action;
     	
 		// checking if is a valid action
-		if(simulateWithCopy(/*game, cloneBoard, clonePlayer, player, cloneAction*/ player,game)){		
-			System.out.println("mancano dei pezzi");
+		if(simulateWithCopy(player,game)){		
 			return false;
 		}
 
 		if(this.waitingContextResponseSet.isEmpty()){
 			waitBeforeChangeFlag = false;
-			System.out.println("sto simulando");
-			simulate(game, game.getBoard(), player/*, action*/);
+			simulate(game, game.getBoard(), player);
 		}
 		return true;
     }
@@ -87,26 +79,6 @@ public class MoveChecker{
     public void setWaitFlag(boolean waitFlag){
     	this.waitBeforeChangeFlag = waitFlag;
     }
-
-   /* public boolean contextPull(JsonValue payload, Game game, Player player){
-    	this.list.remove(payload.asObject().get("CONTEXT_TYPE").asString());
-    	this.contextManager.put(payload.asObject().get("CONTEXT_TYPE").asString(), payload.asObject().get("PAYLOAD").asObject());
-    	
-    	System.out.println("context pull, rimuovo da list "+payload.asObject().get("CONTEXT_TYPE").asString());
-    	System.out.println(list.toString());
-    	System.out.println(payload.toString());
-    	System.out.println();
-    	
-		if(this.list.isEmpty()){  // non ci sono ulteriori context attivi
-			waitBeforeChangeFlag = false; // ok possiamo toccare il model
-			if(simulateWithCopy(game, cloneBoard, clonePlayer, player, cloneAction)){ // simulazione completa
-				System.out.println("sto simulando");
-				simulate(game, game.getBoard(), player, action); // apply degli originali
-				return true;
-			}
-		}
-		return false;   	
-    }*/
 
     public boolean checkValidID(Board board, Action action){
     	if(checkValidRegionID(board, action) && checkValidActionSpaceID(board, action)){
@@ -196,11 +168,8 @@ public class MoveChecker{
     			
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextInfoContainer.containsKey(ContextType.SERVANT.toString())){
-    				// apro il context
-    				System.out.println("apro il context");
+    				// open context
     				contextQueue.put(ContextType.SERVANT, new Object[]{clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()});
-    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
-    				//this.list.add("SERVANT");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				cloneAction.setActionValue(cloneAction.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
@@ -219,8 +188,6 @@ public class MoveChecker{
     				}
     				if(!cardlist.isEmpty()){
     					contextQueue.put(ContextType.CHANGE, new Object[]{cardlist});
-    					//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.CHANGE, cardlist));
-    					//this.list.add("CHANGE");
     				}
     			}  			
     			else { // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
@@ -237,25 +204,22 @@ public class MoveChecker{
     				}
     				
     			}
-    			return true;
-    		}
-    		
+    			break;
+    		}   		
     		case "HARVEST" : {
     			
+    			//TODO
     			//clonePlayer.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
     			
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextInfoContainer.containsKey("SERVANT")){
     				contextQueue.put(ContextType.SERVANT, new Object[]{clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()});
-    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
-    				//this.list.add("SERVANT");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				cloneAction.setActionValue(cloneAction.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
     			}
-    			return true;
-    		}
-    		
+    			break;
+    		}  		
     		case "COUNCIL" : {
     			
     			clonePlayer.getResources().addResource("COINS", 1);
@@ -263,38 +227,36 @@ public class MoveChecker{
     			//COMTEXT MESSAGE HANDLER: PRIVILEGE
     			if(!this.contextInfoContainer.containsKey(ContextType.PRIVILEGE.toString())){
     				contextQueue.put(ContextType.PRIVILEGE, new Object[]{1});
-    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 1));
-    				//this.list.add("PRIVILEGE");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
     				clonePlayer.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
     			}
-    			return true;
-    		}
-    		
+    			break;
+    		}    		
     		case "MARKET" : {
     			if(cloneAction.getActionSpaceId() == 3){
     				
     				//CONTEXT MESSAGE HANDLER: PRIVILEGE
         			if(!this.contextInfoContainer.containsKey(ContextType.PRIVILEGE.toString())){
         				contextQueue.put(ContextType.PRIVILEGE, new Object[]{2});
-        				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 2));
-        				//this.list.add("PRIVILEGE");
         			}
         			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
         				clonePlayer.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
         			}
     			}
-    			return true;
-    		}
-    			
+    			break;
+    		}    			
     		//case  of "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
-    		default : {
+    		case "TOWER" : {
     			System.out.println("takeCard");
     			return takeCard(game, cloneBoard, clonePlayer, cloneAction);
-    		}
-    		
+    		}    		
     	}
+    	
+    	if(waitingContextResponseSet.isEmpty())
+			return true;
+		else
+			return false;
     }	
     
     //Simulate: SimulateWithCopy version using the original objects. It changes the state of the game.
@@ -310,8 +272,7 @@ public class MoveChecker{
 		if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getBonus()!=null){
 			player.getResources().addResource(board.getRegion(action.getActionRegionId())
 					.getActionSpace(action.getActionSpaceId()).getBonus());
-		}
-		
+		}		
 		ArrayList<DevelopmentCard> newCards = new ArrayList<DevelopmentCard>();
 		
 		//effettuo l'azione
@@ -333,8 +294,7 @@ public class MoveChecker{
 				break;
 			}
 
-			case "HARVEST" : {
-				
+			case "HARVEST" : {				
 				//TODO
 				//player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
 				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
@@ -348,20 +308,16 @@ public class MoveChecker{
 				break;
 			}
 			case "COUNCIL" : {
-				
     			player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
 				break;
-
 			}
 			case "MARKET" : {
-				
 				if(action.getActionSpaceId() == 3){
 					player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
 				}
 				break;
 			}
-
 			//case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE" 
 			default:{
 				
@@ -377,12 +333,7 @@ public class MoveChecker{
 		}
 		
 		waitBeforeChangeFlag = true;
-		contextInfoContainer.clear();
-		// notifico i cambiamenti
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), player.getResources()));
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player.getUUID(), newCards));
-		System.out.println("fine moveChecker");
-		
+		contextInfoContainer.clear();		
     }
     
 	private boolean checkValidRegionID(Board board, Action action){	
