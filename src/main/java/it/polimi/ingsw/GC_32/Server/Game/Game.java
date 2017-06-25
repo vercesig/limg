@@ -2,13 +2,17 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+
+import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
@@ -35,15 +39,17 @@ public class Game implements Runnable{
 	private String lock;
 	
 	private TurnManager turnManager;
+	
 	private MoveChecker mv;
-	private HashMap <String, Action> suspendedAction;
+	private HashMap<ContextType , Object[]> contextQueue; // context management
 	
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players){
 		
 		this.mv = new MoveChecker();
-		this.suspendedAction = new HashMap <String, Action>();
+		this.contextQueue = new HashMap<ContextType, Object[]>();
+		mv.registerContextQueue(contextQueue);
 		
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
@@ -146,6 +152,15 @@ public class Game implements Runnable{
 		//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
 		
 		while(runGameFlag){
+			
+			// controllo se ci sono da aprire context, in caso positivo li apro
+			if(!this.contextQueue.isEmpty()){
+				for(Entry<ContextType, Object[]> context : contextQueue.entrySet()){
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(getLock(), context.getKey(), context.getValue()));
+				}
+				contextQueue.clear();
+			}
+			
 			if(MessageManager.getInstance().hasMessage()){
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();

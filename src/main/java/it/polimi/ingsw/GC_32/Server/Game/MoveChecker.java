@@ -24,9 +24,11 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 
 public class MoveChecker{
-	final Logger logger = Logger.getLogger(this.getClass().getName());
+	final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 	private Set<String> list;
 	private Map<String, JsonValue> contextManager;
+	
+	private HashMap<ContextType, Object[]> contextQueue;
 	
 	// cloning handling
 	private Cloner cloner = new Cloner();
@@ -43,8 +45,12 @@ public class MoveChecker{
     	cloner.dontCloneInstanceOf(Effect.class);
     }
     
+    public void registerContextQueue(HashMap<ContextType, Object[]> contextQueue){
+    	this.contextQueue = contextQueue;
+    }
+    
     public boolean firstStepCheck(Game game, Player player, Action action){
-    	logger.info("firstStepCheck");
+    	LOGGER.info("firstStepCheck");
     	
     	this.cloneBoard = cloner.deepClone(game.getBoard());
     	this.clonePlayer = cloner.deepClone(player);
@@ -174,7 +180,8 @@ public class MoveChecker{
     				
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextManager.containsKey("SERVANT")){
-    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
+    				contextQueue.put(ContextType.SERVANT, new Object[]{clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()});
+    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
     				this.list.add("SERVANT");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
@@ -192,7 +199,8 @@ public class MoveChecker{
     					}
     				}
     				if(!cardlist.isEmpty()){
-    					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.CHANGE, cardlist));
+    					contextQueue.put(ContextType.CHANGE, new Object[]{cardlist});
+    					//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.CHANGE, cardlist));
     					this.list.add("CHANGE");
     				}
     			}
@@ -220,7 +228,8 @@ public class MoveChecker{
     			
     			//CONTEXT MESSAGE HANDLER: SERVANT
     			if(!this.contextManager.containsKey("SERVANT")){
-    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
+    				contextQueue.put(ContextType.SERVANT, new Object[]{clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()});
+    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.SERVANT, clonePlayer.getResources().getResource("SERVANTS"), cloneAction.getActionType()));
     				this.list.add("SERVANT");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
@@ -235,7 +244,8 @@ public class MoveChecker{
     			
     			//COMTEXT MESSAGE HANDLER: PRIVILEGE
     			if(!this.contextManager.containsKey("PRIVILEGE")){
-    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 1));
+    				contextQueue.put(ContextType.PRIVILEGE, new Object[]{1});
+    				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 1));
     				this.list.add("PRIVILEGE");
     			}
     			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
@@ -249,7 +259,8 @@ public class MoveChecker{
     				
     				//CONTEXT MESSAGE HANDLER: PRIVILEGE
         			if(!this.contextManager.containsKey("PRIVILEGE")){
-        				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 2));
+        				contextQueue.put(ContextType.PRIVILEGE, new Object[]{2});
+        				//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(clonePlayer.getUUID(), ContextType.PRIVILEGE, 2));
         				this.list.add("PRIVILEGE");
         			}
         			else{ // se contiene il contextPayload recupero le informazioni da questo e le applico nella simulazione
