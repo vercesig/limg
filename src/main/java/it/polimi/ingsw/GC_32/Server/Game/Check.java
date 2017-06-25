@@ -6,8 +6,30 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class Check {
-		
-    static public boolean checkActionValue(Board board, Player player, Action action){
+	
+    public static boolean checkValidID(Board board, Action action){
+    	if(checkValidRegionID(board, action) && checkValidActionSpaceID(board, action)){
+			return true;
+		}
+    	return false;
+    }
+    
+	private static boolean checkValidRegionID(Board board, Action action){	
+		if(board.getRegion(action.getActionRegionId()) == null){
+			return false;
+		}
+		return true;
+	}
+
+	private static boolean checkValidActionSpaceID(Board board, Action action){	
+		if(board.getRegion(action.getActionRegionId())
+				.getActionSpace(action.getActionSpaceId()) == null){
+			return false;
+		}
+		return true;
+	}
+	
+    public static boolean checkActionValue(Board board, Player player, Action action){
     	if(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId())
     			.getActionValue() <= action.getActionValue())
     		return true;

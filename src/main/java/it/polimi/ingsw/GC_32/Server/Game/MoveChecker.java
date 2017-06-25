@@ -26,6 +26,7 @@ import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 public class MoveChecker{
 	final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 	
+	// context management
 	private HashMap<ContextType, Object[]> contextQueue; // use this map if you want to open context
 	private HashMap<String, JsonValue> contextInfoContainer; // use this map if you want have access to context response
 	private HashSet<String> waitingContextResponseSet;
@@ -36,11 +37,11 @@ public class MoveChecker{
 	private Player clonePlayer;
 	private Action cloneAction;
 	private Action action;
-	public boolean waitBeforeChangeFlag = true;
+	
+	public boolean waitBeforeChangeFlag = true; //if setted true, moveChecker can't change the game's status
 	
     public MoveChecker(){
-    	//Effects cannot be deepcloned
-    	cloner.dontCloneInstanceOf(Effect.class);
+    	cloner.dontCloneInstanceOf(Effect.class); //Effects cannot be deepcloned
     }
     
     public void registerContextQueue(HashMap<ContextType, Object[]> contextQueue){
@@ -78,13 +79,6 @@ public class MoveChecker{
     
     public void setWaitFlag(boolean waitFlag){
     	this.waitBeforeChangeFlag = waitFlag;
-    }
-
-    public boolean checkValidID(Board board, Action action){
-    	if(checkValidRegionID(board, action) && checkValidActionSpaceID(board, action)){
-			return true;
-		}
-    	return false;
     }
     
     public boolean moveFamilyMember(Game game, Board board, Player player, Action action){ 
@@ -129,7 +123,7 @@ public class MoveChecker{
     */
 	public boolean simulateWithCopy(Player player, Game game){
 				
-    	if(!checkValidID(cloneBoard, cloneAction))
+    	if(!Check.checkValidID(cloneBoard, cloneAction))
     		return false;
 
     	//applico gli effetti sul player. Se ho effetti che negano l'azione ottengo una ImpossibleMoveException.
@@ -320,19 +314,4 @@ public class MoveChecker{
 		waitBeforeChangeFlag = true;
 		contextInfoContainer.clear();		
     }
-    
-	private boolean checkValidRegionID(Board board, Action action){	
-		if(board.getRegion(action.getActionRegionId()) == null){
-			return false;
-		}
-		return true;
-	}
-
-	private boolean checkValidActionSpaceID(Board board, Action action){	
-		if(board.getRegion(action.getActionRegionId())
-				.getActionSpace(action.getActionSpaceId()) == null){
-			return false;
-		}
-		return true;
-	}
 }
