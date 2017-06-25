@@ -41,7 +41,7 @@ public class JsonImporter {
 			String cardType = card.get("cardType").asString();
 			Integer period = card.get("period").asInt();
 			Integer actionValue;
-			
+ 			
 			try{
 				JsonValue action = card.get("minimumActionValue");	
 				actionValue = action.asInt();
