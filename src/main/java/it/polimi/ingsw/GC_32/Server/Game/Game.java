@@ -26,7 +26,7 @@ import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class Game implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final static Logger LOGGER = Logger.getLogger(Game.class.getName());
 	
 	private ArrayList<Player> playerList;
 	private Board board;
@@ -71,19 +71,7 @@ public class Game implements Runnable{
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
-		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
-		
-		LOGGER.log(Level.INFO, "setting first turn order");
-		Random randomGenerator = new Random();
-		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
-		int playerListSize = this.playerList.size();
-		
-		for(int i=0; i<playerListSize; i++){
-			int randomNumber = randomGenerator.nextInt(playerList.size());
-			startPlayerOrder.add(playerList.get(randomNumber));
-			playerList.remove(randomNumber);
-		}
-		playerList = startPlayerOrder;
+		LOGGER.log(Level.INFO, "decks succesfully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
@@ -211,7 +199,7 @@ public class Game implements Runnable{
 								}
 							}
 							LOGGER.log(Level.INFO, "giving lock to the next player");
-							setLock(turnManager.nextPlayer().getUUID());
+							setLock(turnManager.nextPlayer());
 							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 							// ask action
 							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
@@ -235,7 +223,7 @@ public class Game implements Runnable{
 							if(mv.simulateWithCopy(playerRetry, this)){ // simulazione completa
 								mv.simulate(this, this.getBoard(), playerRetry); // apply degli originali
 								// notifico i cambiamenti (nuovo stato del player)
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(playerRetry.getUUID(), playerRetry.getResources()));
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(playerRetry));
 								// ......
 								
 								// invio esito positivo

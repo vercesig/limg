@@ -56,7 +56,7 @@ public class MoveChecker{
     	this.waitingContextResponseSet = contextResponseSet;
     }
     
-    public boolean firstStepCheck(Game game, Player player, Action action){
+    public void firstStepCheck(Game game, Player player, Action action){
     	LOGGER.info("firstStepCheck");
     	
     	this.cloneBoard = cloner.deepClone(game.getBoard());
@@ -69,14 +69,7 @@ public class MoveChecker{
 		if(simulateWithCopy(player,game)){
 			waitBeforeChangeFlag = false;
 			simulate(game, game.getBoard(), player);
-			//return false;
 		}
-
-		/*if(this.waitingContextResponseSet.isEmpty()){
-			waitBeforeChangeFlag = false;
-			simulate(game, game.getBoard(), player);
-		}*/
-		return true;
     }
     
     public void setWaitFlag(boolean waitFlag){

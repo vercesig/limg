@@ -169,22 +169,17 @@ public class MainClient{
 						break;
 					case "STATCHNG":
 						playerID = messagePayload.get("PLAYERID").asString();
-						if(messagePayload.get("TYPE").asString().equals("RESOURCE")){
-							JsonObject newResources = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-							client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));
-							System.out.println("[MAINCLIENT] player "+playerID+" change resources");
-							
-							// ************************* ESEMPIO
-							//System.out.println(client.getPlayers().get(client.myUUID).toString());
-						}else{
-							JsonObject addingCard = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-							Iterator<Member> iterable = addingCard.iterator();
-							iterable.forEachRemaining(card -> client.getPlayers().get(playerID).addCard(card.getName(), card.getValue().asString()));
-							//System.out.println("[MAINCLIENT] add new card to "+playerID);
-							
-							// ************************ ESEMPIO
-							//System.out.println(client.getPlayers().get(client.myUUID).toString());
-						}
+						JsonObject newResources = Json.parse(messagePayload.get("RESOURCE").asString()).asObject();
+						client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));	
+						System.out.println("[MAINCLIENT] player "+playerID+" change resources");
+						
+						JsonObject cardList = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
+						Iterator<Member> cardListIterator = cardList.iterator();
+						cardListIterator.forEachRemaining(cards -> {
+							JsonArray cardListArray = cards.getValue().asArray();
+							if(!cardListArray.isNull())
+								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
+						});
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)

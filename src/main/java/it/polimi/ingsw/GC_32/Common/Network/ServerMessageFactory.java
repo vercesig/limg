@@ -127,44 +127,21 @@ public class ServerMessageFactory {
 	
 	public static GameMessage buildSTATCHNGmessage(Player player){
 		JsonObject STATCHNG = new JsonObject();
-		JsonObject STATCHNGpayload = new JsonObject();
-		STATCHNG.add("TYPE", "RESOURCE");
-		STATCHNGpayload.add("WOOD", 2);
-		STATCHNGpayload.add("STONE", 2);
-		STATCHNGpayload.add("SERVANTS", 3);
-		STATCHNGpayload.add("FAITH", 0);
-		STATCHNGpayload.add("MILITARY", 0);
-		STATCHNGpayload.add("VICTORY", 0);
-		STATCHNGpayload.add("COINS", player.getResources().getResource("COINS"));
+		JsonObject STATCHNGCardpayload = new JsonObject();
+		
+		STATCHNG.add("RESOURCE", player.getResources().toJson().toString());
 		STATCHNG.add("PLAYERID", player.getUUID());
-		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());		
-		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
-		STATCHNGmessage.setAsBroadcastMessage();
-		return STATCHNGmessage;
-	}
-	
-	public static GameMessage buildSTATCHNGmessage(String playerUUID, ResourceSet newResources){
-		JsonObject STATCHNG = new JsonObject();
-		JsonObject STATCHNGpayload = new JsonObject();
-		STATCHNG.add("TYPE", "RESOURCE");
-		newResources.getResourceSet().forEach((resourceName,resourceQuantity)->{
-			STATCHNGpayload.add(resourceName, resourceQuantity);
+		
+		player.getPersonalBoard().getCards().forEach((type,cardList)->{
+			JsonArray tmpCardArray = new JsonArray();
+			cardList.forEach(card -> {
+				tmpCardArray.add(card.getName());
+			});
+			STATCHNGCardpayload.add(type, tmpCardArray);
 		});
-		STATCHNG.add("PLAYERID", playerUUID);
-		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
-		GameMessage STATCHNGmessage = new GameMessage(null, "STATCHNG", STATCHNG.toString());
-		STATCHNGmessage.setAsBroadcastMessage();
-		return STATCHNGmessage;
-	}
-	
-	public static GameMessage buildSTATCHNGmessage(String playerUUID, List<DevelopmentCard> cards){
-		JsonObject STATCHNG = new JsonObject();
-		JsonObject STATCHNGpayload = new JsonObject();
-		STATCHNG.add("TYPE", "CARD");
-		cards.forEach(card -> STATCHNGpayload.add(card.getType(),card.getName()));
-		STATCHNG.add("PAYLOAD", STATCHNGpayload.toString());
-		STATCHNG.add("PLAYERID", playerUUID);
-		GameMessage STATCHNGmessage = new GameMessage(null, "STATCHNG", STATCHNG.toString());
+		
+		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
+		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
 		STATCHNGmessage.setAsBroadcastMessage();
 		return STATCHNGmessage;
 	}

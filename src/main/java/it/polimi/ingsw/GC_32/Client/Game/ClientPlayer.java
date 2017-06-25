@@ -48,9 +48,10 @@ public class ClientPlayer {
 	}
 	
 	public void addCard(String cardType, String card){
-		if(cards.containsKey(cardType)){
+		if(cards.containsKey(cardType)&&!cards.get(cardType).contains(card)){
 			this.cards.get(cardType).add(card);
-		}else{
+		}
+		if(!cards.containsKey(cardType)){
 			this.cards.put(cardType, new ArrayList<String>());
 			this.cards.get(cardType).add(card);
 		}

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 
 public class TurnManager {
 	
@@ -12,13 +12,36 @@ public class TurnManager {
 	
 	private int turnID;
 	private int roundID;
+	
+	private ConcurrentLinkedQueue<String> turnOrderQueue;
+	
 	private Game game;
 	
 	public TurnManager(Game game){
+		LOGGER.log(Level.INFO, "tunrmanager inizialized");
+		
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		LOGGER.log(Level.INFO, "tunrmanager inizialized");
+		this.turnOrderQueue = new ConcurrentLinkedQueue<String>();
+		
+		LOGGER.log(Level.INFO, "setting first turn order");
+		
+		// scelta ordine casuale del turno
+		Random randomGenerator = new Random();
+		ArrayList<Player> tmpPlayerList = new ArrayList<Player>(game.getPlayerList());
+		int playerListSize = game.getPlayerList().size();
+		ArrayList<String> tmp = new ArrayList<String>();
+		
+		for(int i=0; i<playerListSize; i++){
+			int randomNumber = randomGenerator.nextInt(game.getPlayerList().size());
+			tmp.add(game.getPlayerList().get(randomNumber).getUUID());
+			tmpPlayerList.remove(randomNumber);
+		}
+		
+		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
+			tmp.forEach(UUID -> turnOrderQueue.add(UUID));
+		}
 	}
 	
 	public int getTurnID(){
@@ -30,15 +53,17 @@ public class TurnManager {
 	}
 	
 	// restituisce il player a cui passare il lock
-	public Player nextPlayer(){
+	public String nextPlayer(){
 		turnID++;
-		int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));		
+		//int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));		
 		
-		try{// non sono l'ultimo giocatore della lista
+		return turnOrderQueue.poll();
+		
+		/*try{// non sono l'ultimo giocatore della lista
 			return game.getPlayerList().get(currentIndexPlayer+1);
 		}catch(IndexOutOfBoundsException e){// il giro ricomincia
 			return game.getPlayerList().get(0); 
-		}	
+		}	*/
 	}
 	
 	public boolean isRoundEnd(){
@@ -57,7 +82,7 @@ public class TurnManager {
 		return isPeriodEnd()&&roundID%6==0;
 	}
 	
-	public ArrayList<Player> updateTurnOrder(){
+	public void updateTurnOrder(){
 		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(game.getPlayerList()); //vecchio ordine di turno	
 		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
 		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
@@ -73,8 +98,11 @@ public class TurnManager {
 			if(!newTurnOrder.contains(p)){
 				newTurnOrder.add(p);
 			}
-		}	
-		return newTurnOrder;	
+		}
+		
+		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
+			newTurnOrder.forEach(player -> turnOrderQueue.add(player.getUUID()));
+		}
 	}
 	
 	/**
