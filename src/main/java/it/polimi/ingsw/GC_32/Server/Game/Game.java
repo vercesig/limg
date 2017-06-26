@@ -197,9 +197,17 @@ public class Game implements Runnable{
 
 							Player player = playerList.get(index);
 							memoryAction.put(player.getUUID(), action);
-
+							
+							System.out.println("INIZIO CHECK: ");
+							System.out.println("STATO PRIMA DELL'ESECUZIONE:");
+							System.out.println(action);
+							System.out.println(player);
 				    		if(mv.checkMove(this, player, action)){
+				    			System.out.println("check with copy: PASSATO");
 				    			makeMove(player, action);
+				    			System.out.println("AZIONE ESEGUITA!\n");
+								System.out.println("STATO DOPO AZIONE: ");
+				    			System.out.println(player);
 				    		}
 				    		break;
 						case "TRNEND":
@@ -235,8 +243,17 @@ public class Game implements Runnable{
 								Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
 								Action actionReply = memoryAction.get(getLock());
 								
+								
+								System.out.println("CONTEXT: retry simulateWithCopy");
+								System.out.println("STATO PRIMA DELL'ESECUZIONE:");
+								System.out.println(playerReply);
+								
 								if(mv.checkMove(this, playerReply, actionReply)){
 					    			makeMove(playerReply, actionReply);
+									System.out.println("AZIONE ESEGUITA!\n");
+									System.out.println("STATO DOPO AZIONE: ");
+									System.out.println(playerReply);
+
 					    		}
 							}
 							
@@ -327,11 +344,10 @@ public class Game implements Runnable{
 	public void makeMove(Player player, Action action){
 		if(contextInfoContainer.isEmpty()){
 			
-			LOGGER.info("spedisco context");
-			
 			switch(action.getActionType()){
 				case "PRODUCTION":
 				case "HARVEST":
+					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
 							player.getUUID(), 
 							ContextType.SERVANT, 
@@ -350,24 +366,28 @@ public class Game implements Runnable{
 						waitingContextResponseSet.add("CHANGE");
 					}
 					waitingContextResponseSet.add("SERVANT");
-					break;
+					return;
 				case "COUNCIL":
+					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
 							player.getUUID(),
 							ContextType.PRIVILEGE,
 							1));
 					waitingContextResponseSet.add("PRIVILEGE");
-					break;
+					return;
 				case "MARKET":
+					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
 							player.getUUID(),
 							ContextType.PRIVILEGE,
 							2));
 					waitingContextResponseSet.add("PRIVILEGE");
+					return;
+					
+				default:
 					break;
 			}
-			return;
-		}	
+		}
 		
 		MoveUtils.applyEffects(this.board, player, action);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
@@ -379,7 +399,7 @@ public class Game implements Runnable{
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
 				JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 				for( JsonValue json: cardlist){
-					playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+					playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
 				}
 				break;
 			}	
@@ -389,7 +409,7 @@ public class Game implements Runnable{
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
 				for(DevelopmentCard card : playerCard){
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getInstantEffect().apply(board, player, action);
+						card.getPermanentEffect().apply(board, player, action);
 					}
 				}
 				break;

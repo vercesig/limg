@@ -48,7 +48,12 @@ public class MoveChecker{
 	   Board cloneBoard = cloner.deepClone(game.getBoard());
 	   Player clonePlayer = cloner.deepClone(player);
 	   if(checkValidIDs(cloneBoard, clonePlayer, action)){
+		   System.out.println("checkValidID: true");
 		   MoveUtils.cloneApplyEffects(cloneBoard, player, clonePlayer, action);
+		   System.out.println("DOPO AVER APPLICATO GLI EFFETTI");
+		   System.out.println(clonePlayer);
+		   System.out.println(action);		   
+
 		   return (action.isValid() &&
 				   checkFamiliarMove(game, cloneBoard, clonePlayer, action) &&
 				   checkActionSpaceCost(cloneBoard, clonePlayer, action) &&

@@ -56,6 +56,7 @@ public class MoveUtils {
       	for (FamilyMember f : player.getFamilyMember()){
     		try{
     			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
+    				System.out.println("COLOR RULE NON RISPETTATA");
     				return false;
     			}
     		}
@@ -86,12 +87,14 @@ public class MoveUtils {
     	if(numberOfPlayer < 3){
     		if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
     				(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    	    	System.out.println("ZONA BLOCCATA");
     			return true;
     		}
     	}
     	//  Can't access to: Market 2-3
     	if(numberOfPlayer <4){
     		if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2){
+    	    	System.out.println("ZONA BLOCCATA");
     			return true;
     		}
     	}
@@ -167,8 +170,15 @@ public class MoveUtils {
 				  .getTowerLayers()[action.getActionSpaceId()]
 				  .getCard();
     	
-      	ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
-    	player.getResources().subResource(cost);
+    	try{
+    		ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
+    		System.out.println("PLAYER RESOURCES: " + player.getResources());
+    		System.out.println("COST: " + cost);
+    		player.getResources().subResource(cost);
+    	} catch(NullPointerException e){
+    		System.out.println("CARTA SENZA COSTO");
+    		return true;
+    	}
     	return player.getResources().isValid();
     }
     
