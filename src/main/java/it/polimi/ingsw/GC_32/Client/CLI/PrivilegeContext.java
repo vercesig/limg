@@ -14,7 +14,7 @@ public class PrivilegeContext extends Context{
 		
 		JsonObject JsonPayload = (JsonObject) payload;
 		//int numberOfPrivilege = JsonPayload.get("NUMBER").asInt();
-		int numberOfPrivilege = 2;
+		int numberOfPrivilege = JsonPayload.get("NUMBER").asInt();
 		JsonObject response = new JsonObject();
 		
 		System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
