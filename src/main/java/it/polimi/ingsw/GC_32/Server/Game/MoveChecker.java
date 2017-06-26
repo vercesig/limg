@@ -271,25 +271,26 @@ public class MoveChecker{
 					LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
 					JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 					for( JsonValue json: cardlist){
-						playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
 					}
 				}
 				break;
 			}
 
 			case "HARVEST" : {				
-				//TODO
+				
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
 				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				player.getResources().addResource("SERVANTS", -contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 
-				
-				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
-				for(DevelopmentCard card : playerCard){
-					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getInstantEffect().apply(board, player, action);
+				try{
+					LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
+					for(DevelopmentCard card : playerCard){
+						if(card.getMinimumActionvalue() <= action.getActionValue()){
+							card.getPermanentEffect().apply(board, player, action);
+						}
 					}
-				}
+				} catch(NullPointerException e){}
 				break;
 			}
 			case "COUNCIL" : {

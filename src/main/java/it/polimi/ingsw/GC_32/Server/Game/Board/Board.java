@@ -62,8 +62,13 @@ public class Board {
 		for(int i=0; i<cardTypes.length; i++){
 			towerRegion[i] = new TowerRegion(i + 4,4);
 			region.add(4 + i, towerRegion[i]);
-			towerRegion[i].setTypeCard(cardTypes[i]);
 		}
+		
+		//paranoie per associare correttamente ad ogni torre ID il giusto CardType
+		towerRegion[0].setTypeCard(CardRegistry.getInstance().getDeck("TERRITORYCARD").getDeck().get(0).getType());
+		towerRegion[1].setTypeCard(CardRegistry.getInstance().getDeck("CHARACTERCARD").getDeck().get(0).getType());
+		towerRegion[2].setTypeCard(CardRegistry.getInstance().getDeck("BUILDINGCARD").getDeck().get(0).getType());
+		towerRegion[3].setTypeCard(CardRegistry.getInstance().getDeck("VENTURECARD").getDeck().get(0).getType());
 		LOGGER.log(Level.INFO, "board succesfully inizialized");
 	}
 	
