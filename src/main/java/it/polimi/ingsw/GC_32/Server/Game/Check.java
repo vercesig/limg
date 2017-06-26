@@ -11,6 +11,7 @@ public class Check {
     	if(checkValidRegionID(board, action) && checkValidActionSpaceID(board, action)){
 			return true;
 		}
+  		System.out.println("ID NON VALIDO");
     	return false;
     }
     
@@ -34,6 +35,7 @@ public class Check {
     			.getActionValue() <= action.getActionValue())
     		return true;
     	else 
+      		System.out.println("ACTION VALUE NON VALIDA");
     		return false;
     }
    
@@ -55,11 +57,13 @@ public class Check {
     		return true;
     	}
 
-      	for (FamilyMember f : player.getFamilyMember()){
+      	for (int i=0; i< player.getFamilyMember().length; i++){
     		try{
-    			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
-    	      		System.out.println(f.getColor().toString());
-    				return false;
+    			if(player.getFamilyMember()[i].getPosition().getRegionID() == action.getActionRegionId() && 
+    					i!=action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt()){
+    	      		System.out.println(player.getFamilyMember()[i].getColor().toString());
+    	      		System.out.println("COLOR RULE NON RISPETTATA");
+    	      		return false;
     			}
     		}
     		catch(NullPointerException e){};	
@@ -93,6 +97,7 @@ public class Check {
     			return true;
     		}
     	}
+  		
     	return false;
 	}
     
@@ -123,9 +128,13 @@ public class Check {
     	
     	if (((TowerRegion) board.getRegion(action.getActionRegionId())).isTowerBusy() &&
     			player.getResources().compareTo(coins) < 0){
+      		System.out.println("NO COINS PER IL TRIBUTO");
     		return false;	
     	} 
-    	player.getResources().addResource("COINS", -3); // Change the State of the Game
+    	if( ((TowerRegion) board.getRegion(action.getActionRegionId())).isTowerBusy() ){
+    		player.getResources().addResource("COINS", -3); // Change the State of the Game
+      		System.out.println("PAGA TRIBUTO");
+    	}
     	return true;
     }
     
@@ -140,19 +149,19 @@ public class Check {
     		int point = player.getResources().getResource("MILITARY_POINTS");
     		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){
     		case 2: 
-    			if(point >= 3)
-    				return true;
+    			if(point < 3)
+    				return false;
     		case 3: 
-    			if(point >= 7)
-    				return true;
+    			if(point < 7)
+    				return false;
     		case 4: 
-    			if(point >= 12)
-    				return true; 
+    			if(point < 12)
+    				return false; 
     		case 5: 
-    			if(point >= 18)
-    				return true; 	
+    			if(point < 18)
+    				return false; 	
     		default: 
-    			return false;
+    			return true;
     		}
     	} 
     	return true;	
@@ -171,11 +180,20 @@ public class Check {
     // 3) CostCheck: can the player pay the cost of the card?
     public static boolean checkCost(Board board, Player player, Action action){
     	
-      	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
-    	if(player.getResources().compareTo(cost) >=0 ){
-    		player.getResources().subResource(cost);
-    		return true;
-    	}
-    	return false;
+    	DevelopmentCard card = ((TowerRegion) board.getRegion(action.getActionRegionId())).getTowerLayers()[action.getActionSpaceId()].getCard();
+      	try{
+      		ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
+      		System.out.println(card.toString());
+      		System.out.println("RISORSE PLAYER:" + player.getResources());
+      		System.out.println("COSTO:" + cost);
+      		if(player.getResources().compareTo(cost) >=0 ){
+      			player.getResources().subResource(cost);
+          		return true;
+      		}
+      		else 
+      			return false;
+      	} catch(IndexOutOfBoundsException e){
+      		return true;
+      	}
     }   
 }

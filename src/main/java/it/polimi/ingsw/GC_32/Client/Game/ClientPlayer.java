@@ -22,9 +22,9 @@ public class ClientPlayer {
 		this.playerResources.setResource("COINS", 0);
 		this.playerResources.setResource("SERVANTS", 0);
 		this.playerResources.setResource("STONE", 0);
-		this.playerResources.setResource("MILITARY", 0);
-		this.playerResources.setResource("VICTORY", 0);
-		this.playerResources.setResource("FAITH", 0);
+		this.playerResources.setResource("MILITARY_POINTS", 0);
+		this.playerResources.setResource("VICTORY_POINTS", 0);
+		this.playerResources.setResource("FAITH_POINTS", 0);
 		
 		for(int i=0; i<familyMembers.length; i++){
 			familyMembers[i] = new ClientFamilyMember(this.name);
@@ -37,8 +37,8 @@ public class ClientPlayer {
 	}
 	
 	public void setPersonalBonusTile(String bonusTile){
-		this.bonusTile = bonusTile;
-	}
+			this.bonusTile = bonusTile;
+		}
 	
 	public String getName(){
 		return this.name;
@@ -53,10 +53,9 @@ public class ClientPlayer {
 	}
 	
 	public void addCard(String cardType, String card){
-		if(cards.containsKey(cardType)&&!cards.get(cardType).contains(card)){
+		if(cards.containsKey(cardType)){
 			this.cards.get(cardType).add(card);
-		}
-		if(!cards.containsKey(cardType)){
+		}else{
 			this.cards.put(cardType, new ArrayList<String>());
 			this.cards.get(cardType).add(card);
 		}
@@ -82,9 +81,7 @@ public class ClientPlayer {
 			for(String card : item.getValue()){
 				tmp.append(card+" ");
 			}
-			tmp.append("\n");
-		}
-		tmp.append(bonusTile+"\n---------------------------------------------");
+			 tmp.append(bonusTile+"\n---------------------------------------------"); 		}
 		return new String(tmp);
 	}
 	

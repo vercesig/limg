@@ -13,13 +13,14 @@ public class ClientMessageFactory {
 		return response.toString();
 	}
 	
-	public static String buildASKACTmessage(String actionType, int pawnID, int regionID, int spaceID){
+	public static String buildASKACTmessage(String actionType, int pawnID, int regionID, int spaceID, int indexCost){
 		JsonObject ASKACT = new JsonObject();
 		JsonObject ASKACTpayload = new JsonObject();
 		ASKACTpayload.add("ACTIONTYPE", actionType);
 		ASKACTpayload.add("FAMILYMEMBER_ID", pawnID);
 		ASKACTpayload.add("REGIONID", regionID);
 		ASKACTpayload.add("SPACEID", spaceID);
+		ASKACTpayload.add("COSTINDEX", indexCost);
 		ASKACT.add("MESSAGETYPE", "ASKACT");
 		ASKACT.add("PAYLOAD", ASKACTpayload);
 		return ASKACT.toString();

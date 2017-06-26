@@ -127,25 +127,25 @@ public class ServerMessageFactory {
 	
 	public static GameMessage buildSTATCHNGmessage(Player player){
 		JsonObject STATCHNG = new JsonObject();
-		JsonObject STATCHNGCardpayload = new JsonObject();
-		
-		STATCHNG.add("RESOURCE", player.getResources().toJson().toString());
-		STATCHNG.add("PLAYERID", player.getUUID());
-		
-		player.getPersonalBoard().getCards().forEach((type,cardList)->{
-			JsonArray tmpCardArray = new JsonArray();
-			cardList.forEach(card -> {
-				tmpCardArray.add(card.getName());
-			});
-			STATCHNGCardpayload.add(type, tmpCardArray);
-		});
-		
+ 		JsonObject STATCHNGCardpayload = new JsonObject();
+ 		
+ 		STATCHNG.add("RESOURCE", player.getResources().toJson().toString());
+ 		STATCHNG.add("PLAYERID", player.getUUID());
+ 		
+ 		player.getPersonalBoard().getCards().forEach((type,cardList)->{
+ 			JsonArray tmpCardArray = new JsonArray();
+ 			cardList.forEach(card -> {
+ 				tmpCardArray.add(card.getName());
+ 			});
+ 			STATCHNGCardpayload.add(type, tmpCardArray);
+ 		});
+ 		
 		STATCHNG.add("BONUSTILE", player.getPersonalBonusTile().toString());
-		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
-		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
-		STATCHNGmessage.setAsBroadcastMessage();
-		return STATCHNGmessage;
-	}
+ 		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
+ 		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
+ 		STATCHNGmessage.setAsBroadcastMessage();
+ 		return STATCHNGmessage;
+}
 	
 	public static GameMessage buildNAMECHGmessage(String playerUUID, String name){
 		JsonObject NAMECHG = new JsonObject();
@@ -158,24 +158,24 @@ public class ServerMessageFactory {
 	
 	
 	public static GameMessage buildCHGBOARDSTATmessage(Board board){
-		JsonObject CHGBOARDSTAT = new JsonObject();
-		CHGBOARDSTAT.add("TYPE", "BOARD");
-		JsonArray CHGBOARDSTATpayload = new JsonArray();
-		for(TowerRegion towerRegion : board.getTowerRegion()){
-			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
-				JsonObject card = new JsonObject();
-				card.add("NAME", towerLayer.getCard().getName());
-				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
-				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
-				CHGBOARDSTATpayload.add(card);
-			}
-		}
-		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload.toString());
-		
-		GameMessage CHGBOARDSTATmessage = new GameMessage(null, "CHGBOARDSTAT", CHGBOARDSTAT.toString());
-		CHGBOARDSTATmessage.setAsBroadcastMessage();		
-		return CHGBOARDSTATmessage;
-	}
+ 		JsonObject CHGBOARDSTAT = new JsonObject();
+ 		CHGBOARDSTAT.add("TYPE", "BOARD");
+ 		JsonArray CHGBOARDSTATpayload = new JsonArray();
+ 		for(TowerRegion towerRegion : board.getTowerRegion()){
+ 			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
+ 				JsonObject card = new JsonObject();
+ 				card.add("NAME", towerLayer.getCard().getName());
+ 				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
+ 				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
+ 				CHGBOARDSTATpayload.add(card);
+ 			}
+ 		}
+ 		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload.toString());
+ 		
+ 		GameMessage CHGBOARDSTATmessage = new GameMessage(null, "CHGBOARDSTAT", CHGBOARDSTAT.toString());
+ 		CHGBOARDSTATmessage.setAsBroadcastMessage();		
+ 		return CHGBOARDSTATmessage;
+}
 		
 	public static GameMessage buildCONTEXTmessage(String playerUUID, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
@@ -202,7 +202,7 @@ public class ServerMessageFactory {
 			for(DevelopmentCard card : changeCards){
 				JsonObject jsonCard = null;
 				try {
-					jsonCard = (JsonObject) JsonImporter.importSingleCard(cardFile, card.getName());
+					jsonCard = JsonImporter.importSingleCard(cardFile, card.getName()).asObject();
 				}catch(IOException e) {}
 				
 				JsonValue permanentPayload = jsonCard.get("permanentPayload");

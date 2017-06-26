@@ -1,7 +1,20 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject.Member;
+import com.eclipsesource.json.JsonValue;
+
+import it.polimi.ingsw.GC_32.Main;
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
+import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ZeroLevelContext extends Context implements Runnable{
 
@@ -20,6 +33,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 		
 		runFlag = true;
 		
+		
+		
 		while(runFlag){
 			System.out.println("type a command:\n- board: display the board status\n- players: display players' status"
 					+ "\n- action: make an action (if isn't your turn your requests won't be applied)");
@@ -35,6 +50,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 				int familyMemberIndex = 0;
 				int regionID = 0;
 				int spaceID = 0;
+				int indexCost = 0;
 				String actionType = null;
 				
 				boolean endFlag = false;
@@ -84,6 +100,74 @@ public class ZeroLevelContext extends Context implements Runnable{
 						}
 					}
 					
+					switch(regionID){
+					case 0:
+						actionType = "PRODUCTION";
+						break;
+					case 1:
+						actionType = "HARVEST";
+						break;
+					case 2:
+						actionType = "COUNCIL";
+						break;
+					case 3:
+						actionType = "MARKET";
+						break;
+					default:
+						actionType = "TOWER";
+						
+						actionFlag = true;
+						
+						Reader json = new InputStreamReader
+								(Main.class.getClassLoader().getResourceAsStream("cards.json"));
+						System.out.println("Development card on this tower layer: ");
+						
+						try {
+							JsonValue card = JsonImporter.importSingleCard(json, 
+									this.client.getBoard().getRegionList().get(regionID)
+									.getActionSpaceList().get(spaceID).getCardName());
+							System.out.println(card);
+							try{
+								JsonArray costList = card.asObject().get("cost").asArray();
+								if(costList.size() == 1){
+									actionFlag = false;
+									break;
+								}
+								System.out.println("Choose one cost of the card: ");
+								for(JsonValue js : costList){
+									System.out.print("> ");	
+									System.out.println(new ResourceSet(js.asObject()).toString() + " ");
+									}
+							}
+							catch(NullPointerException e){
+								break;
+							}
+							System.out.println("type 0 or 1");
+							
+							while(actionFlag){
+								
+								command = in.nextLine();
+								
+								switch(Integer.parseInt(command)){
+								case 0:
+									indexCost = 0;
+									actionFlag = false;
+									break;
+								case 1:
+									indexCost = 1;
+									actionFlag = false;
+									break;
+								default:
+									System.out.println("please, type a valid number");
+								break;
+								}
+							}	
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						break;
+					}
+					
 					System.out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
 					actionFlag = true;
 					while(actionFlag){
@@ -102,28 +186,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 							break;
 						}
 					}
-				}
-				
-				switch(regionID){
-				case 0:
-					actionType = "PRODUCTION";
-					break;
-				case 1:
-					actionType = "HARVEST";
-					break;
-				case 2:
-					actionType = "COUNCIL";
-					break;
-				case 3:
-					actionType = "MARKET";
-					break;
-				default:
-					actionType = "TOWER";
-					break;
-				}
-				
+				}	
 				// sending ASKACT message
-				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID));
+				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost));
 				
 				System.out.println("action sent to the server... waiting for response");
 				

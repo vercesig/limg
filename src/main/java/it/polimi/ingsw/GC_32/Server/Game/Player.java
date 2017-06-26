@@ -44,7 +44,7 @@ public class Player {
 	
 	public void setPersonalBonusTile(PersonalBonusTile bonusTile){
 		this.personalBonusTile = bonusTile;
-	}
+		}
 	
 	public String getUUID() {
 		return uuid;

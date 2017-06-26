@@ -152,6 +152,7 @@ public class JsonImporter {
 	
 	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
 		
+		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
 		JsonArray JsonCardList = Json.parse(fileReader).asArray();
 		
 		for(JsonValue item : JsonCardList){
@@ -165,17 +166,17 @@ public class JsonImporter {
 	
 	public static ArrayList<PersonalBonusTile> importPersonalBonusTile(Reader fileReader) throws IOException{
 		
-		JsonArray personalBonusTileList = Json.parse(fileReader).asArray();
-		ArrayList<PersonalBonusTile> tmpList = new ArrayList<PersonalBonusTile>();
-		
-		for(JsonValue item : personalBonusTileList){
-			JsonObject bonusTile = item.asObject();
+			JsonArray personalBonusTileList = Json.parse(fileReader).asArray();
+			ArrayList<PersonalBonusTile> tmpList = new ArrayList<PersonalBonusTile>();
 			
-			PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(), bonusTile.get("HARVEST").asObject(), false);
-			tmpList.add(personalBonus);			
+			for(JsonValue item : personalBonusTileList){
+					JsonObject bonusTile = item.asObject();
+					
+				PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(), bonusTile.get("HARVEST").asObject(), false);
+				tmpList.add(personalBonus);			
+			}
+			return tmpList;		
 		}
-		return tmpList;		
-	}
 	
 	/**
 	 * perform the parsing of the configuration file

@@ -169,18 +169,18 @@ public class MainClient{
 						break;
 					case "STATCHNG":
 						playerID = messagePayload.get("PLAYERID").asString();
-						JsonObject newResources = Json.parse(messagePayload.get("RESOURCE").asString()).asObject();
-						client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));	
+ 						JsonObject newResources = Json.parse(messagePayload.get("RESOURCE").asString()).asObject();
+ 						client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));	
 												
-						JsonObject cardList = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
-						Iterator<Member> cardListIterator = cardList.iterator();
-						cardListIterator.forEachRemaining(cards -> {
-							JsonArray cardListArray = cards.getValue().asArray();
-							if(!cardListArray.isNull())
-								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
-						});
+ 						JsonObject cardList = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
+ 						Iterator<Member> cardListIterator = cardList.iterator();
+ 						cardListIterator.forEachRemaining(cards -> {
+ 							JsonArray cardListArray = cards.getValue().asArray();
+ 							if(!cardListArray.isNull())
+ 								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
+ 						});
 						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());
-						break;
+ 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
 						if(messagePayload.get("TYPE").asString().equals("BOARD")){

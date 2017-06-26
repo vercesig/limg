@@ -17,11 +17,21 @@ public class Card {
 	}
 	
 	public Effect getInstantEffect(){
+		try{
 		return this.instantEffect;		
+		}
+		catch(NullPointerException e){
+			return null;
+		}
 	}
 	
 	public Effect getPermanentEffect(){
+		try{
 		return this.permanentEffect;
+		}
+		catch(NullPointerException e){
+			return null;
+		}
 	}
 	
 	public void registerInstantEffect(Effect e){

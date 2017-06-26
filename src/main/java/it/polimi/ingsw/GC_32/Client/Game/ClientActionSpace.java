@@ -32,6 +32,10 @@ public class ClientActionSpace {
 		this.cardName = cardName;
 	}
 	
+	public String getCardName(){
+		return this.cardName;	
+	}
+	
 	public String[] getInfoContainer(){
 		String[] infoContainer = new String[7];
 		infoContainer[0] = regionID.toString();

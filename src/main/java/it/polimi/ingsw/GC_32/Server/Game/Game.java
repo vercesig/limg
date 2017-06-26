@@ -31,7 +31,7 @@ import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class Game implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Game.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	private ArrayList<Player> playerList;
 	private Board board;
@@ -53,6 +53,7 @@ public class Game implements Runnable{
 	private HashMap<ContextType , Object[]> contextQueue;
 	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
+	private HashMap<String, Action> memoryAction;
 	
 	private boolean runGameFlag = true;
 	
@@ -60,6 +61,7 @@ public class Game implements Runnable{
 		
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
+		this.memoryAction = new HashMap<String, Action>();
 		mv.registerContextQueue(contextQueue);
 		waitingContextResponseSet = new HashSet<String>();
 		mv.registerContextResponseSet(waitingContextResponseSet);
@@ -76,7 +78,8 @@ public class Game implements Runnable{
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
-		LOGGER.log(Level.INFO, "decks succesfully loaded");
+		
+		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
@@ -96,10 +99,10 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("FAITH", 0);
 			playerList.get(i).getResources().setResource("VICTORY", 0);
 			playerList.get(i).getResources().setResource("MILITARY", 0);
-			
+		
 			int randomBonusTile = randomGenerator.nextInt(bonusTile.size());
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(randomBonusTile));
-			bonusTile.remove(randomBonusTile);			
+			bonusTile.remove(randomBonusTile);	
 		}
 		LOGGER.log(Level.INFO, "done");
 	}
@@ -194,48 +197,74 @@ public class Game implements Runnable{
 						Action action = new Action(actionType,actionValue,regionID,spaceID);
 						action.setAdditionalInfo(Jsonmessage); // da raffinare
 						Player player = playerList.get(index);
-						
+						memoryAction.put(player.getUUID(), action);
 						// MoveChecker
-						mv.firstStepCheck(this, player, action);
+						
+						if(mv.simulateWithCopy(player, this, action)){
+							if(this.waitingContextResponseSet.isEmpty()){
+								mv.simulate(this, this.getBoard(), player, action);
+								System.out.println("AZIONE SIMULATA!");
+								memoryAction.remove(player.getUUID());
+								System.out.println("STATO PLAYER:");
+								System.out.println(player);
+								break;
+							}
+							else
+								LOGGER.log(Level.INFO, "CONTEXT APERTI...ASPETTO");
+							
+								System.out.println(contextQueue.toString());
+								System.out.println(contextInfoContainer.toString());
+								System.out.println(waitingContextResponseSet);
+					    		break;
+						}
 						
 						// notificare cambiamenti ai client (caso in cui non si siano aperti context)
 						
 						break;
 					case "TRNEND":
 						if(!turnManager.isGameEnd()){
-							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
+	 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
+	 							
+	 							if(turnManager.isRoundEnd()){
+	 								LOGGER.log(Level.INFO, "round end");
+	 								
+	 								if(turnManager.isPeriodEnd()){
+	 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
+	 								}
+	 							}
+	 							LOGGER.log(Level.INFO, "giving lock to the next player");
+	 							setLock(turnManager.nextPlayer());
+	 							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+	 							// ask action
+	 							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
+	 						}else{
+	 							LOGGER.log(Level.INFO, "game end");
+	 							//stopGame();
+	 						}
+							break;
 							
-							if(turnManager.isRoundEnd()){
-								LOGGER.log(Level.INFO, "round end");
-								
-								if(turnManager.isPeriodEnd()){
-									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
-								}
-							}
-							LOGGER.log(Level.INFO, "giving lock to the next player");
-							setLock(turnManager.nextPlayer());
-							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-							// ask action
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
-						}else{
-							LOGGER.log(Level.INFO, "game end");
-							//stopGame();
-						}
-						break;
 					case "CONTEXTREPLY" :
 						JsonValue contextReply = Json.parse(message.getMessage());
 						
 						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 						Player playerRetry = playerList.get(indexRetry);
-						
+						Action actionRetry = memoryAction.get(playerRetry.getUUID());
 						this.waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
 				    	this.contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD").asObject());
-				    	System.out.println(contextInfoContainer.toString());
-						
+				    	
+				    	System.out.println(contextQueue.toString());
+						System.out.println(contextInfoContainer.toString());
+						System.out.println(waitingContextResponseSet);
+
+				    	
 						if(this.waitingContextResponseSet.isEmpty()){
-							mv.setWaitFlag(false);; // ok possiamo toccare il model
-							if(mv.simulateWithCopy(playerRetry, this)){ // simulazione completa
-								mv.simulate(this, this.getBoard(), playerRetry); // apply degli originali
+							if(mv.simulateWithCopy(playerRetry, this, actionRetry)){ // simulazione completa
+								mv.simulate(this, this.getBoard(), playerRetry, actionRetry); // apply degli originali
+								System.out.println("\n\nAZIONE SIMULATA!");
+								memoryAction.remove(playerRetry.getUUID());
+								System.out.println("STATO PLAYER:");
+								System.out.println(playerRetry);
+								
 								// notifico i cambiamenti (nuovo stato del player)
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(playerRetry));
 								// ......
@@ -244,6 +273,7 @@ public class Game implements Runnable{
 							}
 							// invio esito negativo
 						}
+						break;
 					}
 					
 				});
