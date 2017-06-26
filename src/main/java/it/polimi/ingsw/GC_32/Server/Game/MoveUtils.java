@@ -10,7 +10,7 @@ public class MoveUtils {
 	public MoveUtils(){}
 	
 	static public boolean checkValidRegionID(Board board, Player player, Action action){	
-		if(board.getRegion(action.getActionRegionId()) == null){
+		if(board.getRegion(action.getActionRegionId()) == null){		
 			return false;
 		}
 		return true;
@@ -18,34 +18,11 @@ public class MoveUtils {
 
 	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){	
 		if(board.getRegion(action.getActionRegionId())
-				.getActionSpace(action.getActionSpaceId()) == null){
+				.getActionSpace(action.getActionSpaceId()) == null){			
 			return false;
 		}
 		return true;
 	}
-
-    static public boolean checkValidActionType(Action action){	
-		switch (action.getActionType()){
-		case "PRODUCTION" :
-			return (action.getActionRegionId() == 0);
-		case "HARVEST":
-			return (action.getActionRegionId() == 1);
-		case "COUNCIL":
-			return (action.getActionRegionId() == 2);
-		case "MARKET":
-			return (action.getActionRegionId() == 3);
-		case "TOWER_GREEN":
-			return (action.getActionRegionId() == 4);
-		case "TOWER_BLUE":
-			return (action.getActionRegionId() == 5);
-		case "TOWER_YELLOW":
-			return (action.getActionRegionId() == 6);
-		case "TOWER_PURPLE" :
-			return (action.getActionRegionId() == 7);
-		default : 
-			return false;
-		}
-	} 
 
     /** checks if the action value is greater than or equal
      * to the actionspace value
@@ -70,7 +47,6 @@ public class MoveUtils {
     	if(action.getActionRegionId() == 2 || action.getActionRegionId() == 3){
     		return true;
     	}
-    
     	try{
     		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
     			return true;
@@ -94,7 +70,7 @@ public class MoveUtils {
      * @param action
      * @return
      */
-    public static boolean isFreeSingleSpace(Board board, Player player, Action action){
+    public static boolean isFreeSingleSpace(Board board, Player player, Action action){    	
     	return !(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
     			 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
     }
@@ -185,7 +161,10 @@ public class MoveUtils {
      * @param action
      * @return
      */
-    public static boolean checkCardCost(Board board, Player player, Action action){
+    public static boolean checkCardCost(Board board, Player player, Action action){ 	
+    	if(action.getActionRegionId()<4)
+    		return true;
+    	
       	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
     	if(player.getResources().compareTo(cost) >=0 ){
     		player.getResources().subResource(cost);
@@ -207,8 +186,10 @@ public class MoveUtils {
 	}
 	
 	public static void addActionSpaceBonus(Board board, Player player, Action action){
-		player.getResources().addResource(board.getRegion(action.getActionRegionId())
-			  .getActionSpace(action.getActionSpaceId())
-			  .getBonus());
+		try{
+			player.getResources().addResource(board.getRegion(action.getActionRegionId())
+				  .getActionSpace(action.getActionSpaceId())
+				  .getBonus());
+		}catch(NullPointerException e){}
 	}
 }

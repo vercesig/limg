@@ -19,14 +19,13 @@ public class MoveChecker{
 
     public boolean checkValidIDs(Board board, Player player, Action action){
     	return (MoveUtils.checkValidRegionID(board, player, action) &&
-    			MoveUtils.checkValidActionSpaceID(board, player, action) &&
-    			MoveUtils.checkValidActionType(action));
+    			MoveUtils.checkValidActionSpaceID(board, player, action));
     }
     
    public boolean checkFamiliarMove(Game game, Board board, Player player, Action action){
 	   return (MoveUtils.familyColor(board, player, action) &&
 			   MoveUtils.isFreeSingleSpace(board, player, action) &&
-			   MoveUtils.checkBlockedZone(game.getPlayerList().size(), action));
+			   !MoveUtils.checkBlockedZone(game.getPlayerList().size(), action));
    }
    
    public boolean checkActionSpaceCost(Board board, Player player, Action action){
@@ -48,7 +47,7 @@ public class MoveChecker{
 	   Board cloneBoard = cloner.deepClone(game.getBoard());
 	   Player clonePlayer = cloner.deepClone(player);
 	   if(checkValidIDs(cloneBoard, clonePlayer, action)){
-		   MoveUtils.cloneApplyEffects(cloneBoard, player, clonePlayer, action);
+		   MoveUtils.cloneApplyEffects(cloneBoard, player, clonePlayer, action);		   
 		   return (action.isValid() &&
 				   checkFamiliarMove(game, cloneBoard, clonePlayer, action) &&
 				   checkActionSpaceCost(cloneBoard, clonePlayer, action) &&

@@ -13,7 +13,7 @@ public class GameLobby {
 	
 	private int MIN_PLAYERS = 2;
 	private int MAX_PLAYERS = 4;
-	private int startGameTimeout = 30000;
+	private int startGameTimeout = 1000;
 	private Game game;
 	
 	public GameLobby() throws InterruptedException, IOException{

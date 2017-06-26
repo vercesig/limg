@@ -153,7 +153,7 @@ public class Game implements Runnable{
 		} catch (InterruptedException e) {}
 		
 		LOGGER.log(Level.INFO, "giving lock to the first player...");
-		setLock(playerList.get(0).getUUID());
+		setLock(turnManager.nextPlayer());
 		LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 		
 		// ask action
@@ -180,6 +180,7 @@ public class Game implements Runnable{
 							int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
 							this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
 							LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
+							break;
 						case "ASKACT":
 							LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
@@ -191,12 +192,16 @@ public class Game implements Runnable{
 							String actionType = Jsonmessage.get("ACTIONTYPE").asString();
 							
 							Action action = new Action(actionType,actionValue,regionID,spaceID);
+							action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
+														
 							Player player = playerList.get(index);
 							
 				    		if(mv.checkMove(this, player, action)){
 				    			makeMove(player, action);
 				    		}
+				    		break;
 						case "TRNEND":
+							System.out.println("ricevo turn end [GAME]");
 							if(!turnManager.isGameEnd()){
 								LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 								
@@ -216,6 +221,7 @@ public class Game implements Runnable{
 								LOGGER.log(Level.INFO, "game end");
 								//stopGame();
 							}
+							break;
 						/*case "CONTEXTREPLY" :{
 							JsonValue contextReply = Json.parse(message.getMessage());
 							contextPull(contextReply);
@@ -327,6 +333,9 @@ public class Game implements Runnable{
 	
 	public void makeMove(Player player, Action action){
 		if(contextInfoContainer.isEmpty()){
+			
+			System.out.println("spedisco context");
+			
 			switch(action.getActionType()){
 				case "PRODUCTION":
 				case "HARVEST":
@@ -363,7 +372,8 @@ public class Game implements Runnable{
 							2));
 					waitingContextResponseSet.add("PRIVILEGE");
 					break;
-			}			
+			}
+			return;
 		}	
 		MoveUtils.applyEffects(this.board, player, action);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
