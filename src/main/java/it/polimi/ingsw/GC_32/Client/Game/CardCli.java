@@ -132,11 +132,11 @@ public class CardCli {
 		
 		String minimunActionValue = "Minimum Action Value: " + json.getInt("minimumActionValue", 0);
 		
-		int width = 30;
+		int width = 40;
 		int height = 10;
 		
 		//top
-		fillWith(card, width, "-");
+		fillWith(card, width+2, "-");
 		card.append("\n");
 		
 		printLine(card, width, name);
@@ -150,7 +150,7 @@ public class CardCli {
 		concat(card, width, effectInstant);
 		printLine(card, width, "");
 		concat(card, width, InstantPayload);
-		fillWith(card, width, "-");
+		fillWith(card, width+2, "-");
 		
 		card.append("\n");
 		
@@ -160,7 +160,7 @@ public class CardCli {
 		card.append("\n");
 		printLine(card, width, minimunActionValue);
 
-		fillWith(card,width, "-");
+		fillWith(card,width+2, "-");
 		card.append("\n");
 		
 		return new String(card);
