@@ -95,14 +95,18 @@ public class ZeroLevelContext extends Context implements Runnable{
 						
 						} catch(IOException e){}
 						flagCard = false;		
+						break;
 					}	
 					case("player"):
 						System.out.println("NOT IMPLEMENTED YET");
 						flagCard = false;
+						break;
 					case("quit"):
 						flagCard = false;
+						break;
 					default:
 						System.out.println("please, type a valid string");
+						break;
 					}
 				}
 				break;
@@ -128,13 +132,13 @@ public class ZeroLevelContext extends Context implements Runnable{
 						}						
 						command = in.nextLine();
 						try{
-						if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length
-								||client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
-							System.out.println("the choosen family member is already busy or you have typed an invalid index, please enter a valid index");
-						}else{
-							familyMemberIndex = Integer.parseInt(command);
-							actionFlag = false;
-						}
+							if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length
+									||client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
+								System.out.println("the choosen family member is already busy or you have typed an invalid index, please enter a valid index");
+							}else{
+								familyMemberIndex = Integer.parseInt(command);
+								actionFlag = false;
+							}
 						}catch(NumberFormatException e){
 							System.out.println("type a valid number");
 						}
