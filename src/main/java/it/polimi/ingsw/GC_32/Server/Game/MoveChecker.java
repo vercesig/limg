@@ -33,6 +33,7 @@ public class MoveChecker{
 	   MoveUtils.addActionSpaceBonus(board, player, action);
 	   return (MoveUtils.checkServants(board, player, action) &&
 			   MoveUtils.checkCoinForTribute(board, player, action) &&
+			   MoveUtils.checkNotFoundCard(board, action) &&  // false if there is not a card in towerLayers
 			   MoveUtils.checkCardCost(board, player, action));
    }
         

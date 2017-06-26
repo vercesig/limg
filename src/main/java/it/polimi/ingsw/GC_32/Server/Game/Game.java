@@ -208,6 +208,12 @@ public class Game implements Runnable{
 				    			System.out.println("AZIONE ESEGUITA!\n");
 								System.out.println("STATO DOPO AZIONE: ");
 				    			System.out.println(player);
+				    			
+				    			// notifiche server
+				    			playerList.forEach(p -> {
+				    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
+				    			});
+				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
 				    		}
 				    		break;
 						case "TRNEND":
@@ -256,7 +262,11 @@ public class Game implements Runnable{
 
 					    		}
 							}
-							
+							playerList.forEach(p -> {
+			    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
+			    			});
+			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
+			    			
 							memoryAction.remove(getLock());
 							
 							/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));*/
@@ -352,7 +362,8 @@ public class Game implements Runnable{
 							player.getUUID(), 
 							ContextType.SERVANT, 
 							player.getResources().getResource("SERVANTS"),action.getActionType()));
-					if(!player.getPersonalBoard().getCardsOfType("BUILDINGCARD").isEmpty()&&action.getActionType()=="PRODUCTION"){
+					//sbagliato: non e' vero che tutte le volte che faccio un'azione production apro un context CHANGE
+					if(!player.getPersonalBoard().getCardsOfType("BUILDINGCARD").isEmpty()&&action.getActionType().equals("PRODUCTION")){
 						LinkedList<DevelopmentCard> activatingCard = new LinkedList<DevelopmentCard>(player.getPersonalBoard().getCardsOfType("BUILDINGCARD"));
 						for(DevelopmentCard card : activatingCard){
 							if(card.getMinimumActionvalue()>action.getActionValue())
@@ -376,12 +387,14 @@ public class Game implements Runnable{
 					waitingContextResponseSet.add("PRIVILEGE");
 					return;
 				case "MARKET":
-					LOGGER.info("spedisco context");
-					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-							player.getUUID(),
-							ContextType.PRIVILEGE,
-							2));
-					waitingContextResponseSet.add("PRIVILEGE");
+					if(action.getActionSpaceId() == 2){
+						LOGGER.info("spedisco context");
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+								player.getUUID(),
+								ContextType.PRIVILEGE,
+								2));
+						waitingContextResponseSet.add("PRIVILEGE");
+					}
 					return;
 					
 				default:
@@ -397,9 +410,17 @@ public class Game implements Runnable{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
-				for( JsonValue json: cardlist){
-					playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
+				if(!contextInfoContainer.get("CHANGE").isNull()){
+					JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
+					for( JsonValue json: cardlist){
+						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
+					}
+				}
+				for(DevelopmentCard card : playerCard){
+					if(card.getMinimumActionvalue() <= action.getActionValue()){
+						card.getPermanentEffect().apply(board, player, action);
+					}
+
 				}
 				break;
 			}	

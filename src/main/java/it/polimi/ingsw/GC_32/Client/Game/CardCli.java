@@ -20,12 +20,17 @@ public class CardCli {
 	
 	private static void loadEffect(ArrayList<String> array, String key, JsonObject json){
 		try{
-			if(json.get(key).isArray()){
-				for(JsonValue js : json.get(key).asArray()){
+			if(json.get(key).isArray()){  // example [{"COINS":1},{"WOOD":1}]
+				for(JsonValue js : json.get(key).asArray()){  
 					if(js.isObject()){
-						js.asObject().forEach(item -> {
-							array.add(item.toString() + ',');
-						});
+						for(Member m : js.asObject()){
+							if(m.getValue().isNumber()){
+								array.add(m.getName() +": " + m.getValue().asInt());
+							}
+							if(m.getValue().isString()){
+								array.add(m.getName() +": " + m.getValue().asString());
+							}
+						}
 					}
 					if(js.isString()){
 						array.add(key + ": " + js.asString());
@@ -33,7 +38,7 @@ public class CardCli {
 					}
 				}	
 			}
-			if(json.get(key).isObject()){
+			if(json.get(key).isObject()){ // example {"COINS":1, "FAITH_POINT":1}
 				for(Member m : json.get(key).asObject()){
 					if(m.getValue().isNumber()){
 						array.add(m.getName() +": " + m.getValue().asInt());
@@ -99,9 +104,17 @@ public class CardCli {
 	}
 	
 	public static String print(JsonObject json){
-		
+	
 		StringBuilder card = new StringBuilder();
+		
+		if(json.isNull()){
+			card.append("EMPTY");
+			return new String(card);
+		}
+		
 		String name = "name: " + json.get("name").asString();
+		
+		
 		
 		ArrayList <String> cost = new <String> ArrayList();
 		
@@ -147,6 +160,8 @@ public class CardCli {
 		printImage(card, width, height);
 		
 		//bot
+		fillWith(card, width+2, "-");
+		card.append("\n");
 		concat(card, width, effectInstant);
 		printLine(card, width, "");
 		concat(card, width, InstantPayload);

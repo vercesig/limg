@@ -163,7 +163,13 @@ public class ServerMessageFactory {
  		for(TowerRegion towerRegion : board.getTowerRegion()){
  			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
  				JsonObject card = new JsonObject();
+ 				try{
  				card.add("NAME", towerLayer.getCard().getName());
+ 				}
+ 				catch(NullPointerException e){
+ 					card.add("NAME", "empty"); // se ;a carta e' stata presa
+ 				}
+ 				
  				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
  				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
  				CHGBOARDSTATpayload.add(card);

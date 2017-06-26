@@ -91,8 +91,12 @@ public class ZeroLevelContext extends Context implements Runnable{
 									.getActionSpaceList().get(spaceID).getCardName());
 						System.out.println("Showing details of " + this.client.getBoard().getRegionList().get(regionID)
 								.getActionSpaceList().get(spaceID).getCardName());
-						System.out.println(CardCli.print(card.asObject()));
-						
+						try{
+							System.out.println(CardCli.print(card.asObject()));
+						}
+						catch(NullPointerException e){
+							System.out.println("There are not any cards on this space");
+							} 
 						} catch(IOException e){}
 						flagCard = false;		
 						break;
@@ -132,18 +136,26 @@ public class ZeroLevelContext extends Context implements Runnable{
 						}						
 						command = in.nextLine();
 						try{
-							if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length
-									||client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
-								System.out.println("the choosen family member is already busy or you have typed an invalid index, please enter a valid index");
+							if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length){
+								System.out.println("Invalid Family member Index");
+								actionFlag = false;
+								break;
+							}
+							if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
+								System.out.println("the choosen family member is already busy, please enter a valid index");
+								actionFlag = false;
+								break;
 							}else{
 								familyMemberIndex = Integer.parseInt(command);
-								actionFlag = false;
+								break;
 							}
 						}catch(NumberFormatException e){
 							System.out.println("type a valid number");
 						}
 					}
-					actionFlag = true;
+					if(!actionFlag){
+						break;
+					}
 					System.out.println("type the regionID where you would place your pawn");
 					while(actionFlag){
 						command = in.nextLine();

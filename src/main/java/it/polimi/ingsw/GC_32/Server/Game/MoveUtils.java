@@ -101,6 +101,20 @@ public class MoveUtils {
     	return false;
 	}
     
+    public static boolean checkNotFoundCard(Board board, Action action){
+    	if(action.getActionRegionId() < 4){
+    		return true;
+    	}
+    	try{
+    		DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+				  .getTowerLayers()[action.getActionSpaceId()]
+				  .getCard();
+    		return true;
+    	}catch(NullPointerException e){
+    		System.out.println("NOT FOUND A CARD");
+    		return false;
+    	}
+    }
     /** checks if the player has enough servants to meet the actionspace requirements
      * @param board
      * @param player

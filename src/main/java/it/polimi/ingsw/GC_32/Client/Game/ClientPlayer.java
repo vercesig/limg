@@ -73,8 +73,8 @@ public class ClientPlayer {
 		StringBuilder tmp = new StringBuilder();
 		tmp.append(name+"\n");
 		tmp.append(playerResources.toString()+"\n");
-		for(ClientFamilyMember familiar : familyMembers){
-			tmp.append(familiar.toString());
+		for(int i=0; i<familyMembers.length; i++){
+			tmp.append(i +"] " + familyMembers[i].toString());
 		}
 		for(Entry<String, ArrayList<String>> item : cards.entrySet()){
 			tmp.append(item.getKey()+" : ");
