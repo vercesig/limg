@@ -228,12 +228,13 @@ public class Game implements Runnable{
 							JsonValue contextReply = Json.parse(message.getMessage());
 							
 							contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD"));
-							waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
-							
-							Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
-							Action actionReply = memoryAction.get(getLock());
+							waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());						
 							
 							if(waitingContextResponseSet.isEmpty()){
+								
+								Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
+								Action actionReply = memoryAction.get(getLock());
+								
 								if(mv.checkMove(this, playerReply, actionReply)){
 					    			makeMove(playerReply, actionReply);
 					    		}
