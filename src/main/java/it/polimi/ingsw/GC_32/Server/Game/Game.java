@@ -186,22 +186,22 @@ public class Game implements Runnable{
 							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
 							int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
 							int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
-							
+
 							int regionID = Jsonmessage.get("REGIONID").asInt();
 							int spaceID = Jsonmessage.get("SPACEID").asInt();
 							String actionType = Jsonmessage.get("ACTIONTYPE").asString();
-							
+
 							Action action = new Action(actionType,actionValue,regionID,spaceID);
 							action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
-														
+
 							Player player = playerList.get(index);
-							
+
 				    		if(mv.checkMove(this, player, action)){
 				    			makeMove(player, action);
 				    		}
 				    		break;
 						case "TRNEND":
-							System.out.println("ricevo turn end [GAME]");
+							LOGGER.info("ricevo turn end [GAME]");
 							if(!turnManager.isGameEnd()){
 								LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 								
@@ -334,7 +334,7 @@ public class Game implements Runnable{
 	public void makeMove(Player player, Action action){
 		if(contextInfoContainer.isEmpty()){
 			
-			System.out.println("spedisco context");
+			LOGGER.info("spedisco context");
 			
 			switch(action.getActionType()){
 				case "PRODUCTION":

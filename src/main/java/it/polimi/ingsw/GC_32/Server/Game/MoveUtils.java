@@ -16,9 +16,9 @@ public class MoveUtils {
 		return true;
 	}
 
-	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){	
+	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){
 		if(board.getRegion(action.getActionRegionId())
-				.getActionSpace(action.getActionSpaceId()) == null){			
+				.getActionSpace(action.getActionSpaceId()) == null){
 			return false;
 		}
 		return true;
@@ -70,7 +70,7 @@ public class MoveUtils {
      * @param action
      * @return
      */
-    public static boolean isFreeSingleSpace(Board board, Player player, Action action){    	
+    public static boolean isFreeSingleSpace(Board board, Player player, Action action){
     	return !(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
     			 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
     }
@@ -166,11 +166,8 @@ public class MoveUtils {
     		return true;
     	
       	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
-    	if(player.getResources().compareTo(cost) >=0 ){
-    		player.getResources().subResource(cost);
-    		return true;
-    	}
-    	return false;
+    	player.getResources().subResource(cost);
+    	return player.getResources().isValid();
     }
     
     public static void applyEffects(Board board, Player player, Action action){
@@ -186,10 +183,11 @@ public class MoveUtils {
 	}
 	
 	public static void addActionSpaceBonus(Board board, Player player, Action action){
-		try{
-			player.getResources().addResource(board.getRegion(action.getActionRegionId())
-				  .getActionSpace(action.getActionSpaceId())
-				  .getBonus());
-		}catch(NullPointerException e){}
+		ResourceSet bonus = board.getRegion(action.getActionRegionId())
+				  								  .getActionSpace(action.getActionSpaceId())
+				  								  .getBonus();
+		if(bonus != null){
+			player.getResources().addResource(bonus);
+		}
 	}
 }
