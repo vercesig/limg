@@ -5,17 +5,22 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
+
+import it.polimi.ingsw.GC_32.Client.Game.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Server.Main;
+import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ZeroLevelContext extends Context implements Runnable{
 
 	private ClientCLI client;
+	
 	
 	public ZeroLevelContext(ClientCLI client){
 		super();
@@ -28,13 +33,12 @@ public class ZeroLevelContext extends Context implements Runnable{
 	
 	public void open(Object object){
 		
-		runFlag = true;
-		
-		
+		runFlag = true;		
 		
 		while(runFlag){
 			System.out.println("type a command:\n- board: display the board status\n- players: display players' status"
-					+ "\n- action: make an action (if isn't your turn your requests won't be applied)");
+					+ "\n- action: make an action (if isn't your turn your requests won't be applied)" 
+					+ "\n- show card: to show details of cards on the game");
 			command = in.nextLine();
 			switch(command){
 			case "board":
@@ -43,14 +47,75 @@ public class ZeroLevelContext extends Context implements Runnable{
 			case "players":
 				this.client.getPlayerList().forEach((UUID, client) -> System.out.println(client.toString()));
 				break;
+				
+			case "show card": {
+				boolean flagCard = true;
+				while(flagCard){	
+					System.out.println("type a command:\n-region: show detail of a card on the board\n-player: show detail of a player's card"
+							+ "\n-quit: to exit");
+					command = in.nextLine();
+					
+					switch (command){
+					
+					case("region"):	{
+						int regionID = 4;
+						int spaceID = 0;
+						System.out.println("type the regionID of the card yo want to see\n[4-7]");
+						boolean regionFlag = true;
+						
+						while(regionFlag){
+							command = in.nextLine();
+							if(Integer.parseInt(command)<8 && Integer.parseInt(command) >3){
+								regionID = Integer.parseInt(command);
+								regionFlag = false;
+							}
+							else
+								System.out.println("type a valid number");
+						}
+						regionFlag = true;
+						while(regionFlag){
+							System.out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
+							command = in.nextLine();
+							if(Integer.parseInt(command)<4 && Integer.parseInt(command) >=0){
+								spaceID = Integer.parseInt(command);
+								regionFlag = false;
+							}
+							else
+								System.out.println("type a valid number");
+						}
+						try{
+						
+						Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
+						JsonValue card = JsonImporter.importSingleCard(json, 
+									this.client.getBoard().getRegionList().get(regionID)
+									.getActionSpaceList().get(spaceID).getCardName());
+						System.out.println("Showing details of " + this.client.getBoard().getRegionList().get(regionID)
+								.getActionSpaceList().get(spaceID).getCardName());
+						System.out.println(CardCli.print(card.asObject()));
+						
+						} catch(IOException e){}
+						flagCard = false;		
+					}	
+					case("player"):
+						System.out.println("NOT IMPLEMENTED YET");
+						flagCard = false;
+					case("quit"):
+						flagCard = false;
+					default:
+						System.out.println("please, type a valid string");
+					}
+				}
+				break;
+			}	
+			
 			case "action":				
 				int familyMemberIndex = 0;
 				int regionID = 0;
 				int spaceID = 0;
 				int indexCost = 0;
 				String actionType = null;
-				
 				boolean endFlag = false;
+			
 				
 				while(!endFlag){
 					boolean actionFlag = true;
@@ -115,11 +180,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 						
 						actionFlag = true;
 						
-						Reader json = new InputStreamReader
-								(Main.class.getClassLoader().getResourceAsStream("cards.json"));
 						System.out.println("Development card on this tower layer: ");
-						
 						try {
+							Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
 							JsonValue card = JsonImporter.importSingleCard(json, 
 									this.client.getBoard().getRegionList().get(regionID)
 									.getActionSpaceList().get(spaceID).getCardName());
@@ -199,3 +262,4 @@ public class ZeroLevelContext extends Context implements Runnable{
 	}
 	
 }
+

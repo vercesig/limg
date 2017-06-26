@@ -5,6 +5,7 @@ import com.rits.cloning.Cloner;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import it.polimi.ingsw.GC_32.Server.Game.MoveUtils;
 
 public class MoveChecker{
 	private final Logger LOGGER = Logger.getLogger(this.getClass().toString());
