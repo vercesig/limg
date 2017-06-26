@@ -163,8 +163,11 @@ public class MoveUtils {
     public static boolean checkCardCost(Board board, Player player, Action action){ 	
     	if(action.getActionRegionId()<4)
     		return true;
+    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+				  .getTowerLayers()[action.getActionSpaceId()]
+				  .getCard();
     	
-      	ResourceSet cost = new ResourceSet(action.getAdditionalInfo());
+      	ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
     	player.getResources().subResource(cost);
     	return player.getResources().isValid();
     }
