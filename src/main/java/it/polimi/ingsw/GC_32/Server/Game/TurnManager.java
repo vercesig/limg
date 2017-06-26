@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.logging.Level;
@@ -28,17 +29,16 @@ public class TurnManager {
 		LOGGER.log(Level.INFO, "setting first turn order");
 		
 		// scelta ordine casuale del turno
-		Random randomGenerator = new Random();
-		ArrayList<Player> tmpPlayerList = new ArrayList<Player>(game.getPlayerList());
 		int playerListSize = game.getPlayerList().size();
-		ArrayList<String> tmp = new ArrayList<String>();
-		
+		ArrayList<String> tmp = new ArrayList<String>();		
+		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int i=0; i<playerListSize; i++){
-			int randomNumber = randomGenerator.nextInt(tmpPlayerList.size());
-			tmp.add(game.getPlayerList().get(randomNumber).getUUID());
-			tmpPlayerList.remove(randomNumber);
+			list.add(new Integer(i));
 		}
-		
+		Collections.shuffle(list);
+		for(int i=0; i<playerListSize; i++){
+			tmp.add(game.getPlayerList().get(list.get(i)).getUUID());
+		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			tmp.forEach(UUID -> turnOrderQueue.add(UUID));
 		}
@@ -54,16 +54,8 @@ public class TurnManager {
 	
 	// restituisce il player a cui passare il lock
 	public String nextPlayer(){
-		turnID++;
-		//int currentIndexPlayer = game.getPlayerList().indexOf(PlayerRegistry.getInstance().getPlayerFromID(game.getLock()));		
-		
+		turnID++;		
 		return turnOrderQueue.poll();
-		
-		/*try{// non sono l'ultimo giocatore della lista
-			return game.getPlayerList().get(currentIndexPlayer+1);
-		}catch(IndexOutOfBoundsException e){// il giro ricomincia
-			return game.getPlayerList().get(0); 
-		}	*/
 	}
 	
 	public boolean isRoundEnd(){
