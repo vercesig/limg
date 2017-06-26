@@ -198,7 +198,7 @@ public class Game implements Runnable{
 						case "ASKACT":
 							LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-							int pawnID = Jsonmessage.get("PAWNID").asInt();
+							int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
 							int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 							
 							int regionID = Jsonmessage.get("REGIONID").asInt();
@@ -341,38 +341,80 @@ public class Game implements Runnable{
 	}
 	
 	public void makeMove(Player player, Action action){
+		if(contextInfoContainer.isEmpty()){
+			switch(action.getActionType()){
+				case "PRODUCTION":
+				case "HARVEST":
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+							player.getUUID(), 
+							ContextType.SERVANT, 
+							player.getResources().getResource("SERVANTS"),action.getActionType()));
+					if(!player.getPersonalBoard().getCardsOfType("BUILDINGCARD").isEmpty()&&action.getActionType()=="PRODUCTION"){
+						LinkedList<DevelopmentCard> activatingCard = new LinkedList<DevelopmentCard>(player.getPersonalBoard().getCardsOfType("BUILDINGCARD"));
+						for(DevelopmentCard card : activatingCard){
+							if(card.getMinimumActionvalue()>action.getActionValue())
+								activatingCard.remove(activatingCard.indexOf(card));
+						}
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+								player.getUUID(),
+								ContextType.CHANGE,
+								activatingCard
+								));
+						waitingContextResponseSet.add("CHANGE");
+					}
+					waitingContextResponseSet.add("SERVANT");
+					break;
+				case "COUNCIL":
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+							player.getUUID(),
+							ContextType.PRIVILEGE,
+							1));
+					waitingContextResponseSet.add("PRIVILEGE");
+					break;
+				case "MARKET":
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+							player.getUUID(),
+							ContextType.PRIVILEGE,
+							2));
+					waitingContextResponseSet.add("PRIVILEGE");
+					break;
+			}			
+		}	
 		MoveUtils.applyEffects(this.board, player, action);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		moveFamiliar(this.board, player, action);
 		switch(action.getActionType()){
 			case "PRODUCTION":{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
-				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
+				JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 				for( JsonValue json: cardlist){
 					playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
 				}
+				break;
 			}	
 			case "HARVEST" : {
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
-				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
 				for(DevelopmentCard card : playerCard){
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
 						card.getInstantEffect().apply(board, player, action);
 					}
 				}
+				break;
 			}
 			case "COUNCIL" : {
 				player.getResources().addResource("COINS", 1);
-				player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
-
+				player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
+				break;
 			}
 			case "MARKET" : {
 				if(action.getActionSpaceId() == 3){
-					player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+					player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
 				}
+				break;
 			} 
 			default:{ //case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE"
 				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
@@ -380,6 +422,7 @@ public class Game implements Runnable{
 				takeCard(this.board, player, action);
 				player.addEffect(card.getPermanentEffect());
 	    		card.getInstantEffect().apply(board, player, action);
+				break;
 			}
 		}
 	}
