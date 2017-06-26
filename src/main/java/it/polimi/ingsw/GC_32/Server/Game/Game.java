@@ -368,8 +368,6 @@ public class Game implements Runnable{
 			return;
 		}	
 		
-		System.out.println("inizio modifica stato");
-		
 		MoveUtils.applyEffects(this.board, player, action);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		moveFamiliar(this.board, player, action);
