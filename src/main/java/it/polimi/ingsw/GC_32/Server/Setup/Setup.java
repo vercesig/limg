@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
+import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 
@@ -105,5 +106,15 @@ public class Setup {
 			CardRegistry.getInstance().registerDeck(i,tmpDeck);
 		}
 		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");		
-	}	
+	}
+	
+	public void loadBonusTile(Reader bonusTileReader) throws IOException{
+		GameConfig.getInstance().registerBonusTile(JsonImporter.importPersonalBonusTile(bonusTileReader));
+	}
+	
+	public void loadBonusTile(String path) throws IOException{
+		this.loadBonusTile(new InputStreamReader(this.getClass()
+													 .getClassLoader()
+													 .getResourceAsStream(path)));
+	}
 }

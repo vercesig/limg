@@ -1,8 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,10 +23,8 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
-import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 
 public class Game implements Runnable{
@@ -59,7 +54,7 @@ public class Game implements Runnable{
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players) throws IOException{
+	public Game(ArrayList<Player> players){
 		
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
@@ -83,8 +78,7 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "setting up players resources");
 		//TODO: associare PersonalBonusTile al giocatore
 		
-		Reader bonusTileReader = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("bonus_tile.json"));
-		ArrayList<PersonalBonusTile> bonusTile = JsonImporter.importPersonalBonusTile(bonusTileReader);
+		ArrayList<PersonalBonusTile> bonusTile = GameConfig.getInstance().getBonusTileList();
 		
 		Random randomGenerator = new Random();
 		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();

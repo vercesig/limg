@@ -90,7 +90,9 @@ public class JsonImporter {
 						instantPayloadArray.add(instantPayload);
 					}
 					for(int i=0; i<instantEffectArray.size(); i++){
-						newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffectArray.get(i).asString(), instantPayloadArray.get(i)));
+						newCard.registerInstantEffect(EffectRegistry.getInstance()
+																	.getEffect(instantEffectArray.get(i).asString(),
+																			   instantPayloadArray.get(i)));
 					}
 				}	
 			}catch(NullPointerException e){}
@@ -108,7 +110,9 @@ public class JsonImporter {
 						permanentPayloadArray.add(permanentPayload);
 					}
 					for(int i=0; i<permanentEffectArray.size(); i++){
-						newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffectArray.get(i).asString(), permanentPayloadArray.get(i)));
+						newCard.registerPermanentEffect(EffectRegistry.getInstance()
+																	  .getEffect(permanentEffectArray.get(i).asString(),
+																			     permanentPayloadArray.get(i)));
 					}
 				}
 			}catch(NullPointerException e){}
@@ -172,7 +176,9 @@ public class JsonImporter {
 			for(JsonValue item : personalBonusTileList){
 					JsonObject bonusTile = item.asObject();
 					
-				PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(), bonusTile.get("HARVEST").asObject(), false);
+				PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(),
+																		bonusTile.get("HARVEST").asObject(),
+																		false);
 				tmpList.add(personalBonus);			
 			}
 			return tmpList;		

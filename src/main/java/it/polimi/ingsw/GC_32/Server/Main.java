@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32;
+package it.polimi.ingsw.GC_32.Server;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,12 +17,13 @@ public class Main {
     	LOGGER.log(Level.INFO, "starting main");
 		Setup setup = new Setup();
 		setup.loadCard("cards.json");
+		setup.loadBonusTile("bonus_tile.json");
     	
 		LOGGER.log(Level.INFO, "inizializing socket-side network...");
 		SocketListener socketListener = new SocketListener(9500);
 		Thread socketListenerThread = new Thread(socketListener);
 		socketListenerThread.start();
 		
-		GameLobby gameLobby = new GameLobby();		
+		GameLobby gameLobby = new GameLobby();	
     }
 }

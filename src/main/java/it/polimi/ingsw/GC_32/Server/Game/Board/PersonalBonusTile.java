@@ -11,7 +11,6 @@ public class PersonalBonusTile {
 	private boolean flagGameRule; // flag for the type of game rule: STANDARD or ADVANCED 
 	
 	public PersonalBonusTile(JsonObject productionBonus, JsonObject harvestBonus, boolean flagGameRule){
-		
 		this.personalProductionBonus = new ResourceSet(productionBonus);
 		this.personalHarvestBonus = new ResourceSet(harvestBonus);
 		this.flagGameRule = flagGameRule;

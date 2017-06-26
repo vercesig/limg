@@ -12,8 +12,8 @@ public class PersonalBonusTileTest{
 	@Test
 	public void checkPersonalBonusTile(){
 		JsonObject resource = new JsonObject().add("COINS", 10);
-		this.personalBonusTile = new PersonalBonusTile(resource, false);
-		assertNotNull(this.personalBonusTile.getPersonalBonus());
+		this.personalBonusTile = new PersonalBonusTile(resource, null, false);
+		assertNotNull(this.personalBonusTile);
 		assertEquals(false, this.personalBonusTile.isFlagGameRule());
 	}
 }
