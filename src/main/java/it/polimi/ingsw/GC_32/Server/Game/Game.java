@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class Game implements Runnable{
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players){
+	public Game(ArrayList<Player> players) throws IOException{
 		
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
@@ -207,7 +208,6 @@ public class Game implements Runnable{
 							Action action = new Action(actionType,actionValue,regionID,spaceID);
 							Player player = playerList.get(index);
 							
-							suspendedAction.put(player.getUUID(), action);
 				    		if(mv.checkMove(this, player, action)){
 				    			makeMove(player, action);
 				    		}
@@ -346,7 +346,7 @@ public class Game implements Runnable{
 		moveFamiliar(this.board, player, action);
 		switch(action.getActionType()){
 			case "PRODUCTION":{
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
 				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
@@ -355,7 +355,7 @@ public class Game implements Runnable{
 				}
 			}	
 			case "HARVEST" : {
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
 				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
 				for(DevelopmentCard card : playerCard){
