@@ -59,10 +59,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     public void addResource(ResourceSet resource){
     	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
-    		if(this.resourceSet.containsKey(entry.getKey()))
-    			this.addResource(entry.getKey(), entry.getValue());
-    		else
-    			this.setResource(entry.getKey(), entry.getValue());
+    		this.addResource(entry.getKey(), entry.getValue());
     	}
     }
     
@@ -90,8 +87,22 @@ public class ResourceSet implements Comparable<ResourceSet> {
     		resource.add(key, this.getResource(key));
     	}
     	return resource;
-    }	
+    }
     
+    /**
+     * Checks whether or not the resourceSet has negative values
+     * 
+     * @return
+     */
+    
+    public boolean isValid(){
+    	for(Map.Entry<String,Integer> resource: this.resourceSet.entrySet()){
+    		if(resource.getValue() < 0){
+    			return false;
+    		}
+    	}
+    	return true;
+    }
      /**
      * It returns a comparison between two ResourceSet.
 	 * <ul>

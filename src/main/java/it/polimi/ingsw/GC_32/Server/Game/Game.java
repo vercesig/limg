@@ -1,29 +1,31 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
@@ -46,7 +48,6 @@ public class Game implements Runnable{
 	private String lock;
 	
 	private TurnManager turnManager;
-	
 	private MoveChecker mv;
 	
 	// context management
@@ -57,16 +58,13 @@ public class Game implements Runnable{
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players) throws IOException{
+	public Game(ArrayList<Player> players){
 		
 		this.mv = new MoveChecker();
 		this.contextQueue = new HashMap<ContextType, Object[]>();
 		this.memoryAction = new HashMap<String, Action>();
-		mv.registerContextQueue(contextQueue);
 		waitingContextResponseSet = new HashSet<String>();
-		mv.registerContextResponseSet(waitingContextResponseSet);
 		contextInfoContainer = new HashMap<String, JsonValue>();
-		mv.registerContextInfoContainer(contextInfoContainer);
 		
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
@@ -88,7 +86,18 @@ public class Game implements Runnable{
 		ArrayList<PersonalBonusTile> bonusTile = JsonImporter.importPersonalBonusTile(bonusTileReader);
 		
 		Random randomGenerator = new Random();
+		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
+		int playerListSize = this.playerList.size();
 		
+		for(int i=0; i<playerListSize; i++){
+			int randomNumber = randomGenerator.nextInt(playerList.size());
+			startPlayerOrder.add(playerList.get(randomNumber));
+			playerList.remove(randomNumber);
+		}
+		playerList = startPlayerOrder;
+		
+		LOGGER.log(Level.INFO, "setting up players resources");
+		//TODO: associare PersonalBonusTile al giocatore
 		for(int i=0; i<playerList.size(); i++){
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
@@ -164,6 +173,8 @@ public class Game implements Runnable{
 		// ask action
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
 		
+		//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
+		
 		while(runGameFlag){
 			
 			// controllo se ci sono context da aprire context, in caso positivo li apro
@@ -179,101 +190,76 @@ public class Game implements Runnable{
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
 					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
 					switch(message.getOpcode()){
-					case "CHGNAME":
-						int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
-						this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
-						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
-						break;
-					case "ASKACT":
-						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
-						int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
-						int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
-						
-						int regionID = Jsonmessage.get("REGIONID").asInt();
-						int spaceID = Jsonmessage.get("SPACEID").asInt();
-						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
-						
-						Action action = new Action(actionType,actionValue,regionID,spaceID);
-						action.setAdditionalInfo(Jsonmessage); // da raffinare
-						Player player = playerList.get(index);
-						memoryAction.put(player.getUUID(), action);
-						// MoveChecker
-						
-						if(mv.simulateWithCopy(player, this, action)){
-							if(this.waitingContextResponseSet.isEmpty()){
-								mv.simulate(this, this.getBoard(), player, action);
-								System.out.println("AZIONE SIMULATA!");
-								memoryAction.remove(player.getUUID());
-								System.out.println("STATO PLAYER:");
-								System.out.println(player);
-								break;
-							}
-							else
-								LOGGER.log(Level.INFO, "CONTEXT APERTI...ASPETTO");
+						case "CHGNAME":
+							int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
+							this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
+							LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
+						case "ASKACT":
+							LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
+							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
+							int pawnID = Jsonmessage.get("PAWNID").asInt();
+							int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
 							
-								System.out.println(contextQueue.toString());
-								System.out.println(contextInfoContainer.toString());
-								System.out.println(waitingContextResponseSet);
-					    		break;
-						}
-						
-						// notificare cambiamenti ai client (caso in cui non si siano aperti context)
-						
-						break;
-					case "TRNEND":
-						if(!turnManager.isGameEnd()){
-	 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
-	 							
-	 							if(turnManager.isRoundEnd()){
-	 								LOGGER.log(Level.INFO, "round end");
-	 								
-	 								if(turnManager.isPeriodEnd()){
-	 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
-	 								}
-	 							}
-	 							LOGGER.log(Level.INFO, "giving lock to the next player");
-	 							setLock(turnManager.nextPlayer());
-	 							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-	 							// ask action
-	 							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
-	 						}else{
-	 							LOGGER.log(Level.INFO, "game end");
-	 							//stopGame();
-	 						}
-							break;
+							int regionID = Jsonmessage.get("REGIONID").asInt();
+							int spaceID = Jsonmessage.get("SPACEID").asInt();
+							String actionType = Jsonmessage.get("ACTIONTYPE").asString();
 							
-					case "CONTEXTREPLY" :
-						JsonValue contextReply = Json.parse(message.getMessage());
-						
-						int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-						Player playerRetry = playerList.get(indexRetry);
-						Action actionRetry = memoryAction.get(playerRetry.getUUID());
-						this.waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
-				    	this.contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD").asObject());
-				    	
-				    	System.out.println(contextQueue.toString());
-						System.out.println(contextInfoContainer.toString());
-						System.out.println(waitingContextResponseSet);
-
-				    	
-						if(this.waitingContextResponseSet.isEmpty()){
-							if(mv.simulateWithCopy(playerRetry, this, actionRetry)){ // simulazione completa
-								mv.simulate(this, this.getBoard(), playerRetry, actionRetry); // apply degli originali
-								System.out.println("\n\nAZIONE SIMULATA!");
-								memoryAction.remove(playerRetry.getUUID());
-								System.out.println("STATO PLAYER:");
-								System.out.println(playerRetry);
+							Action action = new Action(actionType,actionValue,regionID,spaceID);
+							Player player = playerList.get(index);
+							
+							suspendedAction.put(player.getUUID(), action);
+				    		if(mv.checkMove(this, player, action)){
+				    			makeMove(player, action);
+				    		}
+						case "TRNEND":
+							if(!turnManager.isGameEnd()){
+								LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 								
-								// notifico i cambiamenti (nuovo stato del player)
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(playerRetry));
-								// ......
-								
-								// invio esito positivo
+								if(turnManager.isRoundEnd()){
+									LOGGER.log(Level.INFO, "round end");
+									
+									if(turnManager.isPeriodEnd()){
+										LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
+									}
+								}
+								LOGGER.log(Level.INFO, "giving lock to the next player");
+								setLock(turnManager.nextPlayer());
+								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+								// ask action
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
+							}else{
+								LOGGER.log(Level.INFO, "game end");
+								//stopGame();
 							}
-							// invio esito negativo
-						}
-						break;
+						/*case "CONTEXTREPLY" :{
+							JsonValue contextReply = Json.parse(message.getMessage());
+							contextPull(contextReply);
+							
+							int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
+							Player playerRetry = playerList.get(indexRetry);
+							Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
+							
+							// MoveCheckerLogic ********************************************************
+							Cloner clonerRetry = new Cloner();
+							clonerRetry.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
+							Board cloneBoardRetry = clonerRetry.deepClone(this.board);
+				    		Player clonePlayeRetry = clonerRetry.deepClone(playerRetry);
+				    		Action cloneActionRetry = clonerRetry.deepClone(actionRetry);
+							
+				    		//retry the MoveChecker
+				    		if(!mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){
+				    			suspendedAction.remove(playerRetry.getUUID()); // Test Failed; Cancello l'azioneSalvata.
+				    			break;
+				    		}
+				    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
+				    			if(mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){ // simulazione completa
+				    				mv.simulate(this, board, playerRetry, actionRetry); // apply degli originali
+					    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
+				    				break;
+				    			}
+				    		}
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
+						}*/
 					}
 					
 				});
@@ -338,18 +324,63 @@ public class Game implements Runnable{
 		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 		playerList.forEach(player -> {
 			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
-				System.out.println("TIE! beccati la scomunica!");
+				LOGGER.info("TIE! beccati la scomunica!");
 			}
 		});
 	}
 	
-	public void moveFamiliar(Player player, Board board, int pawnID, Action action){
+	public void moveFamiliar(Board board, Player player, Action action){
+		int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
 		player.moveFamilyMember(pawnID, action, board); // calls: player's moveFamilyMember and sets the position of this familyMember
 															// calls: action's space addFamilyMember and sets this familymember as an occupant.
 	}
 	
-	public void takeCard(Player player, Board board, Action action){
+	public void takeCard(Board board, Player player, Action action){
 		 // calls: player's moveFamilyMember and sets the position of this familyMember
 		player.takeCard(board, action);													// calls: action's space addFamilyMember and sets this familymember as an occupant.
+	}
+	
+	public void makeMove(Player player, Action action){
+		MoveUtils.applyEffects(this.board, player, action);
+		MoveUtils.addActionSpaceBonus(this.board, player, action);
+		moveFamiliar(this.board, player, action);
+		switch(action.getActionType()){
+			case "PRODUCTION":{
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
+				JsonArray cardlist = contextManager.get("CHANGE").asObject().get("ID").asArray();
+				for( JsonValue json: cardlist){
+					playerCard.get(json.asInt()).getInstantEffect().apply(board, player, action);
+				}
+			}	
+			case "HARVEST" : {
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalBonus()); 
+				action.setActionValue(action.getActionValue() + contextManager.get("SERVANT").asInt());
+				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
+				for(DevelopmentCard card : playerCard){
+					if(card.getMinimumActionvalue() <= action.getActionValue()){
+						card.getInstantEffect().apply(board, player, action);
+					}
+				}
+			}
+			case "COUNCIL" : {
+				player.getResources().addResource("COINS", 1);
+				player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+
+			}
+			case "MARKET" : {
+				if(action.getActionSpaceId() == 3){
+					player.getResources().addResource( new ResourceSet(contextManager.get("PRIVILEGE").asObject()));
+				}
+			} 
+			default:{ //case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE"
+				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
+				takeCard(this.board, player, action);
+				player.addEffect(card.getPermanentEffect());
+	    		card.getInstantEffect().apply(board, player, action);
+			}
+		}
 	}
 }
