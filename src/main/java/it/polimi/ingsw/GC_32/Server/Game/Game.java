@@ -386,7 +386,7 @@ public class Game implements Runnable{
 			}	
 			case "HARVEST" : {
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
-				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asInt());
+				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
 				for(DevelopmentCard card : playerCard){
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
