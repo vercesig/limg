@@ -27,8 +27,11 @@ public class CardCli {
 							array.add(item.toString() + ',');
 						});
 					}
-					array.add(key + ": " + js.asString());
-				}
+					if(js.isString()){
+						array.add(key + ": " + js.asString());
+				
+					}
+				}	
 			}
 			if(json.get(key).isObject()){
 				for(Member m : json.get(key).asObject()){
