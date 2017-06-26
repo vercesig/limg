@@ -93,9 +93,9 @@ public class Game implements Runnable{
 			// in base all'ordine di turno assegno le monete iniziali
 			playerList.get(i).getResources().setResource("COINS", 5 + i);
 			// setta punteggi a 0
-			playerList.get(i).getResources().setResource("FAITH", 0);
-			playerList.get(i).getResources().setResource("VICTORY", 0);
-			playerList.get(i).getResources().setResource("MILITARY", 0);
+			playerList.get(i).getResources().setResource("FAITH_POINTS", 0);
+			playerList.get(i).getResources().setResource("VICTORY_POINTS", 0);
+			playerList.get(i).getResources().setResource("MILITARY_POINTS", 0);
 	
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
 		}
