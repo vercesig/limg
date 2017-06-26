@@ -132,11 +132,10 @@ public class MoveUtils {
     											  .getTowerLayers()[action.getActionSpaceId()]
     											  .getCard();
     	String cardType = card.getType();
-    	if(cardType.equals("TERRITORYCARD") || cardType.equals("BUILDINGCARD")){
-    		if(player.getPersonalBoard().getCardsOfType(cardType).size() == 6){
+    	if(player.getPersonalBoard().getCardsOfType(cardType).size() == 6){
     			return false;
-    		}
     	}
+    	
     	if(card.getType().equals("TERRITORYCARD")){
     		int milPoints = player.getResources().getResource("MILITARY_POINTS");
     		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){

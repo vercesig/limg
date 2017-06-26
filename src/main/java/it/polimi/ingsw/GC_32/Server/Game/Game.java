@@ -22,6 +22,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+import it.polimi.ingsw.GC_32.Server.Game.Card.CardType;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
@@ -415,8 +416,14 @@ public class Game implements Runnable{
 				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
-				player.addEffect(card.getPermanentEffect());
-	    		card.getInstantEffect().apply(board, player, action);
+				if(card.getType().equals(CardType.CHARACTERCARD)){
+					if(card.getPermanentEffect()!= null){
+						player.addEffect(card.getPermanentEffect());
+					}	
+				}
+				if(card.getInstantEffect()!= null){
+					card.getInstantEffect().apply(board, player, action);
+				}
 				break;
 			}
 		}
