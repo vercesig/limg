@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import com.eclipsesource.json.JsonValue;
@@ -21,9 +22,12 @@ public class Player {
 	private FamilyMember[] familyMemberList;
 	private final String uuid;
 	
+	private ArrayList<String> excomunicateFlag;
+	
 	public Player(){
 		this.personalBoard = new PersonalBoard();
 		this.resources = new ResourceSet();
+		this.excomunicateFlag = new ArrayList<String>();
 		
 		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
 		this.familyMemberList = new FamilyMember[4];
@@ -84,6 +88,10 @@ public class Player {
 
 	public int getServants() {
 		return this.resources.getResource("SERVANTS");
+	}
+	
+	public ArrayList<String> getExcomunicateFlag(){
+		return this.excomunicateFlag;
 	}
 	
 	public ResourceSet getResources(){

@@ -136,7 +136,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 						}						
 						command = in.nextLine();
 						try{
-							if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length){
+							if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length -1){
 								System.out.println("Invalid Family member Index");
 								actionFlag = false;
 								break;

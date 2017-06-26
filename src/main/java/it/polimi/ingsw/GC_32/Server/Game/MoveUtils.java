@@ -212,7 +212,16 @@ public class MoveUtils {
 		ResourceSet bonus = board.getRegion(action.getActionRegionId())
 				  								  .getActionSpace(action.getActionSpaceId())
 				  								  .getBonus();
+
 		if(bonus != null){
+			//Excommunication Effect debuff
+			for(String key : bonus.getResourceSet().keySet()){
+				if(player.getExcomunicateFlag().contains(key)){
+					for(String excommunicateFlag: player.getExcomunicateFlag()){
+						player.getResources().addResource(excommunicateFlag, -1);
+					}
+				}
+			}	
 			player.getResources().addResource(bonus);
 		}
 	}

@@ -29,6 +29,19 @@ public class AddEffect {
 			resourceSet.setResource(resourceType, value);			
 		}
 		Effect e = (Board b, Player p, Action a) ->	{
+			
+			// Excomunicate Negative buff: 
+			// se ho addEffect di Wood devo perdere una Stone e un Wood;
+			// se ho addEffect di Stone devo perdere una Stone e un Wood;
+			// se ho addEffect di Wood e Stone?  perdo due Stone e due Wood;
+			for (String key: resourceSet.getResourceSet().keySet()){
+
+				if(p.getExcomunicateFlag().contains(key)){  
+					for(String excommunicateFlag: p.getExcomunicateFlag()){
+						p.getResources().addResource(excommunicateFlag, -1);
+					}
+				}
+			}
 			p.getResources().addResource(resourceSet);
 		};
 		return e;
