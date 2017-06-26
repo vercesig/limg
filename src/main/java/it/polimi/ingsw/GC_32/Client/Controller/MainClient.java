@@ -179,8 +179,8 @@ public class MainClient{
  							if(!cardListArray.isNull())
  								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
  						});
-						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());
- 						break;
+						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());						
+						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
 						if(messagePayload.get("TYPE").asString().equals("BOARD")){

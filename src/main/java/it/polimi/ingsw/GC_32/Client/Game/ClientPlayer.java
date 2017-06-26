@@ -81,7 +81,8 @@ public class ClientPlayer {
 			for(String card : item.getValue()){
 				tmp.append(card+" ");
 			}
-			 tmp.append(bonusTile+"\n---------------------------------------------"); 		}
+		}
+		tmp.append(bonusTile+"\n---------------------------------------------");
 		return new String(tmp);
 	}
 	

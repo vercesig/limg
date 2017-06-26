@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -76,24 +77,16 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
-		//TODO: associare PersonalBonusTile al giocatore
-		
+
+		// assegnazione casuale bonusTile
 		ArrayList<PersonalBonusTile> bonusTile = GameConfig.getInstance().getBonusTileList();
-		
-		Random randomGenerator = new Random();
-		ArrayList<Player> startPlayerOrder = new ArrayList<Player>();
-		int playerListSize = this.playerList.size();
-		
-		for(int i=0; i<playerListSize; i++){
-			int randomNumber = randomGenerator.nextInt(playerList.size());
-			startPlayerOrder.add(playerList.get(randomNumber));
-			playerList.remove(randomNumber);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(int k=0; k<bonusTile.size(); k++){
+			list.add(new Integer(k));
 		}
-		playerList = startPlayerOrder;
+		Collections.shuffle(list);
 		
-		LOGGER.log(Level.INFO, "setting up players resources");
-		//TODO: associare PersonalBonusTile al giocatore
-		for(int i=0; i<playerList.size(); i++){
+		for(int i=0,j=0; i<playerList.size(); i++,j++){
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
 			playerList.get(i).getResources().setResource("SERVANTS", 3);
@@ -103,10 +96,8 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("FAITH", 0);
 			playerList.get(i).getResources().setResource("VICTORY", 0);
 			playerList.get(i).getResources().setResource("MILITARY", 0);
-		
-			int randomBonusTile = randomGenerator.nextInt(bonusTile.size());
-			playerList.get(i).setPersonalBonusTile(bonusTile.get(randomBonusTile));
-			bonusTile.remove(randomBonusTile);	
+	
+			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
 		}
 		LOGGER.log(Level.INFO, "done");
 	}
