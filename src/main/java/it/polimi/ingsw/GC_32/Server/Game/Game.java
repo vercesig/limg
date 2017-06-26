@@ -196,6 +196,7 @@ public class Game implements Runnable{
 							action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
 
 							Player player = playerList.get(index);
+							memoryAction.put(player.getUUID(), action);
 
 				    		if(mv.checkMove(this, player, action)){
 				    			makeMove(player, action);
@@ -223,35 +224,25 @@ public class Game implements Runnable{
 								//stopGame();
 							}
 							break;
-						/*case "CONTEXTREPLY" :{
+						case "CONTEXTREPLY" :{
 							JsonValue contextReply = Json.parse(message.getMessage());
-							contextPull(contextReply);
 							
-							int indexRetry = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
-							Player playerRetry = playerList.get(indexRetry);
-							Action actionRetry = suspendedAction.get(playerRetry.getUUID()); // ricarico l'azione
+							contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD"));
+							waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());
 							
-							// MoveCheckerLogic ********************************************************
-							Cloner clonerRetry = new Cloner();
-							clonerRetry.dontCloneInstanceOf(Effect.class); // Effetti non possono essere deepCopiati dalla libreria cloning
-							Board cloneBoardRetry = clonerRetry.deepClone(this.board);
-				    		Player clonePlayeRetry = clonerRetry.deepClone(playerRetry);
-				    		Action cloneActionRetry = clonerRetry.deepClone(actionRetry);
+							Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
+							Action actionReply = memoryAction.get(getLock());
 							
-				    		//retry the MoveChecker
-				    		if(!mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){
-				    			suspendedAction.remove(playerRetry.getUUID()); // Test Failed; Cancello l'azioneSalvata.
-				    			break;
-				    		}
-				    		if(mv.getList().isEmpty()){  // sono gia' stati tappati i buchi dei vari context
-				    			if(mv.simulateWithCopy(this, cloneBoardRetry, clonePlayeRetry, playerRetry, cloneActionRetry)){ // simulazione completa
-				    				mv.simulate(this, board, playerRetry, actionRetry); // apply degli originali
-					    			suspendedAction.remove(playerRetry.getUUID()); // Test Completed; Cancello l'azioneSalvata.
-				    				break;
-				    			}
-				    		}
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));
-						}*/
+							if(waitingContextResponseSet.isEmpty()){
+								if(mv.checkMove(this, playerReply, actionReply)){
+					    			makeMove(playerReply, actionReply);
+					    		}
+							}
+							
+							memoryAction.remove(getLock());
+							
+							/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));*/
+						}
 					}
 					
 				});
@@ -376,13 +367,16 @@ public class Game implements Runnable{
 			}
 			return;
 		}	
+		
+		System.out.println("inizio modifica stato");
+		
 		MoveUtils.applyEffects(this.board, player, action);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		moveFamiliar(this.board, player, action);
 		switch(action.getActionType()){
 			case "PRODUCTION":{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
-				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asInt());
+				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
 				JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 				for( JsonValue json: cardlist){
