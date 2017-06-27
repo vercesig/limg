@@ -24,7 +24,8 @@ public class ChatManager implements Runnable{
 						GameRegistry.getInstance()
 									  .getPlayerFromID(message.getPlayerUUID())
 									  .setPlayerName(message.getMessage().asString());
-						MessageManager.getInstance().sendMessge();
+						message.setBroadcast();
+						MessageManager.getInstance().sendMessge(message);
 						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+
 											   " changed name to "+message.getMessage().asString());
 						break;
