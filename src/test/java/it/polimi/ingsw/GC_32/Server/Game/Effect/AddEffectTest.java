@@ -24,7 +24,7 @@ public class AddEffectTest {
 		testPlayer.getResources().setResource("COINS", 0);
 		testPlayer.getResources().setResource("STONE", 0);
 		
-		addTestEffect.apply(null, testPlayer, null);
+		addTestEffect.apply(null, testPlayer, null, null);
 		
 		assertEquals(2,testPlayer.getResources().getResource("WOOD"));
 		assertEquals(4,testPlayer.getResources().getResource("COINS"));

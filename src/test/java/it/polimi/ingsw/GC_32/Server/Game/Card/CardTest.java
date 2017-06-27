@@ -24,11 +24,11 @@ public class CardTest {
 		ByteArrayOutputStream printStream = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(printStream));
 		
-		Effect e = (p, b, a) -> {
+		Effect e = (p, b, a, cm) -> {
 			System.out.print("Hello, this is an instant Effect");
 		};
 		this.card.registerInstantEffect(e);
-		this.card.getInstantEffect().apply(null, null, null);
+		this.card.getInstantEffect().apply(null, null, null, null);
 		assertEquals("Hello, this is an instant Effect", printStream.toString());
 	}
 	@Test
@@ -37,11 +37,11 @@ public class CardTest {
 		ByteArrayOutputStream printStream = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(printStream));
 		
-		Effect e = (p, b, a) -> {
+		Effect e = (p, b, a, cm) -> {
 			System.out.print("Hello, this is a permanent Effect");
 		};
 		this.card.registerPermanentEffect(e);
-		this.card.getPermanentEffect().apply(null, null, null);
+		this.card.getPermanentEffect().apply(null, null, null, null);
 		assertEquals("Hello, this is a permanent Effect", printStream.toString());
 	}
 }

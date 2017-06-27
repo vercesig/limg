@@ -45,13 +45,13 @@ public class MoveChecker{
 	   return true;
    }
 
-   public boolean checkMove(Game game, Player player, Action action){
+   public boolean checkMove(Game game, Player player, Action action, ContextManager cm){
 	   Board cloneBoard = cloner.deepClone(game.getBoard());
 	   Player clonePlayer = cloner.deepClone(player);
 	   if(checkValidIDs(cloneBoard, clonePlayer, action)){
 		   System.out.println("checkValidID: true");
 		   System.out.println("LISTA EFFETTI: " + player.getEffectList());
-		   MoveUtils.cloneApplyEffects(cloneBoard, clonePlayer, player, action);
+		   MoveUtils.cloneApplyEffects(cloneBoard, clonePlayer, player, action, cm);
 		   System.out.println("DOPO AVER APPLICATO GLI EFFETTI");
 		   System.out.println(clonePlayer);
 		   System.out.println(action);		   

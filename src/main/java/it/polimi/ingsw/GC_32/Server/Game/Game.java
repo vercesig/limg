@@ -47,6 +47,7 @@ public class Game implements Runnable{
 	
 	private TurnManager turnManager;
 	private MoveChecker mv;
+	private ContextManager cm;
 	
 	// context management
 	//private HashMap<ContextType , Object[]> contextQueue;
@@ -59,6 +60,7 @@ public class Game implements Runnable{
 	public Game(ArrayList<Player> players){
 		
 		this.mv = new MoveChecker();
+		this.cm = new ContextManager();
 		//this.contextQueue = new HashMap<ContextType, Object[]>();
 		this.memoryAction = new HashMap<String, Action>();
 		waitingContextResponseSet = new HashSet<String>();
@@ -204,7 +206,7 @@ public class Game implements Runnable{
 							System.out.println("STATO PRIMA DELL'ESECUZIONE:");
 							System.out.println(action);
 							System.out.println(player);
-				    		if(mv.checkMove(this, player, action)){
+				    		if(mv.checkMove(this, player, action, cm)){
 				    			System.out.println("check with copy: PASSATO");
 				    			makeMove(player, action);
 				    			System.out.println("AZIONE ESEGUITA!\n");
@@ -255,7 +257,7 @@ public class Game implements Runnable{
 								System.out.println("STATO PRIMA DELL'ESECUZIONE:");
 								System.out.println(playerReply);
 								
-								if(mv.checkMove(this, playerReply, actionReply)){
+								if(mv.checkMove(this, playerReply, actionReply, cm)){
 					    			makeMove(playerReply, actionReply);
 									System.out.println("AZIONE ESEGUITA!\n");
 									System.out.println("STATO DOPO AZIONE: ");
@@ -413,7 +415,7 @@ public class Game implements Runnable{
 		System.out.println(contextInfoContainer.isEmpty());
 		
 		System.out.println("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
-		MoveUtils.applyEffects(this.board, player, action);
+		MoveUtils.applyEffects(this.board, player, action, cm);
 		System.out.println("DOPO GLI EFFETTI PERMANENTI:\n" + action);
 		System.out.println("PRIMA DEL BONUS:\n" + player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
@@ -427,12 +429,12 @@ public class Game implements Runnable{
 				if(contextInfoContainer.containsKey("CHANGE")){
 					JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 					for( JsonValue json: cardlist){
-						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
+						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action, cm);
 					}
 				}
 				for(DevelopmentCard card : playerCard){
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getPermanentEffect().apply(board, player, action);
+						card.getPermanentEffect().apply(board, player, action, cm);
 					}
 
 				}
@@ -444,7 +446,7 @@ public class Game implements Runnable{
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
 				for(DevelopmentCard card : playerCard){
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getPermanentEffect().apply(board, player, action);
+						card.getPermanentEffect().apply(board, player, action, cm);
 					}
 				}
 				break;
@@ -474,7 +476,7 @@ public class Game implements Runnable{
 					}	
 				}
 				if(card.getInstantEffect()!= null){
-					card.getInstantEffect().apply(board, player, action);
+					card.getInstantEffect().apply(board, player, action, cm);
 				}
 				break;
 			}

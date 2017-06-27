@@ -57,7 +57,7 @@ public class PlayerTest{
 	@Test
 	public void checkEffectRegistration(){
 		this.player = new Player();
-		Effect testEffect = (Board b, Player p, Action a) -> {};
+		Effect testEffect = (Board b, Player p, Action a, ContextManager cm) -> {};
 		this.player.addEffect(testEffect);
 		assertEquals(this.player.getEffectList().get(0), testEffect);
 	}

@@ -44,7 +44,7 @@ public class ChangeEffectTest {
 		Action testAction1 = new Action("HARVEST",5,2,2);
 		testAction1.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 0));
 		
-		chooseEffectTest.apply(null, testPlayer, testAction1);
+		chooseEffectTest.apply(null, testPlayer, testAction1, null);
 		
 		assertEquals(3, testPlayer.getResources().getResource("WOOD"));
 		assertEquals(6, testPlayer.getResources().getResource("COINS"));
@@ -55,7 +55,7 @@ public class ChangeEffectTest {
 		Action testAction2 = new Action("HARVEST",5,2,2);
 		testAction2.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 1));
 		
-		chooseEffectTest.apply(null, testPlayer, testAction2);
+		chooseEffectTest.apply(null, testPlayer, testAction2, null);
 		
 		assertEquals(22, testPlayer.getResources().getResource("VICTORY"));
 		assertEquals(3, testPlayer.getResources().getResource("FAITH"));

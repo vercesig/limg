@@ -41,7 +41,7 @@ public class BonusEffectTest {
 		
 		Effect bonusCardTest = EffectRegistry.getInstance().getEffect("BONUS", payloadTest);
 
-		bonusCardTest.apply(null, testPlayer, null);
+		bonusCardTest.apply(null, testPlayer, null, null);
 		
 		assertEquals(8, testPlayer.getResources().getResource("COINS"));	
 	}
@@ -61,7 +61,7 @@ public class BonusEffectTest {
 		
 		Effect bonusResourceTest = EffectRegistry.getInstance().getEffect("BONUS", payloadTest);
 		
-		bonusResourceTest.apply(null, testPlayer, null);
+		bonusResourceTest.apply(null, testPlayer, null, null);
 		
 		assertEquals(6, testPlayer.getResources().getResource("MILITARY"));
 	}

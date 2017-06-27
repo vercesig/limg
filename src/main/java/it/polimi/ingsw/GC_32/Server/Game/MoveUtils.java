@@ -208,22 +208,22 @@ public class MoveUtils {
     	return player.getResources().isValid();
     }
     
-    public static void applyEffects(Board board, Player player, Action action){
+    public static void applyEffects(Board board, Player player, Action action, ContextManager cm){
     	for(Effect buff : player.getEffectList()){
-			buff.apply(board, player, action);
+			buff.apply(board, player, action, cm);
     	}
 	}
 	
-	public static void cloneApplyEffects(Board board, Player playerCopy, Player player, Action action){
+	public static void cloneApplyEffects(Board board, Player playerCopy, Player player, Action action, ContextManager cm){
 		for(Effect buff : player.getEffectList()){
-			buff.apply(board, playerCopy, action);
+			buff.apply(board, playerCopy, action, cm);
 		}
 	}
 	
 	public static void addActionSpaceBonus(Board board, Player player, Action action){
 		ResourceSet bonus = board.getRegion(action.getActionRegionId())
-				  								  .getActionSpace(action.getActionSpaceId())
-				  								  .getBonus();
+				  				 .getActionSpace(action.getActionSpaceId())
+				  				 .getBonus();
 		if(bonus != null){
 			//Excommunication Effect debuff
 			for(String key : bonus.getResourceSet().keySet()){
