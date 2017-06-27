@@ -194,7 +194,7 @@ public class MainClient{
 							});
 							//System.out.println(client.getBoard().toString());
 						}
-						break;
+			 			break;
 					case "DICEROLL":
 						int blackDice = messagePayload.get("BLACKDICE").asInt();
 						int whiteDice = messagePayload.get("WHITEDICE").asInt();

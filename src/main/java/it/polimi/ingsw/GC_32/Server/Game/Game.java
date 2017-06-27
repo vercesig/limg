@@ -404,7 +404,13 @@ public class Game implements Runnable{
 				default:
 					break;
 			}
+			
+			return;
+			
 		}
+		
+		System.out.println(contextInfoContainer.isEmpty());
+		
 		System.out.println("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
 		MoveUtils.applyEffects(this.board, player, action);
 		System.out.println("DOPO GLI EFFETTI PERMANENTI:\n" + action);
@@ -417,7 +423,7 @@ public class Game implements Runnable{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
 				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				if(!contextInfoContainer.get("CHANGE").isNull()){
+				if(contextInfoContainer.containsKey("CHANGE")){
 					JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
 					for( JsonValue json: cardlist){
 						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action);
