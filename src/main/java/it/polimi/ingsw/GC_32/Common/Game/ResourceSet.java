@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Common.Game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -159,5 +160,14 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		}
 		return new String(tmp);
 	}
+    
+    public HashMap<String,String> getDecomposedResourceSetString(){
+    	HashMap<String,String> tmp = new HashMap<String,String>();
+    	
+    	for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
+			tmp.put(element.getKey()+":",element.getValue().toString());
+		}
+		return tmp;
+    }
 	
 }
