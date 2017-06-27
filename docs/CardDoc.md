@@ -26,7 +26,7 @@ the semantic of the various field is the following:
 
 * **name**: the name of the card
 * **cost**: the cost of the card (in this case null because territory cards has no cost)
-* **requirements**: the necessary requirements, understood as resources, that the player must own to pay the card's cost (and so take it).
+* **requirements**: the necessary requirements, understood as resources, that the player must own for pay the card's cost (and so take it).
 * **instantEffect**: the typology of instant effect which characterizes the card
 * **instantPayload**: this field specifics the behavior of the specific effect of the card. the arguments which fill this field will be used by the **EffectBuilder** to generate the correct effect of the card. The parser (i.e. **JsonImporter**) will associate the effect to the card.
 * **permanentEffect**: the typology of instant effect which characterizes the card
@@ -105,7 +105,7 @@ Cardinal has two instant effect, included into one JSON array, one of type ADD a
            }
        ]
 ```
-for example this effect allows to change 1 stone for 2 faith points or 1 wood for 2 faith points. If the change doesn't offer any choose possibility array notation can be omitted.<br>The effect will open a context on client-side to allow the client to choose which change apply.
+for example this effect allows to change 1 stone for 2 faith points or 1 wood for 2 faith points. If the change doesn't offer any choose possibility array notation can be omitted.<br>The effect will open a context on client-side screen to allow the client to choose which change apply.
 
 * ACTION: allows to perform one action of type TYPE whit action value ACTIONVALUE applying the discount BONUSRESOURCE when taking a new card (the EXCLUSIVEBONUS flag is needed to indicate if the discount is applicable only to one specific resource, if the disconut field allows to choose more then one resource to discount). The field REGIONID is needed to individuate a specific region on the board (for example the action can be performed only on a yellow tower). the FLAGREGION attribute if setted to the specific value "ALL" indicate that there is no limit on the region on which the action can be performed (for example the action can be performed on all the towers, without limit on the tower color). Payload format:
 ```
