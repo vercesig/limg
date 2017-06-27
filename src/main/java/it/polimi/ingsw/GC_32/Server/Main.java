@@ -18,6 +18,7 @@ public class Main {
 		Setup setup = new Setup();
 		setup.loadCard("cards.json");
 		setup.loadBonusTile("bonus_tile.json");
+		setup.loadBonusSpace("bonus_space.json");
     	
 		LOGGER.log(Level.INFO, "inizializing socket-side network...");
 		SocketListener socketListener = new SocketListener(9500);

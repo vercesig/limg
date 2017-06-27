@@ -52,7 +52,7 @@ public class ServerMessageFactory {
 		}
 		GMSTRTboard.add("PRODUCTIONREGION", boardProductionRegion.toString());
 		
-		// Json harvast region
+		// Json harvest region
 		JsonArray boardHarvastRegion = new JsonArray();
 		for(ActionSpace action : game.getBoard().getHarvestRegion().getTrack()){
 			JsonObject actionSpace = new JsonObject();
@@ -69,7 +69,7 @@ public class ServerMessageFactory {
 		JsonArray boardCouncilRegion = new JsonArray();
 		CouncilRegion councilRegion = game.getBoard().getCouncilRegion();
 		JsonObject councilSpace = new JsonObject();
-		councilSpace.add("BONUS", "#");
+		councilSpace.add("BONUS", "PRIVILEGE");
 		councilSpace.add("REGIONID", councilRegion.getCouncilSpace().getRegionID());
 		councilSpace.add("SPACEID",  councilRegion.getCouncilSpace().getActionSpaceID());
 		councilSpace.add("SINGLE", councilRegion.getCouncilSpace().isSingleActionSpace());
@@ -81,7 +81,11 @@ public class ServerMessageFactory {
 		JsonArray boardMarketRegion = new JsonArray();
 		for(ActionSpace action : game.getBoard().getMarketRegion().getTrack()){
 			JsonObject actionSpace = new JsonObject();
-			actionSpace.add("BONUS", "#");
+			if(action.getBonus()!= null){
+				actionSpace.add("BONUS", action.getBonus().toJson());
+			}
+			else
+				actionSpace.add("BONUS", "PRIVILEGE");
 			actionSpace.add("REGIONID", action.getRegionID());
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
@@ -99,11 +103,15 @@ public class ServerMessageFactory {
 				actionSpace.add("ACTIONVALUE", towerLayer.getActionSpace().getActionValue());
 				actionSpace.add("REGIONID", towerLayer.getActionSpace().getRegionID());
 				actionSpace.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
-				JsonObject bonus = new JsonObject();
+				/*JsonObject bonus = new JsonObject();		
 				for(Entry<String,Integer> resource : towerLayer.getActionSpace().getBonus().getResourceSet().entrySet()){
 					bonus.add(resource.getKey(), resource.getValue());
+				}*/
+				if(towerLayer.getActionSpace().getBonus()!= null){
+					actionSpace.add("BONUS", towerLayer.getActionSpace().getBonus().toJson());
 				}
-				actionSpace.add("BONUS", bonus.toString());
+				else
+					actionSpace.add("BONUS", "#");
 				// single is setted true by default
 				tower.add(actionSpace);
 			}

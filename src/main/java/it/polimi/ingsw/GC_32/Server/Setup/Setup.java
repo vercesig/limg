@@ -117,4 +117,14 @@ public class Setup {
 													 .getClassLoader()
 													 .getResourceAsStream(path)));
 	}
+	
+	public void loadBonusSpace(Reader bonusSpaceReader) throws IOException{
+		GameConfig.getInstance().registerBonusSpace(JsonImporter.importBonusSpace((bonusSpaceReader)));
+	}
+	
+	public void loadBonusSpace(String path) throws IOException {
+		this.loadBonusSpace(new InputStreamReader(this.getClass()
+													  .getClassLoader()
+													  .getResourceAsStream(path)));
+	}
 }

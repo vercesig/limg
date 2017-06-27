@@ -187,10 +187,10 @@ public class JsonImporter {
 	/**
 	 * perform the parsing of the configuration file
 	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 * @throws IOException 
 	 */
-	public static void importConfigurationFile(Reader fileReader){
+	public static JsonArray importBonusSpace(Reader fileReader) throws IOException{
 		
+		return Json.parse(fileReader).asArray();
 	}
-	
-	
 }

@@ -3,9 +3,11 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
+import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 
 
 /**
@@ -69,6 +71,7 @@ public class Board {
 		towerRegion[1].setTypeCard(CardRegistry.getInstance().getDeck("CHARACTERCARD").getDeck().get(0).getType());
 		towerRegion[2].setTypeCard(CardRegistry.getInstance().getDeck("BUILDINGCARD").getDeck().get(0).getType());
 		towerRegion[3].setTypeCard(CardRegistry.getInstance().getDeck("VENTURECARD").getDeck().get(0).getType());
+		setupBonus();
 		LOGGER.log(Level.INFO, "board succesfully inizialized");
 	}
 	
@@ -173,6 +176,19 @@ public class Board {
 	public void flushBoard(){
 		LOGGER.log(Level.INFO, "flushing board");
 		region.forEach(region -> region.flushRegion());
+	}
+	
+	public void setupBonus(){
+		GameConfig.getInstance().getBonusSpace().forEach( js -> {
+			int regionID = js.asObject().get("RegionID").asInt();
+			int spaceID = js.asObject().get("SpaceID").asInt();
+			ResourceSet bonus = new ResourceSet(js.asObject().get("Bonus").asObject());
+			if(regionID >3){ // necessario castare per TowerRegion
+				((TowerRegion)this.getRegion(regionID)).getTowerLayers()[spaceID].getActionSpace().setBonus(bonus);
+			}
+			else
+				this.getRegion(regionID).getActionSpace(spaceID).setBonus(bonus);
+		});
 	}
 	
 	/**

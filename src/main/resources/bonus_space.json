@@ -1,0 +1,69 @@
+[
+  {
+  	"RegionID" : 3,
+    "SpaceID" :  0,
+    "Bonus" : {"COINS":5} 
+  },
+  
+  {
+  	"RegionID" : 3,
+    "SpaceID" :  1,
+    "Bonus" : {"SERVANTS":5} 
+  },
+  
+  {
+  	"RegionID" : 3,
+    "SpaceID" :  2,
+    "Bonus" : {"MILITARY_POINTS":3, "COINS":2} 
+  },
+  
+  {
+  	"RegionID" : 4,
+    "SpaceID" :  2,
+    "Bonus" : {"WOOD":1} 
+  },
+  
+  {
+  	"RegionID" : 4,
+    "SpaceID" :  3,
+    "Bonus" : {"WOOD":2} 
+  },	
+
+  {
+  	"RegionID": 5,
+    "SpaceID": 2,
+    "Bonus" : {"STONE":1} 
+  },
+  	
+  {
+  	"RegionID" : 5,
+    "SpaceID" : 3,
+    "Bonus" : {"STONE":2} 
+  },
+  
+  {
+  	"RegionID" : 6,
+    "SpaceID" : 2,
+    "Bonus" : {"MILITARY_POINTS":1} 
+  },
+  
+  {
+  	"RegionID" : 6,
+    "SpaceID" : 3,
+    "Bonus" : {"MILITARY_POINTS":2} 
+  },     
+
+  	
+  {
+  	"RegionID" : 7,
+    "SpaceID" : 2,
+    "Bonus" : {"COINS":1} 
+  },
+  	
+  {
+  	"RegionID" : 7,
+    "SpaceID" : 3,
+    "Bonus" : {"COINS":2} 
+  }
+  	
+]

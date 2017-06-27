@@ -80,7 +80,14 @@ public class ActionSpace{
 	 * @see ActionSpace, FamilyMember, ResourceSet, Player, Effect.
 	 * */
 	public ResourceSet getBonus(){
-		return this.bonus;
+		if(this.bonus!=null)
+			return this.bonus;
+		else 
+			return null;
+	}
+	
+	public void setBonus(ResourceSet bonus){
+		this.bonus = bonus;
 	}
 	
 	/**

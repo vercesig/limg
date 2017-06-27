@@ -21,8 +21,9 @@ public class ClientRegion {
 		actionSpaces.forEach(actionSpace -> {
 			JsonObject slimActionSpace = actionSpace.asObject();
 			ResourceSet bonus = null;
-			if(!slimActionSpace.get("BONUS").asString().equals("#"))
-				bonus = new ResourceSet(Json.parse(slimActionSpace.get("BONUS").asString()).asObject());			
+			if(slimActionSpace.get("BONUS").isObject()){
+				bonus = new ResourceSet(slimActionSpace.get("BONUS").asObject());
+			}
 			int actionValue = slimActionSpace.getInt("ACTIONVALUE", 1);
 			boolean single = slimActionSpace.getBoolean("SINGLE", true);
 			int regionID = slimActionSpace.get("REGIONID").asInt();
