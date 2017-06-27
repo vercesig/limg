@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
@@ -42,10 +44,22 @@ public class ClientActionSpace {
 		infoContainer[1] = actionSpaceID.toString();
 		infoContainer[2] = actionValue.toString();
 		infoContainer[3] = single.toString();
-		if(bonus!=null)
-			infoContainer[4] = bonus.toString();
+		if(bonus!=null){		
+			// soluzione orrenda per mettere una rapida pezza al toString ClientBoard
+			HashMap<String,String> tmp = bonus.getDecomposedResourceSetString();
+			StringBuilder tmpStringBuilder = new StringBuilder();
+			for(Entry<String,String> entry : tmp.entrySet()){
+				if(entry.getKey().contains("MILITARY_POINTS")){
+					tmpStringBuilder.append("MILITARY:"+entry.getValue());
+				}else{
+					tmpStringBuilder.append(entry.getKey()+entry.getValue()+" ");
+				}
+			}			
+			
+			infoContainer[4] = tmpStringBuilder.toString();
+		}
 		else
-			infoContainer[4] = "";
+			infoContainer[4] = "NO BONUS";
 		StringBuilder occupantsString = new StringBuilder();
 		occupants.forEach(familiar -> occupantsString.append(familiar.toString()+","));
 		infoContainer[5] = new String(occupantsString);

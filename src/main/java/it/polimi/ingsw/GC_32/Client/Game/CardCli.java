@@ -114,7 +114,7 @@ public class CardCli {
 		
 		String name = "name: " + json.get("name").asString();
 		
-		ArrayList <String> cost = new <String> ArrayList();
+		ArrayList <String> cost = new ArrayList<String>();
 		
 		try{
 			for(JsonValue js : json.get("cost").asArray()){
@@ -131,10 +131,10 @@ public class CardCli {
 			requirements = "requirements: none";
 		}
 		
-		ArrayList <String> effectInstant = new <String> ArrayList();
-		ArrayList <String> InstantPayload = new <String> ArrayList();
-		ArrayList <String> effectPermanent = new <String> ArrayList();
-		ArrayList <String> PermanentPayload = new <String> ArrayList();
+		ArrayList <String> effectInstant = new ArrayList<String> ();
+		ArrayList <String> InstantPayload = new ArrayList<String>();
+		ArrayList <String> effectPermanent = new ArrayList<String>();
+		ArrayList <String> PermanentPayload = new ArrayList<String>();
 		
 		loadEffect(effectInstant, "instantEffect", json);
 		loadEffect(InstantPayload, "instantPayload", json);
