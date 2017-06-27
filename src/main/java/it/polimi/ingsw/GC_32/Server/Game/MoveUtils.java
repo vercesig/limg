@@ -201,7 +201,7 @@ public class MoveUtils {
     		System.out.println("PLAYER RESOURCES: " + player.getResources());
     		System.out.println("COST: " + cost);
     		player.getResources().subResource(cost);
-    	} catch(NullPointerException e){
+    	} catch(IndexOutOfBoundsException e){
     		System.out.println("CARTA SENZA COSTO");
     		return true;
     	}

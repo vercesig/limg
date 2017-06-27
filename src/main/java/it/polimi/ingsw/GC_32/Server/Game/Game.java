@@ -22,7 +22,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
-import it.polimi.ingsw.GC_32.Server.Game.Card.CardType;
+
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
@@ -460,9 +460,11 @@ public class Game implements Runnable{
 				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
-				if(card.getType().equals(CardType.CHARACTERCARD)){
+				
+				if(card.getType().equals("CHARACTERCARD")){
 					if(card.getPermanentEffect()!= null){
 						player.addEffect(card.getPermanentEffect());
+						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
 					}	
 				}
 				if(card.getInstantEffect()!= null){

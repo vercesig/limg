@@ -8,6 +8,7 @@ import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
 public class PermanentEffect {
 	
@@ -15,44 +16,40 @@ public class PermanentEffect {
 		
 		String actionType = payload.asObject().get("TYPE").asString();
 		int regionID = payload.asObject().get("REGIONID").asInt();
-		int actionValueBonus = payload.asObject().get("BONUSACTIONVALUE").asInt();
-		JsonValue flag = payload.asObject().get("EXCLUSIVEBONUS");
 		
-		ArrayList<ResourceSet> discountList = new ArrayList<>();
-		JsonValue cost = payload.asObject().get("BONUSRESOURCE");
-		JsonArray costArray = new JsonArray();
-		if(cost.isArray())
-			costArray = cost.asArray();
-		else
-			costArray.add(cost);
+		int actionValueBonus = payload.asObject().getInt("BONUSACTIONVALUE", 0);
+		ResourceSet bonusDiscount;
+		boolean flag;
 		
-		if(!cost.isNull()){
-			costArray.forEach( item -> {
-				JsonObject resObject = item.asObject();
-				ResourceSet discount = new ResourceSet(resObject);
-			//	resObject.iterator().forEachRemaining(resource -> {
-			//		discount.addResource(resource.getName(), resource.getValue().asInt());
-			//	});
-			discountList.add(discount);
-			});	
+		if(!payload.asObject().get("BONUSRESOURCE").isNull()){
+			bonusDiscount = new ResourceSet(payload.asObject().get("BONUSRESOURCE").asObject());
 		}
+		else
+			bonusDiscount = null;
+		if(!payload.asObject().get("EXCLUSIVEBONUS").isNull()){
+			flag = true;
+		}
+		else
+			flag = false;
+		
 		Effect permanentEffect = (b, p, a) -> {
 			
-			if(!(a.getActionType().equals(actionType)&& a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
-				return;
-			}
-			a.setActionValue(a.getActionValue() + actionValueBonus);
-			try{
-				try{
-					// int choiceToDrop = p.decideWhichresource(discountList); // ask the client to select Resource to not Discount
-					//discountList.remove(choiceToDrop); 
-				} catch(NullPointerException e) {};
-				for(ResourceSet r : discountList){
-					((TowerRegion) b.getRegion(a.getActionRegionId()))
-			    			.getTowerLayers()[a.getActionSpaceId()]
-			    					.getCard().discountCard(r);;
+			if((a.getActionType().equals(actionType) && a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
+				System.out.println("ATTIVATO EFFETTO PERMANENTE");
+				System.out.println(a.getActionValue() + " + " + actionValueBonus);
+				a.setActionValue(a.getActionValue() + actionValueBonus);
+				System.out.println(a.getActionValue());
+
+				if(!flag && bonusDiscount !=null){
+					DevelopmentCard card =((TowerRegion) b.getRegion(a.getActionRegionId()))
+							.getTowerLayers()[a.getActionSpaceId()]
+									.getCard();
+					card.discountCard(bonusDiscount);
 				}
-			} catch(NullPointerException e){};
+				//open a context if flag == true
+			}
+			else 
+				return;
 		};
 		return permanentEffect;
 	};

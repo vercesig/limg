@@ -65,23 +65,32 @@ public class ZeroLevelContext extends Context implements Runnable{
 						
 						while(regionFlag){
 							command = in.nextLine();
-							if(Integer.parseInt(command)<8 && Integer.parseInt(command) >3){
-								regionID = Integer.parseInt(command);
-								regionFlag = false;
-							}
-							else
+							try{
+								if(Integer.parseInt(command)<8 && Integer.parseInt(command) >3){
+									regionID = Integer.parseInt(command);
+									regionFlag = false;
+								}
+								else
+									System.out.println("type a valid number");
+							}catch(NumberFormatException e){
 								System.out.println("type a valid number");
+							}
 						}
+						
 						regionFlag = true;
 						while(regionFlag){
 							System.out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
 							command = in.nextLine();
-							if(Integer.parseInt(command)<4 && Integer.parseInt(command) >=0){
-								spaceID = Integer.parseInt(command);
-								regionFlag = false;
-							}
-							else
+							try{
+								if(Integer.parseInt(command)<4 && Integer.parseInt(command) >=0){
+									spaceID = Integer.parseInt(command);
+									regionFlag = false;
+								}
+								else
+									System.out.println("type a valid number");
+							}catch(NumberFormatException e){
 								System.out.println("type a valid number");
+							}	
 						}
 						try{
 						
