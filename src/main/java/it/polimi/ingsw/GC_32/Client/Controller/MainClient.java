@@ -221,15 +221,13 @@ public class MainClient{
 						String playerUUID = messagePayload.get("PLAYERID").asString();
 						if(playerUUID.equals(client.getUUID())){
 							client.getClientInterface().displayMessage("your turn is start, make an action");
+							// timer inizialization
+							client.startTimeout = System.currentTimeMillis();
+							client.actionRunningFlag=true;
 						}
 						else{
 							client.getClientInterface().displayMessage("now is "+client.getPlayers().get(playerUUID).getName()+"'s turn");
-						}
-						
-						// timer inizialization
-						client.startTimeout = System.currentTimeMillis();
-						client.actionRunningFlag=true;
-						
+						}						
 						break;
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
