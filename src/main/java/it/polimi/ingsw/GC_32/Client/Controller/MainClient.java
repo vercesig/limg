@@ -31,6 +31,11 @@ public class MainClient{
 	
 	private String myUUID;
 	
+	// timer management
+	private int ACTIONTIMEOUT = 5000;
+	private long startTimeout = 0;
+	private boolean actionRunningFlag = false;
+	
 	public MainClient(){
 		this.players = new HashMap<String, ClientPlayer>();		
 		this.sendQueue = new ConcurrentLinkedQueue<String>();
@@ -116,7 +121,12 @@ public class MainClient{
 		System.out.println("ok, now we are ready to play");		
 				
 			while(true){
-							
+				
+				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
+					System.out.println("YOU ARE DEAD");
+					client.actionRunningFlag=false;
+				}
+				
 				if(!client.getSendQueue().isEmpty()){
 					client.network.sendMessage(client.getSendQueue().poll());
 				}	
@@ -215,6 +225,11 @@ public class MainClient{
 						else{
 							client.getClientInterface().displayMessage("now is "+client.getPlayers().get(playerUUID).getName()+"'s turn");
 						}
+						
+						// timer inizialization
+						client.startTimeout = System.currentTimeMillis();
+						client.actionRunningFlag=true;
+						
 						break;
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
