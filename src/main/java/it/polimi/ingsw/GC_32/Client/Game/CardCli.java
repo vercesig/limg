@@ -114,8 +114,6 @@ public class CardCli {
 		
 		String name = "name: " + json.get("name").asString();
 		
-		
-		
 		ArrayList <String> cost = new <String> ArrayList();
 		
 		try{

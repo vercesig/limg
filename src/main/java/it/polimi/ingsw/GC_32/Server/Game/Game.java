@@ -250,7 +250,6 @@ public class Game implements Runnable{
 								Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
 								Action actionReply = memoryAction.get(getLock());
 								
-								
 								System.out.println("CONTEXT: retry simulateWithCopy");
 								System.out.println("STATO PRIMA DELL'ESECUZIONE:");
 								System.out.println(playerReply);
@@ -260,14 +259,14 @@ public class Game implements Runnable{
 									System.out.println("AZIONE ESEGUITA!\n");
 									System.out.println("STATO DOPO AZIONE: ");
 									System.out.println(playerReply);
-
+									
+									
+									playerList.forEach(p -> {
+					    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
+					    			});
+					    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));	
 					    		}
 							}
-							playerList.forEach(p -> {
-			    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
-			    			});
-			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
-			    			
 							memoryAction.remove(getLock());
 							
 							/*MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACKCONTEXTMessage(message.getPlayerID()));*/

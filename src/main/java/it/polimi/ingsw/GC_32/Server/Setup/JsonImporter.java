@@ -115,7 +115,14 @@ public class JsonImporter {
 																			     permanentPayloadArray.get(i)));
 					}
 				}
-			}catch(NullPointerException e){}
+			}catch(NullPointerException e){
+				if(name.equals("Preacher")){ // Preacher unica carta con un Effetto permanente senza payload
+					System.out.println("REGISTRO PREACHER");
+					JsonValue permanentEffect = card.get("permanentEffect");
+					newCard.registerPermanentEffect(EffectRegistry.getInstance()
+							  .getEffect(permanentEffect.asString()));
+				}
+			}
 			
 			cardList.add(newCard);		
 		}

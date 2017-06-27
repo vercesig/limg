@@ -1,12 +1,15 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
 public class UniqueEffect {
 
 	// annulla il bonus. Da usare su board deepCopiata e non dovra' sostituire la board Originale.
 	static Effect noTowerActionSpaceBonus = (b, p, a) ->{
 		if(a.getActionRegionId() != b.getMarketRegion().getRegionID()){
-			b.getRegion(a.getActionRegionId()).getActionSpace(a.getActionSpaceId())
-			.getBonus().getResourceSet().replaceAll((k,i) -> i=0);
+			ResourceSet bonus =b.getRegion(a.getActionRegionId()).getActionSpace(a.getActionSpaceId())
+			.getBonus();
+			p.getResources().subResource(bonus);
 		}
 	};
 	// No Market Action

@@ -5,6 +5,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Server.Game.GameLobby;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
+import it.polimi.ingsw.GC_32.Server.Game.Effect.EffectRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
