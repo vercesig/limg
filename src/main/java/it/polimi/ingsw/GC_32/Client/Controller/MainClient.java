@@ -201,7 +201,7 @@ public class MainClient{
 						int orangeDice = messagePayload.get("ORANGEDICE").asInt();
 						client.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
 						client.getPlayers().forEach((UUID,player)->{
-							player.getFamilyMembers()[1].setActionValue(blackDice);
+							player.getFamilyMembers()[1].setActionValue(blackDice); 
 							player.getFamilyMembers()[2].setActionValue(whiteDice);
 							player.getFamilyMembers()[3].setActionValue(orangeDice);
 						});

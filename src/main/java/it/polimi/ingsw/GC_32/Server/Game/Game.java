@@ -194,6 +194,7 @@ public class Game implements Runnable{
 
 							Action action = new Action(actionType,actionValue,regionID,spaceID);
 							action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
+							action.getAdditionalInfo().add("COSTINDEX", Jsonmessage.get("COSTINDEX").asInt()); // Cost Index
 
 							Player player = playerList.get(index);
 							memoryAction.put(player.getUUID(), action);
@@ -326,8 +327,8 @@ public class Game implements Runnable{
 		this.whiteDice = 1+randomGenerator.nextInt(6);
 		playerList.forEach(player -> {
 			player.getFamilyMember()[1].setActionValue(this.blackDice);
-			player.getFamilyMember()[2].setActionValue(this.orangeDice);
-			player.getFamilyMember()[3].setActionValue(this.whiteDice);
+			player.getFamilyMember()[2].setActionValue(this.whiteDice);
+			player.getFamilyMember()[3].setActionValue(this.orangeDice);
 		});
 	}
 	
@@ -341,6 +342,10 @@ public class Game implements Runnable{
 	}
 	
 	public void moveFamiliar(Board board, Player player, Action action){
+		
+		MoveUtils.checkServants(board, player, action); // subtract the servants
+		MoveUtils.checkCoinForTribute(board, player, action); // pays the 3 coins if the tower is busy
+		
 		int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
 		player.moveFamilyMember(pawnID, action, board); // calls: player's moveFamilyMember and sets the position of this familyMember
 															// calls: action's space addFamilyMember and sets this familymember as an occupant.
@@ -348,6 +353,7 @@ public class Game implements Runnable{
 	
 	public void takeCard(Board board, Player player, Action action){
 		 // calls: player's moveFamilyMember and sets the position of this familyMember
+		MoveUtils.checkCardCost(board, player, action); // pays the cost of the card
 		player.takeCard(board, action);													// calls: action's space addFamilyMember and sets this familymember as an occupant.
 	}
 	
@@ -369,12 +375,12 @@ public class Game implements Runnable{
 							if(card.getMinimumActionvalue()>action.getActionValue())
 								activatingCard.remove(activatingCard.indexOf(card));
 						}
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-								player.getUUID(),
-								ContextType.CHANGE,
-								activatingCard
-								));
-						waitingContextResponseSet.add("CHANGE");
+				//		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+				//				player.getUUID(),
+				//				ContextType.CHANGE,
+				//				activatingCard
+				//				));
+				//		waitingContextResponseSet.add("CHANGE");
 					}
 					waitingContextResponseSet.add("SERVANT");
 					return;
@@ -395,15 +401,17 @@ public class Game implements Runnable{
 								2));
 						waitingContextResponseSet.add("PRIVILEGE");
 					}
-					return;
-					
+					return;		
 				default:
 					break;
 			}
 		}
-		
+		System.out.println("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
 		MoveUtils.applyEffects(this.board, player, action);
+		System.out.println("DOPO GLI EFFETTI PERMANENTI:\n" + action);
+		System.out.println("PRIMA DEL BONUS:\n" + player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
+		System.out.println("DOPO DEL BONUS:\n" + player);
 		moveFamiliar(this.board, player, action);
 		switch(action.getActionType()){
 			case "PRODUCTION":{
@@ -436,8 +444,10 @@ public class Game implements Runnable{
 				break;
 			}
 			case "COUNCIL" : {
+				System.out.println("PRIMA DEL PRIVILEGE:\n" + player);
 				player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
+				System.out.println("DOPO DEL PRIVILEGE:\n" + player);
 				break;
 			}
 			case "MARKET" : {

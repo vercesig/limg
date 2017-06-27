@@ -121,19 +121,21 @@ public class MoveUtils {
      * @param action
      * @return
      */
-    public static boolean checkServants(Board board, Player player, Action action){
+    public static boolean checkServants(Board board, Player player, Action action){ // change the state
     	if(checkActionValue(board, action)){
     		return true;
     	}
+    	System.out.println("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
     	int actionDiff = action.getActionValue() -
     					 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
     	player.getResources().addResource("SERVANTS", actionDiff);
+    	System.out.println(" " + player.getResources().isValid());
     	return player.getResources().isValid();
     }
     
     /** checks if the tower is already occupied and if so, if the player can pay the 3 coin tribute
      */
-    public static boolean checkCoinForTribute(Board board, Player player, Action action){
+    public static boolean checkCoinForTribute(Board board, Player player, Action action){  // change the state
     	if(action.getActionRegionId() < 4 || 										   //Not a tower action
     	   !((TowerRegion)board.getRegion(action.getActionRegionId())).isTowerBusy()){ //Tower is empty
     		return true;
@@ -177,12 +179,22 @@ public class MoveUtils {
      * @param action
      * @return
      */
-    public static boolean checkCardCost(Board board, Player player, Action action){ 	
+    public static boolean checkCardCost(Board board, Player player, Action action){ 	// change the state
     	if(action.getActionRegionId()<4)
     		return true;
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
 				  .getTowerLayers()[action.getActionSpaceId()]
 				  .getCard();
+    	
+    	try{
+    		ResourceSet requirements = card.getRequirments();
+    		if(player.getResources().compareTo(requirements)<0){
+    			System.out.println("NO REQUIREMENTS RISPETTATI");
+    			return false;
+    		}
+    	}catch(NullPointerException e){
+    		System.out.println("CARTA SENZA REQUIREMENTS");
+    	}	
     	
     	try{
     		ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
@@ -212,7 +224,6 @@ public class MoveUtils {
 		ResourceSet bonus = board.getRegion(action.getActionRegionId())
 				  								  .getActionSpace(action.getActionSpaceId())
 				  								  .getBonus();
-
 		if(bonus != null){
 			//Excommunication Effect debuff
 			for(String key : bonus.getResourceSet().keySet()){
