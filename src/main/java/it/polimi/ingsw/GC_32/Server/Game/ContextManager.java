@@ -33,7 +33,7 @@ public class ContextManager{
 			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
 					player.getUUID(),
 					ContextType.CHANGE,
-					(int)extraInfo[0], (JsonArray)extraInfo[1], (JsonArray)extraInfo[2] // see ServerMessageFactory
+					action.getAdditionalInfo().get("CARDNAME").asString(), (JsonArray)extraInfo[0], (JsonArray)extraInfo[1] // see ServerMessageFactory
 					));
 			waitingContextResponseSet.add("CHANGE");
 			break;
