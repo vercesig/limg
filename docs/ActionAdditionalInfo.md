@@ -8,3 +8,4 @@ Some optional information are useful for the MoveChecker.
 
 * {FAMILYMEMBER_ID: 0}
 * {INDEX_EFFECT: 0 }
+* {CARDNAME : "card_name"} required by some effects to open a more human friendly context

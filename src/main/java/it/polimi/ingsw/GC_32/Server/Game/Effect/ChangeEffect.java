@@ -41,7 +41,7 @@ public class ChangeEffect {
 		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
 				ArrayList<ResourceSet> changeList = chanches;
-				cm.openContext(ContextType.CHANGE,p,a,resourceInArray,resourceOutArray);
+				cm.openContext(ContextType.CHANGE,p,a,a.getAdditionalInfo().get("CARDNAME").asString(),resourceInArray,resourceOutArray);
 				/*try{
 					p.getResources().addResource(changeList.get(a.getAdditionalInfo().get("INDEX_EFFECT").asInt()));
 					if(p.getResources().hasNegativeValue()){

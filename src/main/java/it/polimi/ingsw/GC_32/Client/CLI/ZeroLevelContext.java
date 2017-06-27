@@ -33,7 +33,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 	
 	public void open(Object object){
 		
-		runFlag = true;		
+		runFlag = true;	
+		String cardName = null;
 		
 		while(runFlag){
 			System.out.println("type a command:\n- board: display the board status\n- players: display players' status"
@@ -186,7 +187,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 							System.out.println("type a valid number");
 						}
 					}
-					
+										
 					switch(regionID){
 					case 0:
 						actionType = "PRODUCTION";
@@ -212,6 +213,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 									this.client.getBoard().getRegionList().get(regionID)
 									.getActionSpaceList().get(spaceID).getCardName());
 							System.out.println(card);
+							
+							cardName = card.asObject().get("name").asString();
+							
 							try{
 								JsonArray costList = card.asObject().get("cost").asArray();
 								if(costList.size() == 1){
@@ -273,7 +277,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 					}
 				}	
 				// sending ASKACT message
-				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost));
+				sendQueue.add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
 				
 				System.out.println("action sent to the server... waiting for response");
 				

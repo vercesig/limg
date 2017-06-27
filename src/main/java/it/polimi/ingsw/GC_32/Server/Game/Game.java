@@ -195,7 +195,8 @@ public class Game implements Runnable{
 							Action action = new Action(actionType,actionValue,regionID,spaceID);
 							action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
 							action.getAdditionalInfo().add("COSTINDEX", Jsonmessage.get("COSTINDEX").asInt()); // Cost Index
-
+							action.getAdditionalInfo().add("CARDNAME", Jsonmessage.get("CARDNAME").asString());
+							
 							Player player = playerList.get(index);
 							memoryAction.put(player.getUUID(), action);
 							
