@@ -383,7 +383,7 @@ public class Game implements Runnable{
 				//		waitingContextResponseSet.add("CHANGE");
 					}
 					waitingContextResponseSet.add("SERVANT");
-					return;
+					break;
 				case "COUNCIL":
 					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
@@ -391,7 +391,7 @@ public class Game implements Runnable{
 							ContextType.PRIVILEGE,
 							1));
 					waitingContextResponseSet.add("PRIVILEGE");
-					return;
+					break;
 				case "MARKET":
 					if(action.getActionSpaceId() == 2){
 						LOGGER.info("spedisco context");
@@ -401,7 +401,7 @@ public class Game implements Runnable{
 								2));
 						waitingContextResponseSet.add("PRIVILEGE");
 					}
-					return;		
+					break;	
 				default:
 					break;
 			}
