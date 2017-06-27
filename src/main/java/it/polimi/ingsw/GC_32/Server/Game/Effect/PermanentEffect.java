@@ -7,6 +7,10 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
+import it.polimi.ingsw.GC_32.Server.Game.Player;
+import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
@@ -32,7 +36,7 @@ public class PermanentEffect {
 		else
 			flag = false;
 		
-		Effect permanentEffect = (b, p, a) -> {
+		Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
 			
 			if((a.getActionType().equals(actionType) && a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
 				System.out.println("ATTIVATO EFFETTO PERMANENTE");
@@ -51,7 +55,7 @@ public class PermanentEffect {
 			else 
 				return;
 		};
-		return permanentEffect;
+		return e;
 	};
 	
 	public static void loadBuilder() {

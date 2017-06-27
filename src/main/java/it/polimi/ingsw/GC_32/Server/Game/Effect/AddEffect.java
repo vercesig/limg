@@ -6,6 +6,7 @@ import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
@@ -28,7 +29,7 @@ public class AddEffect {
 			int value = payload.asObject().get(resourceType).asInt();
 			resourceSet.setResource(resourceType, value);			
 		}
-		Effect e = (Board b, Player p, Action a) ->	{
+		Effect e = (Board b, Player p, Action a, ContextManager cm) ->	{
 			
 			// Excomunicate Negative buff: 
 			// se ho addEffect di Wood devo perdere una Stone e un Wood;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 /**
@@ -11,5 +12,5 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  */
 @FunctionalInterface
 public interface Effect{
-	void apply(Board b, Player p, Action a);
+	void apply(Board b, Player p, Action a, ContextManager cm);
 }

@@ -30,7 +30,7 @@ public class BonusEffect {
 			return player -> ((Player) player).getResources().getResource(forEach.asString())/quantity.asInt();
 		};
 	
-		Effect bonusEffect = (Board b, Player p, Action a) -> {
+		Effect bonusEffect = (Board b, Player p, Action a, ContextManager cm) -> {
 			Function<Player,Integer> howManyTimes = typeEffect.apply(type.asString().equals("CARD"),p);
 			p.getResources().addResource(increase.asString(), increasingQuantity.asInt()*howManyTimes.apply(p));
 		};

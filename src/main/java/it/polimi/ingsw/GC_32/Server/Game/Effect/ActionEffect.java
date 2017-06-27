@@ -4,6 +4,7 @@ package it.polimi.ingsw.GC_32.Server.Game.Effect;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Server.Game.Action;
+import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
@@ -11,7 +12,7 @@ public class ActionEffect {
 
 	static EffectBuilder actionEffectBuilder = (JsonValue payload) -> {
 		
-		Effect actionEffect = (Board b, Player p, Action a) -> {
+		Effect actionEffect = (Board b, Player p, Action a, ContextManager cm) -> {
 			JsonValue actionPayload = payload;
 			p.makeAction(actionPayload);
 		};

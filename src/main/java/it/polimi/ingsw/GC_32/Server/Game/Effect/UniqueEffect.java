@@ -5,7 +5,7 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 public class UniqueEffect {
 
 	// annulla il bonus. Da usare su board deepCopiata e non dovra' sostituire la board Originale.
-	static Effect noTowerActionSpaceBonus = (b, p, a) ->{
+	static Effect noTowerActionSpaceBonus = (b, p, a, cm) ->{
 		if(a.getActionRegionId() != b.getMarketRegion().getRegionID()){
 			ResourceSet bonus =b.getRegion(a.getActionRegionId()).getActionSpace(a.getActionSpaceId())
 			.getBonus();
@@ -13,7 +13,7 @@ public class UniqueEffect {
 		}
 	};
 	// No Market Action
-	static Effect noMarketAction = (b, p, a) -> {
+	static Effect noMarketAction = (b, p, a, cm) -> {
 		if(a.getActionRegionId() == b.getMarketRegion().getRegionID()){
 			a.invalidate();
 		}
