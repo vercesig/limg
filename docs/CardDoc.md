@@ -110,7 +110,7 @@ for example this effect allows to change 1 stone for 2 faith points or 1 wood fo
 * ACTION: allows to perform one action of type TYPE whit action value ACTIONVALUE applying the discount BONUSRESOURCE when taking a new card (the EXCLUSIVEBONUS flag is needed to indicate if the discount is applicable only to one specific resource, if the disconut field allows to choose more then one resource to discount). The field REGIONID is needed to individuate a specific region on the board (for example the action can be performed only on a yellow tower). the FLAGREGION attribute if setted to the specific value "ALL" indicate that there is no limit on the region on which the action can be performed (for example the action can be performed on all the towers, without limit on the tower color). Payload format:
 ```
 {
-  "TYPE" : HARVESTACTION ,
+  "TYPE" : "HARVESTACTION" ,
     "REGIONID" : 5,
     "BONUSACTIONVALUE" : 3,
     "BONUSRESOURCE" : {"WOOD" : -1,
@@ -138,7 +138,16 @@ for example this effect allows to increase the player's military points of 2 for
 ```
 Like CHANGE effect, PRIVILEGE effects need the client cooperation. So when a PRIVILEGE is applied a context will be show on client-side screen to allow the client to choose which resource he want to convert his council privileges.
 
-* PERMANENT: those effects are used to map permanent effect characterizing character cards. The payload has the same format of an ACTION effect
+* PERMANENT: those effects are used to map permanent effect characterizing character cards. The payload has the same format of an ACTION effect, the difference between this effect type and ACTION type is that ACTION is always an instant effect, while PERMANENT is often used like permanent effect. Payload format:
+```
+{ "TYPE" : "HARVESTACTION" ,
+    "REGIONID" : 5,
+    "BONUSACTIONVALUE" : 3,
+    "BONUSRESOURCE" : [{"WOOD" : -1,
+                       "COINS" -1},{"STONE" : -1}],
+    "EXCLUSIVEBONUS" : true,
+	"FLAGREGION": "ALL" }
+```
 
 According to this format, more complex cards are in this way abstracted:
 
