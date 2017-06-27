@@ -49,7 +49,7 @@ public class Game implements Runnable{
 	private MoveChecker mv;
 	
 	// context management
-	private HashMap<ContextType , Object[]> contextQueue;
+	//private HashMap<ContextType , Object[]> contextQueue;
 	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
 	private HashMap<String, Action> memoryAction;
@@ -59,7 +59,7 @@ public class Game implements Runnable{
 	public Game(ArrayList<Player> players){
 		
 		this.mv = new MoveChecker();
-		this.contextQueue = new HashMap<ContextType, Object[]>();
+		//this.contextQueue = new HashMap<ContextType, Object[]>();
 		this.memoryAction = new HashMap<String, Action>();
 		waitingContextResponseSet = new HashSet<String>();
 		contextInfoContainer = new HashMap<String, JsonValue>();
@@ -164,14 +164,14 @@ public class Game implements Runnable{
 		
 		while(runGameFlag){
 			
-			// controllo se ci sono context da aprire context, in caso positivo li apro
-			if(!this.contextQueue.isEmpty()){
+			// controllo se ci sono context da aprire, in caso positivo li apro
+			/*if(!this.contextQueue.isEmpty()){
 				for(Entry<ContextType, Object[]> context : contextQueue.entrySet()){
 					waitingContextResponseSet.add(context.getKey().toString());
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(getLock(), context.getKey(), context.getValue()));
 				}
 				contextQueue.clear();
-			}
+			}*/
 			
 			if(MessageManager.getInstance().hasMessage()){
 				MessageManager.getInstance().getRecivedQueue().forEach(message -> {

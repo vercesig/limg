@@ -28,6 +28,9 @@ public class ChangeEffect {
 		
 		payloadList.forEach(item -> {
 			JsonObject obj = item.asObject();
+			
+			
+			
 			ResourceSet resourceSet = new ResourceSet();
 			
 			

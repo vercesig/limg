@@ -208,52 +208,10 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[1]);
 			break;
 		case CHANGE:
-			List<DevelopmentCard> changeCards = (LinkedList<DevelopmentCard>) payload[0];
+			CONTEXTpayload.add("NAME", (String) payload[0]);
 			
-			JsonArray CONTEXTchangeArray = new JsonArray();			
-			
-			for(DevelopmentCard card : changeCards){
-				JsonObject jsonCard = null;
-				try {
-					jsonCard = JsonImporter.importSingleCard(cardFile, card.getName()).asObject();
-				}catch(IOException e) {}
-				
-				JsonValue permanentPayload = jsonCard.get("permanentPayload");
-				JsonArray tmp = new JsonArray();
-				
-				if(permanentPayload.isArray())
-					tmp = (JsonArray) permanentPayload;
-				else
-					tmp.add(permanentPayload);
-				
-				JsonArray cardPacket = new JsonArray();
-				cardPacket.add(changeCards.indexOf(card)); // indice carta nell'array
-				
-				int effectID = 0;
-				for(JsonValue v : permanentPayload.asArray()){
-					Iterator<Member> changePayload = v.asObject().iterator();
-					
-					JsonObject cost = new JsonObject();
-					JsonObject benefit = new JsonObject();
-					
-					while(changePayload.hasNext()){
-						Member item = changePayload.next();
-						if(item.getValue().asInt()<0)
-							cost.add(item.getName(), item.getValue().asInt());
-						else
-							benefit.add(item.getName(), item.getValue().asInt());
-					}
-					cardPacket.add(effectID);
-					cardPacket.add(cost.toString());
-					cardPacket.add(benefit.toString());
-					
-					cardPacket.add(card.getName());
-					
-					CONTEXTchangeArray.add(cardPacket);
-					effectID++;
-				}
-			}
-			CONTEXTpayload.add("CHANGEARRAY", CONTEXTchangeArray.toString());
+			CONTEXTpayload.add("RESOURCEIN", (JsonArray) payload[1]);
+			CONTEXTpayload.add("RESOURCEOUT", (JsonArray) payload[2]);
 			break;
 		}	
 		CONTEXT.add("PAYLOAD", CONTEXTpayload);
