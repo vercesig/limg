@@ -26,7 +26,7 @@ the semantic of the various field is the following:
 
 * **name**: the name of the card
 * **cost**: the cost of the card (in this case null because territory cards has no cost)
-* **requirements**: the necessary requirements, understood as resources, that the player must have for pay the card's cost (and so take it).
+* **requirements**: the necessary requirements, understood as resources, that the player must own to pay the card's cost (and so take it).
 * **instantEffect**: the typology of instant effect which characterizes the card
 * **instantPayload**: this field specifics the behavior of the specific effect of the card. the arguments which fill this field will be used by the **EffectBuilder** to generate the correct effect of the card. The parser (i.e. **JsonImporter**) will associate the effect to the card.
 * **permanentEffect**: the typology of instant effect which characterizes the card
