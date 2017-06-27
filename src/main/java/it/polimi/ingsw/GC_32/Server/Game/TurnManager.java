@@ -3,7 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +14,7 @@ public class TurnManager {
 	private int turnID;
 	private int roundID;
 	
-	private LinkedList<String> turnOrderQueue;
+	private LinkedList<UUID> turnOrderQueue;
 	
 	private Game game;
 	
@@ -24,23 +24,23 @@ public class TurnManager {
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		this.turnOrderQueue = new LinkedList<String>();
+		this.turnOrderQueue = new LinkedList<>();
 		
 		LOGGER.log(Level.INFO, "setting first turn order");
 		
 		// scelta ordine casuale del turno
 		int playerListSize = game.getPlayerList().size();
-		ArrayList<String> tmp = new ArrayList<String>();		
+		ArrayList<UUID> tmpPlayerList = new ArrayList<>();		
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int i=0; i<playerListSize; i++){
 			list.add(new Integer(i));
 		}
 		Collections.shuffle(list);
 		for(int i=0; i<playerListSize; i++){
-			tmp.add(game.getPlayerList().get(list.get(i)).getUUID());
+			tmpPlayerList.add(game.getPlayerList().get(list.get(i)).getUUID());
 		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
-			tmp.forEach(UUID -> turnOrderQueue.add(UUID));
+			tmpPlayerList.forEach(UUID -> turnOrderQueue.add(UUID));
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class TurnManager {
 	}
 	
 	// restituisce il player a cui passare il lock
-	public String nextPlayer(){
+	public UUID nextPlayer(){
 		turnID++;		
 		return turnOrderQueue.poll();
 	}

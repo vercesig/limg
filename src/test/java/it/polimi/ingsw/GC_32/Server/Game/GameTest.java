@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,10 +13,11 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import static org.mockito.Mockito.*;
 
+import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
-import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
 public class GameTest {
@@ -31,54 +33,32 @@ public class GameTest {
 		try{
 			setup.loadCard("test.json");
 		}
-		catch(IOException e){
-			
-		}
+		catch(IOException e){}
+		this.playerList = new ArrayList<Player>();
+		this.playerOne = new Player();
+		playerList.add(playerOne);
+		GameRegistry.getInstance().registerPlayer(playerOne, ConnectionType.FAKE);
+		this.game = new Game(playerList, UUID.randomUUID());
 	}
 	
 	@Test
 	public void checkGetPlayerList(){
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
 		assertNotNull(this.game.getPlayerList());
 	}
 	
 	@Test
 	public void checkGetBoard(){
-		this.playerList = new ArrayList<Player>();
-		this.playerOne = new Player();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
 		assertNotNull(this.game.getBoard());
 	}
 	
 	@Test
 	public void checkGetDeck(){
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
 		Deck<DevelopmentCard> deck = new Deck<DevelopmentCard>();
 		assertNotNull(this.game.getDeck("TERRITORYCARD"));
 	}
 		
 	@Test
 	public void checkGetExcomunitcationCard(){
-		Setup setup = new Setup();
-		try{
-			setup.loadCard("test.json");
-		}
-		catch(Exception e){}
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
 		ExcommunicationCard card = new ExcommunicationCard("TEST", 1);
 		assertNotNull(this.game.getExcommunicationCard(1));
 	}
@@ -98,18 +78,12 @@ public class GameTest {
 	
 	@Test
 	public void checkLock(){
-		this.playerOne = new Player();
-		this.playerList = new ArrayList<Player>();
-		this.playerList.add(playerOne);
-		PlayerRegistry.getInstance().addPlayer(playerOne);
-		this.game = new Game(playerList);
-		this.game.setLock("TESTLOCK");
+		this.game.setLock(this.playerOne.getUUID());
 		assertEquals("TESTLOCK", this.game.getLock());
 	}
 	
 	@Test
 	public void checkBoardNotNull(){
-		this.game = new Game(new ArrayList<Player>());
 		assertNotNull(this.game.getBoard());
 	}
 }

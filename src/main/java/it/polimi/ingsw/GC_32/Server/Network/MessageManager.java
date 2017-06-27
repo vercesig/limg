@@ -1,10 +1,15 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -15,21 +20,21 @@ public class MessageManager {
 	private final static Logger LOGGER = Logger.getLogger(MessageManager.class.getName());
 	
 	private static MessageManager instance;
-	private ConcurrentLinkedQueue<GameMessage> reciveQueue;
+	private ConcurrentLinkedQueue<GameMessage> commonReceiveQueue;
+	private HashMap<UUID,ConcurrentLinkedQueue<GameMessage>> gameReceiveQueueList;
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
 	
-	private Game game;
-	
-	private Set<String> filterMessageTypeSet;
+	protected Set<String> chatMessageTypeSet;
 	
 	private MessageManager(){
-		this.reciveQueue = new ConcurrentLinkedQueue<GameMessage>();
-		this.RMISendQueue = new ConcurrentLinkedQueue<GameMessage>();
-		this.socketSendQueue = new ConcurrentLinkedQueue<GameMessage>();
-		this.filterMessageTypeSet = new HashSet<String>();
-		this.filterMessageTypeSet.add("SMSG");
-		this.filterMessageTypeSet.add("CHGNAME");
+		this.commonReceiveQueue = new ConcurrentLinkedQueue<>();
+		this.gameReceiveQueueList = new HashMap<>();
+		this.RMISendQueue = new ConcurrentLinkedQueue<>();
+		this.socketSendQueue = new ConcurrentLinkedQueue<>();
+		this.chatMessageTypeSet = new HashSet<>();
+		this.chatMessageTypeSet.add("SMSG");
+		this.chatMessageTypeSet.add("CHGNAME");
 	}
 	
 	public static MessageManager getInstance(){
@@ -40,33 +45,34 @@ public class MessageManager {
 	}
 	
 	public void putRecivedMessage(GameMessage message){
-		if(filterMessageTypeSet.contains(message.getOpcode())){
-			message.setAsBroadcastMessage();
-			reciveQueue.add(message);
+		if(chatMessageTypeSet.contains(message.getOpcode())){
+			message.setBroadcast();
+			commonReceiveQueue.add(message);
 			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 			return;
 		}
-		if(message.getPlayerID().equals(game.getLock())){
-			reciveQueue.add(message);
+		if(message.getPlayerUUID().equals(GameRegistry.getInstance()
+													  .getGame(message.getGameID())
+													  .getLock())){
+			this.gameReceiveQueueList.get(message.getGameID()).add(message);
 			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 		}
 	}
 	
 	public void sendMessge(GameMessage gameMessage){
-		if(gameMessage.isBroadcastMessage()){
+		if(gameMessage.isBroadcast()){
 			socketSendQueue.add(gameMessage);
 			LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
 			RMISendQueue.add(gameMessage);
 			LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to RMI sendQueue");
 		}else{
-			if(PlayerRegistry.getInstance().getConnectionMode(gameMessage.getPlayerID()) == ConnectionType.SOCKET){
+			if(GameRegistry.getInstance().getConnectionMode(gameMessage.getPlayerUUID()) == ConnectionType.SOCKET){
 				socketSendQueue.add(gameMessage);
 				LOGGER.log(Level.INFO, "add new message ("+gameMessage.getOpcode()+") to socket sendQueue");
 			}else{
 				RMISendQueue.add(gameMessage);
 			}	
 		}
-		
 	}
 	
 	public ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
@@ -77,16 +83,23 @@ public class MessageManager {
 		return this.RMISendQueue;
 	}
 	
-	public ConcurrentLinkedQueue<GameMessage> getRecivedQueue(){
-		return this.reciveQueue;
-	}
-	
-	public boolean hasMessage(){
-		return !reciveQueue.isEmpty();
-	}
-	
 	public void registerGame(Game game){
-		this.game = game;
+		this.gameReceiveQueueList.put(game.getUUID(), new ConcurrentLinkedQueue<>());
 	}
 	
+	public ConcurrentLinkedQueue<GameMessage> getQueueForGame(UUID uuid){
+		return this.gameReceiveQueueList.get(uuid);
+	}
+	
+	public ConcurrentLinkedQueue<GameMessage> getCommonReceiveQueue(){
+		return this.commonReceiveQueue;
+	}
+	
+	public static GameMessage parsePacker(String packet, UUID playerID){
+		JsonObject parsedMessage = Json.parse(packet).asObject();						
+		return new GameMessage(UUID.fromString(parsedMessage.get("GameID").asString()), 
+											   playerID,
+											   parsedMessage.get("MESSAGETYPE").asString(),
+											   parsedMessage.get("PAYLOAD"));
+	}
 }

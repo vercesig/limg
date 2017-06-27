@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Common.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.util.LinkedList;
 

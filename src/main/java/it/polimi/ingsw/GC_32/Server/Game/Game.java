@@ -5,18 +5,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
-import it.polimi.ingsw.GC_32.Common.Network.ServerMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
@@ -26,7 +24,8 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
-import it.polimi.ingsw.GC_32.Server.Network.PlayerRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
+import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
 
 public class Game implements Runnable{
@@ -43,7 +42,7 @@ public class Game implements Runnable{
 	private int whiteDice;
 	private int orangeDice;
 		
-	private String lock;
+	private UUID lock;
 	
 	private TurnManager turnManager;
 	private MoveChecker mv;
@@ -53,16 +52,18 @@ public class Game implements Runnable{
 	//private HashMap<ContextType , Object[]> contextQueue;
 	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
-	private HashMap<String, Action> memoryAction;
+	private HashMap<UUID, Action> memoryAction;
+	private final UUID uuid;
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players){
-		
+	public Game(ArrayList<Player> players, UUID uuid){
+		this.uuid = uuid;
 		this.mv = new MoveChecker();
-		this.cm = new ContextManager();
+		this.cm = new ContextManager(this);
+		MessageManager.getInstance().registerGame(this);
 		//this.contextQueue = new HashMap<ContextType, Object[]>();
-		this.memoryAction = new HashMap<String, Action>();
+		this.memoryAction = new HashMap<>();
 		waitingContextResponseSet = new HashSet<String>();
 		contextInfoContainer = new HashMap<String, JsonValue>();
 		
@@ -90,6 +91,7 @@ public class Game implements Runnable{
 		Collections.shuffle(list);
 		
 		for(int i=0,j=0; i<playerList.size(); i++,j++){
+			playerList.get(i).registerGame(this.uuid);
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
 			playerList.get(i).getResources().setResource("SERVANTS", 3);
@@ -110,7 +112,7 @@ public class Game implements Runnable{
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 
 		playerList.forEach(player -> {
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(player));
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player));
 		});
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
@@ -121,15 +123,15 @@ public class Game implements Runnable{
 		
 		// svuoto la recivedQueue dai messaggi di game setting
 		LOGGER.log(Level.INFO, "processing game setting messages..");
-		MessageManager.getInstance().getRecivedQueue().forEach(message -> {
-			JsonObject JsonMessage = Json.parse(message.getMessage()).asObject();
+		/*MessageManager.getInstance().getQueueForGame(this.uuid).forEach(message -> {
+			JsonObject JsonMessage = message.getMessage().asObject();
 			switch(message.getOpcode()){
 			case "CHGNAME":
-				int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
+				int playerIndex = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()));
 				this.playerList.get(playerIndex).setPlayerName(JsonMessage.get("NAME").asString());
 				LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" setted his name to "+JsonMessage.get("NAME").asString());
 
-				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildNAMECHGmessage(message.getPlayerID(), JsonMessage.get("NAME").asString()));
+				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildNAMECHGmessage(this, message.getPlayerID(), JsonMessage.get("NAME")));
 				break;
 			}
 			MessageManager.getInstance().getRecivedQueue().clear();
@@ -138,17 +140,17 @@ public class Game implements Runnable{
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) {}
-		});
+		});*/
 		LOGGER.log(Level.INFO, "done");
 		
 		LOGGER.log(Level.INFO, "ready to play");
 		this.board.placeCards(this);
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
 		LOGGER.log(Level.INFO, "notified players on card layout");
 		
 		diceRoll();
 		LOGGER.log(Level.INFO, "dice rolled");
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(blackDice, whiteDice, orangeDice));
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
@@ -160,7 +162,7 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 		
 		// ask action
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
 		
 		//MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTMessage(getLock(), null));
 		
@@ -175,20 +177,16 @@ public class Game implements Runnable{
 				contextQueue.clear();
 			}*/
 			
-			if(MessageManager.getInstance().hasMessage()){
-				MessageManager.getInstance().getRecivedQueue().forEach(message -> {
-					JsonObject Jsonmessage = Json.parse(message.getMessage()).asObject();
+			if(MessageManager.getInstance().getQueueForGame(this.uuid).size() > 0){
+				MessageManager.getInstance().getQueueForGame(this.uuid).forEach(message -> {
+					JsonObject Jsonmessage = message.getMessage().asObject();
 					switch(message.getOpcode()){
-						case "CHGNAME":
-							int playerIndex = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()));
-							this.playerList.get(playerIndex).setPlayerName(Jsonmessage.get("NAME").asString());
-							LOGGER.log(Level.INFO, "player "+message.getPlayerID()+" changed name to "+Jsonmessage.get("NAME").asString());
-							break;
 						case "ASKACT":
 							LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
-							int index = playerList.indexOf(PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID())); 
+							int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
 							int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
-							int actionValue = PlayerRegistry.getInstance().getPlayerFromID(message.getPlayerID()).getFamilyMember()[pawnID].getActionValue();
+							int actionValue = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())
+																		.getFamilyMember()[pawnID].getActionValue();
 
 							int regionID = Jsonmessage.get("REGIONID").asInt();
 							int spaceID = Jsonmessage.get("SPACEID").asInt();
@@ -215,9 +213,9 @@ public class Game implements Runnable{
 				    			
 				    			// notifiche server
 				    			playerList.forEach(p -> {
-				    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
+				    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, p));
 				    			});
-				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));
+				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
 				    		}
 				    		break;
 						case "TRNEND":
@@ -236,21 +234,21 @@ public class Game implements Runnable{
 								setLock(turnManager.nextPlayer());
 								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 								// ask action
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(getLock()));
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
 							}else{
 								LOGGER.log(Level.INFO, "game end");
 								//stopGame();
 							}
 							break;
 						case "CONTEXTREPLY" :{
-							JsonValue contextReply = Json.parse(message.getMessage());
+							JsonValue contextReply = message.getMessage();
 							
 							contextInfoContainer.put(contextReply.asObject().get("CONTEXT_TYPE").asString(), contextReply.asObject().get("PAYLOAD"));
 							waitingContextResponseSet.remove(contextReply.asObject().get("CONTEXT_TYPE").asString());						
 							
 							if(waitingContextResponseSet.isEmpty()){
 								
-								Player playerReply = PlayerRegistry.getInstance().getPlayerFromID(getLock());
+								Player playerReply = GameRegistry.getInstance().getPlayerFromID(getLock());
 								Action actionReply = memoryAction.get(getLock());
 								
 								System.out.println("CONTEXT: retry simulateWithCopy");
@@ -265,9 +263,9 @@ public class Game implements Runnable{
 									
 									
 									playerList.forEach(p -> {
-					    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(p));
+					    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, p));
 					    			});
-					    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(getBoard()));	
+					    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));	
 					    		}
 							}
 							memoryAction.remove(getLock());
@@ -277,7 +275,6 @@ public class Game implements Runnable{
 					}
 					
 				});
-				MessageManager.getInstance().getRecivedQueue().clear();
 			}
 		}
 	}
@@ -298,8 +295,12 @@ public class Game implements Runnable{
 		return this.board;
 	}
 	
-	public String getLock(){
+	public UUID getLock(){
 		return this.lock;
+	}
+	
+	public UUID getUUID(){
+		return this.uuid;
 	}
 	
 	public Deck<DevelopmentCard> getDeck(String type){
@@ -318,7 +319,7 @@ public class Game implements Runnable{
 		return this.excommunicationCards[period-1];
 	}
 	
-	public void setLock(String player){
+	public void setLock(UUID player){
 		this.lock = player;
 	}
 	
@@ -367,7 +368,8 @@ public class Game implements Runnable{
 				case "HARVEST":
 					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-							player.getUUID(), 
+							this,
+							player, 
 							ContextType.SERVANT, 
 							player.getResources().getResource("SERVANTS"),action.getActionType()));
 					//sbagliato: non e' vero che tutte le volte che faccio un'azione production apro un context CHANGE
@@ -389,7 +391,8 @@ public class Game implements Runnable{
 				case "COUNCIL":
 					LOGGER.info("spedisco context");
 					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-							player.getUUID(),
+							this,
+							player,
 							ContextType.PRIVILEGE,
 							1));
 					waitingContextResponseSet.add("PRIVILEGE");
@@ -398,7 +401,8 @@ public class Game implements Runnable{
 					if(action.getActionSpaceId() == 2){
 						LOGGER.info("spedisco context");
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-								player.getUUID(),
+								this,
+								player,
 								ContextType.PRIVILEGE,
 								2));
 						waitingContextResponseSet.add("PRIVILEGE");

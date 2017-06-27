@@ -15,10 +15,10 @@ import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Client.Network.SocketMsgConnection;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-import it.polimi.ingsw.GC_32.Common.Network.ClientMessageFactory;
 
 public class MainClient{
 

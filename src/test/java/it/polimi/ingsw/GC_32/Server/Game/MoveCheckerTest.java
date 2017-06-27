@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class MoveCheckerTest {
 		p = new Player();
 		ArrayList <Player> playerList = new ArrayList <Player>();
 		playerList.add(p);
-		g = new Game(playerList);
+		g = new Game(playerList, UUID.randomUUID());
 		b = g.getBoard();
 		
 		a1 = new Action("TEST", 3, 0, 5); // Tower

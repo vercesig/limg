@@ -45,20 +45,4 @@ public class SocketMsgConnection implements MsgConnection{
 	public void kill(){
 		this.stop = true;
 	}
-	
-	/*public void main(String[] args) throws IOException{
-		SocketMsgConnection connection = new SocketMsgConnection();
-		connection.open();
-		
-		while(true){
-			if(connection.hasMessage()){
-				System.out.println("messaggio\n");
-				System.out.println(connection.getMessage());
-			}
-			if(this.stop){
-				break;
-			}
-		}
-	}*/
-	
 }

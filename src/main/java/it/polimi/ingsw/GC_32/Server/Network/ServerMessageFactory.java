@@ -1,19 +1,15 @@
-package it.polimi.ingsw.GC_32.Common.Network;
+package it.polimi.ingsw.GC_32.Server.Network;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonObject.Member;
-import com.eclipsesource.json.JsonValue;
+import com.eclipsesource.json.Json;
 
+import it.polimi.ingsw.GC_32.Common.Network.ContextType;
+import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
@@ -21,14 +17,10 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.CouncilRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
-import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ServerMessageFactory {
 	
 	private final static Logger LOGGER = Logger.getLogger(ServerMessageFactory.class.getName());
-	
-	private static InputStreamReader cardFile = new InputStreamReader(ServerMessageFactory.class.getClassLoader().getResourceAsStream("test.json"));
 	
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();
@@ -122,22 +114,22 @@ public class ServerMessageFactory {
 		LOGGER.log(Level.INFO, "packaging game player list...");
 		
 		// playerList
-		game.getPlayerList().forEach(player -> GMSTRTplayers.add(player.getUUID()));
+		game.getPlayerList().forEach(player -> GMSTRTplayers.add(player.getUUID().toString()));
 		GMSTRT.add("PLAYERLIST", GMSTRTplayers.toString());
-		GameMessage GMSTRTmessage = new GameMessage(null, "GMSTRT", GMSTRT.toString());
-		GMSTRTmessage.setAsBroadcastMessage();
+		GameMessage GMSTRTmessage = new GameMessage(game.getUUID(), null, "GMSTRT", GMSTRT);
+		GMSTRTmessage.setBroadcast();
 		
 		LOGGER.log(Level.INFO, "done, GMSTRT ready to be sent");		
 		
 		return GMSTRTmessage;
 	}
 	
-	public static GameMessage buildSTATCHNGmessage(Player player){
+	public static GameMessage buildSTATCHNGmessage(Game game, Player player){
 		JsonObject STATCHNG = new JsonObject();
  		JsonObject STATCHNGCardpayload = new JsonObject();
  		
  		STATCHNG.add("RESOURCE", player.getResources().toJson().toString());
- 		STATCHNG.add("PLAYERID", player.getUUID());
+ 		STATCHNG.add("PLAYERID", player.getUUID().toString());
  		
  		player.getPersonalBoard().getCards().forEach((type,cardList)->{
  			JsonArray tmpCardArray = new JsonArray();
@@ -149,22 +141,22 @@ public class ServerMessageFactory {
  		
 		STATCHNG.add("BONUSTILE", player.getPersonalBonusTile().toString());
  		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
- 		GameMessage STATCHNGmessage = new GameMessage(player.getUUID(), "STATCHNG", STATCHNG.toString());
- 		STATCHNGmessage.setAsBroadcastMessage();
+ 		GameMessage STATCHNGmessage = new GameMessage(game.getUUID(), player.getUUID(), "STATCHNG", STATCHNG);
+ 		STATCHNGmessage.setBroadcast();
  		return STATCHNGmessage;
 }
 	
-	public static GameMessage buildNAMECHGmessage(String playerUUID, String name){
+	public static GameMessage buildNAMECHGmessage(Game game, String playerUUID, String name){
 		JsonObject NAMECHG = new JsonObject();
 		NAMECHG.add("PLAYERID",playerUUID);
 		NAMECHG.add("NAME", name);
-		GameMessage NAMECHGmessage = new GameMessage(null,"NAMECHG",NAMECHG.toString());
-		NAMECHGmessage.setAsBroadcastMessage();
+		GameMessage NAMECHGmessage = new GameMessage(game.getUUID(), null,"NAMECHG", NAMECHG);
+		NAMECHGmessage.setBroadcast();
 		return NAMECHGmessage;
 	}
 	
 	
-	public static GameMessage buildCHGBOARDSTATmessage(Board board){
+	public static GameMessage buildCHGBOARDSTATmessage(Game game, Board board){
  		JsonObject CHGBOARDSTAT = new JsonObject();
  		CHGBOARDSTAT.add("TYPE", "BOARD");
  		JsonArray CHGBOARDSTATpayload = new JsonArray();
@@ -185,12 +177,12 @@ public class ServerMessageFactory {
  		}
  		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload.toString());
  		
- 		GameMessage CHGBOARDSTATmessage = new GameMessage(null, "CHGBOARDSTAT", CHGBOARDSTAT.toString());
- 		CHGBOARDSTATmessage.setAsBroadcastMessage();		
+ 		GameMessage CHGBOARDSTATmessage = new GameMessage(game.getUUID(), null, "CHGBOARDSTAT", CHGBOARDSTAT);
+ 		CHGBOARDSTATmessage.setBroadcast();		
  		return CHGBOARDSTATmessage;
 }
 		
-	public static GameMessage buildCONTEXTmessage(String playerUUID, ContextType type, Object...payload){
+	public static GameMessage buildCONTEXTmessage(Game game, Player player, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
 		CONTEXT.add("CONTEXTID", type.getContextID());	
 		JsonObject CONTEXTpayload = new JsonObject();
@@ -215,30 +207,30 @@ public class ServerMessageFactory {
 			break;
 		}	
 		CONTEXT.add("PAYLOAD", CONTEXTpayload);
-		return new GameMessage(playerUUID, "CONTEXT", CONTEXT.toString());
+		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);
 	}
 	
-	public static GameMessage buildACKCONTEXTMessage(String playerUUID) {					
-		return new GameMessage(playerUUID, "ACKCONTEXT", "CONTEXT OPERATION SUCCEDED!"); 
+	public static GameMessage buildACKCONTEXTMessage(Game game, Player player) {					
+		return new GameMessage(game.getUUID(), player.getUUID(), "ACKCONTEXT", Json.value("CONTEXT OPERATION SUCCEDED!")); 
 	} 
 	
 	
-	public static GameMessage buildDICEROLLmessage(int blackDice, int whiteDice, int orangeDice){
+	public static GameMessage buildDICEROLLmessage(Game game, int blackDice, int whiteDice, int orangeDice){
 		JsonObject DICEROLL = new JsonObject();
 		DICEROLL.add("BLACKDICE", blackDice);
 		DICEROLL.add("WHITEDICE",whiteDice);
 		DICEROLL.add("ORANGEDICE", orangeDice);
 		
-		GameMessage DICEROLLmessage = new GameMessage(null, "DICEROLL", DICEROLL.toString());
-		DICEROLLmessage.setAsBroadcastMessage();
+		GameMessage DICEROLLmessage = new GameMessage(game.getUUID(), null, "DICEROLL", DICEROLL);
+		DICEROLLmessage.setBroadcast();
 		return DICEROLLmessage;
 	}
 	
-	public static GameMessage buildTRNBGNmessage(String playerUUID){
+	public static GameMessage buildTRNBGNmessage(Game game, UUID uuid){
 		JsonObject TRNBGN = new JsonObject();
-		TRNBGN.add("PLAYERID", playerUUID);
-		GameMessage TRNBGNmessage = new GameMessage(null, "TRNBGN", TRNBGN.toString());
-		TRNBGNmessage.setAsBroadcastMessage();
+		TRNBGN.add("PLAYERID", uuid.toString());
+		GameMessage TRNBGNmessage = new GameMessage(game.getUUID(), null, "TRNBGN", TRNBGN);
+		TRNBGNmessage.setBroadcast();
 		return TRNBGNmessage;
 	}
 }

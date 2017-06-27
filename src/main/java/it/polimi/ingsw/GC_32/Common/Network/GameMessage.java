@@ -1,23 +1,38 @@
 package it.polimi.ingsw.GC_32.Common.Network;
 
-public class GameMessage{
+import java.util.UUID;
 
-	private String playerID;
-	private String message;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+
+public class GameMessage{
+	private UUID gameID;
+	private UUID playerID;
+	private JsonValue message;
 	private String opcode;
-	private boolean broadcastMessage;
+	private boolean broadcast;
 	
-	public GameMessage(String playerID, String opcode, String message){
+	public GameMessage(UUID gameID, UUID playerID, String opcode, JsonValue message){
+		this.gameID = gameID;
 		this.playerID = playerID;
 		this.message = message;
 		this.opcode = opcode;
+		this.broadcast = false;
+	}
+	
+	public UUID getGameID(){
+		return this.gameID;
 	}
 	
 	public String getPlayerID(){
+		return this.playerID.toString();
+	}
+	
+	public UUID getPlayerUUID(){
 		return this.playerID;
 	}
 	
-	public String getMessage(){
+	public JsonValue getMessage(){
 		return this.message;
 	}
 	
@@ -25,16 +40,24 @@ public class GameMessage{
 		return this.opcode;
 	}
 	
-	public void setAsBroadcastMessage(){
-		this.broadcastMessage = true;
-	}
-	
-	public boolean isBroadcastMessage(){
-		try{
-			return broadcastMessage;
-		}catch(NullPointerException e){
-			return false;
+	public JsonValue toJson(){
+		JsonObject json = new JsonObject();
+		if(gameID != null){
+			json.add("GameID", gameID.toString());
+		} else {
+			json.add("GameID", "");
 		}
+		json.add("PlayerID", getPlayerID());
+		json.add("MESSAGETYPE", opcode);
+		json.add("PAYLOAD", message);
+		return json;
 	}
 	
+	public boolean isBroadcast(){
+		return this.broadcast;
+	}
+	
+	public void setBroadcast(){
+		this.broadcast = true;
+	}
 }

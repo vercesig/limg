@@ -1,7 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 import com.eclipsesource.json.JsonValue;
@@ -20,7 +19,8 @@ public class Player {
 	private ResourceSet resources;
 	private PersonalBonusTile personalBonusTile;
 	private FamilyMember[] familyMemberList;
-	private final String uuid;
+	private final UUID uuid;
+	private UUID gameID;
 	
 	private ArrayList<String> excomunicateFlag;
 	
@@ -38,7 +38,7 @@ public class Player {
 		familyMemberList[1].setColor(DiceColor.BLACK);
 		familyMemberList[2].setColor(DiceColor.WHITE);
 		familyMemberList[3].setColor(DiceColor.ORANGE);
-		this.uuid = UUID.randomUUID().toString();
+		this.uuid = UUID.randomUUID();
 		this.effectList = new ArrayList<Effect>();
 	}
 	
@@ -50,8 +50,12 @@ public class Player {
 		this.personalBonusTile = bonusTile;
 		}
 	
-	public String getUUID() {
+	public UUID getUUID(){
 		return uuid;
+	}
+	
+	public String getID(){
+		return uuid.toString();
 	}
 	
 	public PersonalBoard getPersonalBoard(){
@@ -116,7 +120,10 @@ public class Player {
     
     public String toString(){
     	StringBuilder tmp = new StringBuilder();
-    	tmp.append("name :"+this.name+"\nUUID :"+this.uuid+"\nresources :"+this.resources.toString()+"\nPERSONALBOARD :"+this.personalBoard.toString());
+    	tmp.append("name :"+this.name+"\n"
+    			 + "UUID :"+this.uuid.toString()+"\n"
+    			 + "resources :"+this.resources.toString()+"\n"
+    			 + "PERSONALBOARD :"+this.personalBoard.toString());
     	tmp.append("stato dei familiari: \n");
     	for(FamilyMember f : familyMemberList){
     		tmp.append(f.toString()+"\n");
@@ -131,7 +138,7 @@ public class Player {
     
     // richiede di effettuare un azione a seguito dell'attivazione di un effeto
     public void makeAction(JsonValue payload){
-    	GameMessage message = new GameMessage(this.uuid,"TURNBGN", payload.toString());
+    	GameMessage message = new GameMessage(this.gameID, this.uuid,"TURNBGN", payload);
     	MessageManager.getInstance().sendMessge(message);
     }
     
@@ -144,6 +151,14 @@ public class Player {
     
     public PersonalBonusTile getPersonalBonusTile(){
     	return this.personalBonusTile;
+    }
+    
+    public void registerGame(UUID gameID){
+    	this.gameID = gameID;
+    }
+    
+    public UUID getGameID(){
+    	return this.gameID;
     }
     
 }

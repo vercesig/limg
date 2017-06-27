@@ -12,7 +12,6 @@ public class SocketMsgConnection implements MsgConnection{
 	private Socket socket;
 	private Scanner in;
 	private PrintWriter out;
-	private boolean stop;
 	
 	public void open() throws IOException{
 		socket = new Socket("localhost",9500);
@@ -38,10 +37,5 @@ public class SocketMsgConnection implements MsgConnection{
 	
 	public boolean hasMessage() throws IOException{
 		return socket.getInputStream().available() > 0;
-	}
-	
-	public void stop(){
-		this.stop = true;
-	}
-			
+	}		
 }

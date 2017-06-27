@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 

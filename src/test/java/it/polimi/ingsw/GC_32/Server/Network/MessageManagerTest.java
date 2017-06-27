@@ -3,9 +3,14 @@ package it.polimi.ingsw.GC_32.Server.Network;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
+import com.eclipsesource.json.Json;
+
 import org.junit.Rule;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
@@ -24,11 +29,11 @@ public class MessageManagerTest {
 	@Test
 	public void checkPutRecivedMessage(){
 		String message = "test message";
-		
-		GameMessage testGameMessage = new GameMessage("Test_UUID","TESTMSG",message);
+		UUID gameUUID = UUID.randomUUID();
+		GameMessage testGameMessage = new GameMessage(gameUUID, UUID.randomUUID(), "TESTMSG", Json.value(message));
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
-		assertTrue(MessageManager.getInstance().getRecivedQueue().contains(testGameMessage));
+		assertTrue(MessageManager.getInstance().getQueueForGame(gameUUID).contains(testGameMessage));
 	}
 	
 	@Test
@@ -39,14 +44,14 @@ public class MessageManagerTest {
 		Player testPlayerRMI = new Player();
 		String messageRMI = "test message";
 		
-		PlayerRegistry.getInstance().registerPlayer(testPlayerSocket.getUUID(), ConnectionType.SOCKET);
-		PlayerRegistry.getInstance().registerPlayer(testPlayerRMI.getUUID(), ConnectionType.RMI);
+		GameRegistry.getInstance().registerPlayer(testPlayerSocket, ConnectionType.SOCKET);
+		GameRegistry.getInstance().registerPlayer(testPlayerRMI, ConnectionType.RMI);
 		
-		GameMessage testGameMessageSocket = new GameMessage(testPlayerSocket.getUUID(),null,messageSocket);
+		GameMessage testGameMessageSocket = new GameMessage(null, testPlayerSocket.getUUID(),null, Json.value(messageSocket));
 		MessageManager.getInstance().sendMessge(testGameMessageSocket);
 		assertTrue(MessageManager.getInstance().getSocketSendQueue().contains(testGameMessageSocket));
 		
-		GameMessage testGameMessageRMI = new GameMessage(testPlayerRMI.getUUID(),null,messageRMI);
+		GameMessage testGameMessageRMI = new GameMessage(null, testPlayerRMI.getUUID(), null, Json.value(messageRMI));
 		MessageManager.getInstance().sendMessge(testGameMessageRMI);
 		assertTrue(MessageManager.getInstance().getRMISendQueue().contains(testGameMessageRMI));		
 	}
@@ -54,14 +59,15 @@ public class MessageManagerTest {
 	@Test
 	public void checkHasMessage(){
 		Game game = mock(Game.class);
-		when(game.getLock()).thenReturn("Test_UUID");
+		UUID testUUID = UUID.randomUUID();
+		when(game.getLock()).thenReturn(testUUID);
 		String message = "test message";
 		MessageManager.getInstance().registerGame(game);
 		
-		GameMessage testGameMessage = new GameMessage("Test_UUID","TSTMSG",message);
+		GameMessage testGameMessage = new GameMessage(null, testUUID,"TSTMSG", Json.value(message));
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
-		assertTrue(MessageManager.getInstance().hasMessage());	
+		assertTrue(MessageManager.getInstance().getCommonReceiveQueue().size() > 0);	
 	}
 	
 	@Test
@@ -76,7 +82,7 @@ public class MessageManagerTest {
 	
 	@Test
 	public void checkGetRecivedQueue(){
-		assertNotNull(MessageManager.getInstance().getRecivedQueue());
+		assertNotNull(MessageManager.getInstance().getCommonReceiveQueue());
 	}
 	
 	
