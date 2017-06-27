@@ -202,8 +202,8 @@ public class MainClient{
 						client.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
 						client.getPlayers().forEach((UUID,player)->{
 							player.getFamilyMembers()[1].setActionValue(blackDice);
-							player.getFamilyMembers()[2].setActionValue(whiteDice);
-							player.getFamilyMembers()[3].setActionValue(orangeDice);
+							player.getFamilyMembers()[2].setActionValue(orangeDice);
+							player.getFamilyMembers()[3].setActionValue(whiteDice);
 						});
 						//System.out.println("[MAINCLIENT] set dice value to ["+blackDice+","+whiteDice+","+orangeDice+"]");
 						break;
