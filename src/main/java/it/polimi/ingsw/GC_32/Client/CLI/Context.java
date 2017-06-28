@@ -10,6 +10,8 @@ public abstract class Context{
 	protected boolean runFlag;
 	protected String command;
 	protected boolean actionRunningGameFlag;
+	protected String gameUUID;
+	protected String playerUUID;
 	
 	public Context(){
 		this.in = new Scanner(System.in);
@@ -19,6 +21,14 @@ public abstract class Context{
 		this.sendQueue = sendQueue;
 	}
 		
+	public void registerGameUUID(String gameUUID){
+		this.gameUUID = gameUUID;
+	}
+	
+	public void registerPlayerUUID(String playerUUID){
+		this.playerUUID = playerUUID;
+	}
+	
 	public void registerActionRunningGameFlag(boolean flag){
 		this.actionRunningGameFlag = flag;
 	}

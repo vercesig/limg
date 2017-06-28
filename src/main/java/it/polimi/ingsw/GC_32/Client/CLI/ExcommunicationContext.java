@@ -2,6 +2,8 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
+
 public class ExcommunicationContext extends Context{
 
 	
@@ -22,23 +24,23 @@ public class ExcommunicationContext extends Context{
 		while(runFlag){
 			command = in.nextLine();
 			switch(command){
-			case "y":
-				response.add("APPLYEXCOMMUNICATION", false);
-				sendQueue.add(response.toString());
+			case "yes":
+				if(playerFaithPoints<faithPointsNeeded){
+					System.out.println("Sorry, but unfortunately you don't have enough faith points.\n"
+							+ "You should type: n\nI hope the excommunicate card won't be a serious problem for you...");
+					break;
+				}
+				sendQueue.add(ClientMessageFactory.buldSENDPOPEmessage(gameUUID, playerUUID, false, faithPointsNeeded));
 				close();
 				break;
-			case "n":
-				response.add("APPLYEXCOMMUNICATION", true);
-				sendQueue.add(response.toString());
+			case "no":
+				System.out.println("The Pope is really angry with you.\nYOU HAVE BEEN EXCOMMUNICATED!");
+				sendQueue.add(ClientMessageFactory.buldSENDPOPEmessage(gameUUID, playerUUID, true, faithPointsNeeded));
 				close();
 				break;
 			default:
 				System.out.println("type a valid command");
-			}
-			
+			}		
 		}
-		
-		
 	}
-	
 }

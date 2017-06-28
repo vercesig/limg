@@ -274,6 +274,15 @@ public class MainClient{
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
 						break;
+					case "ENDGAME":
+						client.getClientInterface().displayMessage("END OF THE GAME!\nthe final score is:\n");
+						StringBuilder display = new StringBuilder();
+						for( String key: client.getPlayers().keySet()){
+							display.append(client.getPlayers().get(key).getName() +": " +
+											messagePayload.get(key).asInt());
+						}	
+						client.getClientInterface().displayMessage(new String(display));
+						break;
 				}
 			}
 		}
