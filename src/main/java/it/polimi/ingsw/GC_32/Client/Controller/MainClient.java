@@ -148,10 +148,9 @@ public class MainClient{
 						break;
 					case "CONNEST":
 						client.myUUID = messagePayload.get("PLAYERID").asString();
+
 						client.getPlayers().put(client.myUUID, new ClientPlayer());
-						
-						client.getPlayers().get(client.getUUID()).setName(myName);
-						
+						client.getPlayers().get(client.myUUID).setName(myName);
 						
 						client.graphicInterface.registerUUID(client.getUUID());
 						client.graphicInterface.registerSendMessageQueue(client.getSendQueue());
@@ -160,7 +159,7 @@ public class MainClient{
 						JsonArray playerList = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();
 						// registrazione gameUUID
 						client.gameUUID = messagePayload.get("GAMEUUID").asString();
-						client.getClientInterface().registerUUID(client.gameUUID);
+						client.getClientInterface().registerGameUUID(client.gameUUID);
 						
 						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 						
