@@ -39,6 +39,7 @@ public class GameLobby {
 		}
 		UUID newGameId = UUID.randomUUID();
 		game = new Game(GameRegistry.getInstance().getConnectedPlayers(), newGameId);
+		GameRegistry.getInstance().registerGame(game);
 		LOGGER.log(Level.INFO, "new game created with "+game.getPlayerList().size()+" players");
 		LOGGER.log(Level.INFO, "launching game thread");
 		Thread gameThread = new Thread(game);

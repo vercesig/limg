@@ -22,7 +22,7 @@ public class ClientMessageFactory {
 		ASKACTpayload.add("REGIONID", regionID);
 		ASKACTpayload.add("SPACEID", spaceID);
 		ASKACTpayload.add("COSTINDEX", indexCost);
-		ASKACTpayload.add("CARDNAME", cardName);
+		ASKACTpayload.add("CARDNAME", cardName==null ? "" : cardName);
 		ASKACT.add("MESSAGETYPE", "ASKACT");
 		ASKACT.add("PAYLOAD", ASKACTpayload);
 		ASKACT.add("GameID", gameUUID);

@@ -51,6 +51,9 @@ public class MessageManager {
 			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 			return;
 		}
+		
+		System.out.println(message.getGameID()+"|"+GameRegistry.getInstance().getGame(message.getGameID()));
+		
 		if(message.getPlayerUUID().equals(GameRegistry.getInstance()
 													  .getGame(message.getGameID())
 													  .getLock())){
