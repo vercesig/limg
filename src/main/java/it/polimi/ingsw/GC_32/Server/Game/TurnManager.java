@@ -68,6 +68,7 @@ public class TurnManager {
 	
 	public boolean isPeriodEnd(){
 		return roundID!=0&&roundID%2==0;
+	//	return true;
 	}
 	
 	public boolean isGameEnd(){

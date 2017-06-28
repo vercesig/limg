@@ -68,24 +68,29 @@ public class EndPhase {
 				}	
 				int score = player.getResources().getResource("VICTORY_POINTS");
 				
-				// carte territorio
-				if(!player.getExcomunicateFlag().contains("NOENDGREEN")){
-					score =+ json.get("TERRITORYCARD").asObject()
-											    .get( ((Integer)player.getPersonalBoard()
-											    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
-				}
-				
+				try{
+					// carte territorio
+					if(!player.getExcomunicateFlag().contains("NOENDGREEN")){
+						score =+ json.get("TERRITORYCARD").asObject()
+												    .get( ((Integer)player.getPersonalBoard()
+							    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
+					}
+				} catch (NullPointerException e){}
+					
 				// carte personaggio
-				if(!player.getExcomunicateFlag().contains("NOENDBLUE")){
-					score =+ json.get("CHARACTERCARD").asObject()
-						    					.get( ((Integer)player.getPersonalBoard()
-						    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
-				}
+				
+				try{
+					if(!player.getExcomunicateFlag().contains("NOENDBLUE")){
+						score =+ json.get("CHARACTERCARD").asObject()
+							    					.get( ((Integer)player.getPersonalBoard()
+							    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
+					}
+				} catch (NullPointerException e){}
 				
 				// military
 				if(militaryScore.getFirst().getUUID().equals(player.getUUID())){
-				score = score + firstMilitary;
-				} 
+					score = score + firstMilitary;
+					} 
 				else
 					if(militaryScore.getLast().getUUID().equals(player.getUUID())){
 				
@@ -114,13 +119,14 @@ public class EndPhase {
 				if(player.getExcomunicateFlag().contains("LESSFORMILITARY")){
 					score -= player.getResources().getResource("MILITARY_POINTS");
 				}
+
 				// perdi un punto vittoria per ogni wood e stone nei costi carte building
 				if(player.getExcomunicateFlag().contains("LESSFORBUILDING")){
 					for(DevelopmentCard card : player.getPersonalBoard().getCardsOfType("BUILDINGCARD")){
 						score -= countBuildingCost(card.getCost().get(0)); // Carte Building hanno un solo costo
 					}
 				}
-				finalScore.add(player.getName(), score); // jsonObject
+				finalScore.add(player.getID(), score); // jsonObject
 			});
 			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));
 			
