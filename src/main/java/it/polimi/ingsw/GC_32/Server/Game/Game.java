@@ -219,6 +219,7 @@ public class Game implements Runnable{
 								LOGGER.log(Level.INFO, "round end");
 								
 								if(turnManager.isPeriodEnd()){
+						//		if(turnManager.getTurnID() == 2){
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 									int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 									
