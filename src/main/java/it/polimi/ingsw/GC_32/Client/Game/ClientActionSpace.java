@@ -53,7 +53,7 @@ public class ClientActionSpace {
 	}
 	
 	public String[] getInfoContainer(){
-		String[] infoContainer = new String[7];
+		String[] infoContainer = new String[8];
 		infoContainer[0] = regionID.toString();
 		infoContainer[1] = actionSpaceID.toString();
 		infoContainer[2] = actionValue.toString();
