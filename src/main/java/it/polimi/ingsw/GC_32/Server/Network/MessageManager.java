@@ -5,11 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -20,15 +18,15 @@ public class MessageManager {
 	private final static Logger LOGGER = Logger.getLogger(MessageManager.class.getName());
 	
 	private static MessageManager instance;
-	private ConcurrentLinkedQueue<GameMessage> commonReceiveQueue;
-	private HashMap<UUID,ConcurrentLinkedQueue<GameMessage>> gameReceiveQueueList;
+	private LinkedBlockingQueue<GameMessage> commonReceiveQueue;
+	private HashMap<UUID,LinkedBlockingQueue<GameMessage>> gameReceiveQueueList;
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
 	
 	protected Set<String> chatMessageTypeSet;
 	
 	private MessageManager(){
-		this.commonReceiveQueue = new ConcurrentLinkedQueue<>();
+		this.commonReceiveQueue = new LinkedBlockingQueue<>();
 		this.gameReceiveQueueList = new HashMap<>();
 		this.RMISendQueue = new ConcurrentLinkedQueue<>();
 		this.socketSendQueue = new ConcurrentLinkedQueue<>();
@@ -84,22 +82,14 @@ public class MessageManager {
 	}
 	
 	public void registerGame(Game game){
-		this.gameReceiveQueueList.put(game.getUUID(), new ConcurrentLinkedQueue<>());
+		this.gameReceiveQueueList.put(game.getUUID(), new LinkedBlockingQueue<>());
 	}
 	
-	public ConcurrentLinkedQueue<GameMessage> getQueueForGame(UUID uuid){
+	public LinkedBlockingQueue<GameMessage> getQueueForGame(UUID uuid){
 		return this.gameReceiveQueueList.get(uuid);
 	}
 	
-	public ConcurrentLinkedQueue<GameMessage> getCommonReceiveQueue(){
+	public LinkedBlockingQueue<GameMessage> getCommonReceiveQueue(){
 		return this.commonReceiveQueue;
-	}
-	
-	public static GameMessage parsePacker(String packet, UUID playerID){
-		JsonObject parsedMessage = Json.parse(packet).asObject();						
-		return new GameMessage(UUID.fromString(parsedMessage.get("GameID").asString()), 
-											   playerID,
-											   parsedMessage.get("MESSAGETYPE").asString(),
-											   parsedMessage.get("PAYLOAD"));
 	}
 }

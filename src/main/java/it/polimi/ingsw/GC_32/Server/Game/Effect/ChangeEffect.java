@@ -37,16 +37,10 @@ public class ChangeEffect {
 		});
 		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
-				ArrayList<ResourceSet> changeList = chanches;
-				cm.openContext(ContextType.CHANGE,p,a,resourceInArray,resourceOutArray);
-				/*try{
-					p.getResources().addResource(changeList.get(a.getAdditionalInfo().get("INDEX_EFFECT").asInt()));
-					if(p.getResources().hasNegativeValue()){
-						a.invalidate();
-					}
-				}catch(NullPointerException e){
-					Logger.getLogger("").log(Level.SEVERE, "context", e);
-				}*/
+				JsonArray cmPayload = new JsonArray();
+				cmPayload.add(resourceInArray);
+				cmPayload.add(resourceOutArray);
+				cm.openContext(ContextType.CHANGE,p,a,payload);
 			};	
 		return changeEffect;
 	};
