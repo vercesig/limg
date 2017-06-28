@@ -73,8 +73,6 @@ public class ClientBoard {
 		int numberOfActionSpaces = towerList.get(0).getActionSpaceList().size();
 		String[] infoContainerMask = {"regionID","actionSpaceID","actionValue","singleFlag","blocked","bonus","occupants","card"};
 		
-		System.out.println(infoContainerMask.length);
-		
 		for(int i=numberOfActionSpaces-1; i>=0; i--){ // actionSpace
 			for(int w=0; w<infoContainerMask.length; w++){ // informations
 				for(int j=0; j<towerList.size(); j++){ // tower
