@@ -53,6 +53,7 @@ public class ClientMessageFactory {
 		SENDPOPEPayload.add("ANSWER", answer);
 		SENDPOPEPayload.add("FAITH_NEEDED", faith);
 		SENDPOPEPayload.add("PLAYERID", name);
+		SENDPOPE.add("MESSAGETYPE", "SENDPOPE");
 		SENDPOPE.add("PAYLOAD", SENDPOPEPayload);
 		SENDPOPE.add("GameID", gameUUID);
 		return SENDPOPE.toString();

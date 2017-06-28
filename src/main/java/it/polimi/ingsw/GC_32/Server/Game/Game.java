@@ -201,9 +201,11 @@ public class Game implements Runnable{
 						boolean answer = Jsonmessage.get("ANSWER").asBoolean();
 						int points = Jsonmessage.get("FAITH_NEEDED").asInt();
 						if(answer){ // true ==> scomunica
+							System.out.println("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
 							///...
 						}
 						else{
+							System.out.println("PAGAAA....DEVI PAGAREE!!!");
 							int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -points);
 						}
@@ -219,16 +221,16 @@ public class Game implements Runnable{
 								LOGGER.log(Level.INFO, "round end");
 								
 								if(turnManager.isPeriodEnd()){
-						//		if(turnManager.getTurnID() == 2){
+								
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 									int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 									
-									playerList.forEach(p -> {
-										MessageManager.getInstance().sendMessge(ServerMessageFactory
+									Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+									MessageManager.getInstance().sendMessge(ServerMessageFactory
 													  .buildCONTEXTmessage(this, p, ContextType.EXCOMMUNICATION, 
 															excommunicationLevel,
 															p.getResources().getResource("FAITH_POINTS")));
-										});
+										
 								}
 								LOGGER.log(Level.INFO, "giving lock to the next player");
 								UUID nextPlayer = turnManager.nextPlayer();
