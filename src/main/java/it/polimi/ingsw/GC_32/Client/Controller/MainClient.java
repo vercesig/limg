@@ -161,7 +161,9 @@ public class MainClient{
 						client.gameUUID = messagePayload.get("GAMEUUID").asString();
 						client.getClientInterface().registerGameUUID(client.gameUUID);
 						
-						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.gameUUID,
+																					 client.getUUID(), 
+																					 client.getPlayers().get(client.getUUID()).getName()));
 						
 						playerList.forEach(player -> {
 							client.getPlayers().put(player.asString(), new ClientPlayer());
