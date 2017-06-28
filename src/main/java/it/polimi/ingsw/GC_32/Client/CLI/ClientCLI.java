@@ -21,6 +21,7 @@ public class ClientCLI implements ClientInterface{
 	private ClientBoard boardReference;
 	private HashMap<String, ClientPlayer> playerListReference;
 	private String UUID;
+	private String gameUUID;
 	
 	// network management
 	private ConcurrentLinkedQueue<Object> contextQueue;
@@ -34,11 +35,12 @@ public class ClientCLI implements ClientInterface{
 	private boolean idleRun = false;
 	private boolean wait = true; // if player is waiting he can't display action menu;
 	
-	public ClientCLI(){
+	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
 		this.contextList = new Context[5];
 		contextList[0] = new ZeroLevelContext(this);
+		
 		contextList[1] = new PrivilegeContext();
 		contextList[2] = new ServantContext();
 		contextList[3] = new ExcommunicationContext();
@@ -54,6 +56,10 @@ public class ClientCLI implements ClientInterface{
 	
 	public void registerPlayers(HashMap<String,ClientPlayer> playerList){
 		this.playerListReference = playerList;
+	}
+	
+	public void registerGameUUID(String UUID){
+		this.gameUUID = UUID;
 	}
 	
 	public void registerUUID(String UUID){
@@ -91,7 +97,7 @@ public class ClientCLI implements ClientInterface{
 	public void run(){	
 		
 		contextList[0].registerSendQueue(sendQueue);
-		
+		contextList[0].registerGameUUID(gameUUID);
 	
 		while(true){
 			if(!idleRun){

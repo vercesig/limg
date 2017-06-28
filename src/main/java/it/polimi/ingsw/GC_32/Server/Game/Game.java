@@ -54,12 +54,12 @@ public class Game implements Runnable{
 	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
 	private HashMap<UUID, Action> memoryAction;
-	private final UUID uuid;
+	private final UUID gameUUID;
 	
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players, UUID uuid){
-		this.uuid = uuid;
+		this.gameUUID = uuid;
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
@@ -92,7 +92,7 @@ public class Game implements Runnable{
 		Collections.shuffle(list);
 		
 		for(int i=0,j=0; i<playerList.size(); i++,j++){
-			playerList.get(i).registerGame(this.uuid);
+			playerList.get(i).registerGame(this.gameUUID);
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
 			playerList.get(i).getResources().setResource("SERVANTS", 3);
@@ -148,7 +148,7 @@ public class Game implements Runnable{
 		
 		while(runGameFlag){
 			try{
-				message = MessageManager.getInstance().getQueueForGame(this.uuid).take();
+				message = MessageManager.getInstance().getQueueForGame(this.gameUUID).take();
 			} catch(InterruptedException e){
 				Thread.currentThread().interrupt();
 				LOGGER.log(Level.FINEST, "InterruptedException when taking packet", e);
@@ -189,10 +189,10 @@ public class Game implements Runnable{
 			    			
 			    			// notifiche server
 			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
-			    		}
-			    		else
+			    		} else {
 		    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, false));
-			    		break;
+			    		}
+		    			break;
 					case "TRNEND":
 						LOGGER.info("ricevo turn end [GAME]");
 						if(!turnManager.isGameEnd()){
@@ -204,6 +204,14 @@ public class Game implements Runnable{
 								if(turnManager.isPeriodEnd()){
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 								}
+								LOGGER.log(Level.INFO, "giving lock to the next player");
+								setLock(turnManager.nextPlayer());
+								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+								// ask action
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
+							}else{
+								LOGGER.log(Level.INFO, "game end");
+								//stopGame();
 							}
 							LOGGER.log(Level.INFO, "giving lock to the next player");
 							setLock(turnManager.nextPlayer());
@@ -241,7 +249,7 @@ public class Game implements Runnable{
 	}
 	
 	public UUID getUUID(){
-		return this.uuid;
+		return this.gameUUID;
 	}
 	
 	public Deck<DevelopmentCard> getDeck(String type){

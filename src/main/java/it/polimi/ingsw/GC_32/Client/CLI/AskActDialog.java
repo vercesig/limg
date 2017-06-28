@@ -45,26 +45,22 @@ public class AskActDialog extends Context{
 				}						
 				command = in.nextLine();
 				try{
-					if(Integer.parseInt(command)>client.getPlayerList().get(client.getUUID()).getFamilyMembers().length -1){
-						System.out.println("Invalid Family member Index");
-						actionFlag = false;
-						break;
+					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length-1){
+						if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
+							System.out.println("the choosen family member is already busy, please enter a valid index");
+						}else{
+							actionFlag = false;
+							familyMemberIndex = Integer.parseInt(command);
+						}
 					}
-					if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
-						System.out.println("the choosen family member is already busy, please enter a valid index");
-						actionFlag = false;
-						break;
-					}else{
-						familyMemberIndex = Integer.parseInt(command);
-						break;
+					else{
+						System.out.println("Invalid Family member Index");
 					}
 				}catch(NumberFormatException e){
 					System.out.println("type a valid number");
 				}
 			}
-			if(!actionFlag){
-				break;
-			}
+			actionFlag=true;
 			System.out.println("type the regionID where you would place your pawn");
 			while(actionFlag){
 				command = in.nextLine();
@@ -72,10 +68,10 @@ public class AskActDialog extends Context{
 					if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
 						System.out.println(">region with that id does not exist");
 						System.out.println("type a number between 0-7");
-						continue;
+					}else{
+						regionID = Integer.parseInt(command);
+						actionFlag = false;
 					}
-					regionID = Integer.parseInt(command);
-					actionFlag = false;
 				}catch(NumberFormatException e){
 					System.out.println("type a valid number");
 				}
@@ -88,10 +84,10 @@ public class AskActDialog extends Context{
 					if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
 						System.out.println(">action space with that id does not exist");
 						System.out.println("type a number between 0-3");
-						continue;
+					}else{
+						spaceID = Integer.parseInt(command);
+						actionFlag = false;
 					}
-					spaceID = Integer.parseInt(command);
-					actionFlag = false;
 				}catch(NumberFormatException e){
 					System.out.println("type a valid number");
 				}
@@ -171,11 +167,9 @@ public class AskActDialog extends Context{
 				switch(command){
 				case "y":
 					actionFlag = false;
-					//endFlag = true;
 					break;
 				case "n":
 					actionFlag = false;
-					//endFlag = false;
 					return;
 				default:
 					System.out.println("please, type a valid letter");
@@ -186,7 +180,8 @@ public class AskActDialog extends Context{
 		}
 		
 		// sending ASKACT message
-		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
+		System.out.println(this.gameUUID);
+		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(this.gameUUID, actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
 		
 		System.out.println("action sent to the server... waiting for response");
 		

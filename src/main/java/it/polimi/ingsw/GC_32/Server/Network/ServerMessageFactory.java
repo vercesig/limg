@@ -117,6 +117,7 @@ public class ServerMessageFactory {
 		// playerList
 		game.getPlayerList().forEach(player -> GMSTRTplayers.add(player.getUUID().toString()));
 		GMSTRT.add("PLAYERLIST", GMSTRTplayers.toString());
+		GMSTRT.add("GAMEUUID", game.getUUID().toString());
 		GameMessage GMSTRTmessage = new GameMessage(game.getUUID(), null, "GMSTRT", GMSTRT);
 		GMSTRTmessage.setBroadcast();
 		

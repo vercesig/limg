@@ -31,6 +31,7 @@ public interface ClientInterface extends Runnable{
 	public void registerBoard(ClientBoard board);
 	public void registerPlayers(HashMap<String,ClientPlayer> playerList);
 	public void registerUUID(String UUID);
+	public void registerGameUUID(String UUID);
 	
 	//Game Change
 	public void moveFamiliar(int familiar, int regionID, int spaceID);
