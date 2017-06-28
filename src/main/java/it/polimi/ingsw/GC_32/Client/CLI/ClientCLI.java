@@ -1,13 +1,19 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
+import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ClientCLI implements ClientInterface{
 
@@ -26,6 +32,7 @@ public class ClientCLI implements ClientInterface{
 	private Thread zeroLevelContextThread;
 	
 	private boolean idleRun = false;
+	private boolean wait = true; // if player is waiting he can't display action menu;
 	
 	public ClientCLI(){
 		contextQueue = new ConcurrentLinkedQueue<Object>();
@@ -60,6 +67,10 @@ public class ClientCLI implements ClientInterface{
 	public String getUUID(){
 		return this.UUID;
 	}
+	
+	public boolean isWaiting(){
+		return this.wait;
+	}
 		
 	public HashMap<String, ClientPlayer> getPlayerList(){
 		return this.playerListReference;
@@ -71,6 +82,10 @@ public class ClientCLI implements ClientInterface{
 	
 	public void displayMessage(String message){
 		System.out.println(message);
+	}
+	
+	public ConcurrentLinkedQueue<String> getSendQueue(){
+		return this.sendQueue;
 	}
 	
 	public void run(){	
@@ -134,8 +149,8 @@ public class ClientCLI implements ClientInterface{
 	}
 
 	@Override
-	public void setTowerCards(int towerID, String[] cardArray) {
-		// TODO Auto-generated method stub
+	public void setTowerCards(int regionID, int spaceID, String cardName) {
+		this.boardReference.getRegionList().get(regionID).getActionSpaceList().get(spaceID).setCard(cardName);
 		
 	}
 
@@ -147,38 +162,58 @@ public class ClientCLI implements ClientInterface{
 
 	@Override
 	public void setDiceValue(int blackDice, int whiteDice, int orangeDice) {
-		// TODO Auto-generated method stub
+		this.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
+		this.playerListReference.forEach((UUID,player)->{
+			player.getFamilyMembers()[1].setActionValue(blackDice); 
+			player.getFamilyMembers()[2].setActionValue(whiteDice);
+			player.getFamilyMembers()[3].setActionValue(orangeDice);
+		});
 		
 	}
 
 	@Override
 	public void enableSpace(int regionID, int spaceID) {
-		// TODO Auto-generated method stub
-		
+		this.boardReference.getRegionList().get(regionID).getActionSpaceList().get(spaceID).Unlock();
 	}
 
 	@Override
 	public void disableSpace(int regionID, int spaceID) {
-		// TODO Auto-generated method stub
-		
+		this.boardReference.getRegionList().get(regionID).getActionSpaceList().get(spaceID).Lock();	
 	}
 
 	@Override
 	public void moveFamiliar(int familiar, int regionID, int spaceID) {
-		// TODO Auto-generated method stub
+		 ClientPlayer player = this.playerListReference.get(UUID);
+		 ClientFamilyMember familyMember =  player.getFamilyMembers()[familiar];
+		 familyMember.setBusyFlag(true);
+		 this.boardReference.getRegionList().get(regionID).getActionSpaceList().get(spaceID)
+		 												  .addFamilyMember(familyMember);
 		
 	}
 
 	@Override
 	public void moveCardToPlayer(String playerID, int regionID, int spaceID) {
-		// TODO Auto-generated method stub
+		ClientPlayer player = this.playerListReference.get(playerID);
+		String cardName = this.boardReference.getRegionList().get(regionID)
+											 .getActionSpaceList().get(spaceID)
+											 .getCardName();
+		Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
+		try {
+			JsonValue card = JsonImporter.importSingleCard(json, cardName);
+			player.addCard(card.asObject().get("cardType").asString(), cardName);	
+			this.setTowerCards(regionID, spaceID, cardName);
+		} 
+		catch (IOException e) {}
+		this.boardReference.getRegionList().get(regionID).getActionSpaceList()
+														 .get(spaceID)
+														 .setCard("empty");
 		
 	}
 
 	@Override
-	public void setTrackValue(String playerID, int trackID, int value) {
-		// TODO Auto-generated method stub
-		
+	public void setTrackValue(String playerID, int trackID) {
+		ClientPlayer player = this.playerListReference.get(playerID);
+		player.getTrack()[trackID].addScore(player.getPlayerResources());
 	}
 
 	@Override
@@ -187,4 +222,22 @@ public class ClientCLI implements ClientInterface{
 		
 	}
 	
+	@Override
+	public void unlockZone(int playerNumber) {
+		if(playerNumber <3){
+			disableSpace(0,1);//production
+			disableSpace(1,1);//harvest
+			disableSpace(3,2);//market
+			disableSpace(3,3);//market
+		}
+		if(playerNumber <4){
+			disableSpace(3,2);//market
+			disableSpace(3,3);//market
+		}
+	}
+	
+	@Override
+	public void waitTurn(boolean flag) {
+		this.wait = flag;
+	}
 }

@@ -62,7 +62,7 @@ public class Game implements Runnable{
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
-		//this.contextQueue = new HashMap<ContextType, Object[]>();
+	//	this.contextQueue = new HashMap<ContextType, Object[]>();
 		this.memoryAction = new HashMap<>();
 		waitingContextResponseSet = new HashSet<String>();
 		contextInfoContainer = new HashMap<String, JsonValue>();
@@ -212,11 +212,10 @@ public class Game implements Runnable{
 				    			System.out.println(player);
 				    			
 				    			// notifiche server
-				    			playerList.forEach(p -> {
-				    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, p));
-				    			});
-				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
 				    		}
+				    		else
+			    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, false));
 				    		break;
 						case "TRNEND":
 							LOGGER.info("ricevo turn end [GAME]");

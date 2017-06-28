@@ -123,7 +123,7 @@ public class MainClient{
 			while(true){
 				
 				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
-					System.out.println("YOU ARE DEAD");
+					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
 					client.actionRunningFlag=false;
 				}
 				
@@ -170,6 +170,7 @@ public class MainClient{
 						client.graphicInterface.registerPlayers(client.getPlayers());
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
 						
+						client.graphicInterface.unlockZone(client.getPlayers().size());
 						client.graphicInterface.openContext(0, null);
 						//System.out.println("[MAINCLIENT] board correctly synchronized");
 						
@@ -190,6 +191,9 @@ public class MainClient{
  								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
  						});
 						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());						
+						client.graphicInterface.setTrackValue(playerID, 0);
+						client.graphicInterface.setTrackValue(playerID, 1);
+						client.graphicInterface.setTrackValue(playerID, 2);
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
@@ -200,7 +204,7 @@ public class MainClient{
 								int regionID = card.get("REGIONID").asInt();
 								int spaceID = card.get("SPACEID").asInt();
 								String cardName = card.get("NAME").asString();
-								client.getBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).setCard(cardName);
+								client.graphicInterface.setTowerCards(regionID, spaceID, cardName);
 							});
 							//System.out.println(client.getBoard().toString());
 						}
@@ -209,26 +213,50 @@ public class MainClient{
 						int blackDice = messagePayload.get("BLACKDICE").asInt();
 						int whiteDice = messagePayload.get("WHITEDICE").asInt();
 						int orangeDice = messagePayload.get("ORANGEDICE").asInt();
-						client.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
-						client.getPlayers().forEach((UUID,player)->{
-							player.getFamilyMembers()[1].setActionValue(blackDice); 
-							player.getFamilyMembers()[2].setActionValue(whiteDice);
-							player.getFamilyMembers()[3].setActionValue(orangeDice);
-						});
-						//System.out.println("[MAINCLIENT] set dice value to ["+blackDice+","+whiteDice+","+orangeDice+"]");
+						client.graphicInterface.setDiceValue(blackDice, whiteDice, orangeDice);		
 						break;
 					case "TRNBGN":
 						String playerUUID = messagePayload.get("PLAYERID").asString();
 						if(playerUUID.equals(client.getUUID())){
-							client.getClientInterface().displayMessage("your turn is start, make an action");
 							// timer inizialization
 							client.startTimeout = System.currentTimeMillis();
 							client.actionRunningFlag=true;
+							
+							client.graphicInterface.waitTurn(false);
+							client.getClientInterface().displayMessage("your turn is start, make an action");
+							client.getClientInterface().displayMessage("> type ENTER to update your state");
+							
 						}
 						else{
+							client.graphicInterface.waitTurn(true);
 							client.getClientInterface().displayMessage("now is "+client.getPlayers().get(playerUUID).getName()+"'s turn");
 						}						
 						break;
+						
+					case "ACTCHK":
+						boolean result = messagePayload.get("RESULT").asBoolean();
+						if(!result){
+							client.graphicInterface.displayMessage("> THE ACTION IS NOT VALID!\n "
+												+ "please type a valid action.");
+							break;
+						}
+						else{
+							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
+							int regionId = messagePayload.get("REGIONID").asInt();
+							int spaceId = messagePayload.get("SPACEID").asInt();
+							int indexFamily = messagePayload.get("FAMILYMEMBER_ID").asInt();
+							String actionType = messagePayload.get("ACTIONTYPE").asString();
+							// update state
+							client.graphicInterface.moveCardToPlayer(client.getUUID(), regionId, spaceId);
+							client.graphicInterface.moveFamiliar(indexFamily, regionId, spaceId);
+							client.graphicInterface.setTrackValue(client.getUUID(), 0);
+							client.graphicInterface.setTrackValue(client.getUUID(), 1);
+							client.graphicInterface.setTrackValue(client.getUUID(), 2);
+							client.graphicInterface.waitTurn(true);
+							
+							network.sendMessage(ClientMessageFactory.buildTRNENDmessage(client.getPlayers().get(client.getUUID()).getName()));
+							break;
+						}	
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
 						break;

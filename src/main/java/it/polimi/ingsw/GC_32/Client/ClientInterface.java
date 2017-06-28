@@ -21,11 +21,12 @@ public interface ClientInterface extends Runnable{
 	public void displayMessage(String message);
 	
 	//Game Setup
-	public void setTowerCards(int towerID, String[] cardArray);
+	public void setTowerCards(int towerID, int spaceID, String name);
 	public void updateTurnOrder(String[] playerIDs);
 	public void setDiceValue(int blackDice, int whiteDice, int orangeDice);
 	public void enableSpace(int regionID, int spaceID);
 	public void disableSpace(int regionID, int spaceID);
+	public void unlockZone(int playerNumber);
 	
 	public void registerBoard(ClientBoard board);
 	public void registerPlayers(HashMap<String,ClientPlayer> playerList);
@@ -34,6 +35,7 @@ public interface ClientInterface extends Runnable{
 	//Game Change
 	public void moveFamiliar(int familiar, int regionID, int spaceID);
 	public void moveCardToPlayer(String playerID, int regionID, int spaceID);
-	public void setTrackValue(String playerID, int trackID, int value);
+	public void setTrackValue(String playerID, int trackID);
 	public void setCurrentPlayer(String playerID);
+	public void waitTurn(boolean flag);
 }

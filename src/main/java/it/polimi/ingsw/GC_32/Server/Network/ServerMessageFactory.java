@@ -10,6 +10,7 @@ import com.eclipsesource.json.Json;
 
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
@@ -212,6 +213,21 @@ public class ServerMessageFactory {
 	
 	public static GameMessage buildACKCONTEXTMessage(Game game, Player player) {					
 		return new GameMessage(game.getUUID(), player.getUUID(), "ACKCONTEXT", Json.value("CONTEXT OPERATION SUCCEDED!")); 
+	} 
+	
+public static GameMessage buildACTCHKmessage(Game game, Player player, Action action, boolean result) {					
+		
+		JsonObject payload = new JsonObject();
+		if(result){
+			payload.add("RESULT", true);
+			payload.add("REGIONID", action.getActionRegionId());
+			payload.add("SPACEID", action.getActionSpaceId());
+			payload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt());
+			payload.add("ACTIONTYPE", action.getActionType());
+		}
+		else
+			payload.add("RESULT", false);
+		return new GameMessage(game.getUUID(), player.getUUID(), "ACTCHK", payload);
 	} 
 	
 	

@@ -27,6 +27,13 @@ public class ClientMessageFactory {
 		return ASKACT.toString();
 	}
 	
-	
+	public static String buildTRNENDmessage(String name){
+		JsonObject TRNEND = new JsonObject();
+		JsonObject TRNENDPayload = new JsonObject();
+		TRNEND.add("MESSAGETYPE", "TRNEND");
+		TRNENDPayload.add("NAME", name);
+		TRNEND.add("PAYLOAD", TRNENDPayload);
+		return TRNEND.toString();
+	}
 	
 }

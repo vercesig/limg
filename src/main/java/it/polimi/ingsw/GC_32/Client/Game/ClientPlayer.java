@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import it.polimi.ingsw.GC_32.Client.Track;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ClientPlayer {
@@ -13,6 +14,7 @@ public class ClientPlayer {
 	private String name;
 	private ClientFamilyMember[] familyMembers = new ClientFamilyMember[4];
 	private String bonusTile;
+	private Track[] track = new Track[3];
 	
 	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
@@ -25,6 +27,10 @@ public class ClientPlayer {
 		this.playerResources.setResource("MILITARY_POINTS", 0);
 		this.playerResources.setResource("VICTORY_POINTS", 0);
 		this.playerResources.setResource("FAITH_POINTS", 0);
+		
+		track[0] = new Track("MILITARY_POINTS");
+		track[1] = new Track("FAITH_POINTS");
+		track[2] = new Track("VICTORY_POINTS");
 		
 		for(int i=0; i<familyMembers.length; i++){
 			familyMembers[i] = new ClientFamilyMember(this.name);
@@ -50,6 +56,10 @@ public class ClientPlayer {
 	
 	public ClientFamilyMember[] getFamilyMembers(){
 		return this.familyMembers;
+	}
+	
+	public Track[] getTrack(){
+		return this.track;
 	}
 	
 	public void addCard(String cardType, String card){

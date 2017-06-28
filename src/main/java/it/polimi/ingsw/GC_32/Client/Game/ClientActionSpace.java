@@ -16,6 +16,7 @@ public class ClientActionSpace {
 	private Boolean single;
 	// solo per tower region
 	private String cardName;
+	private Boolean blocked;
 	
 	public ResourceSet getBonus(){
 		return this.bonus;
@@ -28,6 +29,7 @@ public class ClientActionSpace {
 		this.single = single;
 		this.actionSpaceID = actionSpaceID;
 		this.regionID = regionID;
+		this.blocked = false;
 	}
 	
 	public void setCard(String cardName){
@@ -38,12 +40,25 @@ public class ClientActionSpace {
 		return this.cardName;	
 	}
 	
+	public void Lock(){
+		this.blocked = true;
+	}
+	
+	public void Unlock(){
+		this.blocked = false;
+	}
+	
+	public void addFamilyMember(ClientFamilyMember familyMember){
+		this.occupants.add(familyMember);
+	}
+	
 	public String[] getInfoContainer(){
 		String[] infoContainer = new String[7];
 		infoContainer[0] = regionID.toString();
 		infoContainer[1] = actionSpaceID.toString();
 		infoContainer[2] = actionValue.toString();
 		infoContainer[3] = single.toString();
+		infoContainer[4] = blocked.toString();
 		if(bonus!=null){		
 			// soluzione orrenda per mettere una rapida pezza al toString ClientBoard
 			HashMap<String,String> tmp = bonus.getDecomposedResourceSetString();
@@ -56,17 +71,17 @@ public class ClientActionSpace {
 				}
 			}			
 			
-			infoContainer[4] = tmpStringBuilder.toString();
+			infoContainer[5] = tmpStringBuilder.toString();
 		}
 		else
-			infoContainer[4] = "NO BONUS";
+			infoContainer[5] = "empty";
 		StringBuilder occupantsString = new StringBuilder();
 		occupants.forEach(familiar -> occupantsString.append(familiar.toString()+","));
-		infoContainer[5] = new String(occupantsString);
+		infoContainer[6] = new String(occupantsString);
 		if(cardName!=null)
-			infoContainer[6] = cardName;
+			infoContainer[7] = cardName;
 		else
-			infoContainer[6] = "";
+			infoContainer[7] = "empty";
 		
 		return infoContainer;
 	}
@@ -74,7 +89,7 @@ public class ClientActionSpace {
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("regionID :"+this.regionID+"\nactionSpaceID :"+this.actionSpaceID+"\nactionValue :"
-				+this.actionValue+"\nsingleFlag :"+this.single+"\n");
+				+this.actionValue+"\nsingleFlag :"+this.single+"\nblocked :" + this.blocked);
 		try{
 			tmp.append("bonus :"+bonus.toString()+"\n");
 		}catch(NullPointerException e){
