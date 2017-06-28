@@ -212,12 +212,11 @@ public class ServerMessageFactory {
 		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);
 	}
 	
-	public static GameMessage buildACKCONTEXTMessage(Game game, Player player) {					
-		return new GameMessage(game.getUUID(), player.getUUID(), "ACKCONTEXT", Json.value("CONTEXT OPERATION SUCCEDED!")); 
+	public static GameMessage buildCONTEXTACKMessage(Game game, Player player, boolean accepted) {					
+		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXTACK", Json.value(accepted)); 
 	} 
 	
-public static GameMessage buildACTCHKmessage(Game game, Player player, Action action, boolean result) {					
-		
+	public static GameMessage buildACTCHKmessage(Game game, Player player, Action action, boolean result) {
 		JsonObject payload = new JsonObject();
 		if(result){
 			payload.add("RESULT", true);

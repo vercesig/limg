@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Common.Network;
 
 import java.util.UUID;
 
+import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
@@ -17,6 +18,15 @@ public class GameMessage{
 		this.playerID = playerID;
 		this.message = message;
 		this.opcode = opcode;
+		this.broadcast = false;
+	}
+	
+	public GameMessage(String packet, UUID playerID){
+		JsonObject parsedMessage = Json.parse(packet).asObject();						
+		this.gameID = UUID.fromString(parsedMessage.get("GameID").asString());
+		this.playerID = playerID;
+		this.opcode = parsedMessage.get("MESSAGETYPE").asString();
+		this.message = parsedMessage.get("PAYLOAD");
 		this.broadcast = false;
 	}
 	

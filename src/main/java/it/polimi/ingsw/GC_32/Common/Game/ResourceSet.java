@@ -1,11 +1,11 @@
 package it.polimi.ingsw.GC_32.Common.Game;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 
@@ -22,6 +22,10 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	for(Member singleResource: jsonResourceSet){
     		this.setResource(singleResource.getName(), singleResource.getValue().asInt());
     	}
+    }
+    
+    public ResourceSet(String jsonString){
+    	this(Json.parse(jsonString).asObject());
     }
 
     public void replaceResourceSet(ResourceSet resourceSet){

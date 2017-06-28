@@ -50,7 +50,7 @@ public class SocketReaderThread implements Runnable{
 				try {
 					if(socketListener.getSocketPlayerRegistry().get(playerID).getSocket().getInputStream().available()!=0){
 							Scanner tmpScanner = socketListener.getSocketPlayerRegistry().get(playerID).getScannerIn();
-							GameMessage message = MessageManager.parsePacker(tmpScanner.nextLine(), playerID);
+							GameMessage message = new GameMessage(tmpScanner.nextLine(), playerID);
 							LOGGER.log(Level.INFO, "catched new message for "+message.getPlayerID());
 							MessageManager.getInstance().putRecivedMessage(message);
 					}
