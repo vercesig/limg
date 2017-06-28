@@ -17,11 +17,9 @@ public class AskActDialog extends Context{
 	
 	private ClientCLI client;
 	private boolean flagAction;
-	private String gameUUID;
 	
-	public AskActDialog(ClientCLI client, String gameUUID){
+	public AskActDialog(ClientCLI client){
 		super();
-		this.gameUUID = gameUUID;
 		this.client = client;
 		flagAction = true;
 	}
@@ -182,6 +180,7 @@ public class AskActDialog extends Context{
 		}
 		
 		// sending ASKACT message
+		System.out.println(this.gameUUID);
 		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(this.gameUUID, actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
 		
 		System.out.println("action sent to the server... waiting for response");

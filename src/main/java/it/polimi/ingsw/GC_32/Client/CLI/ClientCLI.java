@@ -40,7 +40,6 @@ public class ClientCLI implements ClientInterface{
 		
 		this.contextList = new Context[5];
 		contextList[0] = new ZeroLevelContext(this);
-		contextList[0].registerGameUUID(gameUUID);
 		
 		contextList[1] = new PrivilegeContext();
 		contextList[2] = new ServantContext();
@@ -98,7 +97,7 @@ public class ClientCLI implements ClientInterface{
 	public void run(){	
 		
 		contextList[0].registerSendQueue(sendQueue);
-		
+		contextList[0].registerGameUUID(gameUUID);
 	
 		while(true){
 			if(!idleRun){

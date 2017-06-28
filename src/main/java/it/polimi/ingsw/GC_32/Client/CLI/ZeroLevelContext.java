@@ -1,21 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject.Member;
-import com.eclipsesource.json.JsonValue;
-
-
-import it.polimi.ingsw.GC_32.Client.Game.CardCli;
-import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
-import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
-import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
-
 public class ZeroLevelContext extends Context implements Runnable{
 
 	private ClientCLI client;
@@ -27,7 +11,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 		super();
 		this.client = client;
 		this.showCard = new ShowCardDialog(this.client);
-		this.askAct = new AskActDialog(this.client, gameUUID);
+		this.askAct = new AskActDialog(this.client);
 	}
 		
 	public void run(){
@@ -39,6 +23,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 	}
 	
 	public void open(Object object){
+		
+		askAct.registerGameUUID(gameUUID);
 		
 		runFlag = true;		
 		while(runFlag){
