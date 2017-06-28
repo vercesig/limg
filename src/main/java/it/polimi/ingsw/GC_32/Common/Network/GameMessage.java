@@ -8,14 +8,14 @@ import com.eclipsesource.json.JsonValue;
 public class GameMessage{
 	private UUID gameID;
 	private UUID playerID;
-	private JsonValue message;
+	private String message;
 	private String opcode;
 	private boolean broadcast;
 	
 	public GameMessage(UUID gameID, UUID playerID, String opcode, JsonValue message){
 		this.gameID = gameID;
 		this.playerID = playerID;
-		this.message = message;
+		this.message = message.toString();
 		this.opcode = opcode;
 		this.broadcast = false;
 	}
@@ -32,9 +32,9 @@ public class GameMessage{
 		return this.playerID;
 	}
 	
-	public JsonValue getMessage(){
+	/*public JsonValue getMessage(){
 		return this.message;
-	}
+	}*/
 	
 	public String getOpcode(){
 		return this.opcode;

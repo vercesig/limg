@@ -54,7 +54,7 @@ public class SocketListener implements Runnable{
 				
 				// inoltro del CONNEST
 				JsonObject CONNEST = new JsonObject();
-				CONNEST.add("PLAYERID", newPlayer.getUUID().toString());
+				CONNEST.add("PLAYERID", newPlayer.getID());
 				GameMessage CONNESTmessage = new GameMessage(null, newPlayer.getUUID(),"CONNEST", CONNEST);
 				MessageManager.getInstance().sendMessge(CONNESTmessage);
 				LOGGER.log(Level.INFO, "put CONNEST message in the sendQueue");
