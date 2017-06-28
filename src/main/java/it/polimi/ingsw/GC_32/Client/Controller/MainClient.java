@@ -140,7 +140,7 @@ public class MainClient{
 					String playerID;
 					
 					switch(message.get("MESSAGETYPE").asString()){					
-					case "NAMECHG":
+					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();
 						String name = messagePayload.get("NAME").asString();
 						client.getPlayers().get(playerID).setName(name);
