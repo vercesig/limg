@@ -41,6 +41,12 @@ public class ChangeEffect {
 				cmPayload.add(resourceInArray);
 				cmPayload.add(resourceOutArray);
 				cm.openContext(ContextType.CHANGE,p,a,payload);
+				
+				JsonObject contextResponse = cm.waitForContextReply().asObject();
+				int index = contextResponse.get("CHANGEID").asInt();
+				
+				p.getResources().addResource(new ResourceSet(cmPayload.get(index).asObject()));
+				p.getResources().subResource(new ResourceSet(cmPayload.get(index).asObject()));
 			};	
 		return changeEffect;
 	};

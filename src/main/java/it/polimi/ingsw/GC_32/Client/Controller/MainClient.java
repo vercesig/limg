@@ -33,7 +33,7 @@ public class MainClient{
 	private String gameUUID;
 	
 	// timer management
-	private int ACTIONTIMEOUT = 30000;
+	private int ACTIONTIMEOUT = 60000;
 	private long startTimeout = 0;
 	private boolean actionRunningFlag = false;
 	

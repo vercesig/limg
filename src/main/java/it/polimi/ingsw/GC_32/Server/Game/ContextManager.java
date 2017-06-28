@@ -48,7 +48,7 @@ public class ContextManager{
 						this.game,
 						player,
 						ContextType.PRIVILEGE,
-						extraInfo.asInt())); // number of privilege to consume
+						extraInfo.asObject().get("NUMBER").asInt())); // number of privilege to consume
 				waitingContextResponse = "PRIVILEGE";
 				break;
 			default:
@@ -70,7 +70,7 @@ public class ContextManager{
 			}
 			if(message != null && message.getOpcode().equals("CONTEXTREPLY")){
 				JsonValue contextReply = message.getMessage();
-				String contextType = contextReply.asObject().get("OPCODE").asString();
+				String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
 				if(waitingContextResponse.equals(contextType)){
 					this.pendingMessage = message;
 					JsonValue returnValue = contextReply.asObject().get("PAYLOAD");

@@ -15,10 +15,15 @@ public class PrivilegeContext extends Context{
 		JsonObject JsonPayload = (JsonObject) payload;
 
 		int numberOfPrivilege = JsonPayload.get("NUMBER").asInt();
-		JsonObject response = new JsonObject();
-		JsonObject responsePayload = new JsonObject();
-		response.add("PAYLOAD", responsePayload);
-		response.add("CONTEXT_TYPE", "PRIVILEGE");
+		JsonObject CONTEXTREPLY = new JsonObject();
+		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
+		JsonObject CONTEXTREPLYpayload = new JsonObject();
+		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "PRIVILEGE");
+		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
+		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
+		
+		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
+		CONTEXTREPLY.add("GameID", this.gameUUID);
 		
 		System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
 				+ "be transformed into:\n- (a) 1 WOOD and 1 STONE\n- (b) 2 SERVANTS\n- (c) 2 COINS\n"
@@ -29,20 +34,20 @@ public class PrivilegeContext extends Context{
 			command = in.nextLine();
 			switch(command){
 			case "a":
-				responsePayload.add("WOOD", 1);
-				responsePayload.add("STONE", 1);
+				CONTEXTREPLYpayloadinfo.add("WOOD", 1);
+				CONTEXTREPLYpayloadinfo.add("STONE", 1);
 				break;
 			case "b":
-				responsePayload.add("SERVANTS", 2);
+				CONTEXTREPLYpayloadinfo.add("SERVANTS", 2);
 				break;
 			case "c":
-				responsePayload.add("COINS", 2);
+				CONTEXTREPLYpayloadinfo.add("COINS", 2);
 				break;
 			case "d":
-				responsePayload.add("MILITARY", 2);
+				CONTEXTREPLYpayloadinfo.add("MILITARY", 2);
 				break;
 			case "e":
-				responsePayload.add("FAITH", 1);
+				CONTEXTREPLYpayloadinfo.add("FAITH", 1);
 				break;
 			}
 			if(!choosedResources.contains(command)){
@@ -56,10 +61,8 @@ public class PrivilegeContext extends Context{
 			}
 			
 			if(numberOfPrivilege==0){
-				if(sendQueue==null){
-					System.out.println(response.toString());
-					sendQueue.add(response.toString());
-				}
+				System.out.println(CONTEXTREPLY.toString());
+				sendQueue.add(CONTEXTREPLY.toString());
 				close();
 			}
 		}

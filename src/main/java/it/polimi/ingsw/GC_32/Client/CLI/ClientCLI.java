@@ -98,7 +98,10 @@ public class ClientCLI implements ClientInterface{
 		
 		contextList[0].registerSendQueue(sendQueue);
 		contextList[0].registerGameUUID(gameUUID);
-	
+		contextList[1].registerGameUUID(gameUUID);
+		contextList[2].registerGameUUID(gameUUID);
+		contextList[3].registerGameUUID(gameUUID);
+		
 		while(true){
 			if(!idleRun){
 				idleRun=true;
@@ -203,17 +206,18 @@ public class ClientCLI implements ClientInterface{
 		String cardName = this.boardReference.getRegionList().get(regionID)
 											 .getActionSpaceList().get(spaceID)
 											 .getCardName();
-		Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
-		try {
-			JsonValue card = JsonImporter.importSingleCard(json, cardName);
-			player.addCard(card.asObject().get("cardType").asString(), cardName);	
-			this.setTowerCards(regionID, spaceID, cardName);
-		} 
-		catch (IOException e) {}
-		this.boardReference.getRegionList().get(regionID).getActionSpaceList()
-														 .get(spaceID)
-														 .setCard("empty");
-		
+		if(cardName!=null){
+			Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
+			try {
+				JsonValue card = JsonImporter.importSingleCard(json, cardName);
+				player.addCard(card.asObject().get("cardType").asString(), cardName);	
+				this.setTowerCards(regionID, spaceID, cardName);
+			} 
+			catch (IOException e) {}
+			this.boardReference.getRegionList().get(regionID).getActionSpaceList()
+															 .get(spaceID)
+															 .setCard("empty");
+		}
 	}
 
 	@Override

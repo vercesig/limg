@@ -310,7 +310,7 @@ public class Game implements Runnable{
 	}
 	
 	public void makeMove(Player player, Action action){
-		if(contextInfoContainer.isEmpty()){
+		/*if(contextInfoContainer.isEmpty()){
 			
 			switch(action.getActionType()){
 				case "PRODUCTION":
@@ -357,7 +357,9 @@ public class Game implements Runnable{
 			
 			return;
 			
-		}
+		}*/
+		
+		
 		
 		System.out.println(contextInfoContainer.isEmpty());
 		
@@ -368,7 +370,64 @@ public class Game implements Runnable{
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		System.out.println("DOPO DEL BONUS:\n" + player);
 		moveFamiliar(this.board, player, action);
+		
 		switch(action.getActionType()){
+			case "PRODUCTION":
+			case "HARVEST":
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
+				cm.openContext(ContextType.SERVANT, player, action, null);
+				
+				JsonValue SERVANTresponse = cm.waitForContextReply();
+				action.setActionValue(action.getActionValue() + SERVANTresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
+				
+				player.getPersonalBoard().getCardsOfType(action.getActionType()=="PRODUCTION" ? "BUILDINGCARD" : "TERRITORYCARD").forEach(card -> {
+					if(card.getMinimumActionvalue() <= action.getActionValue())
+						card.getPermanentEffect().apply(board, player, action, cm);
+				});
+				break;
+			case "COUNCIL":
+				JsonObject councilNumberOfPrivilege = new JsonObject();
+				councilNumberOfPrivilege.add("NUMBER", 1);
+				cm.openContext(ContextType.PRIVILEGE, player, action, councilNumberOfPrivilege);
+				JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
+				
+				System.out.println(COUNCILPRIVILEGEresponse.toString());
+				
+				System.out.println("PRIMA DEL PRIVILEGE:\n" + player);
+				player.getResources().addResource("COINS", 1);
+				player.getResources().addResource( new ResourceSet(COUNCILPRIVILEGEresponse.asObject()));
+				System.out.println("DOPO DEL PRIVILEGE:\n" + player);
+				break;
+			case "MARKET":
+				if(action.getActionSpaceId() == 3){
+					JsonObject marketNumberOfPrivilege = new JsonObject();
+					marketNumberOfPrivilege.add("NUMBER", 2);
+					cm.openContext(ContextType.PRIVILEGE, player, action, marketNumberOfPrivilege);
+					JsonValue MARKETPRIVILEGEresponse = cm.waitForContextReply();
+
+					player.getResources().addResource( new ResourceSet(MARKETPRIVILEGEresponse.asObject()));
+				}
+				break;
+			default:
+				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
+				takeCard(this.board, player, action);
+				
+				if(card.getType().equals("CHARACTERCARD")){
+					if(card.getPermanentEffect()!= null){
+						player.addEffect(card.getPermanentEffect());
+						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
+					}	
+				}
+				if(card.getInstantEffect()!= null){
+					card.getInstantEffect().apply(board, player, action, cm);
+				}
+				break;
+		}
+		
+		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player));
+		
+	/*	switch(action.getActionType()){
 			case "PRODUCTION":{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
@@ -427,6 +486,6 @@ public class Game implements Runnable{
 				}
 				break;
 			}
-		}
+		}*/
 	}
 }
