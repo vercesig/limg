@@ -4,14 +4,25 @@ import com.eclipsesource.json.JsonObject;
 
 public class ClientMessageFactory {
 
-	public static String buildCHGNAMEmessage(String gameUUID, String name){
+	public static String buildCHGNAMEmessage(String gameUUID, String playerUUID, String name){
 		JsonObject response = new JsonObject();
 		JsonObject responsePayload = new JsonObject();
 		response.add("GameID", gameUUID);
 		response.add("MESSAGETYPE", "CHGNAME");
 		responsePayload.add("NAME", name);
+		responsePayload.add("PLAYERID", playerUUID);
 		response.add("PAYLOAD", responsePayload);
 		return response.toString();
+	}
+	
+	public static String buildMSGmessage(String gameUUID, String message){
+		JsonObject MSG = new JsonObject();
+		JsonObject MSGPayload = new JsonObject();
+		MSG.add("MESSAGETYPE", "MSG");
+		MSG.add("GameID", gameUUID);
+		MSGPayload.add("MESSAGE", message);
+		MSG.add("PAYLOAD", MSGPayload);
+		return MSG.toString();
 	}
 	
 	public static String buildASKACTmessage(String gameUUID, String actionType, int pawnID, int regionID, int spaceID, int indexCost, String cardName){

@@ -29,7 +29,7 @@ public class ChatManager implements Runnable{
 						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+
 											   " changed name to "+message.getMessage().asString());
 						break;
-					case "SMSG":
+					case "MSG":
 						message.setBroadcast();
 						MessageManager.getInstance().sendMessge(message);
 				}
