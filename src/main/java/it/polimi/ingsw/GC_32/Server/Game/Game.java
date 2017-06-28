@@ -322,56 +322,6 @@ public class Game implements Runnable{
 	}
 	
 	public void makeMove(Player player, Action action){
-		/*if(contextInfoContainer.isEmpty()){
-			
-			switch(action.getActionType()){
-				case "PRODUCTION":
-				case "HARVEST":
-					LOGGER.info("spedisco context");
-					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-							this,
-							player, 
-							ContextType.SERVANT, 
-							player.getResources().getResource("SERVANTS"),action.getActionType()));
-					//sbagliato: non e' vero che tutte le volte che faccio un'azione production apro un context CHANGE
-					if(!player.getPersonalBoard().getCardsOfType("BUILDINGCARD").isEmpty()&&action.getActionType().equals("PRODUCTION")){
-						LinkedList<DevelopmentCard> activatingCard = new LinkedList<DevelopmentCard>(player.getPersonalBoard().getCardsOfType("BUILDINGCARD"));
-						for(DevelopmentCard card : activatingCard){
-							if(card.getMinimumActionvalue()>action.getActionValue())
-								activatingCard.remove(activatingCard.indexOf(card));
-						}
-					}
-					waitingContextResponseSet.add("SERVANT");
-					break;
-				case "COUNCIL":
-					LOGGER.info("spedisco context");
-					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-							this,
-							player,
-							ContextType.PRIVILEGE,
-							1));
-					waitingContextResponseSet.add("PRIVILEGE");
-					break;
-				case "MARKET":
-					if(action.getActionSpaceId() == 2){
-						LOGGER.info("spedisco context");
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
-								this,
-								player,
-								ContextType.PRIVILEGE,
-								2));
-						waitingContextResponseSet.add("PRIVILEGE");
-					}
-					break;	
-				default:
-					break;
-			}
-			
-			return;
-			
-		}*/
-		
-		
 		
 		System.out.println(contextInfoContainer.isEmpty());
 		
@@ -392,9 +342,11 @@ public class Game implements Runnable{
 				JsonValue SERVANTresponse = cm.waitForContextReply();
 				action.setActionValue(action.getActionValue() + SERVANTresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
 				
-				player.getPersonalBoard().getCardsOfType(action.getActionType()=="PRODUCTION" ? "BUILDINGCARD" : "TERRITORYCARD").forEach(card -> {
-					if(card.getMinimumActionvalue() <= action.getActionValue())
+				player.getPersonalBoard().getCardsOfType(action.getActionType().equals("PRODUCTION") ? "BUILDINGCARD" : "TERRITORYCARD").forEach(card -> {
+					if(card.getMinimumActionvalue() <= action.getActionValue()){
 						card.getPermanentEffect().apply(board, player, action, cm);
+						System.out.println("*********************************** attivo effetti permanenti");
+					}
 				});
 				break;
 			case "COUNCIL":
@@ -438,66 +390,5 @@ public class Game implements Runnable{
 		}
 		
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player));
-		
-	/*	switch(action.getActionType()){
-			case "PRODUCTION":{
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
-				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
-				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("BUILDINGCARD");
-				if(contextInfoContainer.containsKey("CHANGE")){
-					JsonArray cardlist = contextInfoContainer.get("CHANGE").asObject().get("ID").asArray();
-					for( JsonValue json: cardlist){
-						playerCard.get(json.asInt()).getPermanentEffect().apply(board, player, action, cm);
-					}
-				}
-				for(DevelopmentCard card : playerCard){
-					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getPermanentEffect().apply(board, player, action, cm);
-					}
-
-				}
-				break;
-			}	
-			case "HARVEST" : {
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
-				action.setActionValue(action.getActionValue() + contextInfoContainer.get("SERVANT").asObject().get("CHOOSEN_SERVANTS").asInt());
-				LinkedList<DevelopmentCard> playerCard = player.getPersonalBoard().getCardsOfType("TERRITORYCARD");
-				for(DevelopmentCard card : playerCard){
-					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getPermanentEffect().apply(board, player, action, cm);
-					}
-				}
-				break;
-			}
-			case "COUNCIL" : {
-				System.out.println("PRIMA DEL PRIVILEGE:\n" + player);
-				player.getResources().addResource("COINS", 1);
-				player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
-				System.out.println("DOPO DEL PRIVILEGE:\n" + player);
-				break;
-			}
-			case "MARKET" : {
-				if(action.getActionSpaceId() == 3){
-					player.getResources().addResource( new ResourceSet(contextInfoContainer.get("PRIVILEGE").asObject()));
-				}
-				break;
-			} 
-			default:{ //case  of a "TOWER_GREEN""TOWER_BLUE""TOWER_YELLOW""TOWER_PURPLE"
-				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
-				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
-				takeCard(this.board, player, action);
-				
-				if(card.getType().equals("CHARACTERCARD")){
-					if(card.getPermanentEffect()!= null){
-						player.addEffect(card.getPermanentEffect());
-						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
-					}	
-				}
-				if(card.getInstantEffect()!= null){
-					card.getInstantEffect().apply(board, player, action, cm);
-				}
-				break;
-			}
-		}*/
 	}
 }

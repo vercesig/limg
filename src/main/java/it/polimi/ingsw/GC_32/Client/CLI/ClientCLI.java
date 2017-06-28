@@ -34,6 +34,7 @@ public class ClientCLI implements ClientInterface{
 	
 	private boolean idleRun = false;
 	private boolean wait = true; // if player is waiting he can't display action menu;
+	private boolean actionRunningGameFlag;
 	
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
@@ -66,6 +67,10 @@ public class ClientCLI implements ClientInterface{
 		this.UUID = UUID;
 	}
 	
+	public void registerActionRunningGameFlag(boolean flag){
+		this.actionRunningGameFlag = flag;
+	}
+	
 	public ClientBoard getBoard(){
 		return this.boardReference;
 	}
@@ -96,8 +101,11 @@ public class ClientCLI implements ClientInterface{
 	
 	public void run(){	
 		
+		// inizialize zeroLevelContext
 		contextList[0].registerSendQueue(sendQueue);
 		contextList[0].registerGameUUID(gameUUID);
+		contextList[0].registerActionRunningGameFlag(actionRunningGameFlag);
+		
 		contextList[1].registerGameUUID(gameUUID);
 		contextList[2].registerGameUUID(gameUUID);
 		contextList[3].registerGameUUID(gameUUID);

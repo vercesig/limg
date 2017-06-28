@@ -178,6 +178,8 @@ public class MainClient{
 						client.graphicInterface.registerPlayers(client.getPlayers());
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
 						
+						client.graphicInterface.registerActionRunningGameFlag(client.actionRunningFlag);
+						
 						client.graphicInterface.unlockZone(client.getPlayers().size());
 						client.graphicInterface.openContext(0, null);
 						//System.out.println("[MAINCLIENT] board correctly synchronized");

@@ -17,7 +17,6 @@ public class ChangeEffect {
 	static EffectBuilder changeEffectBuilder = (JsonValue payload) -> {
 
 		JsonArray payloadList = new JsonArray();
-		ArrayList<ResourceSet> chanches = new ArrayList<ResourceSet>();
 		
 		if(payload.isArray()){
 			payloadList = payload.asArray();
@@ -40,7 +39,8 @@ public class ChangeEffect {
 				JsonArray cmPayload = new JsonArray();
 				cmPayload.add(resourceInArray);
 				cmPayload.add(resourceOutArray);
-				cm.openContext(ContextType.CHANGE,p,a,payload);
+				System.out.println("++++++++++++++++++ change effect apre context");
+				cm.openContext(ContextType.CHANGE,p,a,cmPayload);
 				
 				JsonObject contextResponse = cm.waitForContextReply().asObject();
 				int index = contextResponse.get("CHANGEID").asInt();

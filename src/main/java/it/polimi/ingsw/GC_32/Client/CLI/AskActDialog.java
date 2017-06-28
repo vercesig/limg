@@ -185,6 +185,9 @@ public class AskActDialog extends Context{
 		System.out.println(this.gameUUID);
 		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(this.gameUUID, actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
 		
+		// stop timeout
+		actionRunningGameFlag = false;
+		
 		System.out.println("action sent to the server... waiting for response");
 		
 		try{ // do tempo ad eventuali context di aprirsi
