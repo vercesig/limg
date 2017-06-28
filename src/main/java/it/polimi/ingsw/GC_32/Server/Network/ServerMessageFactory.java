@@ -251,4 +251,10 @@ public class ServerMessageFactory {
 		TRNBGNmessage.setBroadcast();
 		return TRNBGNmessage;
 	}
+	
+	public static GameMessage buildENDGAMEmessage(Game game, JsonObject ENDGAME){
+		GameMessage ENDGAMEmessage = new GameMessage(game.getUUID(), null, "ENDGAME", ENDGAME);
+		ENDGAMEmessage.setBroadcast();
+		return ENDGAMEmessage;
+	}
 }

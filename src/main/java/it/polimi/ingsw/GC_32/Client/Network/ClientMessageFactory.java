@@ -47,4 +47,14 @@ public class ClientMessageFactory {
 		return TRNEND.toString();
 	}
 	
+	public static String buldSENDPOPEmessage(String gameUUID, String name, boolean answer, int faith){
+		JsonObject SENDPOPE = new JsonObject();
+		JsonObject SENDPOPEPayload = new JsonObject();
+		SENDPOPEPayload.add("ANSWER", answer);
+		SENDPOPEPayload.add("FAITH_NEEDED", faith);
+		SENDPOPEPayload.add("PLAYERID", name);
+		SENDPOPE.add("PAYLOAD", SENDPOPEPayload);
+		SENDPOPE.add("GameID", gameUUID);
+		return SENDPOPE.toString();
+	}
 }

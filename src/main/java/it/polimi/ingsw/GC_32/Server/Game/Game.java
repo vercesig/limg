@@ -196,15 +196,39 @@ public class Game implements Runnable{
 		    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, false));
 			    		}
 		    			break;
+					case "SENDPOPE":
+						LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
+						boolean answer = Jsonmessage.get("ANSWER").asBoolean();
+						int points = Jsonmessage.get("FAITH_NEEDED").asInt();
+						if(answer){ // true ==> scomunica
+							///...
+						}
+						else{
+							int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
+							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -points);
+						}
+						break;	
 					case "TRNEND":
 						LOGGER.info("ricevo turn end [GAME]");
+						System.out.println("ROUND ID: "+ turnManager.getRoundID());
+						System.out.println("PERIOD ID: "+ turnManager.getRoundID()/2);
+						System.out.println("TURN ID: "+ turnManager.getTurnID());
 						if(!turnManager.isGameEnd()){
 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 							if(turnManager.isRoundEnd()){
 								LOGGER.log(Level.INFO, "round end");
 								
 								if(turnManager.isPeriodEnd()){
+						//		if(turnManager.getTurnID() == 2){
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
+									int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
+									
+									playerList.forEach(p -> {
+										MessageManager.getInstance().sendMessge(ServerMessageFactory
+													  .buildCONTEXTmessage(this, p, ContextType.EXCOMMUNICATION, 
+															excommunicationLevel,
+															p.getResources().getResource("FAITH_POINTS")));
+										});
 								}
 								LOGGER.log(Level.INFO, "giving lock to the next player");
 								UUID nextPlayer = turnManager.nextPlayer();
@@ -230,6 +254,7 @@ public class Game implements Runnable{
 							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
 						} else {
 							LOGGER.log(Level.INFO, "game end");
+							EndPhase.endGame(this);
 							//stopGame();
 						}
 						break;
@@ -361,14 +386,14 @@ public class Game implements Runnable{
 		});
 	}
 	
-	private void checkExcommunication(){
+	/*private void checkExcommunication(){
 		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 		playerList.forEach(player -> {
 			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
 				LOGGER.info("TIE! beccati la scomunica!");
 			}
 		});
-	}
+	}*/
 	
 	public void moveFamiliar(Board board, Player player, Action action){
 		

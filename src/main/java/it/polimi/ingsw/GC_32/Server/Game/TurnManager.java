@@ -59,7 +59,7 @@ public class TurnManager {
 	}
 	
 	public boolean isRoundEnd(){
-		if(turnID%(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+		if(turnID-(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
 			roundID++;
 			return true;
 		}

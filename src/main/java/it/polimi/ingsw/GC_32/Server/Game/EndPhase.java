@@ -11,6 +11,8 @@ import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
+import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
+import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
 public class EndPhase {
 
@@ -120,7 +122,7 @@ public class EndPhase {
 				}
 				finalScore.add(player.getName(), score); // jsonObject
 			});
-			
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));
 			
 		} catch (IOException e) {}	
 	}
