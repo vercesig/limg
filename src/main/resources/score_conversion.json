@@ -1,0 +1,8 @@
+
+ {
+	"TERRITORYCARD" : { "1":0, "2":0, "3":1, "4":4, "5":10, "6":20},
+	"CHARACTERCARD": { "1":1, "2":3, "3":6, "4":10, "5":15, "6":21},
+	"FIRSTMILITARY": 5,
+	"SECONDMILITARY": 2,
+	"RESOURCE": 5
+ }

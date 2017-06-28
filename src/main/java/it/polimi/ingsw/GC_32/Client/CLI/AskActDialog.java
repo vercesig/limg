@@ -45,7 +45,7 @@ public class AskActDialog extends Context{
 				}						
 				command = in.nextLine();
 				try{
-					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length-1){
+					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length){
 						if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
 							System.out.println("the choosen family member is already busy, please enter a valid index");
 						}else{
@@ -137,21 +137,23 @@ public class AskActDialog extends Context{
 					System.out.println("type 0 or 1");
 					
 					while(actionFlag){
-						
 						command = in.nextLine();
 						
-						switch(Integer.parseInt(command)){
-						case 0:
-							indexCost = 0;
-							actionFlag = false;
-							break;
-						case 1:
-							indexCost = 1;
-							actionFlag = false;
-							break;
-						default:
-							System.out.println("please, type a valid number");
-						break;
+						try{
+							if(Integer.parseInt(command) == 0){
+								indexCost = 0;
+								actionFlag = false;
+								break;
+							}	
+							if(Integer.parseInt(command) == 1){
+								indexCost = 1;
+								actionFlag = false;
+								break;
+							}
+							else
+								System.out.println("please, type a valid number");
+						} catch(NumberFormatException e){
+							System.out.println("type a valid number");
 						}
 					}	
 				} catch (IOException e1) {

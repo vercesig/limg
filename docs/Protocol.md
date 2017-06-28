@@ -56,6 +56,9 @@ payload is a json-diff of the player object
 * white: roll of the white dice
 * black: roll of the black dice
 
+#### POPEREQ
+* request the client if he/she want's to pay or be excommunicate
+
 ## Client-sent
 
 #### SMSG
@@ -71,3 +74,6 @@ payload is a json-diff of the player object
 
 #### ASKLDRACT
 * leaderId: id of the leader card
+
+#### POPEANSW
+* the answer of the client to the pope

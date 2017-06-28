@@ -124,11 +124,16 @@ public class MoveUtils {
     public static boolean checkServants(Board board, Player player, Action action){ // change the state
     	if(checkActionValue(board, action)){
     		return true;
-    	}
+    	}  	
     	System.out.println("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
     	int actionDiff = action.getActionValue() -
     					 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
-    	player.getResources().addResource("SERVANTS", actionDiff);
+    	if(player.getExcomunicateFlag().contains("DOUBLESERVANTS")){ // excommunicate flag
+        	System.out.println("EFFETTO DOUBLESERVANTS EXCOMMUNICATE");
+    		player.getResources().addResource("SERVANTS", 2*actionDiff);
+    	}
+    	else
+    		player.getResources().addResource("SERVANTS", actionDiff);
     	System.out.println(" " + player.getResources().isValid());
     	return player.getResources().isValid();
     }

@@ -255,7 +255,9 @@ public class MainClient{
 							int indexFamily = messagePayload.get("FAMILYMEMBER_ID").asInt();
 							String actionType = messagePayload.get("ACTIONTYPE").asString();
 							// update state
-							client.graphicInterface.moveCardToPlayer(client.getUUID(), regionId, spaceId);
+							if(actionType.equals("TOWER")){
+								client.graphicInterface.moveCardToPlayer(client.getUUID(), regionId, spaceId);
+							}
 							client.graphicInterface.moveFamiliar(indexFamily, regionId, spaceId);
 							client.graphicInterface.setTrackValue(client.getUUID(), 0);
 							client.graphicInterface.setTrackValue(client.getUUID(), 1);

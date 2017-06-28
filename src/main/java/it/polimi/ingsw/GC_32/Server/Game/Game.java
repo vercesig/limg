@@ -1,7 +1,11 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,6 +14,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
@@ -197,7 +202,6 @@ public class Game implements Runnable{
 						LOGGER.info("ricevo turn end [GAME]");
 						if(!turnManager.isGameEnd()){
 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
-							
 							if(turnManager.isRoundEnd()){
 								LOGGER.log(Level.INFO, "round end");
 								
@@ -205,7 +209,15 @@ public class Game implements Runnable{
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 								}
 								LOGGER.log(Level.INFO, "giving lock to the next player");
-								setLock(turnManager.nextPlayer());
+								UUID nextPlayer = turnManager.nextPlayer();
+								for(int i = 0; i < this.playerList.size(); i++){
+									if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
+																	  .getExcomunicateFlag().contains("SKIPTURN")){
+										break;
+									}
+									nextPlayer = turnManager.nextPlayer();
+								}
+								setLock(nextPlayer);
 								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 								// ask action
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));

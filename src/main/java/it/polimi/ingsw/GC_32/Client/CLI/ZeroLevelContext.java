@@ -51,7 +51,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 				
 			case "show card":
 					showCard.open(object);
-					break;
+					break;		
 		
 			case "action":		
 				if(!client.isWaiting()){

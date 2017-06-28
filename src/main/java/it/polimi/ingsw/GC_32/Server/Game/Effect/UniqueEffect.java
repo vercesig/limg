@@ -12,11 +12,28 @@ public class UniqueEffect {
 			p.getResources().subResource(bonus);
 		}
 	};
-	// No Market Action
+	// Excommunicate card 2-5
 	static Effect noMarketAction = (b, p, a, cm) -> {
 		if(a.getActionRegionId() == b.getMarketRegion().getRegionID()){
 			a.invalidate();
 		}
+	};
+	
+	//Excommunicate card 1-7
+	static Effect lessDice = (b, p, a, cm) -> {
+		if(a.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() != 0){
+			a.setActionValue(a.getActionValue() - 1);
+		}
+	};
+	
+	//Excommunicate card 2-6
+	static Effect doubleServant = (b, p, a, cm) -> {
+		p.getExcomunicateFlag().add("DOUBLESERVANTS");
+	};
+	
+	//Excommunicate card 2-7
+	static Effect skipTurn = (b, p, a, cm) -> {
+		p.getExcomunicateFlag().add("SKIPTURN");
 	};
 	
 	public static void loadBuilder(){
