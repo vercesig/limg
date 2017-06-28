@@ -39,6 +39,11 @@ public class UniqueEffect {
 	public static void loadBuilder(){
 		EffectRegistry.getInstance().registerEffect("NO_TOWER_BONUS", noTowerActionSpaceBonus);
 		EffectRegistry.getInstance().registerEffect("NO_MARKET_ACTION", noMarketAction);
+		EffectRegistry.getInstance().registerEffect("LESSDICE", noMarketAction);
+		EffectRegistry.getInstance().registerEffect("DOUBLESERVANTS", noMarketAction);
+		EffectRegistry.getInstance().registerEffect("SKIPTURN", noMarketAction);
+
+		
 	
 	}
 }
