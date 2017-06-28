@@ -9,6 +9,7 @@ public abstract class Context{
 	protected ConcurrentLinkedQueue<String> sendQueue;
 	protected boolean runFlag;
 	protected String command;
+	protected String gameUUID;
 	
 	public Context(){
 		this.in = new Scanner(System.in);
@@ -16,6 +17,10 @@ public abstract class Context{
 	
 	public void registerSendQueue(ConcurrentLinkedQueue<String> sendQueue){
 		this.sendQueue = sendQueue;
+	}
+	
+	public void registerGameUUID(String gameUUID){
+		this.gameUUID = gameUUID;
 	}
 	
 	public abstract void open(Object object);

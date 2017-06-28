@@ -54,12 +54,12 @@ public class Game implements Runnable{
 	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
 	private HashMap<UUID, Action> memoryAction;
-	private final UUID uuid;
+	private final UUID gameUUID;
 	
 	private boolean runGameFlag = true;
 	
 	public Game(ArrayList<Player> players, UUID uuid){
-		this.uuid = uuid;
+		this.gameUUID = uuid;
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
@@ -92,7 +92,7 @@ public class Game implements Runnable{
 		Collections.shuffle(list);
 		
 		for(int i=0,j=0; i<playerList.size(); i++,j++){
-			playerList.get(i).registerGame(this.uuid);
+			playerList.get(i).registerGame(this.gameUUID);
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
 			playerList.get(i).getResources().setResource("SERVANTS", 3);
@@ -178,8 +178,8 @@ public class Game implements Runnable{
 				contextQueue.clear();
 			}*/
 			
-			if(MessageManager.getInstance().getQueueForGame(this.uuid).size() > 0){
-				MessageManager.getInstance().getQueueForGame(this.uuid).forEach(message -> {
+			if(MessageManager.getInstance().getQueueForGame(this.gameUUID).size() > 0){
+				MessageManager.getInstance().getQueueForGame(this.gameUUID).forEach(message -> {
 					JsonObject Jsonmessage = message.getMessage().asObject();
 					switch(message.getOpcode()){
 						case "ASKACT":
@@ -300,7 +300,7 @@ public class Game implements Runnable{
 	}
 	
 	public UUID getUUID(){
-		return this.uuid;
+		return this.gameUUID;
 	}
 	
 	public Deck<DevelopmentCard> getDeck(String type){

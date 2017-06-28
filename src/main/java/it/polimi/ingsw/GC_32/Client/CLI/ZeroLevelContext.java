@@ -27,7 +27,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 		super();
 		this.client = client;
 		this.showCard = new ShowCardDialog(this.client);
-		this.askAct = new AskActDialog(this.client);
+		this.askAct = new AskActDialog(this.client, gameUUID);
 	}
 		
 	public void run(){

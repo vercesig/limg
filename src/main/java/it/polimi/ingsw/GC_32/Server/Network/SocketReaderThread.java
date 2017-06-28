@@ -28,10 +28,20 @@ public class SocketReaderThread implements Runnable{
 			while(!MessageManager.getInstance().getSocketSendQueue().isEmpty()){
 				GameMessage message = MessageManager.getInstance().getSocketSendQueue().poll();
 				if(message != null){
-					PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerUUID()).getPrinterOut();
-					tmpPrinter.println(message.toJson().toString());
-					tmpPrinter.flush();
-					LOGGER.log(Level.INFO, "message sent to :"+message.getPlayerID());
+					if(message.isBroadcast()){
+						socketListener.getSocketPlayerRegistry().forEach((UUID, SocketInfoContainer)->{
+							PrintWriter tmpPrinter = SocketInfoContainer.getPrinterOut();
+							tmpPrinter.println(message.toJson().toString());
+							tmpPrinter.flush();
+							LOGGER.log(Level.INFO, "message sent in broadcast");
+						});
+					}
+					else{
+						PrintWriter tmpPrinter = socketListener.getSocketPlayerRegistry().get(message.getPlayerUUID()).getPrinterOut();
+						tmpPrinter.println(message.toJson().toString());
+						tmpPrinter.flush();
+						LOGGER.log(Level.INFO, "message sent to :"+message.getPlayerID());
+					}
 				}
 			}
 			

@@ -47,7 +47,8 @@ public class GameMessage{
 		} else {
 			json.add("GameID", "");
 		}
-		json.add("PlayerID", getPlayerID());
+		if(!broadcast)
+			json.add("PlayerID", getPlayerID());
 		json.add("MESSAGETYPE", opcode);
 		json.add("PAYLOAD", message.toString());
 		return json;

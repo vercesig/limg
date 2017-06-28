@@ -30,9 +30,10 @@ public class MainClient{
 	private ClientBoard clientBoard;
 	
 	private String myUUID;
+	private String gameUUID;
 	
 	// timer management
-	private int ACTIONTIMEOUT = 5000;
+	private int ACTIONTIMEOUT = 30000;
 	private long startTimeout = 0;
 	private boolean actionRunningFlag = false;
 	
@@ -150,13 +151,19 @@ public class MainClient{
 						client.getPlayers().put(client.myUUID, new ClientPlayer());
 						
 						client.getPlayers().get(client.getUUID()).setName(myName);
-						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.getPlayers().get(client.getUUID()).getName()));
+						
 						
 						client.graphicInterface.registerUUID(client.getUUID());
 						client.graphicInterface.registerSendMessageQueue(client.getSendQueue());
 						break;
 					case "GMSTRT":
 						JsonArray playerList = Json.parse(messagePayload.get("PLAYERLIST").asString()).asArray();
+						// registrazione gameUUID
+						client.gameUUID = messagePayload.get("GAMEUUID").asString();
+						client.getClientInterface().registerUUID(client.gameUUID);
+						
+						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+						
 						playerList.forEach(player -> {
 							client.getPlayers().put(player.asString(), new ClientPlayer());
 						});
@@ -254,7 +261,7 @@ public class MainClient{
 							client.graphicInterface.setTrackValue(client.getUUID(), 2);
 							client.graphicInterface.waitTurn(true);
 							
-							network.sendMessage(ClientMessageFactory.buildTRNENDmessage(client.getPlayers().get(client.getUUID()).getName()));
+							network.sendMessage(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 							break;
 						}	
 					case "CONTEXT":
