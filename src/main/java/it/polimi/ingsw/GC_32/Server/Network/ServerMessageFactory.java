@@ -212,8 +212,10 @@ public class ServerMessageFactory {
 		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);
 	}
 	
-	public static GameMessage buildCONTEXTACKMessage(Game game, Player player, boolean accepted) {					
-		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXTACK", Json.value(accepted)); 
+	public static GameMessage buildCONTEXTACKMessage(Game game, Player player, boolean accepted) {
+		JsonObject CONTEXTACK = new JsonObject();
+		CONTEXTACK.add("ACCEPTED", Json.value(accepted));		
+		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXTACK", CONTEXTACK); 
 	} 
 	
 	public static GameMessage buildACTCHKmessage(Game game, Player player, Action action, boolean result) {

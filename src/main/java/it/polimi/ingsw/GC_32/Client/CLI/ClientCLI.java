@@ -117,6 +117,7 @@ public class ClientCLI implements ClientInterface{
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
 				contextList[contextMessage.get("CONTEXTID").asInt()].registerSendQueue(sendQueue);
+				System.out.println("client cli --- "+contextMessage.get("PAYLOAD").toString());
 				contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD"));
 				idleRun=false;
 			}

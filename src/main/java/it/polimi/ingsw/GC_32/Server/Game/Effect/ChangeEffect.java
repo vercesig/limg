@@ -24,25 +24,26 @@ public class ChangeEffect {
 			payloadList.add(payload);
 		}
 		
+		System.out.println(payloadList.toString());
+		
 		JsonArray resourceInArray = new JsonArray();
 		JsonArray resourceOutArray = new JsonArray();
 		
 		payloadList.forEach(item -> {
 			JsonObject obj = item.asObject();
-			JsonObject resourceIn = obj.get("RESOURCEIN").asObject();
-			JsonObject resourceOut = obj.get("RESOURCEOUT").asObject();
-			resourceInArray.add(resourceIn);
-			resourceOutArray.add(resourceOut);
+			resourceInArray.add(obj.get("RESOURCEIN").asObject());
+			resourceOutArray.add(obj.get("RESOURCEOUT").asObject());
 		});
 		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
 				JsonArray cmPayload = new JsonArray();
 				cmPayload.add(resourceInArray);
 				cmPayload.add(resourceOutArray);
-				System.out.println("++++++++++++++++++ change effect apre context");
+				System.out.println(cmPayload.toString());
 				cm.openContext(ContextType.CHANGE,p,a,cmPayload);
 				
 				JsonObject contextResponse = cm.waitForContextReply().asObject();
+				System.out.println("dopo context");
 				int index = contextResponse.get("CHANGEID").asInt();
 				
 				p.getResources().addResource(new ResourceSet(cmPayload.get(index).asObject()));

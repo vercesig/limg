@@ -25,7 +25,7 @@ public class ChangeEffectContext extends Context{
 				+ "type 'n' if you don't want to apply the effect");
 		
 		for(int i=0; i<resourceIn.size(); i++){
-			System.out.println("["+i+"]  "+resourceIn.get(i).asString()+" -> "+resourceOut.get(i).asString()+"\n");
+			System.out.println("["+i+"]  "+new ResourceSet(resourceIn.get(i).asObject()).toString()+" -> "+new ResourceSet(resourceOut.get(i).asObject()).toString()+"\n");
 		}
 		
 		JsonObject CONTEXTREPLY = new JsonObject();

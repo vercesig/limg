@@ -48,7 +48,7 @@ public class ContextManager{
 						this.game,
 						player,
 						ContextType.PRIVILEGE,
-						extraInfo.asObject().get("NUMBER").asInt())); // number of privilege to consume
+						extraInfo.asInt())); // number of privilege to consume
 				waitingContextResponse = "PRIVILEGE";
 				break;
 			default:

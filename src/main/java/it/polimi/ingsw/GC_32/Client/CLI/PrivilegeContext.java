@@ -2,6 +2,8 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 public class PrivilegeContext extends Context{
@@ -19,35 +21,41 @@ public class PrivilegeContext extends Context{
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
 		JsonObject CONTEXTREPLYpayload = new JsonObject();
 		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "PRIVILEGE");
-		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
+		JsonArray CONTEXTREPLYpayloadinfo = new JsonArray();
 		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
 		
 		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 		
 		System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
-				+ "be transformed into:\n- (a) 1 WOOD and 1 STONE\n- (b) 2 SERVANTS\n- (c) 2 COINS\n"
-				+ "- (d) 2 MILITARY POINTS\n- (e) 1 FAITH POINT\ntype the letter corrisponding "
+				+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
+				+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
 				+ "to the resource you want to exchange with your privilege");
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
-			switch(command){
-			case "a":
-				CONTEXTREPLYpayloadinfo.add("WOOD", 1);
-				CONTEXTREPLYpayloadinfo.add("STONE", 1);
+			try{
+			switch(Integer.parseInt(command)){
+			case 0:
+				CONTEXTREPLYpayloadinfo.add(0);
 				break;
-			case "b":
-				CONTEXTREPLYpayloadinfo.add("SERVANTS", 2);
+			case 1:
+				CONTEXTREPLYpayloadinfo.add(1);
 				break;
-			case "c":
-				CONTEXTREPLYpayloadinfo.add("COINS", 2);
+			case 2:
+				CONTEXTREPLYpayloadinfo.add(2);
 				break;
-			case "d":
-				CONTEXTREPLYpayloadinfo.add("MILITARY", 2);
+			case 3:
+				CONTEXTREPLYpayloadinfo.add(3);
 				break;
-			case "e":
-				CONTEXTREPLYpayloadinfo.add("FAITH", 1);
+			case 4:
+				CONTEXTREPLYpayloadinfo.add(4);
 				break;
+			default:
+				System.out.println("type a valid number");
+				break;
+			}
+			}catch(NumberFormatException e){
+				System.out.println("type a valid number");
 			}
 			if(!choosedResources.contains(command)){
 				numberOfPrivilege--;
@@ -60,7 +68,6 @@ public class PrivilegeContext extends Context{
 			}
 			
 			if(numberOfPrivilege==0){
-				System.out.println(CONTEXTREPLY.toString());
 				sendQueue.add(CONTEXTREPLY.toString());
 				close();
 			}
