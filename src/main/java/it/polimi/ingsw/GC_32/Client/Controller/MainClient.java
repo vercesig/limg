@@ -129,7 +129,10 @@ public class MainClient{
 				}
 				
 				if(!client.getSendQueue().isEmpty()){
-					client.network.sendMessage(client.getSendQueue().poll());
+					String message = client.getSendQueue().poll();				
+					JsonObject JsonMessage = Json.parse(message).asObject();					
+					JsonMessage.add("GameID", client.gameUUID);
+					client.network.sendMessage(JsonMessage.toString());
 				}	
 				
 				// elabora messaggi in entrata
@@ -161,9 +164,8 @@ public class MainClient{
 						client.gameUUID = messagePayload.get("GAMEUUID").asString();
 						client.getClientInterface().registerGameUUID(client.gameUUID);
 						
-						network.sendMessage(ClientMessageFactory.buildCHGNAMEmessage(client.gameUUID, 
-																					 client.myUUID, 
-																					 client.getPlayers().get(client.getUUID()).getName()));
+						client.getSendQueue().add(ClientMessageFactory.buildCHGNAMEmessage(client.myUUID, 
+																					 	   client.getPlayers().get(client.getUUID()).getName()));
 						
 						playerList.forEach(player -> {
 							client.getPlayers().put(player.asString(), new ClientPlayer());

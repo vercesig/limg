@@ -4,10 +4,9 @@ import com.eclipsesource.json.JsonObject;
 
 public class ClientMessageFactory {
 
-	public static String buildCHGNAMEmessage(String gameUUID, String playerUUID, String name){
+	public static String buildCHGNAMEmessage(String playerUUID, String name){
 		JsonObject response = new JsonObject();
 		JsonObject responsePayload = new JsonObject();
-		response.add("GameID", gameUUID);
 		response.add("MESSAGETYPE", "CHGNAME");
 		responsePayload.add("NAME", name);
 		responsePayload.add("PLAYERID", playerUUID);
@@ -15,17 +14,16 @@ public class ClientMessageFactory {
 		return response.toString();
 	}
 	
-	public static String buildMSGmessage(String gameUUID, String message){
+	public static String buildMSGmessage(String message){
 		JsonObject MSG = new JsonObject();
 		JsonObject MSGPayload = new JsonObject();
 		MSG.add("MESSAGETYPE", "MSG");
-		MSG.add("GameID", gameUUID);
 		MSGPayload.add("MESSAGE", message);
 		MSG.add("PAYLOAD", MSGPayload);
 		return MSG.toString();
 	}
 	
-	public static String buildASKACTmessage(String gameUUID, String actionType, int pawnID, int regionID, int spaceID, int indexCost, String cardName){
+	public static String buildASKACTmessage(String actionType, int pawnID, int regionID, int spaceID, int indexCost, String cardName){
 		JsonObject ASKACT = new JsonObject();
 		JsonObject ASKACTpayload = new JsonObject();
 		ASKACTpayload.add("ACTIONTYPE", actionType);
@@ -36,7 +34,6 @@ public class ClientMessageFactory {
 		ASKACTpayload.add("CARDNAME", cardName==null ? "" : cardName);
 		ASKACT.add("MESSAGETYPE", "ASKACT");
 		ASKACT.add("PAYLOAD", ASKACTpayload);
-		ASKACT.add("GameID", gameUUID);
 		return ASKACT.toString();
 	}
 	

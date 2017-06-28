@@ -15,7 +15,6 @@ public class ServantContext extends Context{
 		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
 		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
 		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "SERVANT");
-		CONTEXTREPLY.add("GameID", this.gameUUID);
 		
 		System.out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
 				+ "\nDo you want to spend any of these?? type 0 if you don't want spend any servant, "

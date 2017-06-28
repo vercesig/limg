@@ -23,7 +23,6 @@ public class PrivilegeContext extends Context{
 		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
 		
 		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
-		CONTEXTREPLY.add("GameID", this.gameUUID);
 		
 		System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
 				+ "be transformed into:\n- (a) 1 WOOD and 1 STONE\n- (b) 2 SERVANTS\n- (c) 2 COINS\n"

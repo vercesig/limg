@@ -103,12 +103,8 @@ public class ClientCLI implements ClientInterface{
 		
 		// inizialize zeroLevelContext
 		contextList[0].registerSendQueue(sendQueue);
-		contextList[0].registerGameUUID(gameUUID);
 		contextList[0].registerActionRunningGameFlag(actionRunningGameFlag);
 		
-		contextList[1].registerGameUUID(gameUUID);
-		contextList[2].registerGameUUID(gameUUID);
-		contextList[3].registerGameUUID(gameUUID);
 		
 		while(true){
 			if(!idleRun){

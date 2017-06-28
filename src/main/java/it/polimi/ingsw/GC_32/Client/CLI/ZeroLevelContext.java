@@ -24,7 +24,6 @@ public class ZeroLevelContext extends Context implements Runnable{
 	
 	public void open(Object object){
 		
-		askAct.registerGameUUID(gameUUID);
 		askAct.registerActionRunningGameFlag(actionRunningGameFlag);
 		
 		runFlag = true;		

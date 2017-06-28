@@ -126,8 +126,6 @@ public class Game implements Runnable{
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
 		LOGGER.log(Level.INFO, "done");	
-		LOGGER.log(Level.INFO, "processing game setting messages..");
-		LOGGER.log(Level.INFO, "done");
 		
 		LOGGER.log(Level.INFO, "ready to play");
 		this.board.placeCards(this);

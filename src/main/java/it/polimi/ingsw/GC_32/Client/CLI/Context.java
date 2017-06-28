@@ -9,7 +9,6 @@ public abstract class Context{
 	protected ConcurrentLinkedQueue<String> sendQueue;
 	protected boolean runFlag;
 	protected String command;
-	protected String gameUUID;
 	protected boolean actionRunningGameFlag;
 	
 	public Context(){
@@ -19,11 +18,7 @@ public abstract class Context{
 	public void registerSendQueue(ConcurrentLinkedQueue<String> sendQueue){
 		this.sendQueue = sendQueue;
 	}
-	
-	public void registerGameUUID(String gameUUID){
-		this.gameUUID = gameUUID;
-	}
-	
+		
 	public void registerActionRunningGameFlag(boolean flag){
 		this.actionRunningGameFlag = flag;
 	}
