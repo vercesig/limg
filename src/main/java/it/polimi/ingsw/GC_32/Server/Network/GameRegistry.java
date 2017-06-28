@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,5 +54,13 @@ public class GameRegistry {
 	
 	public void registerGame(Game game){
 		this.gameRegistry.put(game.getUUID(), game);
+	}
+	
+	public HashSet<UUID> getPlayerFromGameID(UUID gameID){
+		HashSet<UUID> tmp = new HashSet<UUID>();
+		gameRegistry.get(gameID)
+		  			.getPlayerList()
+		  			.iterator().forEachRemaining(player -> tmp.add(player.getUUID()));
+		return tmp;
 	}
 }

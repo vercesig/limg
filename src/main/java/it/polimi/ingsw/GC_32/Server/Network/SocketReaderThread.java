@@ -30,10 +30,13 @@ public class SocketReaderThread implements Runnable{
 				if(message != null){
 					if(message.isBroadcast()){
 						socketListener.getSocketPlayerRegistry().forEach((UUID, SocketInfoContainer)->{
-							PrintWriter tmpPrinter = SocketInfoContainer.getPrinterOut();
-							tmpPrinter.println(message.toJson().toString());
-							tmpPrinter.flush();
-							LOGGER.log(Level.INFO, "message sent in broadcast");
+							// message are send only to the players connected to the same game
+							if(GameRegistry.getInstance().getPlayerFromGameID(message.getGameID()).contains(UUID)){
+								PrintWriter tmpPrinter = SocketInfoContainer.getPrinterOut();
+								tmpPrinter.println(message.toJson().toString());
+								tmpPrinter.flush();
+								LOGGER.log(Level.INFO, "message sent in broadcast");
+							}
 						});
 					}
 					else{
