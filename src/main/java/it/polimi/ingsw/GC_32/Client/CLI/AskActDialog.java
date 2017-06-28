@@ -45,7 +45,7 @@ public class AskActDialog extends Context{
 				}						
 				command = in.nextLine();
 				try{
-					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length-1){
+					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length){
 						if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
 							System.out.println("the choosen family member is already busy, please enter a valid index");
 						}else{
