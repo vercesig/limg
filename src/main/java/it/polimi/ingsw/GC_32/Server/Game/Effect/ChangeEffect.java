@@ -26,9 +26,11 @@ public class ChangeEffect {
 				
 				JsonValue indexResponse = a.getAdditionalInfo().get("CHANGEID");
 				
+				System.out.println(effectArray.toString());
+				
 				if(indexResponse.isNumber()){
-					p.getResources().addResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject()));
-					p.getResources().subResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject()));
+					p.getResources().addResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject().get("RESOURCEOUT").asObject()));
+					p.getResources().subResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject().get("RESOURCEIN").asObject()));
 				}
 			};	
 		return changeEffect;

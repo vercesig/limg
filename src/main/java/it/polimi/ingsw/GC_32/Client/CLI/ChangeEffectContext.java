@@ -78,14 +78,16 @@ public class ChangeEffectContext extends Context{
 							indexArray.add(Integer.parseInt(command));
 							actionFlag = false;
 							i++;
-						}else
+						}else{
 							System.out.println("type a valid number");
+						}
 						if(command.equals("n")){
 							indexArray.add(command);
 							actionFlag = false;
 							i++;
-						}else
+						}else{
 							System.out.println("type a valid number");
+						}
 					}catch(NumberFormatException e){
 						System.out.println("type a valid number");
 					}

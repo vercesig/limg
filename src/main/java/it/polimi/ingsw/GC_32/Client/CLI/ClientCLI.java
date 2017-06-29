@@ -111,15 +111,6 @@ public class ClientCLI implements ClientInterface{
 		
 		
 		while(true){
-			try{
-				Thread.sleep(200);
-			}catch(InterruptedException e){}
-			
-			if(!idleRun){
-				idleRun=true;
-				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
-				zeroLevelContextThread.start();
-			}
 			
 			while(!contextQueue.isEmpty()){
 				contextList[0].close();
@@ -127,7 +118,20 @@ public class ClientCLI implements ClientInterface{
 				contextList[contextMessage.get("CONTEXTID").asInt()].registerSendQueue(sendQueue);
 				System.out.println("client cli --- "+contextMessage.get("PAYLOAD").toString());
 				contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD"));
-				idleRun=false;
+				
+				try{ //waiting for other context
+					Thread.sleep(200);
+				}catch(InterruptedException e){}
+				
+				if(contextQueue.isEmpty())
+					idleRun=false;
+			
+			}
+			
+			if(!idleRun){
+				idleRun=true;
+				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
+				zeroLevelContextThread.start();
 			}
 			
 			// spedisco messaggi

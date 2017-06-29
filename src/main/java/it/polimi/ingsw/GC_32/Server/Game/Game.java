@@ -289,17 +289,20 @@ public class Game implements Runnable{
 				JsonArray CHANGEcontextPayload = new JsonArray();
 				JsonArray CHANGEnameCardArray = new JsonArray();
 				
-				ArrayList<DevelopmentCard> effectCardList = new ArrayList<DevelopmentCard>();
+				ArrayList<DevelopmentCard> CHANGEeffectCardList = new ArrayList<DevelopmentCard>();
+				ArrayList<DevelopmentCard> notCHANGEeffectCardList = new ArrayList<DevelopmentCard>();
 				
 				player.getPersonalBoard().getCardsOfType("BUILDINGCARD").forEach(card -> {
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						effectCardList.add(card);
 						// cards with CHANGE effect
 						if(card.getPermanentEffectType().contains("CHANGE")){
+							CHANGEeffectCardList.add(card);
 							card.getPayloadInfo().forEach(payload -> {
 								CHANGEcontextPayload.add(payload);
 								CHANGEnameCardArray.add(card.getName());
 							});
+						}else{
+							notCHANGEeffectCardList.add(card);
 						}
 					}
 				});
@@ -308,18 +311,17 @@ public class Game implements Runnable{
 				CHANGEpacket.asArray().add(CHANGEcontextPayload);
 				
 				// c'è almeno una carta con effetto CHANGE
-				if(!CHANGEnameCardArray.isEmpty()){
+				if(!CHANGEeffectCardList.isEmpty()){
 					cm.openContext(ContextType.CHANGE, player, action, CHANGEpacket);
 					
 					JsonArray indexResponse = cm.waitForContextReply().asObject().get("CHANGEIDARRAY").asArray();
 					System.out.println(indexResponse.toString());
-					/*for(int i=0; i<indexResponse.size(); i++){
+					for(int i=0; i<CHANGEeffectCardList.size(); i++){
 						action.getAdditionalInfo().add("CHANGEID", indexResponse.get(i));
-						effectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
-						effectCardList.remove(i);
-					}*/
+						CHANGEeffectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
+					}
 				}
-				//effectCardList.forEach(card -> card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm)));
+				notCHANGEeffectCardList.forEach(card -> card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm)));
 				System.out.println("*********************************** attivati effetti permanenti");
 				break;
 			case "HARVEST":
