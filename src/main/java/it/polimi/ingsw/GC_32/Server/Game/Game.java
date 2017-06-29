@@ -293,7 +293,7 @@ public class Game implements Runnable{
 				ArrayList<DevelopmentCard> notCHANGEeffectCardList = new ArrayList<DevelopmentCard>();
 				
 				player.getPersonalBoard().getCardsOfType("BUILDINGCARD").forEach(card -> {
-					if(card.getMinimumActionvalue() <= action.getActionValue()){
+					if(card.getMinimumActionvalue() <= action.getActionValue()){ 
 						// cards with CHANGE effect
 						if(card.getPermanentEffectType().contains("CHANGE")){
 							CHANGEeffectCardList.add(card);
@@ -315,14 +315,12 @@ public class Game implements Runnable{
 					cm.openContext(ContextType.CHANGE, player, action, CHANGEpacket);
 					
 					JsonArray indexResponse = cm.waitForContextReply().asObject().get("CHANGEIDARRAY").asArray();
-					System.out.println(indexResponse.toString());
 					for(int i=0; i<CHANGEeffectCardList.size(); i++){
-						action.getAdditionalInfo().add("CHANGEID", indexResponse.get(i));
+						action.getAdditionalInfo().set("CHANGEID", indexResponse.get(i));
 						CHANGEeffectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
 					}
 				}
 				notCHANGEeffectCardList.forEach(card -> card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm)));
-				System.out.println("*********************************** attivati effetti permanenti");
 				break;
 			case "HARVEST":
 				
