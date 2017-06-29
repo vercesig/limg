@@ -14,10 +14,13 @@ public class ClientMessageFactory {
 		return CHGNAME.toString();
 	}
 	
-	public static String buildMSGmessage(String message){
+	public static String buildMSGmessage(String playerUUID, String message, String destination, boolean allFlag){
 		JsonObject MSG = new JsonObject();
 		JsonObject MSGPayload = new JsonObject();
 		MSG.add("MESSAGETYPE", "MSG");
+		MSGPayload.add("FLAG", allFlag);
+		MSGPayload.add("RECEIVER", destination);
+		MSGPayload.add("SENDER", playerUUID);
 		MSGPayload.add("MESSAGE", message);
 		MSG.add("PAYLOAD", MSGPayload);
 		return MSG.toString();
