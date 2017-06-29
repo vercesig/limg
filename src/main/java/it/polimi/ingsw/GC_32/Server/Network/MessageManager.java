@@ -23,6 +23,7 @@ public class MessageManager {
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
 	
+	private ChatManager chatManager;
 	protected Set<String> chatMessageTypeSet;
 	
 	private MessageManager(){
@@ -31,8 +32,11 @@ public class MessageManager {
 		this.RMISendQueue = new ConcurrentLinkedQueue<>();
 		this.socketSendQueue = new ConcurrentLinkedQueue<>();
 		this.chatMessageTypeSet = new HashSet<>();
-		this.chatMessageTypeSet.add("SMSG");
+		this.chatMessageTypeSet.add("MSG");
 		this.chatMessageTypeSet.add("CHGNAME");
+		
+		this.chatManager = new ChatManager(commonReceiveQueue);
+		new Thread(chatManager).start();
 	}
 	
 	public static MessageManager getInstance(){

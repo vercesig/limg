@@ -5,13 +5,13 @@ import com.eclipsesource.json.JsonObject;
 public class ClientMessageFactory {
 
 	public static String buildCHGNAMEmessage(String playerUUID, String name){
-		JsonObject response = new JsonObject();
-		JsonObject responsePayload = new JsonObject();
-		response.add("MESSAGETYPE", "CHGNAME");
-		responsePayload.add("NAME", name);
-		responsePayload.add("PLAYERID", playerUUID);
-		response.add("PAYLOAD", responsePayload);
-		return response.toString();
+		JsonObject CHGNAME = new JsonObject();
+		JsonObject CHGNAMEPayload = new JsonObject();
+		CHGNAME.add("MESSAGETYPE", "CHGNAME");
+		CHGNAMEPayload.add("NAME", name);
+		CHGNAMEPayload.add("PLAYERID", playerUUID);
+		CHGNAME.add("PAYLOAD", CHGNAMEPayload);
+		return CHGNAME.toString();
 	}
 	
 	public static String buildMSGmessage(String message){
