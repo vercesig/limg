@@ -274,6 +274,18 @@ public class MainClient{
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
 						break;
+					
+					case "MSG":
+						if(!messagePayload.get("FLAG").asBoolean()){
+							if(!client.getUUID().equals(messagePayload.get("RECEIVER").asString())){
+								break; // non sei tu il destinatario
+							}
+						}
+						String sender = messagePayload.get("SENDER").asString();
+						String text = messagePayload.get("MESSAGE").asString();
+						client.getClientInterface().receiveMessage(client.getPlayers().get(sender).getName(), text);
+						break;
+						
 					case "ENDGAME":
 						client.getClientInterface().displayMessage("END OF THE GAME!\nthe final score is:\n");
 						StringBuilder display = new StringBuilder();
@@ -284,7 +296,6 @@ public class MainClient{
 						client.getClientInterface().displayMessage(new String(display));
 						
 						in.close();
-						
 						break;
 				}
 			}

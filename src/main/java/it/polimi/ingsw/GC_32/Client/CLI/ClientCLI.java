@@ -91,6 +91,15 @@ public class ClientCLI implements ClientInterface{
 		this.sendQueue = queue;		
 	}
 	
+	public void displaySendMessage(String playerID, String message){
+		System.out.println("---------------------------------------");
+		System.out.println("|      YOU SENT A MESSAGE !!!      ");	
+		System.out.println("|-------------------------------------------");
+		System.out.println("| > "+ playerID+ ":");
+		System.out.println("| "+ message +"\n|");
+		System.out.println("| ===========================================");
+	}
+	
 	public void displayMessage(String message){
 		System.out.println(message);
 	}
@@ -171,8 +180,12 @@ public class ClientCLI implements ClientInterface{
 
 	@Override
 	public void receiveMessage(String playerID, String message) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("---------------------------------------");
+		System.out.println("|      YOU RECEIVED A MESSAGE !!!      ");	
+		System.out.println("|-------------------------------------------");
+		System.out.println("| > "+ playerID+ ":");
+		System.out.println("| "+ message +"\n|");
+		System.out.println("| ===========================================");		
 	}
 
 	@Override
