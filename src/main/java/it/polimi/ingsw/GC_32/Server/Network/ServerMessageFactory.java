@@ -202,10 +202,8 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[1]);
 			break;
 		case CHANGE:
-			CONTEXTpayload.add("NAME", (String) payload[0]);
-			
-			CONTEXTpayload.add("RESOURCEIN", (JsonArray) payload[1]);
-			CONTEXTpayload.add("RESOURCEOUT", (JsonArray) payload[2]);
+			CONTEXTpayload.add("NAME", (JsonArray) payload[0]);
+			CONTEXTpayload.add("RESOURCE", (JsonArray) payload[1]);
 			break;
 		}	
 		CONTEXT.add("PAYLOAD", CONTEXTpayload);

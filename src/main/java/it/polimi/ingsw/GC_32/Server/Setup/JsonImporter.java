@@ -51,7 +51,7 @@ public class JsonImporter {
 				actionValue = 0;
 			}
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
-			
+						
 			// registrazione costi e requisiti
 			try{
 				JsonValue resourceCost = card.get("cost");
@@ -113,6 +113,8 @@ public class JsonImporter {
 						newCard.registerPermanentEffect(EffectRegistry.getInstance()
 																	  .getEffect(permanentEffectArray.get(i).asString(),
 																			     permanentPayloadArray.get(i)));
+						newCard.registerPermanentEffectType(permanentEffectArray.get(i).asString());
+						newCard.addPayload(permanentPayloadArray.get(i)); //used by CHANGE effect for pretty context build
 					}
 				}
 			}catch(NullPointerException e){

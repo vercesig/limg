@@ -111,6 +111,10 @@ public class ClientCLI implements ClientInterface{
 		
 		
 		while(true){
+			try{
+				Thread.sleep(200);
+			}catch(InterruptedException e){}
+			
 			if(!idleRun){
 				idleRun=true;
 				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
@@ -126,6 +130,7 @@ public class ClientCLI implements ClientInterface{
 				idleRun=false;
 			}
 			
+			// spedisco messaggi
 			if(!clientsendQueue.isEmpty())
 				clientsendQueue.forEach(message -> {
 					System.out.println("Client CLI"+message);

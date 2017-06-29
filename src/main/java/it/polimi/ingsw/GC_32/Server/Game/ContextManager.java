@@ -37,7 +37,6 @@ public class ContextManager{
 						this.game,
 						player,
 						ContextType.CHANGE,
-						action.getAdditionalInfo().get("CARDNAME").asString(),
 						extraInfo.asArray().get(0).asArray(), // see ServerMessageFactory
 						extraInfo.asArray().get(1).asArray()
 						));

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
@@ -279,19 +280,51 @@ public class Game implements Runnable{
 		
 		switch(action.getActionType()){
 			case "PRODUCTION":
-			case "HARVEST":
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				cm.openContext(ContextType.SERVANT, player, action, null);
 				
 				JsonValue SERVANTresponse = cm.waitForContextReply();
 				action.setActionValue(action.getActionValue() + SERVANTresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
 				
-				player.getPersonalBoard().getCardsOfType(action.getActionType().equals("PRODUCTION") ? "BUILDINGCARD" : "TERRITORYCARD").forEach(card -> {
+				JsonArray CHANGEcontextPayload = new JsonArray();
+				JsonArray CHANGEnameCardArray = new JsonArray();
+				
+				ArrayList<DevelopmentCard> effectCardList = new ArrayList<DevelopmentCard>();
+				
+				player.getPersonalBoard().getCardsOfType("BUILDINGCARD").forEach(card -> {
 					if(card.getMinimumActionvalue() <= action.getActionValue()){
-						card.getPermanentEffect().apply(board, player, action, cm);
-						System.out.println("*********************************** attivo effetti permanenti");
+						effectCardList.add(card);
+						// cards with CHANGE effect
+						if(card.getPermanentEffectType().contains("CHANGE")){
+							card.getPayloadInfo().forEach(payload -> {
+								CHANGEcontextPayload.add(payload);
+								CHANGEnameCardArray.add(card.getName());
+							});
+						}
 					}
 				});
+				JsonArray CHANGEpacket = new JsonArray();
+				CHANGEpacket.asArray().add(CHANGEnameCardArray);
+				CHANGEpacket.asArray().add(CHANGEcontextPayload);
+				
+				// c'è almeno una carta con effetto CHANGE
+				if(!CHANGEnameCardArray.isEmpty()){
+					cm.openContext(ContextType.CHANGE, player, action, CHANGEpacket);
+					
+					JsonArray indexResponse = cm.waitForContextReply().asObject().get("CHANGEIDARRAY").asArray();
+					System.out.println(indexResponse.toString());
+					/*for(int i=0; i<indexResponse.size(); i++){
+						action.getAdditionalInfo().add("CHANGEID", indexResponse.get(i));
+						effectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
+						effectCardList.remove(i);
+					}*/
+				}
+				//effectCardList.forEach(card -> card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm)));
+				System.out.println("*********************************** attivati effetti permanenti");
+				break;
+			case "HARVEST":
+				
+				// : "TERRITORYCARD"
 				break;
 			case "COUNCIL":
 				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
@@ -319,12 +352,12 @@ public class Game implements Runnable{
 				
 				if(card.getType().equals("CHARACTERCARD")){
 					if(card.getPermanentEffect()!= null){
-						player.addEffect(card.getPermanentEffect());
+						card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
 						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
 					}	
 				}
 				if(card.getInstantEffect()!= null){
-					card.getInstantEffect().apply(board, player, action, cm);
+					card.getInstantEffect().forEach(effect -> effect.apply(board, player, action, cm));
 				}
 				break;
 		}

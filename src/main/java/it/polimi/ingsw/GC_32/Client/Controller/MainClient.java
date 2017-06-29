@@ -282,6 +282,9 @@ public class MainClient{
 											messagePayload.get(key).asInt());
 						}	
 						client.getClientInterface().displayMessage(new String(display));
+						
+						in.close();
+						
 						break;
 				}
 			}

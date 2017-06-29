@@ -15,39 +15,21 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 public class ChangeEffect {
 
 	static EffectBuilder changeEffectBuilder = (JsonValue payload) -> {
-
-		JsonArray payloadList = new JsonArray();
-		
-		if(payload.isArray()){
-			payloadList = payload.asArray();
-		}else{
-			payloadList.add(payload);
-		}
-		
-		System.out.println(payloadList.toString());
-		
-		JsonArray resourceInArray = new JsonArray();
-		JsonArray resourceOutArray = new JsonArray();
-		
-		payloadList.forEach(item -> {
-			JsonObject obj = item.asObject();
-			resourceInArray.add(obj.get("RESOURCEIN").asObject());
-			resourceOutArray.add(obj.get("RESOURCEOUT").asObject());
-		});
 		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
-				JsonArray cmPayload = new JsonArray();
-				cmPayload.add(resourceInArray);
-				cmPayload.add(resourceOutArray);
-				System.out.println(cmPayload.toString());
-				cm.openContext(ContextType.CHANGE,p,a,cmPayload);
+				JsonArray effectArray = new JsonArray();
 				
-				JsonObject contextResponse = cm.waitForContextReply().asObject();
-				System.out.println("dopo context");
-				int index = contextResponse.get("CHANGEID").asInt();
+				if(payload.isArray())
+					effectArray = payload.asArray();
+				else
+					effectArray.add(payload.asObject());
 				
-				p.getResources().addResource(new ResourceSet(cmPayload.get(index).asObject()));
-				p.getResources().subResource(new ResourceSet(cmPayload.get(index).asObject()));
+				JsonValue indexResponse = a.getAdditionalInfo().get("CHANGEID");
+				
+				if(indexResponse.isNumber()){
+					p.getResources().addResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject()));
+					p.getResources().subResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject()));
+				}
 			};	
 		return changeEffect;
 	};

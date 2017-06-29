@@ -16,17 +16,10 @@ public class ChangeEffectContext extends Context{
 		runFlag = true;
 		JsonObject JsonPayload = (JsonObject) object;
 		
-		String cardName = JsonPayload.get("NAME").asString();
+		JsonArray CHANGEcardName = JsonPayload.get("NAME").asArray();
+		JsonArray CHANGEresourcePayload = JsonPayload.get("RESOURCE").asArray();
 		
-		JsonArray resourceIn = JsonPayload.get("RESOURCEIN").asArray();
-		JsonArray resourceOut = JsonPayload.get("RESOURCEOUT").asArray();
-		
-		System.out.println("you have a change from "+cardName+" card. Choose what change you want perform just typing the corresponding number, \n"
-				+ "type 'n' if you don't want to apply the effect");
-		
-		for(int i=0; i<resourceIn.size(); i++){
-			System.out.println("["+i+"]  "+new ResourceSet(resourceIn.get(i).asObject()).toString()+" -> "+new ResourceSet(resourceOut.get(i).asObject()).toString()+"\n");
-		}
+		System.out.println("you have some change effect to apply, for each card choose what exchange you want perform:");
 		
 		JsonObject CONTEXTREPLY = new JsonObject();
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
@@ -34,22 +27,77 @@ public class ChangeEffectContext extends Context{
 		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "CHANGE");
 		JsonObject CONTEXTREPLYpayloadinfo = new JsonObject();
 		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
-				
+		
+		JsonArray indexArray = new JsonArray();
+		CONTEXTREPLYpayloadinfo.add("CHANGEIDARRAY", indexArray);
+		
+		int i=0;
+		
 		while(runFlag){
-				
-				command = in.nextLine();
-				while(!(Integer.parseInt(command)<=resourceIn.size()&&!command.equals("n"))){
-					System.out.println("enter a valid index for this card, or type 'n' if you don't want to apply any changes");
+			
+			boolean actionFlag = true;
+			
+			System.out.println("--------------------  "+CHANGEcardName.get(i).asString()+"  --------------------\n");
+			
+			JsonValue item = CHANGEresourcePayload.get(i);
+			if(item.isObject()){ // CHANGE singolo
+				System.out.println("this card offer only this exchange:");
+				System.out.println(new ResourceSet(item.asObject().get("RESOURCEIN").asObject()).toString()+" -> "
+								  +new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n"
+								  + "type 'y' if you want apply this effect, otherwise type 'n'");
+
+				while(actionFlag){
 					command = in.nextLine();
+					switch(command){
+					case "y":
+						indexArray.add(0);
+						actionFlag=false;
+						i++;
+						break;
+					case "n":
+						indexArray.add("N");
+						actionFlag=false;
+						i++;
+						break;
+					default:
+						System.out.println("type a valid argument");
+					}
+				}	
+			}else{ // CHANGE esclusivo
+				System.out.println("select what exchange you want apply. please type the corresponding ID of the effect you want perform\n"
+						+ "type 'n' if you don't want to apply this effect");
+				for(int j=0; j<item.asArray().size(); j++){
+					System.out.println("["+j+"]  "+new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEIN").asObject()).toString()+" -> "
+												  +new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 				}
-				if(!command.equals("n"))
-					CONTEXTREPLYpayloadinfo.add("CHANGEID", Integer.parseInt(command));
+				while(actionFlag){
+					System.out.println("dentro while sotto else");
+					command = in.nextLine();
+					try{
+						if(Integer.parseInt(command)<item.asArray().size()&&Integer.parseInt(command)>=0){
+							indexArray.add(Integer.parseInt(command));
+							actionFlag = false;
+							i++;
+						}else
+							System.out.println("type a valid number");
+						if(command.equals("n")){
+							indexArray.add(command);
+							actionFlag = false;
+							i++;
+						}else
+							System.out.println("type a valid number");
+					}catch(NumberFormatException e){
+						System.out.println("type a valid number");
+					}
+				}
+			}
 			
-			
-			CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
-			
-			sendQueue.add(CONTEXTREPLY.toString());
-			close();
+			if(i==CHANGEcardName.size()){
+				System.out.println("chiudo context "+CHANGEcardName.size());
+				CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);	
+				sendQueue.add(CONTEXTREPLY.toString());
+				close();
+			}
 		}
 	}
 }

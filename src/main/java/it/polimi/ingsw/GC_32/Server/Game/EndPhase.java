@@ -63,7 +63,7 @@ public class EndPhase {
 				if(!player.getExcomunicateFlag().contains("NOENDPURPLE")){
 					LinkedList <DevelopmentCard> ventureCard = player.getPersonalBoard().getCardsOfType("VENTURECARD");
 					for (DevelopmentCard card: ventureCard){
-						card.getPermanentEffect().apply(game.getBoard(), player, null, null);
+						card.getPermanentEffect().forEach(effect -> effect.apply(game.getBoard(), player, null, null));
 					}
 				}	
 				int score = player.getResources().getResource("VICTORY_POINTS");
