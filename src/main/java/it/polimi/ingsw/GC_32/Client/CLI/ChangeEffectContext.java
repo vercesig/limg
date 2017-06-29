@@ -71,7 +71,6 @@ public class ChangeEffectContext extends Context{
 												  +new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 				}
 				while(actionFlag){
-					System.out.println("dentro while sotto else");
 					command = in.nextLine();
 					try{
 						if(Integer.parseInt(command)<item.asArray().size()&&Integer.parseInt(command)>=0){
