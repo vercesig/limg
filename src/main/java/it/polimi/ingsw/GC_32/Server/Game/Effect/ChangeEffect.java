@@ -15,18 +15,17 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 public class ChangeEffect {
 
 	static EffectBuilder changeEffectBuilder = (JsonValue payload) -> {
+
 		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
+			
+				JsonValue indexResponse = a.getAdditionalInfo().get("CHANGEID");				
 				JsonArray effectArray = new JsonArray();
 				
 				if(payload.isArray())
 					effectArray = payload.asArray();
 				else
 					effectArray.add(payload.asObject());
-				
-				JsonValue indexResponse = a.getAdditionalInfo().get("CHANGEID");
-				
-				System.out.println(effectArray.toString());
 				
 				if(indexResponse.isNumber()){
 					p.getResources().addResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject().get("RESOURCEOUT").asObject()));

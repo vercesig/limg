@@ -192,6 +192,10 @@ public class ServerMessageFactory {
 		case PRIVILEGE:
 			int numberOfPrivilege = (int) payload[0];
 			CONTEXTpayload.add("NUMBER", numberOfPrivilege);
+			if(payload.length>1){ // privilege with cost
+				JsonObject cost = (JsonObject) payload[1];
+				CONTEXTpayload.add("COST", cost);
+			}
 			break;
 		case SERVANT:
 			CONTEXTpayload.add("NUMBER_SERVANTS", (int) payload[0]);

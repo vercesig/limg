@@ -320,7 +320,12 @@ public class Game implements Runnable{
 						CHANGEeffectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
 					}
 				}
-				notCHANGEeffectCardList.forEach(card -> card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm)));
+				notCHANGEeffectCardList.forEach(card -> { 
+					card.getPermanentEffect().forEach(effect -> {
+						effect.apply(board, player, action, cm);
+						System.out.println("attivo effetto non change");
+					});
+				});
 				break;
 			case "HARVEST":
 				
@@ -356,7 +361,7 @@ public class Game implements Runnable{
 						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
 					}	
 				}
-				if(card.getInstantEffect()!= null){
+				if(!card.getInstantEffect().isEmpty()){
 					card.getInstantEffect().forEach(effect -> effect.apply(board, player, action, cm));
 				}
 				break;

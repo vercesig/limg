@@ -121,6 +121,9 @@ public class ClientCLI implements ClientInterface{
 		//inizialize changeEffectContext
 		contextList[4].registerClientPlayer(playerListReference.get(UUID));
 		
+		//inizialize privilegeContext
+		contextList[1].registerClientPlayer(playerListReference.get(UUID));
+		
 		
 		while(true){
 			

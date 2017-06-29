@@ -6,6 +6,8 @@ import java.util.Set;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
 public class PrivilegeContext extends Context{
 		
 
@@ -15,8 +17,16 @@ public class PrivilegeContext extends Context{
 		runFlag=true;
 		
 		JsonObject JsonPayload = (JsonObject) payload;
-
+		
 		int numberOfPrivilege = JsonPayload.get("NUMBER").asInt();
+		ResourceSet cost = null;
+		boolean isCostPrivilege = false;
+		
+		try{
+			cost = new ResourceSet(JsonPayload.get("COST").asObject());
+			isCostPrivilege = true;
+		}catch(NullPointerException e){}
+		
 		JsonObject CONTEXTREPLY = new JsonObject();
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
 		JsonObject CONTEXTREPLYpayload = new JsonObject();
@@ -26,34 +36,47 @@ public class PrivilegeContext extends Context{
 		
 		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 		
-		System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
-				+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
-				+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
-				+ "to the resource you want to exchange with your privilege");
+		if(!isCostPrivilege){
+			System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
+					+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
+					+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
+					+ "to the resource you want to exchange with your privilege");
+		}else{
+			System.out.println("you have this effect to consume :\n"+cost.toString()+" -> PRIVILEGE :"+numberOfPrivilege+"\nEach privilege could "
+					+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
+					+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
+					+ "to the resource you want to exchange with your privilege. type 'n' if you don't want to apply the effect");
+		}
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
-			try{
-			switch(Integer.parseInt(command)){
-			case 0:
-				CONTEXTREPLYpayloadinfo.add(0);
-				break;
-			case 1:
-				CONTEXTREPLYpayloadinfo.add(1);
-				break;
-			case 2:
-				CONTEXTREPLYpayloadinfo.add(2);
-				break;
-			case 3:
-				CONTEXTREPLYpayloadinfo.add(3);
-				break;
-			case 4:
-				CONTEXTREPLYpayloadinfo.add(4);
-				break;
-			default:
-				System.out.println("type a valid number");
-				break;
+			if(command.equals("n")&&isCostPrivilege){
+				choosedResources.add(command);
+				sendQueue.add(CONTEXTREPLY.toString());
+				close();
 			}
+			
+			try{
+				switch(Integer.parseInt(command)){
+				case 0:
+					CONTEXTREPLYpayloadinfo.add(0);
+					break;
+				case 1:
+					CONTEXTREPLYpayloadinfo.add(1);
+					break;
+				case 2:
+					CONTEXTREPLYpayloadinfo.add(2);
+					break;
+				case 3:
+					CONTEXTREPLYpayloadinfo.add(3);
+					break;
+				case 4:
+					CONTEXTREPLYpayloadinfo.add(4);
+					break;
+				default:
+					System.out.println("type a valid number");
+					break;
+				}
 			}catch(NumberFormatException e){
 				System.out.println("type a valid number");
 			}
@@ -66,7 +89,6 @@ public class PrivilegeContext extends Context{
 				System.out.println("you can't choose the same resource two times, please enter"
 						+ " a different choise");
 			}
-			
 			if(numberOfPrivilege==0){
 				sendQueue.add(CONTEXTREPLY.toString());
 				close();

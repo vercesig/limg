@@ -43,11 +43,20 @@ public class ContextManager{
 				waitingContextResponse = "CHANGE";
 				break;
 			case PRIVILEGE:
+				if(extraInfo.isArray()){ // privilege with cost
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+							this.game,
+							player,
+							ContextType.PRIVILEGE,
+							extraInfo.asArray().get(0).asInt(), // number of privilege to consume
+							extraInfo.asArray().get(1).asObject())); // cost of the privilege
+				}else{
 				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
 						this.game,
 						player,
 						ContextType.PRIVILEGE,
 						extraInfo.asInt())); // number of privilege to consume
+				}
 				waitingContextResponse = "PRIVILEGE";
 				break;
 			default:

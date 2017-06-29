@@ -22,16 +22,39 @@ public class PrivilegeEffect {
 
 	static EffectBuilder buildPrivilege = (JsonValue payload) -> {
 			int number = payload.asObject().get("NUMBER").asInt();
-			 
+					 
 			Effect e = (Board b, Player p, Action a, ContextManager cm) ->	{
-				cm.openContext(ContextType.PRIVILEGE, p, a, Json.value(number));
+				
+				boolean isCostPrivilege = false;
+				boolean isValid = true;
+				ResourceSet cost = null;											
+				try{
+					cost = new ResourceSet(payload.asObject().get("COST").asObject());
+					isCostPrivilege = true;
+				}catch(NullPointerException ecc){}
+				
+				if(isCostPrivilege){
+					JsonArray privilegePayload = new JsonArray();				
+						privilegePayload.add(number);
+						privilegePayload.add(payload.asObject().get("COST").asObject());
+					cm.openContext(ContextType.PRIVILEGE, p, a, privilegePayload);
+				}else{				
+					cm.openContext(ContextType.PRIVILEGE, p, a, Json.value(number));
+				}
+
 				while(true){
 					JsonArray response = cm.waitForContextReply().asArray();
 					if(response.size() != number || !isSet(response)){
 						cm.setContextAck(false, p);
 					} else {
 						for(JsonValue val: response){
-							p.getResources().addResource(values[val.asInt()]);
+							if(val.isNumber())
+								p.getResources().addResource(values[val.asInt()]);
+							else
+								isValid = false; // cost privilege effect has been cancelled
+						}
+						if(isCostPrivilege&&isValid){
+							p.getResources().subResource(cost);
 						}
 						cm.setContextAck(true, p);
 						return;
