@@ -133,6 +133,11 @@ public class MainClient{
 					String message = client.getSendQueue().poll();				
 					JsonObject JsonMessage = Json.parse(message).asObject();					
 					JsonMessage.add("GameID", client.gameUUID);
+					
+					if(JsonMessage.get("MESSAGETYPE").asString().equals("ASKACT")){
+						client.actionRunningFlag=false;
+					}
+					
 					client.network.sendMessage(JsonMessage.toString());
 				}	
 				
