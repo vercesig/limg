@@ -254,6 +254,9 @@ public class MainClient{
 						client.graphicInterface.setDiceValue(blackDice, whiteDice, orangeDice);		
 						break;
 					case "TRNBGN":
+						
+						System.out.println(" ********************************* TRNBGN");
+						
 						String playerUUID = messagePayload.get("PLAYERID").asString();
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization

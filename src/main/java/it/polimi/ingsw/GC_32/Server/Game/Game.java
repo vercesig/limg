@@ -213,6 +213,10 @@ public class Game implements Runnable{
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
 						
+						try{
+						Thread.sleep(200);
+						}catch(InterruptedException e){}
+						
 						memoryAction.remove(getLock());
 						
 						LOGGER.info("ricevo turn end [GAME]");
