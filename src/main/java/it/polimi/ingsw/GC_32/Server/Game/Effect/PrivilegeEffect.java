@@ -17,8 +17,8 @@ public class PrivilegeEffect {
 	private static ResourceSet[] values = { new ResourceSet("{\"WOOD\": 1, \"STONE\": 1}"),
 											new ResourceSet("{\"SERVANTS\": 2}"),
 											new ResourceSet("{\"COINS\": 2}"),
-											new ResourceSet("{\"MILITARY\": 2}"),
-											new ResourceSet("{\"FAITH\": 1}")};
+											new ResourceSet("{\"MILITARY_POINTS\": 2}"),
+											new ResourceSet("{\"FAITH_POINTS\": 1}")};
 
 	static EffectBuilder buildPrivilege = (JsonValue payload) -> {
 			int number = payload.asObject().get("NUMBER").asInt();
