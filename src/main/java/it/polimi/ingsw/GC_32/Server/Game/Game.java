@@ -209,6 +209,7 @@ public class Game implements Runnable{
 						}
 						break;	
 					case "TRNEND":
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
 						LOGGER.info("ricevo turn end [GAME]");
 						System.out.println("ROUND ID: "+ turnManager.getRoundID());
 						System.out.println("PERIOD ID: "+ turnManager.getRoundID()/2);

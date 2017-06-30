@@ -226,7 +226,7 @@ public class MainClient{
 						client.graphicInterface.setTrackValue(playerID, 2);
 						break;
 					case "CHGBOARDSTAT":
-						// notifica cambiamento dell'intera board (quando si svuota la board e si inseriscono tutte le carte nuove)
+						// notifica cambiamento board
 						if(messagePayload.get("TYPE").asString().equals("BOARD")){
 							JsonArray cardLayout = Json.parse(messagePayload.get("PAYLOAD").asString()).asArray();
 							cardLayout.forEach(JSONcard -> {

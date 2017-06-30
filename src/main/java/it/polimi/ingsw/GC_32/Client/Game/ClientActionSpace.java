@@ -76,7 +76,7 @@ public class ClientActionSpace {
 		else
 			infoContainer[5] = "empty";
 		StringBuilder occupantsString = new StringBuilder();
-		occupants.forEach(familiar -> occupantsString.append(familiar.toString()+","));
+		occupants.forEach(familiar -> occupantsString.append(familiar.getOwner()+","));
 		infoContainer[6] = new String(occupantsString);
 		if(cardName!=null)
 			infoContainer[7] = cardName;

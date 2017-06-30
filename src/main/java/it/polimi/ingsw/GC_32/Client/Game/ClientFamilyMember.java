@@ -23,6 +23,10 @@ public class ClientFamilyMember {
 		return this.busy;
 	}
 	
+	public String getOwner(){
+		return this.owner;
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		if(busy==true)

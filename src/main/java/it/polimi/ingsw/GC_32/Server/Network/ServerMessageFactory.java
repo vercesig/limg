@@ -178,11 +178,10 @@ public class ServerMessageFactory {
  				card.add("NAME", towerLayer.getCard().getName());
  				}
  				catch(NullPointerException e){
- 					card.add("NAME", "empty"); // se ;a carta e' stata presa
- 				}
- 				
+ 					card.add("NAME", "EMPTY"); // se la carta e' stata presa
+ 				}				
  				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
- 				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
+ 				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID()); 				
  				CHGBOARDSTATpayload.add(card);
  			}
  		}
@@ -191,8 +190,8 @@ public class ServerMessageFactory {
  		GameMessage CHGBOARDSTATmessage = new GameMessage(game.getUUID(), null, "CHGBOARDSTAT", CHGBOARDSTAT);
  		CHGBOARDSTATmessage.setBroadcast();		
  		return CHGBOARDSTATmessage;
-}
-		
+	}
+	
 	public static GameMessage buildCONTEXTmessage(Game game, Player player, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
 		CONTEXT.add("CONTEXTID", type.getContextID());	
