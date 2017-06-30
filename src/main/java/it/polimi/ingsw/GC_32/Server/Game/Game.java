@@ -292,8 +292,8 @@ public class Game implements Runnable{
 				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
 				cm.openContext(ContextType.SERVANT, player, action, null);
 				
-				JsonValue SERVANTresponse = cm.waitForContextReply();
-				action.setActionValue(action.getActionValue() + SERVANTresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
+				JsonValue SERVANTProductionresponse = cm.waitForContextReply();
+				action.setActionValue(action.getActionValue() + SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
 				
 				JsonArray CHANGEcontextPayload = new JsonArray();
 				JsonArray CHANGEnameCardArray = new JsonArray();
@@ -336,11 +336,19 @@ public class Game implements Runnable{
 					});
 				});
 				break;
-			case "HARVEST":
+			case "HARVEST":				
+				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
+				cm.openContext(ContextType.SERVANT, player, action, null);
 				
-				// TODO
+				JsonValue SERVANTHarvestresponse = cm.waitForContextReply();
+				action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
 				
-				// : "TERRITORYCARD"
+				
+				player.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> {
+					if(card.getMinimumActionvalue() <= action.getActionValue()){ 
+						card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
+					}
+				});
 				break;
 			case "COUNCIL":
 				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
