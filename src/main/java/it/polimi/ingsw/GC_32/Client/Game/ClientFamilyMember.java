@@ -12,7 +12,7 @@ public class ClientFamilyMember {
 	}
 	
 	public void setBusyFlag(boolean busyFlag){
-		this.busy = busy;
+		this.busy = busyFlag;
 	}
 	
 	public void setActionValue(int actionValue){

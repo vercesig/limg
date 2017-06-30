@@ -141,6 +141,15 @@ public class ServerMessageFactory {
  			STATCHNGCardpayload.add(type, tmpCardArray);
  		});
  		
+ 		JsonArray familyStatus = new JsonArray();
+ 		for(int i=0; i<player.getFamilyMember().length; i++){
+ 			if(player.getFamilyMember()[i].isBusy()){
+ 				familyStatus.add(true);
+ 			}else{
+ 				familyStatus.add(false);
+ 			}
+ 		}
+ 		STATCHNG.add("FAMILYSTATUS", familyStatus.toString());
 		STATCHNG.add("BONUSTILE", player.getPersonalBonusTile().toString());
  		STATCHNG.add("PAYLOAD", STATCHNGCardpayload.toString());		
  		GameMessage STATCHNGmessage = new GameMessage(game.getUUID(), player.getUUID(), "STATCHNG", STATCHNG);

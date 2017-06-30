@@ -198,17 +198,29 @@ public class MainClient{
 						break;
 					case "STATCHNG":
 						playerID = messagePayload.get("PLAYERID").asString();
+						
+						// update resources
  						JsonObject newResources = Json.parse(messagePayload.get("RESOURCE").asString()).asObject();
  						client.getPlayers().get(playerID).getPlayerResources().replaceResourceSet(new ResourceSet(newResources));	
-												
+						
+ 						// updating card
  						JsonObject cardList = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject();
  						Iterator<Member> cardListIterator = cardList.iterator();
+ 						client.getPlayers().get(playerID).getCards().clear();
+ 						
  						cardListIterator.forEachRemaining(cards -> {
  							JsonArray cardListArray = cards.getValue().asArray();
  							if(!cardListArray.isNull())
  								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
  						});
-						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());						
+						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());		
+						
+						// update familyMEmberStatus
+						JsonArray familyStatus = Json.parse(messagePayload.get("FAMILYSTATUS").asString()).asArray();
+						for(int i=0; i<familyStatus.size(); i++){
+							client.getPlayers().get(playerID).getFamilyMembers()[i].setBusyFlag(familyStatus.get(i).asBoolean());
+						}
+						
 						client.graphicInterface.setTrackValue(playerID, 0);
 						client.graphicInterface.setTrackValue(playerID, 1);
 						client.graphicInterface.setTrackValue(playerID, 2);
