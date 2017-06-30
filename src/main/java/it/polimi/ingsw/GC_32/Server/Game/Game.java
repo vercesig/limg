@@ -213,7 +213,7 @@ public class Game implements Runnable{
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
 						
-						try{
+						try{ // wait for TRNBGN message
 						Thread.sleep(200);
 						}catch(InterruptedException e){}
 						
@@ -238,6 +238,10 @@ public class Game implements Runnable{
 													  .buildCONTEXTmessage(this, p, ContextType.EXCOMMUNICATION, 
 															excommunicationLevel,
 															p.getResources().getResource("FAITH_POINTS")));
+									
+									try{ // wait for TRNBGN message
+										Thread.sleep(200);
+									}catch(InterruptedException e){}
 										
 								}
 								LOGGER.log(Level.INFO, "giving lock to the next player");
@@ -253,12 +257,13 @@ public class Game implements Runnable{
 								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 								// ask action
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
+							}else{
+								LOGGER.log(Level.INFO, "giving lock to the next player");
+								setLock(turnManager.nextPlayer());
+								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+								// ask action
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
 							}
-							LOGGER.log(Level.INFO, "giving lock to the next player");
-							setLock(turnManager.nextPlayer());
-							LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-							// ask action
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
 						} else {
 							LOGGER.log(Level.INFO, "game end");
 							EndPhase.endGame(this);

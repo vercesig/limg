@@ -7,6 +7,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
+
 public class TurnManager {
 	
 	private final static Logger LOGGER = Logger.getLogger(TurnManager.class.getName());
@@ -15,6 +17,7 @@ public class TurnManager {
 	private int roundID;
 	
 	private LinkedList<UUID> turnOrderQueue;
+	private ArrayList<Player> memoryTurnOrder; // tiene memeotia del precedente ordine di turno
 	
 	private Game game;
 	
@@ -24,7 +27,8 @@ public class TurnManager {
 		this.turnID = 1;
 		this.roundID = 0;
 		this.game = game;
-		this.turnOrderQueue = new LinkedList<>();
+		this.turnOrderQueue = new LinkedList<UUID>();
+		this.memoryTurnOrder = new ArrayList<Player>();
 		
 		LOGGER.log(Level.INFO, "setting first turn order");
 		
@@ -38,6 +42,8 @@ public class TurnManager {
 		Collections.shuffle(list);
 		for(int i=0; i<playerListSize; i++){
 			tmpPlayerList.add(game.getPlayerList().get(list.get(i)).getUUID());
+			
+			memoryTurnOrder.add(GameRegistry.getInstance().getPlayerFromID(game.getPlayerList().get(list.get(i)).getUUID()));
 		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			tmpPlayerList.forEach(UUID -> turnOrderQueue.add(UUID));
@@ -60,6 +66,8 @@ public class TurnManager {
 	
 	public boolean isRoundEnd(){
 	if(turnID-(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+			LOGGER.log(Level.INFO, "updating turn order");
+			updateTurnOrder();
 			roundID++;
 			return true;
 		}
@@ -77,7 +85,7 @@ public class TurnManager {
 	}
 	
 	public void updateTurnOrder(){
-		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(game.getPlayerList()); //vecchio ordine di turno	
+		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(memoryTurnOrder); //vecchio ordine di turno	
 		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
 		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
 		
