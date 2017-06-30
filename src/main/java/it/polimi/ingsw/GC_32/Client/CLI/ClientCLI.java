@@ -228,17 +228,17 @@ public class ClientCLI implements ClientInterface{
 
 	@Override
 	public void moveFamiliar(int familiar, int regionID, int spaceID) {
-		 ClientPlayer player = this.playerListReference.get(UUID);
+		/* ClientPlayer player = this.playerListReference.get(UUID);
 		 ClientFamilyMember familyMember =  player.getFamilyMembers()[familiar];
 		 familyMember.setBusyFlag(true);
 		 this.boardReference.getRegionList().get(regionID).getActionSpaceList().get(spaceID)
-		 												  .addFamilyMember(familyMember);
+		 												  .addFamilyMember(familyMember);*/
 		
 	}
 
 	@Override
 	public void moveCardToPlayer(String playerID, int regionID, int spaceID) {
-		ClientPlayer player = this.playerListReference.get(playerID);
+		/*ClientPlayer player = this.playerListReference.get(playerID);
 		String cardName = this.boardReference.getRegionList().get(regionID)
 											 .getActionSpaceList().get(spaceID)
 											 .getCardName();
@@ -253,7 +253,7 @@ public class ClientCLI implements ClientInterface{
 			this.boardReference.getRegionList().get(regionID).getActionSpaceList()
 															 .get(spaceID)
 															 .setCard("empty");
-		}
+		}*/
 	}
 
 	@Override

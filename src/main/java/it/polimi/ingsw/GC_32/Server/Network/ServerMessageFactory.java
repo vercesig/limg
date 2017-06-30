@@ -192,6 +192,23 @@ public class ServerMessageFactory {
  		return CHGBOARDSTATmessage;
 	}
 	
+	public static GameMessage buildCHGBOARDSTATmessage(Game game, String playerUUID, Action action){
+		JsonObject CHGBOARDSTAT = new JsonObject();
+		CHGBOARDSTAT.add("TYPE", "FAMILY");
+		JsonObject CHGBOARDSTATpayload = new JsonObject();
+		
+		CHGBOARDSTATpayload.add("REGIONID", action.getActionRegionId());
+		CHGBOARDSTATpayload.add("SPACEID", action.getActionSpaceId());
+		CHGBOARDSTATpayload.add("PLAYERID", playerUUID);
+		CHGBOARDSTATpayload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt());
+		
+		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload);
+		
+		GameMessage CHGBOARDSTATmessage = new GameMessage(game.getUUID(), null, "CHGBOARDSTAT", CHGBOARDSTAT);
+		CHGBOARDSTATmessage.setBroadcast();
+		return CHGBOARDSTATmessage;
+	}
+	
 	public static GameMessage buildCONTEXTmessage(Game game, Player player, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
 		CONTEXT.add("CONTEXTID", type.getContextID());	

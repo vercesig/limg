@@ -238,6 +238,14 @@ public class MainClient{
 							});
 							//System.out.println(client.getBoard().toString());
 						}
+						if(messagePayload.get("TYPE").asString().equals("FAMILY")){							
+							int regionID = messagePayload.get("PAYLOAD").asObject().get("REGIONID").asInt();
+							int spaceID = messagePayload.get("PAYLOAD").asObject().get("SPACEID").asInt();
+							int familyMemberID = messagePayload.get("PAYLOAD").asObject().get("FAMILYMEMBER_ID").asInt();
+							client.getBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).addFamilyMember(
+									client.getPlayers().get(messagePayload.get("PAYLOAD").asObject().get("PLAYERID").asString()).getFamilyMembers()[familyMemberID]);
+							
+						}
 			 			break;
 					case "DICEROLL":
 						int blackDice = messagePayload.get("BLACKDICE").asInt();
@@ -274,6 +282,8 @@ public class MainClient{
 						}
 						else{
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
+							client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+							
 							int regionId = messagePayload.get("REGIONID").asInt();
 							int spaceId = messagePayload.get("SPACEID").asInt();
 							int indexFamily = messagePayload.get("FAMILYMEMBER_ID").asInt();
@@ -288,7 +298,6 @@ public class MainClient{
 							client.graphicInterface.setTrackValue(client.getUUID(), 2);
 							client.graphicInterface.waitTurn(true);
 
-							client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 						}	
 						break;
 					case "CONTEXT":

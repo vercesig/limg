@@ -210,6 +210,11 @@ public class Game implements Runnable{
 						break;	
 					case "TRNEND":
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
+						
+						memoryAction.remove(getLock());
+						
 						LOGGER.info("ricevo turn end [GAME]");
 						System.out.println("ROUND ID: "+ turnManager.getRoundID());
 						System.out.println("PERIOD ID: "+ turnManager.getRoundID()/2);
@@ -244,9 +249,6 @@ public class Game implements Runnable{
 								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 								// ask action
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
-							}else{
-								LOGGER.log(Level.INFO, "game end");
-								//stopGame();
 							}
 							LOGGER.log(Level.INFO, "giving lock to the next player");
 							setLock(turnManager.nextPlayer());
@@ -367,7 +369,6 @@ public class Game implements Runnable{
 				break;
 		}
 		
-		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player));
 	}
 	
 	public TurnManager getTurnManager(){

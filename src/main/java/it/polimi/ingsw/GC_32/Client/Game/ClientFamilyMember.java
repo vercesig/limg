@@ -6,9 +6,12 @@ public class ClientFamilyMember {
 	private String owner;
 	private boolean busy;
 	
-	public ClientFamilyMember(String owner){
-		this.owner = owner;
+	public ClientFamilyMember(){
 		this.busy = false;
+	}
+	
+	public void setName(String name){
+		this.owner = name;
 	}
 	
 	public void setBusyFlag(boolean busyFlag){

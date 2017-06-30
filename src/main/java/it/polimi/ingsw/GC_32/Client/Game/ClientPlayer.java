@@ -33,13 +33,16 @@ public class ClientPlayer {
 		track[2] = new Track("VICTORY_POINTS");
 		
 		for(int i=0; i<familyMembers.length; i++){
-			familyMembers[i] = new ClientFamilyMember(this.name);
+			familyMembers[i] = new ClientFamilyMember();
 		}
 		
 	}
 		
 	public void setName(String name){
 		this.name = name;
+		for(int i=0; i<familyMembers.length; i++){
+			familyMembers[i].setName(name);;
+		}
 	}
 	
 	public void setPersonalBonusTile(String bonusTile){
