@@ -284,4 +284,11 @@ public class ServerMessageFactory {
 		ENDGAMEmessage.setBroadcast();
 		return ENDGAMEmessage;
 	}
+
+	public static GameMessage buildCONNESTmessage(UUID playerId){
+		JsonObject CONNEST = new JsonObject();
+		CONNEST.add("PLAYERID", playerId.toString());
+		GameMessage CONNESTmessage = new GameMessage(null, playerId,"CONNEST", CONNEST);
+		return CONNESTmessage;
+	}
 }

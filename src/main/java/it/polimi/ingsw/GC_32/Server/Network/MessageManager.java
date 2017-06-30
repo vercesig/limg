@@ -46,7 +46,7 @@ public class MessageManager {
 		return instance;
 	}
 	
-	public void putRecivedMessage(GameMessage message){
+	synchronized public void putRecivedMessage(GameMessage message){
 		if(chatMessageTypeSet.contains(message.getOpcode())){
 			message.setBroadcast();
 			commonReceiveQueue.add(message);
@@ -77,11 +77,11 @@ public class MessageManager {
 		}
 	}
 	
-	public ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
+	protected ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
 		return this.socketSendQueue;
 	}
 	
-	public ConcurrentLinkedQueue<GameMessage> getRMISendQueue(){
+	protected ConcurrentLinkedQueue<GameMessage> getRMISendQueue(){
 		return this.RMISendQueue;
 	}
 	

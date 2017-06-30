@@ -16,9 +16,10 @@ import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Client.Network.SocketMsgConnection;
+import it.polimi.ingsw.GC_32.Client.Network.RMIMsgConnection;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
 
 public class MainClient{
 
@@ -62,13 +63,15 @@ public class MainClient{
 		return this.myUUID;
 	}
 	
-	private boolean setNetwork(String type){
+	private boolean setNetwork(String type) throws IOException{
 		switch(type){
 		case "s":
-			this.network = (MsgConnection) new SocketMsgConnection();
+			this.network = new SocketMsgConnection();
+			this.network.open("127.0.0.1", 9500);
 			return true;
 		case "r":
-			// RMI
+			this.network = new RMIMsgConnection();
+			this.network.open("127.0.0.1", 1099);
 			return true;
 		default:
 			return false;
@@ -117,7 +120,6 @@ public class MainClient{
 		}
 		
 		MsgConnection network = client.getNetwork();
-		network.open();
 		
 		System.out.println("ok, now we are ready to play");		
 				

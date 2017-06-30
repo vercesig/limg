@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.ArrayList;
 
-import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
 public class ChatDialog extends Context {
@@ -63,7 +62,7 @@ public class ChatDialog extends Context {
 				optionSelected = false;
 				if(!all){
 					System.out.println("| Select a player from this list:");
-					ArrayList <String> onlinePlayers = new <String> ArrayList();
+					ArrayList<String> onlinePlayers = new ArrayList<>();
 					for(String uuid : client.getPlayerList().keySet()){
 						if(!uuid.equals(client.getUUID())){
 							System.out.println("> " + client.getPlayerList().get(uuid).getName());

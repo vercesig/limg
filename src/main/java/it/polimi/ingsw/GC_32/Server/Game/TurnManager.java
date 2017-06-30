@@ -42,7 +42,6 @@ public class TurnManager {
 		Collections.shuffle(list);
 		for(int i=0; i<playerListSize; i++){
 			tmpPlayerList.add(game.getPlayerList().get(list.get(i)).getUUID());
-			
 			memoryTurnOrder.add(GameRegistry.getInstance().getPlayerFromID(game.getPlayerList().get(list.get(i)).getUUID()));
 		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
@@ -85,8 +84,8 @@ public class TurnManager {
 	}
 	
 	public void updateTurnOrder(){
-		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(memoryTurnOrder); //vecchio ordine di turno	
-		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();		
+		ArrayList<Player> oldTurnOrder = new ArrayList<Player>(memoryTurnOrder); //vecchio ordine di turno
+		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();
 		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
 		
 		//aggiorno stato dell'ordine di turno quardando i familiari in councilRegion

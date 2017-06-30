@@ -1,19 +1,13 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
-import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ClientCLI implements ClientInterface{
 

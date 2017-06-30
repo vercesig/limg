@@ -1,14 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -17,7 +11,6 @@ import java.util.logging.Logger;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
@@ -238,7 +231,7 @@ public class Game implements Runnable{
 													  .buildCONTEXTmessage(this, p, ContextType.EXCOMMUNICATION, 
 															excommunicationLevel,
 															p.getResources().getResource("FAITH_POINTS")));
-									
+
 									try{ // wait for TRNBGN message
 										Thread.sleep(200);
 									}catch(InterruptedException e){}

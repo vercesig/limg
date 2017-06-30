@@ -42,7 +42,7 @@ public class EndPhase {
 			int secondMilitary = json.get("SECONDMILITARY").asInt();
 			int conversion = json.get("RESOURCE").asInt();
 			
-			LinkedList <Player> militaryScore = new LinkedList();
+			LinkedList<Player> militaryScore = new LinkedList<>();
 			game.getPlayerList().forEach(player -> {militaryScore.add(player);});
 			militaryScore.sort(new Comparator<Player>(){ // ordino questa lista per player con piu' military_poits
 				@Override

@@ -28,7 +28,7 @@ public class CardTest {
 			System.out.print("Hello, this is an instant Effect");
 		};
 		this.card.registerInstantEffect(e);
-		this.card.getInstantEffect().apply(null, null, null, null);
+		this.card.getInstantEffect().get(0).apply(null, null, null, null);
 		assertEquals("Hello, this is an instant Effect", printStream.toString());
 	}
 	@Test
@@ -41,7 +41,7 @@ public class CardTest {
 			System.out.print("Hello, this is a permanent Effect");
 		};
 		this.card.registerPermanentEffect(e);
-		this.card.getPermanentEffect().apply(null, null, null, null);
+		this.card.getPermanentEffect().get(0).apply(null, null, null, null);
 		assertEquals("Hello, this is a permanent Effect", printStream.toString());
 	}
 }
