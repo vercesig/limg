@@ -28,7 +28,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 		
 		askAct.registerActionRunningGameFlag(actionRunningGameFlag);
 		
-		runFlag = true;		
+		runFlag = true;
+		
 		while(runFlag){
 			
 			if(client.isWaiting()){
@@ -41,8 +42,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 				System.out.println("type a command:\n- board: display the board status\n- players: display players' status\n"
 						+ "- show card: to show details of cards on the game\n"
 						+ "- chat room: to chat with other players\n"
-						+ "- change name: to change the name of your player"
-						+ "- action: make an action (if isn't your turn your requests won't be applied)");
+						+ "- change name: to change the name of your player\n"
+						+ "- action: make an action");
 				
 			command = in.nextLine();
 			switch(command){

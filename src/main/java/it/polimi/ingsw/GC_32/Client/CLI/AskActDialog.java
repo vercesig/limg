@@ -163,6 +163,9 @@ public class AskActDialog extends Context{
 			}	
 			
 			System.out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
+			
+			//TODO printare riassunto della mossa
+			
 			actionFlag = true;
 			while(actionFlag){
 				command = in.nextLine();

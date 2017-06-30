@@ -56,8 +56,6 @@ public class Game implements Runnable{
 	private ContextManager cm;
 	
 	// context management
-	//private HashMap<ContextType , Object[]> contextQueue;
-	private HashSet<String> waitingContextResponseSet;
 	private HashMap<String, JsonValue> contextInfoContainer;
 	private HashMap<UUID, Action> memoryAction;
 	private final UUID gameUUID;
@@ -71,7 +69,6 @@ public class Game implements Runnable{
 		MessageManager.getInstance().registerGame(this);
 		
 		this.memoryAction = new HashMap<>();
-		waitingContextResponseSet = new HashSet<String>();
 		contextInfoContainer = new HashMap<String, JsonValue>();
 		
 		LOGGER.log(Level.INFO, "setting up game...");
@@ -328,6 +325,8 @@ public class Game implements Runnable{
 				});
 				break;
 			case "HARVEST":
+				
+				// TODO
 				
 				// : "TERRITORYCARD"
 				break;

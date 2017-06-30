@@ -125,6 +125,7 @@ public class MainClient{
 				
 				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
 					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
+					client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 					client.actionRunningFlag=false;
 				}
 				
@@ -182,7 +183,7 @@ public class MainClient{
 						
 						client.graphicInterface.registerActionRunningGameFlag(client.actionRunningFlag);
 						
-						client.graphicInterface.unlockZone(client.getPlayers().size());
+						client.graphicInterface.unlockZone(client.getPlayers().size());						
 						client.graphicInterface.openContext(0, null);
 						//System.out.println("[MAINCLIENT] board correctly synchronized");
 						
@@ -232,7 +233,7 @@ public class MainClient{
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization
 							client.startTimeout = System.currentTimeMillis();
-							client.actionRunningFlag=true;
+							client.actionRunningFlag = true;
 							
 							client.graphicInterface.waitTurn(false);
 							client.getClientInterface().displayMessage("your turn is start, make an action");
@@ -240,6 +241,9 @@ public class MainClient{
 							
 						}
 						else{
+							//timer stop
+							client.actionRunningFlag = false;
+							
 							client.graphicInterface.waitTurn(true);
 							client.getClientInterface().displayMessage("now is "+client.getPlayers().get(playerUUID).getName()+"'s turn");
 						}						
@@ -250,7 +254,6 @@ public class MainClient{
 						if(!result){
 							client.graphicInterface.displayMessage("> THE ACTION IS NOT VALID!\n "
 												+ "please type a valid action.");
-							break;
 						}
 						else{
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
@@ -267,10 +270,10 @@ public class MainClient{
 							client.graphicInterface.setTrackValue(client.getUUID(), 1);
 							client.graphicInterface.setTrackValue(client.getUUID(), 2);
 							client.graphicInterface.waitTurn(true);
-							
-							network.sendMessage(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
-							break;
+
+							client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 						}	
+						break;
 					case "CONTEXT":
 						client.getClientInterface().openContext(messagePayload);
 						break;
