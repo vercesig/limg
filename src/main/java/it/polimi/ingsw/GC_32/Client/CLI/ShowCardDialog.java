@@ -1,32 +1,25 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import com.eclipsesource.json.JsonValue;
+import java.util.ArrayList;
 
 import it.polimi.ingsw.GC_32.Client.Game.CardCli;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
+import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
+import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+
 
 public class ShowCardDialog extends Context{
 	
-	private boolean flagCard;
-	
 	public ShowCardDialog(ClientCLI client){
 		super(client);
-		flagCard = true;
 	}
 	
 	@Override
 	public String open(Object object) {
 		
-		while(flagCard){	
 			System.out.println("type a command:\n-region: show detail of a card on the board\n-player: show detail of a player's card"
 					+ "\n-excommunication: to show the excommunication cards on the board"
 					+ "\n-quit: to exit");
 			command = in.nextLine();
-			
 			switch (command){
 
 			case("excommunication"): {						
@@ -49,15 +42,19 @@ public class ShowCardDialog extends Context{
 						if(Integer.parseInt(command) < client.getBoard().getExcommunicationCards().size() 
 								&& Integer.parseInt(command)>= 0){
 						
-							Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excom_cards.json"));
-							try {
-								JsonValue card = JsonImporter.importSingleCard(json,
-										client.getBoard().getExcommunicationCards().get(Integer.parseInt(command)));
-								System.out.println(CardCli.print(card.asObject()));
-							} catch (IOException e) {}
+							if(!ClientCardRegistry.getInstance()
+									.getDetails(client.getBoard()
+											.getExcommunicationCards()
+											.get(Integer.parseInt(command))).isNull()){
+								
+								String nameCard = client.getBoard().getExcommunicationCards().get(Integer.parseInt(command));	
+								System.out.println(CardCli.print(nameCard, ClientCardRegistry.getInstance()
+										.getDetails(nameCard)));
+							}
 						}
 					}catch(NumberFormatException e){
-						System.out.println("type a valid number");
+						System.out.println("type a valid number or type q to exit");
+						break;
 					}
 				}
 				break;
@@ -66,64 +63,89 @@ public class ShowCardDialog extends Context{
 				int regionID = 4;
 				int spaceID = 0;
 				System.out.println("type the regionID of the card yo want to see\n[4-7]");
-				boolean regionFlag = true;
+				boolean optionSelected = false;
 				
-				while(regionFlag){
+				while(!optionSelected){
 					command = in.nextLine();
 					try{
 						if(Integer.parseInt(command)<8 && Integer.parseInt(command) >3){
 							regionID = Integer.parseInt(command);
-							regionFlag = false;
+							break;
 						}
 						else
-							System.out.println("type a valid number");
+							System.out.println("type a valid number or type q to exit");
 					}catch(NumberFormatException e){
-						System.out.println("type a valid number");
+						System.out.println("type a valid number or type q to exit");
 					}
 				}
 				
-				regionFlag = true;
-				while(regionFlag){
+				while(!optionSelected){	
 					System.out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
-					command = in.nextLine();
+					command = in.nextLine();	
+					if(command.equals("q")){
+						optionSelected = true;
+						break;
+					}	
 					try{
 						if(Integer.parseInt(command)<4 && Integer.parseInt(command) >=0){
 							spaceID = Integer.parseInt(command);
-							regionFlag = false;
-						}
+						
+							if(!ClientCardRegistry.getInstance()
+									.getDetails(client.getBoard().getRegionList().get(regionID)
+											.getActionSpaceList().get(spaceID).getCardName()).isNull()){
+								
+								String nameCard = client.getBoard().getRegionList().get(regionID)
+										.getActionSpaceList().get(spaceID).getCardName();
+								
+								System.out.println("Showing details of " + nameCard);
+								
+								System.out.println(CardCli.print(nameCard, ClientCardRegistry.getInstance()
+										.getDetails(nameCard)));	
+							}
 						else
-							System.out.println("type a valid number");
-					}catch(NumberFormatException e){
-						System.out.println("type a valid number");
+							System.out.println("There are not any cards on this space");
+						}	
+					}
+					catch(NumberFormatException e){
+						System.out.println("type a valid number or type q to exit");
 					}	
-				}
-				try{
-					
-				Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
-				JsonValue card = JsonImporter.importSingleCard(json, 
-							client.getBoard().getRegionList().get(regionID)
-							.getActionSpaceList().get(spaceID).getCardName());
-				System.out.println("Showing details of " + this.client.getBoard().getRegionList().get(regionID)
-						.getActionSpaceList().get(spaceID).getCardName());
-				try{
-					System.out.println(CardCli.print(card.asObject()));
-				}
-				catch(NullPointerException e){
-					System.out.println("There are not any cards on this space");
-					} 
-				} catch(IOException e){}
+				}	
 				break;
 			}	
+			
 			case("player"):
-				System.out.println("NOT IMPLEMENTED YET");
+				boolean optionSelected = false;
+				ClientPlayer player = client.getPlayerList().get(client.getPlayerUUID());
+				ArrayList<String> stringList = new ArrayList<String>();
+				System.out.println("Chose one of your player's card to show more details\n");
+				
+				player.getCards().forEach((cardtype, cardlist) ->{
+					cardlist.forEach(card ->{
+						stringList.add(card);
+						System.out.println(">" + card);
+					});
+				});	
+				while(!optionSelected){
+					command = in.nextLine();
+					if(command.equals("q")){
+						break;
+					}
+					if(stringList.contains(command)){
+						CardCli.print(command, ClientCardRegistry.getInstance()
+								.getDetails(command));
+					}
+					else
+						System.out.println("type a valid card name or type q to exit");
+				}
 				break;
+				
 			case("quit"):
 				return null;
+			
 			default:
 				System.out.println("please, type a valid string");
 				break;
 			}
-		}
 		return null;
 	}	
 		

@@ -21,7 +21,7 @@ public class ClientCardRegistry {
 		loadJson("leader_cards.json");
 	}
 	
-	public static ClientCardRegistry getClientCardRegistry(){
+	public static ClientCardRegistry getInstance(){
 		if(instance==null){
 			instance = new ClientCardRegistry();
 		}
