@@ -103,7 +103,7 @@ public class CardCli {
 		}
 	}
 	
-	public static String print(JsonObject json){
+	public static String print(String name, JsonObject json){
 	
 		StringBuilder card = new StringBuilder();
 		
@@ -112,17 +112,16 @@ public class CardCli {
 			return new String(card);
 		}
 		
-		String name = "name: " + json.get("name").asString();
+		//String name = "name: " + json.get("name").asString();
 		
 		ArrayList<String> cost = new ArrayList<>();
 		
-		try{
+		if(!json.get("cost").isNull()){
 			for(JsonValue js : json.get("cost").asArray()){
 				cost.add(new ResourceSet(js.asObject()).toString());
 			}
-		} catch(NullPointerException e){
+		} else
 			cost.add("cost: none");
-		}
 		
 		String requirements;
 		try{
