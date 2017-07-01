@@ -2,8 +2,6 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 public class ZeroLevelContext extends Context implements Runnable{
 
-	private ClientCLI client;
-	
 	private ShowCardDialog showCard;
 	private AskActDialog askAct;
 	private ChatDialog chatRoom;
@@ -11,11 +9,10 @@ public class ZeroLevelContext extends Context implements Runnable{
 	
 	public ZeroLevelContext(ClientCLI client){
 		super(client);
-		this.client = client;
-		this.showCard = new ShowCardDialog(this.client);
-		this.askAct = new AskActDialog(this.client);
-		this.chatRoom = new ChatDialog(this.client);
-		this.leaderDialog = new LeaderDialog(this.client);
+		this.showCard = new ShowCardDialog(client);
+		this.askAct = new AskActDialog(client);
+		this.chatRoom = new ChatDialog(client);
+		this.leaderDialog = new LeaderDialog(client);
 	}
 		
 	public void run(){
