@@ -45,7 +45,7 @@ public class ActionEffectContext extends Context{
 				
 				while(flagAction){
 					if(flagRegion.equals("ALL")){
-						System.out.println("you can selcet any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
+						System.out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
 						actionFlag = true;
 						while(actionFlag){
 							command = in.nextLine();
