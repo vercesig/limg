@@ -22,8 +22,8 @@ public class RMIListener implements Runnable{
 	 */
 	public RMIListener(int port) throws IOException{
 		this.rmiRegistry = LocateRegistry.createRegistry(port);
-		this.server = new RMIServer(this.rmiQueue);
 		this.rmiQueue = new HashMap<>();
+		this.server = new RMIServer(this.rmiQueue);
 		this.stop = false;
 		try{
 			this.rmiRegistry.bind("LIMG_Conn", this.server);
@@ -37,8 +37,8 @@ public class RMIListener implements Runnable{
 		while(!stop){
 			if(MessageManager.getInstance().getRMISendQueue().size() > 0){
 				GameMessage message = MessageManager.getInstance().getRMISendQueue().poll();
-				if(message != null){
-					this.rmiQueue.get(message.getPlayerUUID()).add(message.toString());
+				if(message != null && this.rmiQueue.get(message.getPlayerUUID())!=null){
+						this.rmiQueue.get(message.getPlayerUUID()).add(message.toString());
 				}
 			}
 		}
