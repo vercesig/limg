@@ -262,11 +262,9 @@ public class MainClient{
 							client.actionRunningFlag = true;
 							
 							client.graphicInterface.waitTurn(false);
-							client.getClientInterface().displayMessage("your turn is start, make an action");
-							client.getClientInterface().displayMessage("> type ENTER to update your state");
-							
-						}
-						else{
+							client.getClientInterface().displayMessage("your turn is start, make an action\n"
+																	 + "> type ENTER to update your state");					
+						}else{
 							//timer stop
 							client.actionRunningFlag = false;
 							
