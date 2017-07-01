@@ -25,7 +25,8 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class SocketSentinelTest{
 	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
-	@Test
+	@SuppressWarnings("deprecation")
+    @Test
 	public void checkSocketSentinel() throws IOException{
 		SocketListener socketListener = mock(SocketListener.class);
 		Socket socket = mock(Socket.class);

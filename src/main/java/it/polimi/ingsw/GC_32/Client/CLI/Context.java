@@ -1,9 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 
 public abstract class Context{
 	

@@ -51,6 +51,6 @@ public class RMIServer implements RMIConnection{
 
 	@Override
 	public boolean hadMessage(UUID id) throws RemoteException{
-		return (rmiQueue.get(id).size() > 0);
+		return (!rmiQueue.get(id).isEmpty());
 	}
 }
