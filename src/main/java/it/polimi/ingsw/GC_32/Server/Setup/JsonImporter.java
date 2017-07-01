@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Setup;
 
+import it.polimi.ingsw.GC_32.Common.Utils.Tuple;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
@@ -20,7 +21,9 @@ import com.eclipsesource.json.JsonValue;
 
 
 public class JsonImporter {
-		
+
+	private JsonImporter(){};
+	
 	/**
 	 * method which return a list of development card from an external file correctly formatted. The method accept a FileReader object as parameter, 
 	 * then parse it and finally returns the list of card (which can be passed to the Deck's constructor to generate an effectively deck structure)
@@ -29,103 +32,14 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<DevelopmentCard> importDevelopmentCard(Reader fileReader) throws IOException{
+	public static List<DevelopmentCard> importDevelopmentCards(Reader fileReader) throws IOException{
 		
-		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
+		ArrayList<DevelopmentCard> cardList = new ArrayList<>();
 		
-		JsonArray JsonCardList = Json.parse(fileReader).asArray();
+		JsonArray jsonCardList = Json.parse(fileReader).asArray();
 		
-		for(JsonValue item : JsonCardList){
-			JsonObject card = item.asObject();
-
-			String name = card.get("name").asString();
-			String cardType = card.get("cardType").asString();
-			Integer period = card.get("period").asInt();
-			Integer actionValue;
- 			
-			try{
-				JsonValue action = card.get("minimumActionValue");	
-				actionValue = action.asInt();
-				actionValue = 0;
-			}catch(NullPointerException e){
-				actionValue = 0;
-			}
-			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
-						
-			// registrazione costi e requisiti
-			try{
-				JsonValue resourceCost = card.get("cost");
-				if(!resourceCost.isNull()){
-					JsonArray resourceArray = new JsonArray();
-					if( resourceCost.isObject() ){ // Carta con costo singolo
-						resourceArray.add(resourceCost);
-					}
-					if( resourceCost.isArray() ){ // Carta con costo multiplo
-						resourceArray = resourceCost.asArray();
-					}
-					newCard.registerCost(resourceArray.iterator());
-				}
-			}catch(NullPointerException e){}
-			
-			try{
-				JsonValue requirements = card.get("requirements");
-				if(requirements != null && !requirements.isNull())
-					newCard.setRequirments(requirements.asObject());
-			}
-			catch(NullPointerException e){}
-			
-			
-			// registrazione effetti
-			try{
-				JsonValue instantEffect = card.get("instantEffect");
-				JsonArray instantEffectArray = new JsonArray();
-				JsonValue instantPayload = card.get("instantPayload");
-				JsonArray instantPayloadArray = new JsonArray();			
-				if(!instantEffect.isNull()&&!instantPayload.isNull()){
-					if(instantEffect.isArray()){
-						instantEffectArray = instantEffect.asArray();
-						instantPayloadArray = instantPayload.asArray();
-					}else{
-						instantEffectArray.add(instantEffect);
-						instantPayloadArray.add(instantPayload);
-					}
-					for(int i=0; i<instantEffectArray.size(); i++){
-						newCard.registerInstantEffect(EffectRegistry.getInstance()
-																	.getEffect(instantEffectArray.get(i).asString(),
-																			   instantPayloadArray.get(i)));
-					}
-				}	
-			}catch(NullPointerException e){}
-			try{
-				JsonValue permanentEffect = card.get("permanentEffect");
-				JsonArray permanentEffectArray = new JsonArray();
-				JsonValue permanentPayload = card.get("permanentPayload");
-				JsonArray permanentPayloadArray = new JsonArray();
-				if(!permanentEffect.isNull()&&!permanentPayload.isNull()){
-					if(permanentEffect.isArray()){
-						permanentEffectArray = permanentEffect.asArray();
-						permanentPayloadArray = permanentPayload.asArray();
-					}else{
-						permanentEffectArray.add(permanentEffect);
-						permanentPayloadArray.add(permanentPayload);
-					}
-					for(int i=0; i<permanentEffectArray.size(); i++){
-						newCard.registerPermanentEffect(EffectRegistry.getInstance()
-																	  .getEffect(permanentEffectArray.get(i).asString(),
-																			     permanentPayloadArray.get(i)));
-						newCard.registerPermanentEffectType(permanentEffectArray.get(i).asString());
-						newCard.addPayload(permanentPayloadArray.get(i)); //used by CHANGE effect for pretty context build
-					}
-				}
-			}catch(NullPointerException e){
-				if(name.equals("Preacher")){ // Preacher unica carta con un Effetto permanente senza payload
-					System.out.println("REGISTRO PREACHER");
-					JsonValue permanentEffect = card.get("permanentEffect");
-					newCard.registerPermanentEffect(EffectRegistry.getInstance()
-							  .getEffect(permanentEffect.asString()));
-				}
-			}
-			
+		for(JsonValue item : jsonCardList){
+			DevelopmentCard newCard = parseCard(item);
 			cardList.add(newCard);		
 		}
 		return cardList;
@@ -139,7 +53,7 @@ public class JsonImporter {
 	 * @return the list of the cards generated from the JSON external file
 	 * @throws IOException
 	 */
-	public static List<ExcommunicationCard> importExcommunicationCard(Reader fileReader) throws IOException{
+	public static List<ExcommunicationCard> importExcommunicationCards(Reader fileReader) throws IOException{
 		
 		ArrayList<ExcommunicationCard> cardList = new ArrayList<ExcommunicationCard>();
 		JsonArray jsonCardList = Json.parse(fileReader).asArray();
@@ -181,7 +95,7 @@ public class JsonImporter {
 		return cardList;
 	}
 	
-	public static List<LeaderCard> importLeaderCard(Reader fileReader) throws IOException{
+	public static List<LeaderCard> importLeaderCards(Reader fileReader) throws IOException{
 		
 		ArrayList<LeaderCard> cardList = new ArrayList<LeaderCard>();
 		JsonArray jsonCardList = Json.parse(fileReader).asArray();
@@ -256,8 +170,8 @@ public class JsonImporter {
 					JsonObject bonusTile = item.asObject();
 					
 				PersonalBonusTile personalBonus = new PersonalBonusTile(bonusTile.get("PRODUCTION").asObject(),
-																		bonusTile.get("HARVEST").asObject(),
-																		false);
+				                                                        bonusTile.get("HARVEST").asObject(),
+				                                                        false);
 				tmpList.add(personalBonus);			
 			}
 			return tmpList;		
@@ -271,5 +185,102 @@ public class JsonImporter {
 	public static JsonArray importBonusSpace(Reader fileReader) throws IOException{
 		
 		return Json.parse(fileReader).asArray();
+	}
+	
+	public static DevelopmentCard parseCard(JsonValue jCard){
+	    JsonObject card = jCard.asObject();
+
+        String name = card.get("name").asString();
+        String cardType = card.get("cardType").asString();
+        Integer period = card.get("period").asInt();
+        Integer actionValue;
+        
+        if("TERRITORYCARD".equals(cardType) || "BUILDINGCARD".equals(cardType)){
+            JsonValue action = card.get("minimumActionValue");  
+            actionValue = action.asInt();
+        } else {
+            actionValue = 0;
+        }
+
+        DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
+                    
+        // registrazione costi e requisiti
+        JsonValue resourceCost = card.get("cost");
+        if(resourceCost != null && !resourceCost.isNull()){
+            JsonArray resourceArray = new JsonArray();
+            if( resourceCost.isObject() ){ // Carta con costo singolo
+                resourceArray.add(resourceCost);
+            }
+            if( resourceCost.isArray() ){ // Carta con costo multiplo
+                resourceArray = resourceCost.asArray();
+            }
+            newCard.registerCost(resourceArray.iterator());
+        }
+        
+        JsonValue requirements = card.get("requirements");
+        if(requirements != null && !requirements.isNull())
+            newCard.setRequirments(requirements.asObject());
+        
+        // registrazione effetti
+        JsonValue instantEffect = card.get("instantEffect");
+        JsonValue instantPayload = card.get("instantPayload");        
+        List<Tuple<JsonValue, JsonValue>> instantEffectList = parseEffect(instantEffect,
+                                                                          instantPayload);
+        
+        for(Tuple<JsonValue, JsonValue> effect: instantEffectList){
+            newCard.registerInstantEffect(getEffectFromRegistry(effect.getFirstArg().asString(),
+                                                                effect.getSecondArg()));
+        }
+
+        JsonValue permanentEffect = card.get("permanentEffect");
+        JsonValue permanentPayload = card.get("permanentPayload");
+        List<Tuple<JsonValue, JsonValue>> permanentEffectList = parseEffect(permanentEffect,
+                                                                          permanentPayload);
+        for(Tuple<JsonValue, JsonValue> effect : permanentEffectList){
+            newCard.registerPermanentEffect(getEffectFromRegistry(effect.getFirstArg().asString(), effect.getSecondArg()));
+            newCard.addPayload(effect.getSecondArg()); //used by CHANGE effect for pretty context build
+        }
+        return newCard;
+	}
+	
+	private static List<Tuple<JsonValue, JsonValue>> parseEffect(JsonValue code, JsonValue payload){
+	    ArrayList<Tuple<JsonValue, JsonValue>> result = new ArrayList<>();
+	    if(code != null && !code.isNull()){
+	        if(code.isString()){
+	            if(payload != null && !payload.isNull()){
+	                result.add(new Tuple<>(code, payload));
+	            } else {
+	                result.add(new Tuple<>(code, null));
+	            }
+	        } else {
+	            addEffectArray(result, code.asArray(), (payload != null)? payload.asArray() : null);
+	        }
+	    }
+	    return result;
+	}
+	
+	private static void addEffectArray(List<Tuple<JsonValue, JsonValue>> list, JsonArray code, JsonArray payload){
+	    if(payload != null){
+	        for(int i = 0; i < code.size(); i++){
+	            list.add(new Tuple<JsonValue, JsonValue>(code.get(i), payload.get(i)));
+	        }
+	    } else {
+	        for(JsonValue singleCode : code){
+	            list.add(new Tuple<JsonValue, JsonValue>(singleCode, null));
+	        }
+	    }
+	}
+	
+	private static Effect getEffectFromRegistry(String effectCode, JsonValue effectPayload){
+	    Effect regEffect;
+	    if(effectPayload != null){
+            regEffect = EffectRegistry.getInstance()
+                                             .getEffect(effectCode,
+                                                        effectPayload);
+        } else {
+            regEffect = EffectRegistry.getInstance()
+                                      .getEffect(effectCode);
+        }
+	    return regEffect;
 	}
 }

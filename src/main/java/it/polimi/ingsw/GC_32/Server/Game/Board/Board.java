@@ -59,7 +59,11 @@ public class Board {
 		region.add(3, new MarketRegion(3));
 		
 		// setup delle torri
-		String[] cardTypes = CardRegistry.getInstance().getAllCardType().toArray(new String[CardRegistry.getInstance().getAllCardType().size()]);
+		String[] cardTypes = CardRegistry.getInstance()
+										 .getAllCardType()
+										 .toArray(new String[CardRegistry.getInstance()
+										                     			 .getAllCardType()
+										                     			 .size()]);
 		this.towerRegion = new TowerRegion[cardTypes.length];
 		for(int i=0; i<cardTypes.length; i++){
 			towerRegion[i] = new TowerRegion(i + 4,4);
@@ -86,11 +90,10 @@ public class Board {
 	 * @return Region in Board which has {@link Region#RegionID} == idRegion.
 	 * @see Board, Region.
 	 */
-	public Region getRegion(int idRegion){
-		try{
-			return this.region.get(idRegion);
-		} catch (IndexOutOfBoundsException e){
-			Logger.getLogger("").log(Level.SEVERE, "context", e);
+	public Region getRegion(int regionId){
+		if(regionId < this.region.size()){
+			return this.region.get(regionId);
+		} else {
 			return null;
 		}
 	}

@@ -28,7 +28,7 @@ public class ActionTest {
 	@Test
 	public void checkRegionId(){
 		this.action = new Action("TestType",0,0,3);
-		assertEquals(3, this.action.getActionRegionId());
+		assertEquals(3, this.action.getRegionId());
 	}
 	
 	@Test

@@ -34,14 +34,14 @@ public class PermanentEffect {
 		
 		Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
 			
-			if((a.getActionType().equals(actionType) && a.getActionRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
+			if((a.getActionType().equals(actionType) && a.getRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
 				System.out.println("ATTIVATO EFFETTO PERMANENTE");
 				System.out.println(a.getActionValue() + " + " + actionValueBonus);
 				a.setActionValue(a.getActionValue() + actionValueBonus);
 				System.out.println(a.getActionValue());
 
 				if(!flag && bonusDiscount !=null){
-					DevelopmentCard card =((TowerRegion) b.getRegion(a.getActionRegionId()))
+					DevelopmentCard card =((TowerRegion) b.getRegion(a.getRegionId()))
 							.getTowerLayers()[a.getActionSpaceId()]
 									.getCard();
 					card.discountCard(bonusDiscount);

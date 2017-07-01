@@ -1,9 +1,9 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
-import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
@@ -23,12 +23,12 @@ public class Player {
 	private final UUID uuid;
 	private UUID gameID;
 	
-	private JsonObject dictionaryFlag; // dizionario dei flag
+	private HashMap<String, JsonValue> flags;
 	
 	public Player(){
 		this.personalBoard = new PersonalBoard();
 		this.resources = new ResourceSet();
-		this.dictionaryFlag = new JsonObject();
+		this.flags = new HashMap<>();
 		
 		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
 		this.familyMemberList = new FamilyMember[4];
@@ -95,8 +95,8 @@ public class Player {
 		return this.resources.getResource("SERVANTS");
 	}
 	
-	public JsonObject getDictionaryFlag(){
-		return this.dictionaryFlag;
+	public HashMap<String, JsonValue> getFlags(){
+		return this.flags;
 	}
 	
 	public ResourceSet getResources(){
@@ -133,7 +133,7 @@ public class Player {
     }
     
     public void takeCard(Board board, Action action){
-    	TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+    	TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getRegionId()));
     	this.personalBoard.addCard(selectedTower.getTowerLayers()[action.getActionSpaceId()].takeCard());
     }
     
@@ -145,7 +145,7 @@ public class Player {
     
     public void moveFamilyMember(int i, Action a, Board b){
     	FamilyMember f = this.getFamilyMember()[i];
-    	ActionSpace space = b.getRegion(a.getActionRegionId())
+    	ActionSpace space = b.getRegion(a.getRegionId())
     			.getActionSpace(a.getActionSpaceId());
     	space.addFamilyMember(f);
     }
@@ -163,27 +163,6 @@ public class Player {
     }
     
     public boolean isFlagged(String flag){
-    	System.out.println("DIZIONARIO: " + this.getDictionaryFlag().toString());
-    	try{
-    		for(JsonValue js: this.getDictionaryFlag().get("NOENDPOINTS").asArray()){
-    			if(js.asString().equals(flag)){
-    				System.out.println("DENTRO IL PRIMO TRY: RITORNO TRUE");
-    				return true;
-    			}
-    		}
-    	}catch(NullPointerException e){}
-    	
-    	try{
-    		for(JsonValue js: this.getDictionaryFlag().get("LESSRESOURCE").asArray()){
-    			if(js.asString().equals(flag)){
-    				return true;
-		   			}
-    		}
-    	}catch(NullPointerException e){}	
-	    try{
-	    	if(!this.getDictionaryFlag().get(flag).isNull())
-	    		return true;
-	    }catch(NullPointerException e){}	
-	    return false;
+    	return this.flags.containsKey(flag);
     }
 }

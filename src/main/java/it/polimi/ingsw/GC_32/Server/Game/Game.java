@@ -33,7 +33,7 @@ import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
 public class Game implements Runnable{
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 	
 	private ArrayList<Player> playerList;
 	private Board board;
@@ -485,7 +485,7 @@ public class Game implements Runnable{
 				}
 				break;
 			default:
-				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getRegionId()));
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
 				

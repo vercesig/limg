@@ -8,8 +8,9 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
 
-public class ClientCLI implements ClientInterface{
+public class ClientCLI implements ClientInterface, KillableRunnable{
 
 	// game management
 	private ClientBoard boardReference;
@@ -31,6 +32,8 @@ public class ClientCLI implements ClientInterface{
 	
 	private boolean leaderStartPhase = true;
 	
+	private boolean stop;
+	
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
@@ -46,6 +49,7 @@ public class ClientCLI implements ClientInterface{
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		
+		stop = false;
 	}
 	
 	public void run(){	
@@ -133,7 +137,6 @@ public class ClientCLI implements ClientInterface{
 		System.out.println("| ===========================================");
 	}
 	
-	@Override
 	public void receiveMessage(String playerID, String message) {
 		System.out.println("---------------------------------------");
 		System.out.println("|      YOU RECEIVED A MESSAGE !!!      ");	
@@ -164,4 +167,9 @@ public class ClientCLI implements ClientInterface{
 	public void waitTurn(boolean flag) {
 		this.wait = flag;
 	}
+
+    @Override
+    public void kill() {
+        this.stop = true;
+    }
 }

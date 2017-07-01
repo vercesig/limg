@@ -79,7 +79,7 @@ public class GameTest {
 	@Test
 	public void checkLock(){
 		this.game.setLock(this.playerOne.getUUID());
-		assertEquals("TESTLOCK", this.game.getLock());
+		assertEquals(this.playerOne.getUUID(), this.game.getLock());
 	}
 	
 	@Test

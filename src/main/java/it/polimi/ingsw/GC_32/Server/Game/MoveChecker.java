@@ -38,7 +38,7 @@ public class MoveChecker{
    }
         
    public boolean checkCardRequirement(Board board, Player player, Action action){
-	   if(action.getActionRegionId() >= 4){
+	   if(action.getRegionId() >= 4){
 		   return (MoveUtils.checkPersonalBoardRequirement(board, player, action) &&
 				   MoveUtils.checkCardCost(board, player, action));
 	   }

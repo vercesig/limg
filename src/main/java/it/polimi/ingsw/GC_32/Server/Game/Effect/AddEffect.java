@@ -38,7 +38,7 @@ public class AddEffect {
 			// se ho addEffect di Stone devo perdere una Stone e un Wood;
 			// se ho addEffect di Wood e Stone?  perdo due Stone e due Wood;
 			if(p.isFlagged("LESSRESOURCE")){ // DA TESTARE
-				 JsonArray malusResource = p.getDictionaryFlag().get("LESSRESOURCE").asArray();
+				 JsonArray malusResource = p.getFlags().get("LESSRESOURCE").asArray();
 					for (String key: resourceSet.getResourceSet().keySet()){
 						malusResource.forEach(member -> {
 							if(member.asString().equals(key)){

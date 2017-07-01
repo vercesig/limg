@@ -6,15 +6,15 @@ public class UniqueEffect {
 
 	// annulla il bonus. Da usare su board deepCopiata e non dovra' sostituire la board Originale.
 	static Effect noTowerActionSpaceBonus = (b, p, a, cm) ->{
-		if(a.getActionRegionId() != b.getMarketRegion().getRegionID()){
-			ResourceSet bonus =b.getRegion(a.getActionRegionId()).getActionSpace(a.getActionSpaceId()).getBonus();
+		if(a.getRegionId() != b.getMarketRegion().getRegionID()){
+			ResourceSet bonus =b.getRegion(a.getRegionId()).getActionSpace(a.getActionSpaceId()).getBonus();
 			if(bonus!=null) //la carta è su un actionSpace senza bonus
 				p.getResources().subResource(bonus);
 		}
 	};
 	// Excommunicate card 2-5
 	static Effect noMarketAction = (b, p, a, cm) -> {
-		if(a.getActionRegionId() == b.getMarketRegion().getRegionID()){
+		if(a.getRegionId() == b.getMarketRegion().getRegionID()){
 			a.invalidate();
 		}
 	};

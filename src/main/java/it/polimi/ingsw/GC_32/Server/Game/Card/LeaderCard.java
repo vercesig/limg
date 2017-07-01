@@ -18,11 +18,7 @@ public class LeaderCard extends Card{
 	}
 	
 	public Effect getFlagEffect(){
-		try{
 		return this.flagEffect;
-		}catch(NullPointerException e){
-			return null;
-		}
 	}
 	
 	public void registerFlagEffect(Effect e){

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game.Card;
 
-import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 
 public class ExcommunicationCard extends Card{

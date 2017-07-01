@@ -18,6 +18,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.CouncilRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
+import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 
 public class ServerMessageFactory {
 	
@@ -208,16 +209,16 @@ public class ServerMessageFactory {
  		JsonArray CHGBOARDSTATpayload = new JsonArray();
  		for(TowerRegion towerRegion : board.getTowerRegion()){
  			for(TowerLayer towerLayer : towerRegion.getTowerLayers()){
- 				JsonObject card = new JsonObject();
- 				try{
- 				card.add("NAME", towerLayer.getCard().getName());
- 				}
- 				catch(NullPointerException e){
- 					card.add("NAME", "EMPTY"); // se la carta e' stata presa
+ 				JsonObject jCard = new JsonObject();
+ 				Card tCard = towerLayer.getCard();
+ 				if(tCard != null){
+ 				    jCard.add("NAME", tCard.getName());
+ 				} else {
+ 					jCard.add("NAME", "EMPTY"); // se la carta e' stata presa
  				}				
- 				card.add("REGIONID", towerLayer.getActionSpace().getRegionID());
- 				card.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID()); 				
- 				CHGBOARDSTATpayload.add(card);
+ 				jCard.add("REGIONID", towerLayer.getActionSpace().getRegionID());
+ 				jCard.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID()); 				
+ 				CHGBOARDSTATpayload.add(jCard);
  			}
  		}
  		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload.toString());
@@ -232,7 +233,7 @@ public class ServerMessageFactory {
 		CHGBOARDSTAT.add("TYPE", "FAMILY");
 		JsonObject CHGBOARDSTATpayload = new JsonObject();
 		
-		CHGBOARDSTATpayload.add("REGIONID", action.getActionRegionId());
+		CHGBOARDSTATpayload.add("REGIONID", action.getRegionId());
 		CHGBOARDSTATpayload.add("SPACEID", action.getActionSpaceId());
 		CHGBOARDSTATpayload.add("PLAYERID", playerUUID);
 		CHGBOARDSTATpayload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt());
@@ -289,7 +290,7 @@ public class ServerMessageFactory {
 		JsonObject payload = new JsonObject();
 		if(result){
 			payload.add("RESULT", true);
-			payload.add("REGIONID", action.getActionRegionId());
+			payload.add("REGIONID", action.getRegionId());
 			payload.add("SPACEID", action.getActionSpaceId());
 			payload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt());
 			payload.add("ACTIONTYPE", action.getActionType());
