@@ -188,8 +188,8 @@ public class Game implements Runnable{
 					}
 				}
 			}
-			setLock(playerList.get(0).getUUID()); // inizio con il Primo player
-		//	setLock(turnManager.nextPlayer());
+			//setLock(playerList.get(0).getUUID()); // inizio con il Primo player
+			setLock(turnManager.nextPlayer());
 			LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 			
 		///----------------------FINE LEADER DISTRIBUTION--------------------------------------///////////
