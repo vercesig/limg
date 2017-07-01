@@ -148,8 +148,6 @@ public class MainClient{
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					
-					System.out.println(message.toString());
-					
 					String playerID;
 					
 					switch(message.get("MESSAGETYPE").asString()){					
@@ -261,9 +259,7 @@ public class MainClient{
 						client.graphicInterface.setDiceValue(blackDice, whiteDice, orangeDice);		
 						break;
 					case "TRNBGN":
-						
-						System.out.println(" ********************************* TRNBGN");
-						
+						client.getClientInterface().leaderStartPhaseEnd();
 						String playerUUID = messagePayload.get("PLAYERID").asString();
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization

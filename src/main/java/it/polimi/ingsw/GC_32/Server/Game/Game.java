@@ -188,8 +188,8 @@ public class Game implements Runnable{
 					}
 				}
 			}
-			setLock(playerList.get(0).getUUID()); // inizio con il Primo player
-		//	setLock(turnManager.nextPlayer());
+			//setLock(playerList.get(0).getUUID()); // inizio con il Primo player
+			setLock(turnManager.nextPlayer());
 			LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 			
 		///----------------------FINE LEADER DISTRIBUTION--------------------------------------///////////
@@ -305,6 +305,12 @@ public class Game implements Runnable{
 							result = true;
 							if(decision.equals("DISCARD")){	//GUADAGNA UN PRIVILEGIO
 								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
+								JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
+								
+								System.out.println("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
+								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource("COINS", 1);
+								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
+								System.out.println("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
 							}
 						}
 						else{
@@ -465,7 +471,7 @@ public class Game implements Runnable{
 				
 				System.out.println("PRIMA DEL PRIVILEGE:\n" + player);
 				player.getResources().addResource("COINS", 1);
-				player.getResources().addResource( new ResourceSet(COUNCILPRIVILEGEresponse.asObject()));
+				player.getResources().addResource( new ResourceSet(COUNCILPRIVILEGEresponse.asArray().get(0).asObject()));
 				System.out.println("DOPO DEL PRIVILEGE:\n" + player);
 				break;
 			case "MARKET":
@@ -473,7 +479,8 @@ public class Game implements Runnable{
 					cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(2));
 					JsonValue MARKETPRIVILEGEresponse = cm.waitForContextReply();
 
-					player.getResources().addResource( new ResourceSet(MARKETPRIVILEGEresponse.asObject()));
+					player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
+					player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(1).asString()).asObject()));
 				}
 				break;
 			default:

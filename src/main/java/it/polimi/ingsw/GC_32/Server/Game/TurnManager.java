@@ -45,6 +45,9 @@ public class TurnManager {
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			tmpPlayerList.forEach(UUID -> turnOrderQueue.add(UUID));
 		}
+		
+		System.out.println(turnOrderQueue.toString());
+		
 	}
 	
 	public int getTurnID(){

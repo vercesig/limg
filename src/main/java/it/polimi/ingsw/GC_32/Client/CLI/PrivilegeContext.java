@@ -10,7 +10,11 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class PrivilegeContext extends Context{
 		
-
+	private String[] values = { "{\"WOOD\": 1, \"STONE\": 1}",
+								"{\"SERVANTS\": 2}",
+								"{\"COINS\": 2}",
+								"{\"MILITARY_POINTS\": 2}",
+								"{\"FAITH_POINTS\": 1}"};
 	
 	public void open(Object payload){
 		
@@ -46,7 +50,7 @@ public class PrivilegeContext extends Context{
 					+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
 					+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
 					+ "to the resource you want to exchange with your privilege. type 'n' if you don't want to apply the effect");
-		}
+		}		
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
@@ -59,19 +63,19 @@ public class PrivilegeContext extends Context{
 			try{
 				switch(Integer.parseInt(command)){
 				case 0:
-					CONTEXTREPLYpayloadinfo.add(0);
+					CONTEXTREPLYpayloadinfo.add(values[0]); // per privilegi non triggerati da effe
 					break;
 				case 1:
-					CONTEXTREPLYpayloadinfo.add(1);
+					CONTEXTREPLYpayloadinfo.add(values[1]);
 					break;
 				case 2:
-					CONTEXTREPLYpayloadinfo.add(2);
+					CONTEXTREPLYpayloadinfo.add(values[2]);
 					break;
 				case 3:
-					CONTEXTREPLYpayloadinfo.add(3);
+					CONTEXTREPLYpayloadinfo.add(values[3]);
 					break;
 				case 4:
-					CONTEXTREPLYpayloadinfo.add(4);
+					CONTEXTREPLYpayloadinfo.add(values[4]);
 					break;
 				default:
 					System.out.println("type a valid number");

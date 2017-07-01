@@ -102,6 +102,11 @@ public class LeaderDialog extends Context{
 		System.out.println("NAME:"+ player.getCards().get("LEADER").get(index) + " ACTION:" + decision);
 		client.getSendQueue().add(ClientMessageFactory.buildASKLDRACTmessage(client.getGameUUID(), // stato registrato da ZeroContext
 							player.getCards().get("LEADER").get(index), decision));
+		
+		try{ //waiting for other context
+			Thread.sleep(200);
+		}catch(InterruptedException e){}
+		
 		runFlag = false;
 		}
 	}
