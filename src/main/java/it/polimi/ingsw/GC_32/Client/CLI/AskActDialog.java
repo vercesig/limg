@@ -15,17 +15,13 @@ import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class AskActDialog extends Context{
 	
-	private ClientCLI client;
-	private boolean flagAction;
-	
 	public AskActDialog(ClientCLI client){
-		super();
-		this.client = client;
-		flagAction = true;
+		super(client);
 	}
 	
-	@Override
-	public void open(Object object) {
+	private boolean flagAction = true;
+	
+	public String open(Object object) {
 		
 		int familyMemberIndex = 0;
 		int regionID = 0;
@@ -39,14 +35,14 @@ public class AskActDialog extends Context{
 			while(actionFlag){						
 				System.out.println("type the ID of the family member you want to place\nThe symbol '>' means that the family member is busy\n");
 				int i = 0;
-				for(ClientFamilyMember fm : client.getPlayerList().get(client.getUUID()).getFamilyMembers()){
+				for(ClientFamilyMember fm : client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers()){
 					System.out.println("["+i+"] "+fm.toString());
 					i++;
 				}						
 				command = in.nextLine();
 				try{
-					if(Integer.parseInt(command)<client.getPlayerList().get(client.getUUID()).getFamilyMembers().length){
-						if(client.getPlayerList().get(client.getUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
+					if(Integer.parseInt(command)<client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers().length){
+						if(client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
 							System.out.println("the choosen family member is already busy, please enter a valid index");
 						}else{
 							actionFlag = false;
@@ -175,27 +171,17 @@ public class AskActDialog extends Context{
 					break;
 				case "n":
 					actionFlag = false;
-					return;
+					return null;
 				default:
 					System.out.println("please, type a valid letter");
-					return;
 				}
 			}
 			break;
 		}
-		
-		// sending ASKACT message
-		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName));
-		
-		// stop timeout
-		actionRunningGameFlag = false;
-		
+						
 		System.out.println("action sent to the server... waiting for response");
 		
-		try{ // do tempo ad eventuali context di aprirsi
-			Thread.sleep(1000);
-		}catch(Exception e){}
-		return;
+		return ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName);
 	}
 }
 

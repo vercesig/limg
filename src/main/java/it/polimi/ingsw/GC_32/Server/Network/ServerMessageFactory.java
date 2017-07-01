@@ -41,6 +41,9 @@ public class ServerMessageFactory {
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
 			actionSpace.add("SINGLE", action.isSingleActionSpace());
+			if(action.isBlocked()){
+				actionSpace.add("BLOCKFLAG", action.isBlocked());
+			}
 			boardProductionRegion.add(actionSpace);
 		}
 		GMSTRTboard.add("PRODUCTIONREGION", boardProductionRegion.toString());
@@ -54,6 +57,9 @@ public class ServerMessageFactory {
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
 			actionSpace.add("SINGLE", action.isSingleActionSpace());
+			if(action.isBlocked()){
+				actionSpace.add("BLOCKFLAG", action.isBlocked());
+			}
 			boardHarvastRegion.add(actionSpace);
 		}
 		GMSTRTboard.add("HARVASTREGION", boardHarvastRegion.toString());
@@ -66,6 +72,9 @@ public class ServerMessageFactory {
 		councilSpace.add("REGIONID", councilRegion.getCouncilSpace().getRegionID());
 		councilSpace.add("SPACEID",  councilRegion.getCouncilSpace().getActionSpaceID());
 		councilSpace.add("SINGLE", councilRegion.getCouncilSpace().isSingleActionSpace());
+		if(councilRegion.getCouncilSpace().isBlocked()){
+			councilSpace.add("BLOCKFLAG", councilRegion.getCouncilSpace().isBlocked());
+		}
 		// actionvalue is setted by default to 1
 		boardCouncilRegion.add(councilSpace);
 		GMSTRTboard.add("COUNCILREGION", boardCouncilRegion.toString());
@@ -83,6 +92,9 @@ public class ServerMessageFactory {
 			actionSpace.add("SPACEID", action.getActionSpaceID());
 			// actionvalue is setted by default to 1
 			// single is setted true by default
+			if(action.isBlocked()){
+				actionSpace.add("BLOCKFLAG", action.isBlocked());
+			}
 			actionSpace.add("SINGLE", action.isSingleActionSpace());
 			boardMarketRegion.add(actionSpace);
 		}
@@ -96,10 +108,9 @@ public class ServerMessageFactory {
 				actionSpace.add("ACTIONVALUE", towerLayer.getActionSpace().getActionValue());
 				actionSpace.add("REGIONID", towerLayer.getActionSpace().getRegionID());
 				actionSpace.add("SPACEID", towerLayer.getActionSpace().getActionSpaceID());
-				/*JsonObject bonus = new JsonObject();		
-				for(Entry<String,Integer> resource : towerLayer.getActionSpace().getBonus().getResourceSet().entrySet()){
-					bonus.add(resource.getKey(), resource.getValue());
-				}*/
+				if(towerLayer.getActionSpace().isBlocked()){
+					actionSpace.add("BLOCKFLAG", towerLayer.getActionSpace().isBlocked());
+				}
 				if(towerLayer.getActionSpace().getBonus()!= null){
 					actionSpace.add("BONUS", towerLayer.getActionSpace().getBonus().toJson());
 				}

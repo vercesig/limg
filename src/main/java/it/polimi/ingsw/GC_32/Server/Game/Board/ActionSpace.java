@@ -29,6 +29,7 @@ public class ActionSpace{
 	private boolean single;
 	private final int regionID;
 	private final int actionSpaceID;
+	private boolean blocked;
 	
 	/**If returns true, this is a single ActionSpace and only one FamilyMember is permitted.
 	 * If returns false, this is a multiple ActionSpace and there is no limit of FamilyMember that can occupy this ActionSpace
@@ -53,6 +54,7 @@ public class ActionSpace{
 		this.single = single;
 		this.actionSpaceID = actionSpaceID;
 		this.regionID = regionID;
+		this.blocked = false;
 	}
 	/**
 	 * returns this ActionSpace.{@link #single} attribute.
@@ -224,5 +226,13 @@ public class ActionSpace{
 			familyMember.removeFromBoard();
 		});
 		this.occupants.clear();
+	}
+	
+	public void setBlock(boolean blockValue){
+		this.blocked = blockValue;
+	}
+	
+	public boolean isBlocked(){
+		return this.blocked;
 	}
 }

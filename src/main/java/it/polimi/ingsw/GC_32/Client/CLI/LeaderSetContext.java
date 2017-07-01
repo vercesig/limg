@@ -9,13 +9,11 @@ import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
 public class LeaderSetContext extends Context{
 
-	private ClientCLI client;
-	
 	public  LeaderSetContext(ClientCLI client){ // context aperto nella distribuzione delle carte leader
-		this.client = client;
+		super(client);
 	}
 	
-	public void open(Object object){
+	public String open(Object object){
 		int index = 0;
 		runFlag=true;
 		
@@ -36,51 +34,26 @@ public class LeaderSetContext extends Context{
 		while(!optionSelected){	
 			try{
 					command = in.nextLine();	
-					switch(Integer.parseInt(command)){
-						case 0:
-							index = 0;
-							System.out.println("You choose the card: " + cardList.get(index));
-							optionSelected = true;
-							break;
-							
-						case 1:
-							if(cardList.size()<1){
-								System.out.println("type a valid index");
-								break;
-							} index = 1;
-							System.out.println("You choose the card: " + cardList.get(index));
-							optionSelected = true;
-							break;
-		
-						case 2:
-							if(cardList.size()<2){
-								System.out.println("type a valid index");
-								break;
-							} index = 2;
-							System.out.println("You choose the card: " + cardList.get(index));
-							optionSelected = true;
-							break;
-							
-						case 3:
-							if(cardList.size()<3){
-								System.out.println("type a valid index");
-								break;
-							} index = 3;
-							System.out.println("You choose the card: " + cardList.get(index));
-							optionSelected = true;
-							break;
-							
-						default:
+					
+					if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=3){
+						if(cardList.size()<Integer.parseInt(command)){
 							System.out.println("type a valid index");
 							break;
+						} 
+						index = Integer.parseInt(command);
+						System.out.println("You choose the card: " +cardList.get(index));
+						optionSelected = true;
+					}else{
+						System.out.println("type a valid index");
 					}
-			}catch(NumberFormatException e) {System.out.println("type a number, please");}
+			}catch(NumberFormatException e) {
+				System.out.println("type a number, please");
+				}
 		}
-		client.getPlayerList().get(client.getUUID()).addCard("LEADER", cardList.get(index));
+		client.getPlayerList().get(client.getPlayerUUID()).addCard("LEADER", cardList.get(index));
 		cardList.remove(index);
 		list.remove(index);
-		System.out.println("Prima di inviare al Server:" + list);
-		this.sendQueue.add(ClientMessageFactory.buildLDRSETmessage(client.getGameUUID(), client.getUUID(), list));
-		
+		System.out.println("Prima di inviare al Server:" + list);		
+		return ClientMessageFactory.buildLDRSETmessage(client.getGameUUID(), client.getPlayerUUID(), list);
 	}
 }

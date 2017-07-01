@@ -71,6 +71,7 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = players;
 		this.board = new Board();
+		board.blockZone(playerList.size());
 		this.turnManager = new TurnManager(this);
 		LOGGER.log(Level.INFO, "loading cards...");
 		this.decks = new HashMap<String, Deck<DevelopmentCard>>(CardRegistry.getInstance().getDevelopmentDecks());

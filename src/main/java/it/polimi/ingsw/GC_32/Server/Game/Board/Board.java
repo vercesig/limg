@@ -191,6 +191,19 @@ public class Board {
 		});
 	}
 	
+	public void blockZone(int playerNumber) {
+		if(playerNumber <3){
+			region.get(0).getActionSpace(1).setBlock(true); //production
+			region.get(1).getActionSpace(1).setBlock(true); //harvest
+			region.get(3).getActionSpace(2).setBlock(true); //market
+			region.get(3).getActionSpace(3).setBlock(true); //market
+		}
+		if(playerNumber==3){
+			region.get(3).getActionSpace(2).setBlock(true); //market
+			region.get(3).getActionSpace(3).setBlock(true); //market
+		}
+	}
+	
 	/**
 	 * Returns a String which can easily printed on the screen. It is helpful for debugging, testing
 	 * and visualize all the attributes of the Board.

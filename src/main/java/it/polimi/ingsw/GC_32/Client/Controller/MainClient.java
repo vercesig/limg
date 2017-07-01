@@ -153,9 +153,9 @@ public class MainClient{
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();
-						String name = messagePayload.get("NAME").asString();
+						
+				String name = messagePayload.get("NAME").asString();
 						client.getPlayers().get(playerID).setName(name);
-						//System.out.println("[MAINCLIENT] player "+playerID+" changed his name to "+name);
 						break;
 					case "CONNEST":
 						client.myUUID = messagePayload.get("PLAYERID").asString();
@@ -163,7 +163,7 @@ public class MainClient{
 						client.getPlayers().put(client.myUUID, new ClientPlayer());
 						client.getPlayers().get(client.myUUID).setName(myName);
 						
-						client.graphicInterface.registerUUID(client.getUUID());
+						client.graphicInterface.registerPlayerUUID(client.getUUID());
 						client.graphicInterface.registerSendMessageQueue(client.getSendQueue());
 						break;
 					case "GMSTRT":
@@ -178,10 +178,7 @@ public class MainClient{
 						playerList.forEach(player -> {
 							client.getPlayers().put(player.asString(), new ClientPlayer());
 						});
-						//System.out.println("[MAINCLIENT] added opponents to player list");
 						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
-
-						//System.out.println("[MAINCLIENT] synchronizing board");
 						client.setClientBoard(new ClientBoard(board));
 						
 						//set excommunication cards
@@ -190,12 +187,6 @@ public class MainClient{
 						client.graphicInterface.registerBoard(client.getBoard());
 						client.graphicInterface.registerPlayers(client.getPlayers());						
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
-						
-						client.graphicInterface.registerActionRunningGameFlag(client.actionRunningFlag);
-						
-						client.graphicInterface.unlockZone(client.getPlayers().size());						
-						client.graphicInterface.openContext(0, null);
-						//System.out.println("[MAINCLIENT] board correctly synchronized");
 						
 						Thread clientInterfaceThread = new Thread(client.getClientInterface());
 						clientInterfaceThread.start();
@@ -226,9 +217,9 @@ public class MainClient{
 							client.getPlayers().get(playerID).getFamilyMembers()[i].setBusyFlag(familyStatus.get(i).asBoolean());
 						}
 						
-						client.graphicInterface.setTrackValue(playerID, 0);
-						client.graphicInterface.setTrackValue(playerID, 1);
-						client.graphicInterface.setTrackValue(playerID, 2);
+						for(int k=0; k<client.getPlayers().get(playerID).getTrack().length; k++){
+							client.getPlayers().get(playerID).getTrack()[k].addScore(client.getPlayers().get(playerID).getPlayerResources());
+						}
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento board
@@ -239,24 +230,28 @@ public class MainClient{
 								int regionID = card.get("REGIONID").asInt();
 								int spaceID = card.get("SPACEID").asInt();
 								String cardName = card.get("NAME").asString();
-								client.graphicInterface.setTowerCards(regionID, spaceID, cardName);
+								client.getBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).setCard(cardName);
 							});
-							//System.out.println(client.getBoard().toString());
 						}
 						if(messagePayload.get("TYPE").asString().equals("FAMILY")){							
 							int regionID = messagePayload.get("PAYLOAD").asObject().get("REGIONID").asInt();
 							int spaceID = messagePayload.get("PAYLOAD").asObject().get("SPACEID").asInt();
 							int familyMemberID = messagePayload.get("PAYLOAD").asObject().get("FAMILYMEMBER_ID").asInt();
 							client.getBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).addFamilyMember(
-									client.getPlayers().get(messagePayload.get("PAYLOAD").asObject().get("PLAYERID").asString()).getFamilyMembers()[familyMemberID]);
-							
+									client.getPlayers().get(messagePayload.get("PAYLOAD").asObject().get("PLAYERID").asString())
+									.getFamilyMembers()[familyMemberID]);							
 						}
 			 			break;
 					case "DICEROLL":
 						int blackDice = messagePayload.get("BLACKDICE").asInt();
 						int whiteDice = messagePayload.get("WHITEDICE").asInt();
 						int orangeDice = messagePayload.get("ORANGEDICE").asInt();
-						client.graphicInterface.setDiceValue(blackDice, whiteDice, orangeDice);		
+						client.getBoard().setDiceValue(blackDice, whiteDice, orangeDice);
+						client.getPlayers().forEach((UUID,player)->{
+							player.getFamilyMembers()[1].setActionValue(blackDice); 
+							player.getFamilyMembers()[2].setActionValue(whiteDice);
+							player.getFamilyMembers()[3].setActionValue(orangeDice);
+						});	
 						break;
 					case "TRNBGN":
 						client.getClientInterface().leaderStartPhaseEnd();
@@ -289,21 +284,12 @@ public class MainClient{
 						else{
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
 							client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
-							
-							int regionId = messagePayload.get("REGIONID").asInt();
-							int spaceId = messagePayload.get("SPACEID").asInt();
-							int indexFamily = messagePayload.get("FAMILYMEMBER_ID").asInt();
-							String actionType = messagePayload.get("ACTIONTYPE").asString();
-							// update state
-							if(actionType.equals("TOWER")){
-								client.graphicInterface.moveCardToPlayer(client.getUUID(), regionId, spaceId);
-							}
-							client.graphicInterface.moveFamiliar(indexFamily, regionId, spaceId);
-							client.graphicInterface.setTrackValue(client.getUUID(), 0);
-							client.graphicInterface.setTrackValue(client.getUUID(), 1);
-							client.graphicInterface.setTrackValue(client.getUUID(), 2);
-							client.graphicInterface.waitTurn(true);
 
+							for(int k=0; k<client.getPlayers().get(client.getUUID()).getTrack().length; k++){
+								client.getPlayers().get(client.getUUID()).getTrack()[k].addScore(
+										client.getPlayers().get(client.getUUID()).getPlayerResources());
+							}
+							client.graphicInterface.waitTurn(true);
 						}	
 						break;
 					case "CONTEXT":

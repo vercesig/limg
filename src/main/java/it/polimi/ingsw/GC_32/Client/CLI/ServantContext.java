@@ -4,7 +4,11 @@ import com.eclipsesource.json.JsonObject;
 
 public class ServantContext extends Context{
 
-	public void open(Object object){
+	public ServantContext(ClientCLI client){
+		super(client);
+	}
+	
+	public String open(Object object){
 		JsonObject JsonPayload = (JsonObject) object;
 		int numberOfServants = JsonPayload.get("NUMBER_SERVANTS").asInt();
 		String actionType = JsonPayload.get("ACTIONTYPE").asString();
@@ -25,10 +29,8 @@ public class ServantContext extends Context{
 			try{
 				if(Integer.parseInt(command)<=numberOfServants){
 					CONTEXTREPLYpayloadinfo.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
-					
 					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
-					sendQueue.add(CONTEXTREPLY.toString());
-					close();
+					close();					
 				}else{
 					System.out.println("type a valid quantity");
 				}
@@ -36,7 +38,7 @@ public class ServantContext extends Context{
 				System.out.println("type a valid number");
 			}
 		}
-		
+		return CONTEXTREPLY.toString();
 	}
 	
 }
