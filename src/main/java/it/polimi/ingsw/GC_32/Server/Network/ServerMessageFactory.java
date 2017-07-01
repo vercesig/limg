@@ -234,6 +234,8 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("NAME", (JsonArray) payload[0]);
 			CONTEXTpayload.add("RESOURCE", (JsonArray) payload[1]);
 			break;
+		case ACTION:
+			CONTEXTpayload.add("PAYLOAD", (JsonObject) payload[0]);
 		}	
 		CONTEXT.add("PAYLOAD", CONTEXTpayload);
 		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);

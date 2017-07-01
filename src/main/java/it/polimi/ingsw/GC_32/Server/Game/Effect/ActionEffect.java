@@ -1,8 +1,10 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
@@ -13,8 +15,7 @@ public class ActionEffect {
 	static EffectBuilder actionEffectBuilder = (JsonValue payload) -> {
 		
 		Effect actionEffect = (Board b, Player p, Action a, ContextManager cm) -> {
-			JsonValue actionPayload = payload;
-			p.makeAction(actionPayload);
+			cm.openContext(ContextType.ACTION, p, a, (JsonObject) payload);
 		};
 		return actionEffect;
 	};	

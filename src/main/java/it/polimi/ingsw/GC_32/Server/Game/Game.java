@@ -332,7 +332,6 @@ public class Game implements Runnable{
 				notCHANGEeffectCardList.forEach(card -> { 
 					card.getPermanentEffect().forEach(effect -> {
 						effect.apply(board, player, action, cm);
-						System.out.println("attivo effetto non change");
 					});
 				});
 				break;
@@ -342,7 +341,6 @@ public class Game implements Runnable{
 				
 				JsonValue SERVANTHarvestresponse = cm.waitForContextReply();
 				action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
-				
 				
 				player.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> {
 					if(card.getMinimumActionvalue() <= action.getActionValue()){ 

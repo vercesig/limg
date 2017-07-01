@@ -46,6 +46,7 @@ public class ClientCLI implements ClientInterface{
 		contextList[2] = new ServantContext();
 		contextList[3] = new ExcommunicationContext();
 		contextList[4] = new ChangeEffectContext();
+		contextList[5] = new ActionEffectContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		

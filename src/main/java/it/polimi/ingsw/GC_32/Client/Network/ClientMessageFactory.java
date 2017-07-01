@@ -40,6 +40,19 @@ public class ClientMessageFactory {
 		return ASKACT.toString();
 	}
 	
+	// only for ACTION effect
+	public static String buildASKACTmessage(String actionType, int regionID, int spaceID, JsonObject payload){
+		JsonObject ASKACT = new JsonObject();
+		JsonObject ASKACTpayload = new JsonObject();
+		ASKACTpayload.add("ACTIONTYPE", actionType);
+		ASKACTpayload.add("REGIONID", regionID);
+		ASKACTpayload.add("SPACEID", spaceID);
+		ASKACTpayload.add("JSONPAYLOAD", payload);
+		ASKACT.add("MESSAGETYPE", "ASKACT");
+		ASKACT.add("PAYLOAD", ASKACTpayload);
+		return ASKACT.toString();
+	}
+	
 	public static String buildTRNENDmessage(String gameUUID, String name){
 		JsonObject TRNEND = new JsonObject();
 		JsonObject TRNENDPayload = new JsonObject();
