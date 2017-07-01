@@ -112,6 +112,13 @@ public class ServerMessageFactory {
 		}
 		GMSTRT.add("BOARD", GMSTRTboard.toString());
 		
+		//Excommunication card JsonArray
+		JsonArray excommunicationList = new JsonArray();
+		for(int i=0; i<3; i++){
+			excommunicationList.add(game.getExcommunicationCard()[i].getName());
+		}
+		GMSTRT.add("EXCOMMUNICATIONCARDS", excommunicationList);
+				
 		LOGGER.log(Level.INFO, "packaging game player list...");
 		
 		// playerList
@@ -166,6 +173,23 @@ public class ServerMessageFactory {
 		return NAMECHGmessage;
 	}
 	
+	public static GameMessage buildASKLDRACKmessage(Game game, Player player, String leaderCard, String decision, boolean result){
+
+		JsonObject ASKLDRACK = new JsonObject();
+		JsonObject ASKLDRACKPayload = new JsonObject();
+		if(result){
+			ASKLDRACKPayload.add("RESULT", true);
+		}
+		else
+			ASKLDRACKPayload.add("RESULT", false);
+		ASKLDRACKPayload.add("LEADERCARD", leaderCard);
+		ASKLDRACKPayload.add("DECISION", decision);
+		ASKLDRACK.add("TYPE", "ASKLDRACK");
+		ASKLDRACK.add("PAYLOAD", ASKLDRACKPayload.toString());
+		
+		GameMessage ASKLDRACKmessage = new GameMessage(game.getUUID(), player.getUUID(),"ASKLDRACK", ASKLDRACK);
+		return ASKLDRACKmessage;
+	}
 	
 	public static GameMessage buildCHGBOARDSTATmessage(Game game, Board board){
  		JsonObject CHGBOARDSTAT = new JsonObject();
@@ -230,6 +254,9 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("PLAYER_FAITH", (int) payload[0]);
 			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[1]);
 			break;
+		case LEADERSET:
+			CONTEXTpayload.add("LIST", (JsonArray) payload[0]);
+			break;
 		case CHANGE:
 			CONTEXTpayload.add("NAME", (JsonArray) payload[0]);
 			CONTEXTpayload.add("RESOURCE", (JsonArray) payload[1]);
@@ -285,5 +312,12 @@ public class ServerMessageFactory {
 		GameMessage ENDGAMEmessage = new GameMessage(game.getUUID(), null, "ENDGAME", ENDGAME);
 		ENDGAMEmessage.setBroadcast();
 		return ENDGAMEmessage;
+	}
+
+	public static GameMessage buildCONNESTmessage(UUID playerId){
+		JsonObject CONNEST = new JsonObject();
+		CONNEST.add("PLAYERID", playerId.toString());
+		GameMessage CONNESTmessage = new GameMessage(null, playerId,"CONNEST", CONNEST);
+		return CONNESTmessage;
 	}
 }

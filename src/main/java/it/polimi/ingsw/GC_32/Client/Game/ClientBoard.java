@@ -7,22 +7,35 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
+import com.eclipsesource.json.JsonValue;
 
 public class ClientBoard {
 
 	private ArrayList<ClientRegion> region;
+	private ArrayList<String> excommunicationCards;
 	int blackDice;
 	int whiteDice;
 	int orangeDice;
 	
 	public ClientBoard(JsonObject boardPacket){
 		this.region = new ArrayList<ClientRegion>();
+		this.excommunicationCards =  new ArrayList<String>();
 		Iterator<Member> regions = boardPacket.iterator();
 		regions.forEachRemaining(region -> {
 			String regionType = region.getName();
 			JsonArray actionSpaces = Json.parse(region.getValue().asString()).asArray();
 			
 			this.region.add(new ClientRegion(regionType,actionSpaces));			
+		});	
+	}
+
+	public ArrayList<String> getExcommunicationCards(){
+		return this.excommunicationCards;
+	}
+	
+	public void setExcommunicationCards(JsonValue jsonList){
+		jsonList.asArray().forEach(card ->{
+			excommunicationCards.add(card.asString());
 		});	
 	}
 	

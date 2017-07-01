@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
+import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
 
 public class SocketMsgConnection implements MsgConnection{
 
@@ -13,8 +13,8 @@ public class SocketMsgConnection implements MsgConnection{
 	private Scanner in;
 	private PrintWriter out;
 	
-	public void open() throws IOException{
-		socket = new Socket("localhost",9500);
+	public void open(String ip, int port) throws IOException{
+		socket = new Socket(ip, port);
 		//System.out.println("[SOCKETMSGCONNECTION] connected to server");
 		in = new Scanner(socket.getInputStream());
 		out = new PrintWriter(socket.getOutputStream());

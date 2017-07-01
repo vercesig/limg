@@ -16,9 +16,10 @@ import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
-import it.polimi.ingsw.GC_32.Client.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Client.Network.SocketMsgConnection;
+import it.polimi.ingsw.GC_32.Client.Network.RMIMsgConnection;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
 
 public class MainClient{
 
@@ -62,13 +63,15 @@ public class MainClient{
 		return this.myUUID;
 	}
 	
-	private boolean setNetwork(String type){
+	private boolean setNetwork(String type) throws IOException{
 		switch(type){
 		case "s":
-			this.network = (MsgConnection) new SocketMsgConnection();
+			this.network = new SocketMsgConnection();
+			this.network.open("127.0.0.1", 9500);
 			return true;
 		case "r":
-			// RMI
+			this.network = new RMIMsgConnection();
+			this.network.open("127.0.0.1", 1099);
 			return true;
 		default:
 			return false;
@@ -117,7 +120,6 @@ public class MainClient{
 		}
 		
 		MsgConnection network = client.getNetwork();
-		network.open();
 		
 		System.out.println("ok, now we are ready to play");		
 				
@@ -181,6 +183,9 @@ public class MainClient{
 
 						//System.out.println("[MAINCLIENT] synchronizing board");
 						client.setClientBoard(new ClientBoard(board));
+						
+						//set excommunication cards
+						client.getBoard().setExcommunicationCards(messagePayload.get("EXCOMMUNICATIONCARDS"));
 						
 						client.graphicInterface.registerBoard(client.getBoard());
 						client.graphicInterface.registerPlayers(client.getPlayers());
@@ -307,6 +312,26 @@ public class MainClient{
 						client.getClientInterface().openContext(messagePayload);
 						break;
 					
+					case "ASKLDRACK": //ACK AZIONE LEADER
+						JsonObject payload = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject(); // non so come mai ma va parsato il payload
+						String decision = payload.get("DECISION").asString();
+						String cardName = payload.get("LEADERCARD").asString();
+						
+						if(payload.get("RESULT").asBoolean()){
+							client.getClientInterface().displayMessage("Leader "+ decision + 
+									" action performed.\nYou "+ decision+"ed your leader card "+
+									cardName);
+							if(decision.equals("DISCARD")){
+								System.out.println("PRIMA DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
+								client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").remove(cardName);
+								System.out.println("DOPO DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
+							}
+						} if(!payload.get("RESULT").asBoolean()){
+							client.getClientInterface().displayMessage("Impossible to perform the action " + decision + " .\n" 
+							+ "You don't have the requirements to play the card or it's on the game.\n");
+						}
+						break;
+						
 					case "MSG":
 						if(!messagePayload.get("FLAG").asBoolean()){
 							if(!client.getUUID().equals(messagePayload.get("RECEIVER").asString())){

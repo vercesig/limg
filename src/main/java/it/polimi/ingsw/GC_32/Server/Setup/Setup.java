@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.GC_32.Server.Game.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
@@ -86,8 +85,7 @@ public class Setup {
 		LOGGER.log(Level.INFO, "loading excommunication card...");
 		
 		// preparazione carte scomunica
-		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testscomunica.json"));
-		//FileReader excommunicationCardFile = new FileReader("src/resources/testscomunica.json");
+		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excom_cards.json"));
 		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck<ExcommunicationCard>(JsonImporter.importExcommunicationCard(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
@@ -105,7 +103,11 @@ public class Setup {
 			Deck<ExcommunicationCard> tmpDeck = new Deck<ExcommunicationCard>(tmpSubDecks.get(i));
 			CardRegistry.getInstance().registerDeck(i,tmpDeck);
 		}
-		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");		
+		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");
+		// Carte Leader
+		Reader leaderCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("leader_cards.json"));
+		Deck <LeaderCard> leaderDeck = new Deck <LeaderCard> (JsonImporter.importLeaderCard((leaderCardFile))); 
+		CardRegistry.getInstance().registerDeck(leaderDeck);
 	}
 	
 	public void loadBonusTile(Reader bonusTileReader) throws IOException{

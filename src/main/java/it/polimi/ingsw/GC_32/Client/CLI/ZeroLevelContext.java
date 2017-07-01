@@ -7,6 +7,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 	private ShowCardDialog showCard;
 	private AskActDialog askAct;
 	private ChatDialog chatRoom;
+	private LeaderDialog leaderDialog;
 	
 	public ZeroLevelContext(ClientCLI client){
 		super();
@@ -14,6 +15,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 		this.showCard = new ShowCardDialog(this.client);
 		this.askAct = new AskActDialog(this.client);
 		this.chatRoom = new ChatDialog(this.client);
+		this.leaderDialog = new LeaderDialog(this.client);
 	}
 		
 	public void run(){
@@ -22,6 +24,10 @@ public class ZeroLevelContext extends Context implements Runnable{
 	
 	public AskActDialog getAskAct(){
 		return this.askAct;
+	}
+	
+	public LeaderDialog getLeaderDialog(){
+		return this.leaderDialog;
 	}
 	
 	public void open(Object object){
@@ -36,14 +42,16 @@ public class ZeroLevelContext extends Context implements Runnable{
 				System.out.println("type a command:\n- board: display the board status\n- players: display players' status\n"
 						+ "- show card: to show details of cards on the game\n"
 						+ "- chat room: to chat with other players\n"
-						+ "- change name: to change the name of your player");
+						+ "- change name: to change the name of your player\n"
+						+ "- leader: performa a special action leader");
 			}
 			else
 				System.out.println("type a command:\n- board: display the board status\n- players: display players' status\n"
 						+ "- show card: to show details of cards on the game\n"
 						+ "- chat room: to chat with other players\n"
-						+ "- change name: to change the name of your player\n"
-						+ "- action: make an action");
+						+ "- change name: to change the name of your playe\n"
+						+ "- leader: performa a special action leader\n"
+						+ "- action: make an action (if isn't your turn your requests won't be applied)");
 				
 			command = in.nextLine();
 			switch(command){
@@ -65,6 +73,11 @@ public class ZeroLevelContext extends Context implements Runnable{
 					chatRoom.openChat();
 				} catch (InterruptedException e) {}
 				break;
+				
+			case "leader":
+				leaderDialog.open(object);
+				break;	
+				
 			case "change name":
 					chatRoom.openChangeName();
 					break;

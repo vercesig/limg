@@ -1,19 +1,13 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
-import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class ClientCLI implements ClientInterface{
 
@@ -39,14 +33,15 @@ public class ClientCLI implements ClientInterface{
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
-		this.contextList = new Context[5];
+		this.contextList = new Context[6];
 		contextList[0] = new ZeroLevelContext(this);
 		
 		contextList[1] = new PrivilegeContext();
 		contextList[2] = new ServantContext();
 		contextList[3] = new ExcommunicationContext();
 		contextList[4] = new ChangeEffectContext();
-		contextList[5] = new ActionEffectContext(this);
+		//contextList[5] = new ActionEffectContext(this);
+		contextList[5] = new LeaderSetContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		
@@ -78,6 +73,10 @@ public class ClientCLI implements ClientInterface{
 	
 	public String getUUID(){
 		return this.UUID;
+	}
+	
+	public String getGameUUID(){
+		return this.gameUUID;
 	}
 	
 	public boolean isWaiting(){
@@ -121,6 +120,10 @@ public class ClientCLI implements ClientInterface{
 		
 		//inizialize changeEffectContext
 		contextList[4].registerClientPlayer(playerListReference.get(UUID));
+		
+		//inizialize leaderSetContext
+		contextList[5].registerGameUUID(gameUUID);
+		contextList[5].registerPlayerUUID(UUID);
 		
 		//inizialize privilegeContext
 		contextList[1].registerClientPlayer(playerListReference.get(UUID));

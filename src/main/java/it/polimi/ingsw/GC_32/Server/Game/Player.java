@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
@@ -22,12 +23,12 @@ public class Player {
 	private final UUID uuid;
 	private UUID gameID;
 	
-	private ArrayList<String> excomunicateFlag;
+	private JsonObject dictionaryFlag; // dizionario dei flag
 	
 	public Player(){
 		this.personalBoard = new PersonalBoard();
 		this.resources = new ResourceSet();
-		this.excomunicateFlag = new ArrayList<String>();
+		this.dictionaryFlag = new JsonObject();
 		
 		// CONVENZIONE: familyMemberList[0] è sempre il familiare neutro
 		this.familyMemberList = new FamilyMember[4];
@@ -94,8 +95,8 @@ public class Player {
 		return this.resources.getResource("SERVANTS");
 	}
 	
-	public ArrayList<String> getExcomunicateFlag(){
-		return this.excomunicateFlag;
+	public JsonObject getDictionaryFlag(){
+		return this.dictionaryFlag;
 	}
 	
 	public ResourceSet getResources(){
@@ -161,4 +162,28 @@ public class Player {
     	return this.gameID;
     }
     
+    public boolean isFlagged(String flag){
+    	System.out.println("DIZIONARIO: " + this.getDictionaryFlag().toString());
+    	try{
+    		for(JsonValue js: this.getDictionaryFlag().get("NOENDPOINTS").asArray()){
+    			if(js.asString().equals(flag)){
+    				System.out.println("DENTRO IL PRIMO TRY: RITORNO TRUE");
+    				return true;
+    			}
+    		}
+    	}catch(NullPointerException e){}
+    	
+    	try{
+    		for(JsonValue js: this.getDictionaryFlag().get("LESSRESOURCE").asArray()){
+    			if(js.asString().equals(flag)){
+    				return true;
+		   			}
+    		}
+    	}catch(NullPointerException e){}	
+	    try{
+	    	if(!this.getDictionaryFlag().get(flag).isNull())
+	    		return true;
+	    }catch(NullPointerException e){}	
+	    return false;
+    }
 }

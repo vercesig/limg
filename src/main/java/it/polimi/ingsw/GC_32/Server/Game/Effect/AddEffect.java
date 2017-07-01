@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import java.util.Iterator;
+
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
@@ -35,15 +37,26 @@ public class AddEffect {
 			// se ho addEffect di Wood devo perdere una Stone e un Wood;
 			// se ho addEffect di Stone devo perdere una Stone e un Wood;
 			// se ho addEffect di Wood e Stone?  perdo due Stone e due Wood;
-			for (String key: resourceSet.getResourceSet().keySet()){
-
-				if(p.getExcomunicateFlag().contains(key)){  
-					for(String excommunicateFlag: p.getExcomunicateFlag()){
-						p.getResources().addResource(excommunicateFlag, -1);
+			if(p.isFlagged("LESSRESOURCE")){ // DA TESTARE
+				 JsonArray malusResource = p.getDictionaryFlag().get("LESSRESOURCE").asArray();
+					for (String key: resourceSet.getResourceSet().keySet()){
+						malusResource.forEach(member -> {
+							if(member.asString().equals(key)){
+								p.getResources().addResource(key, -1);
+							}
+						});
 					}
 				}
-			}
 			p.getResources().addResource(resourceSet);
+			
+			//Santa Rita
+			if(p.isFlagged("DOUBLE")){ // DA TESTARE
+				resourceSet.getResourceSet().remove("FAITH_POINTS");
+				resourceSet.getResourceSet().remove("VICTORY_POINTS");
+				resourceSet.getResourceSet().remove("MILITARY_POINTS");
+				
+				p.getResources().addResource(resourceSet); // doppie risorse!!!
+			}
 		};
 		return e;
 	};

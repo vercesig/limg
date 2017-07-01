@@ -1,29 +1,56 @@
 package it.polimi.ingsw.GC_32.Server.Game.Card;
+import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 
 public class LeaderCard extends Card{
 
-	private boolean discarded;
-	private boolean onePerRoundAbility;
+	private JsonObject requirements;
+	private Effect flagEffect;
+	private boolean onTheGame;
+	private boolean abilityToken;
 	
-	public LeaderCard(String name, boolean onePerRoundAbility){
+	public LeaderCard(String name, JsonObject requirements){
 		super(name);
-		this.onePerRoundAbility = onePerRoundAbility;
-		this.discarded = false;
+		this.onTheGame = false;
+		this.abilityToken = false;
+		this.requirements = requirements;
 	}
 	
-	public void discard(){
-		this.discarded = true;
+	public Effect getFlagEffect(){
+		try{
+		return this.flagEffect;
+		}catch(NullPointerException e){
+			return null;
+		}
 	}
 	
-	public boolean isDiscarded(){
-		return this.discarded;
+	public void registerFlagEffect(Effect e){
+		this.flagEffect = e;
+	}
+	
+	public JsonObject getRequirements(){
+		return this.requirements;
+	}
+	
+	public boolean hasATokenAbility(){
+		return this.abilityToken;
 	}
 	
 	public void turnCard(){
-		onePerRoundAbility = !onePerRoundAbility;
+		abilityToken = false;
 	}
-	public boolean getOnePerRoundAbility(){
-		return this.onePerRoundAbility;
+	
+	public void playCard(){
+		this.onTheGame = true;
+		this.abilityToken = true;
+	}
+	
+	public boolean isOnTheGame(){
+		return this.onTheGame;
+	}
+	
+	public String toString(){
+		return this.getName();
 	}
 }

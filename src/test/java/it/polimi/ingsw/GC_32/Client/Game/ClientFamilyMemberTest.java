@@ -7,7 +7,7 @@ public class ClientFamilyMemberTest{
 	
 	@Test
 	public void checkToString(){
-		ClientFamilyMember cfm = new ClientFamilyMember("TEST_PLAYER");
+		ClientFamilyMember cfm = new ClientFamilyMember();
 		assertNotNull(cfm.toString());
 	}
 }

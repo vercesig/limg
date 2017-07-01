@@ -25,11 +25,46 @@ public class ShowCardDialog extends Context{
 		
 		while(flagCard){	
 			System.out.println("type a command:\n-region: show detail of a card on the board\n-player: show detail of a player's card"
+					+ "\n-excommunication: to show the excommunication cards on the board"
 					+ "\n-quit: to exit");
 			command = in.nextLine();
 			
 			switch (command){
-			
+
+			case("excommunication"): {
+							
+							System.out.println("Excommunication cards on the board are these:\n");
+							
+							for(int i=0; i<	client.getBoard().getExcommunicationCards().size(); i++){
+								System.out.println("Period: "+i+ " Card: " + client.getBoard()
+																					.getExcommunicationCards()
+																					.get(i) + '\n');
+							}
+							System.out.println("type the period of the card to show or q to quit:");
+							boolean optionSelected = false;
+							
+							while(!optionSelected){
+								command = in.nextLine();
+								if(command.equals("q")){
+									optionSelected = true;
+								}
+								try{
+									if(Integer.parseInt(command) < client.getBoard().getExcommunicationCards().size() 
+											&& Integer.parseInt(command)>= 0){
+									
+										Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excom_cards.json"));
+										try {
+											JsonValue card = JsonImporter.importSingleCard(json,
+													client.getBoard().getExcommunicationCards().get(Integer.parseInt(command)));
+											System.out.println(CardCli.print(card.asObject()));
+										} catch (IOException e) {}
+									}
+								}catch(NumberFormatException e){
+									System.out.println("type a valid number");
+								}
+							}
+							break;
+						}
 			case("region"):	{
 				int regionID = 4;
 				int spaceID = 0;
