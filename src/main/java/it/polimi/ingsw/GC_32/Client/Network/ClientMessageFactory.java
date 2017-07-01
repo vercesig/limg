@@ -84,18 +84,6 @@ public class ClientMessageFactory {
 		JsonObject TRNENDPayload = new JsonObject();
 		TRNEND.add("MESSAGETYPE", "TRNEND");
 		TRNENDPayload.add("NAME", name);
-		TRNENDPayload.add("TIMEOUTEND", Json.NULL);
-		TRNEND.add("PAYLOAD", TRNENDPayload);
-		TRNEND.add("GameID", gameUUID);
-		return TRNEND.toString();
-	}
-	
-	public static String buildTRNENDmessage(String gameUUID, String name, boolean timeout){
-		JsonObject TRNEND = new JsonObject();
-		JsonObject TRNENDPayload = new JsonObject();
-		TRNEND.add("MESSAGETYPE", "TRNEND");
-		TRNENDPayload.add("NAME", name);
-		TRNENDPayload.add("TIMEOUTEND", timeout);
 		TRNEND.add("PAYLOAD", TRNENDPayload);
 		TRNEND.add("GameID", gameUUID);
 		return TRNEND.toString();

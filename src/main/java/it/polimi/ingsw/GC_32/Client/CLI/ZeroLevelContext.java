@@ -66,7 +66,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 					
 			case "action":		
 				if(!client.isWaiting()){
-					client.getSendQueue().add(askAct.open(object));
+					String response = askAct.open(object);
+					if(response!=null)
+						client.getSendQueue().add(response);
 					try{ //waiting for other context
 						Thread.sleep(200);
 					}catch(InterruptedException e){}
