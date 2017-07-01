@@ -22,14 +22,14 @@ public class ClientActionSpace {
 		return this.bonus;
 	}
 	
-	public ClientActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID){
+	public ClientActionSpace(ResourceSet bonus, int actionValue, boolean single, int regionID, int actionSpaceID, boolean blockFlag){
 		this.bonus = bonus;
 		this.actionValue = actionValue;
 		this.occupants = new ArrayList<ClientFamilyMember>();
 		this.single = single;
 		this.actionSpaceID = actionSpaceID;
 		this.regionID = regionID;
-		this.blocked = false;
+		this.blocked = blockFlag;
 	}
 	
 	public void setCard(String cardName){

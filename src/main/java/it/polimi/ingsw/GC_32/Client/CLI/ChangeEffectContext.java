@@ -8,8 +8,11 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ChangeEffectContext extends Context{
 
+	public ChangeEffectContext(ClientCLI client){
+		super(client);
+	}
 	
-	public void open(Object object) {
+	public String open(Object object) {
 		
 		runFlag = true;
 		JsonObject JsonPayload = (JsonObject) object;
@@ -46,7 +49,7 @@ public class ChangeEffectContext extends Context{
 				System.out.println(resourceIn+" -> "
 								  +new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 
-				if(clientPlayerReference.getPlayerResources().compareTo(resourceIn)==-1){
+				if(client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().compareTo(resourceIn)==-1){
 					System.out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
 					i++;
 					indexArray.add("n");
@@ -83,7 +86,7 @@ public class ChangeEffectContext extends Context{
 					
 					ResourceSet resourceIn = new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEIN").asObject());
 					
-					boolean lessResource = clientPlayerReference.getPlayerResources().compareTo(resourceIn)==-1;
+					boolean lessResource = client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().compareTo(resourceIn)==-1;
 					lessResourceFlag[j] = lessResource;
 					
 					StringBuilder output = new StringBuilder();
@@ -127,9 +130,9 @@ public class ChangeEffectContext extends Context{
 			
 			if(i==CHANGEcardName.size()){
 				CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);	
-				sendQueue.add(CONTEXTREPLY.toString());
 				close();
 			}
 		}
+		return CONTEXTREPLY.toString();
 	}
 }

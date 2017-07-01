@@ -27,7 +27,8 @@ public class ClientRegion {
 			boolean single = slimActionSpace.getBoolean("SINGLE", true);
 			int regionID = slimActionSpace.get("REGIONID").asInt();
 			int actionspaceID = slimActionSpace.get("SPACEID").asInt();
-			this.actionSpaces.add(new ClientActionSpace(bonus,actionValue,single,regionID,actionspaceID));
+			boolean blockFlag = slimActionSpace.getBoolean("BLOCKFLAG",false);
+			this.actionSpaces.add(new ClientActionSpace(bonus,actionValue,single,regionID,actionspaceID,blockFlag));
 		});
 	}
 	

@@ -5,14 +5,9 @@ import java.util.ArrayList;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
 public class ChatDialog extends Context {
-
-	private ClientCLI client;
 	
 	public ChatDialog(ClientCLI client){
-		super();
-		this.client = client;
-		this.sendQueue = client.getSendQueue();
-		this.actionRunningGameFlag= false;
+		super(client);
 	}
 	
 	public void openChat() throws InterruptedException{
@@ -187,7 +182,8 @@ public class ChatDialog extends Context {
 	}
 		
 	@Override
-	public void open(Object object) {
+	public String open(Object object) {
+		return null;
 	}
 
 }

@@ -9,14 +9,18 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class PrivilegeContext extends Context{
-		
+	
+	public PrivilegeContext(ClientCLI client){
+		super(client);
+	}
+	
 	private String[] values = { "{\"WOOD\": 1, \"STONE\": 1}",
 								"{\"SERVANTS\": 2}",
 								"{\"COINS\": 2}",
 								"{\"MILITARY_POINTS\": 2}",
 								"{\"FAITH_POINTS\": 1}"};
 	
-	public void open(Object payload){
+	public String open(Object payload){
 		
 		runFlag=true;
 		
@@ -56,8 +60,9 @@ public class PrivilegeContext extends Context{
 			command = in.nextLine();
 			if(command.equals("n")&&isCostPrivilege){
 				choosedResources.add(command);
-				sendQueue.add(CONTEXTREPLY.toString());
-				close();
+				//sendQueue.add(CONTEXTREPLY.toString());
+				//close();
+				return CONTEXTREPLY.toString();
 			}
 			
 			try{
@@ -93,10 +98,9 @@ public class PrivilegeContext extends Context{
 				System.out.println("you can't choose the same resource two times, please enter"
 						+ " a different choise");
 			}
-			if(numberOfPrivilege==0){
-				sendQueue.add(CONTEXTREPLY.toString());
+			if(numberOfPrivilege==0)
 				close();
-			}
 		}
+		return CONTEXTREPLY.toString();
 	}	
 }

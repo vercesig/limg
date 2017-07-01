@@ -7,14 +7,11 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ActionEffectContext extends Context{
 
-	private ClientCLI client;
-	
 	public ActionEffectContext(ClientCLI client){
-		super();
-		this.client = client;
+		super(client);
 	}
 	
-	public void open(Object object){
+	public String open(Object object){
 		
 		runFlag = true;
 		JsonObject payload = (JsonObject) object;
@@ -24,9 +21,8 @@ public class ActionEffectContext extends Context{
 		int regionID = Jsonpayload.get("REGIONID").asInt();
 		int bonusActionValue = Jsonpayload.get("BONUSACTIONVALUE").asInt();
 		ResourceSet bonusResource = null;
-		try{
+		if(!Jsonpayload.get("BONUSRESOURCE").isNull())
 			bonusResource = new ResourceSet(Jsonpayload.get("BONUSRESOURCE").asObject());
-		}catch(NullPointerException e){}
 		
 		String flagRegion = Jsonpayload.get("FLAGREGION").asString();
 		
@@ -40,7 +36,8 @@ public class ActionEffectContext extends Context{
 		boolean actionFlag;
 		boolean flagAction = true;
 		
-		System.out.println("you have a bonus "+actionType+" action to perform.\nThe effect will increase of "+bonusActionValue+" the action value of your bonus action");
+		System.out.println("you have a bonus "+actionType+" action to perform.\nThe effect will increase of "+bonusActionValue+" the action value of"
+				+ " your bonus action");
 		if(bonusResource!=null)
 			System.out.println("the action will also apply this discount on the cost of the card you will take\n"+bonusResource.toString());
 		
@@ -93,24 +90,20 @@ public class ActionEffectContext extends Context{
 						switch(command){
 						case "y":
 							actionFlag = false;
+							close();
 							break;
 						case "n":
 							actionFlag = false;
-							return;
+							close();
+							return null;
 						default:
 							System.out.println("please, type a valid letter");
-							return;
 						}
 					}
 				}
 			}
-		// sending ASKACT message
-		client.getSendQueue().add(ClientMessageFactory.buildASKACTmessage(actionType, choosedSpaceID, choosedRegionID, payload));
 		System.out.println("action sent to the server... waiting for response");
 		
-		try{ // do tempo ad eventuali context di aprirsi
-			Thread.sleep(1000);
-		}catch(Exception e){}
-		return;
+		return ClientMessageFactory.buildASKACTmessage(actionType, choosedSpaceID, choosedRegionID, payload);
 	}
 }
