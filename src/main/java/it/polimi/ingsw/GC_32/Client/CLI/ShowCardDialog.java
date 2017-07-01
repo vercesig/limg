@@ -117,26 +117,32 @@ public class ShowCardDialog extends Context{
 				boolean optionSelected = false;
 				ClientPlayer player = client.getPlayerList().get(client.getPlayerUUID());
 				ArrayList<String> stringList = new ArrayList<String>();
-				System.out.println("Chose one of your player's card to show more details\n");
+				System.out.println("Chose the index of your player's card to show more details\n");
 				
 				player.getCards().forEach((cardtype, cardlist) ->{
 					cardlist.forEach(card ->{
 						stringList.add(card);
-						System.out.println(">" + card);
+						System.out.println(stringList.indexOf(card) + "]" + card);
 					});
 				});	
+				System.out.println(stringList.toString());
 				while(!optionSelected){
 					command = in.nextLine();
 					if(command.equals("q")){
 						break;
 					}
-					if(stringList.contains(command)){
-						CardCli.print(command, ClientCardRegistry.getInstance()
-								.getDetails(command));
+					try{
+						if(Integer.parseInt(command) < stringList.size() && Integer.parseInt(command) >= 0){
+								String name = stringList.get(Integer.parseInt(command));
+								System.out.println(CardCli.print(name, ClientCardRegistry.getInstance()
+										.getDetails(name)));
+						}
+						else
+							System.out.println("type a valid index or type q to exit");
+					}catch(NumberFormatException e){
+						System.out.println("type a valid index or type q to exit");
 					}
-					else
-						System.out.println("type a valid card name or type q to exit");
-				}
+				}	
 				break;
 				
 			case("quit"):
