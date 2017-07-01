@@ -174,10 +174,11 @@ public class AskActDialog extends Context{
 				switch(command){
 				case "y":
 					actionFlag = false;
+					close();
 					break;
 				case "n":
 					actionFlag = false;
-					return null;
+					break;
 				default:
 					System.out.println("please, type a valid letter");
 				}

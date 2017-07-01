@@ -329,14 +329,12 @@ public class Game implements Runnable{
 								.buildASKLDRACKmessage(this, p, cardName, decision, result));		
 						break;
 					case "TRNEND":
-						if(!jsonMessage.get("TIMEOUTEND").isNull()){
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
-						}
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
 						
 						try{ // wait for TRNBGN message
-						    Thread.sleep(200);
+						    Thread.sleep(500);
 						}catch(InterruptedException e){
 						    Thread.currentThread().interrupt();
 						}
@@ -365,10 +363,25 @@ public class Game implements Runnable{
 															pl.getResources().getResource("FAITH_POINTS")));
 
 									try{ // wait for TRNBGN message
-										Thread.sleep(200);
+										Thread.sleep(500);
 									}catch(InterruptedException e){}
 										
 								}
+								// reset board
+								getBoard().flushBoard();
+								getBoard().placeCards(this);
+								
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+								getPlayerList().forEach(gamePlayer -> {
+									MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
+								});
+								
+								try{ // wait for TRNBGN message
+								    Thread.sleep(200);
+								}catch(InterruptedException e){
+								    Thread.currentThread().interrupt();
+								}
+								
 								LOGGER.log(Level.INFO, "giving lock to the next player");
 								UUID nextPlayer = turnManager.nextPlayer();
 								
