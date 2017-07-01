@@ -26,9 +26,11 @@ public class ClientCLI implements ClientInterface{
 	private Context[] contextList;
 	private Thread zeroLevelContextThread;
 	
-	private boolean idleRun = false;
+	private boolean idleRun = false; // if zeroLevel must run
 	private boolean wait = true; // if player is waiting he can't display action menu;
-	private boolean actionRunningGameFlag;
+	private boolean actionRunningGameFlag; // if the timer is going on
+	
+	private boolean leaderStartPhase = true;
 	
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
@@ -127,10 +129,9 @@ public class ClientCLI implements ClientInterface{
 		
 		//inizialize privilegeContext
 		contextList[1].registerClientPlayer(playerListReference.get(UUID));
-		
-		
+				
 		while(true){
-			
+						
 			while(!contextQueue.isEmpty()){
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
@@ -146,7 +147,7 @@ public class ClientCLI implements ClientInterface{
 			
 			}
 			
-			if(!idleRun){
+			if(!idleRun&&!leaderStartPhase){
 				idleRun=true;
 				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
 				zeroLevelContextThread.start();
@@ -163,6 +164,10 @@ public class ClientCLI implements ClientInterface{
 			
 		}
 		
+	}
+	
+	public void leaderStartPhaseEnd(){
+		this.leaderStartPhase=false;
 	}
 	
 	@Override

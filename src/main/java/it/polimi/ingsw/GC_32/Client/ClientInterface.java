@@ -34,6 +34,8 @@ public interface ClientInterface extends Runnable{
 	public void registerGameUUID(String UUID);
 	public void registerActionRunningGameFlag(boolean flag);
 	
+	public void leaderStartPhaseEnd();
+	
 	//Game Change
 	public void moveFamiliar(int familiar, int regionID, int spaceID);
 	public void moveCardToPlayer(String playerID, int regionID, int spaceID);
