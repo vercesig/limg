@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import com.eclipsesource.json.JsonArray;
+
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
@@ -72,6 +74,9 @@ public class MoveUtils {
      * @return
      */
     public static boolean isFreeSingleSpace(Board board, Player player, Action action){
+    	if(player.isFlagged("FAMILYOCCUPY")){
+    		return true;
+    	}
     	return !(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
     			 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
     }
@@ -128,7 +133,7 @@ public class MoveUtils {
     	System.out.println("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
     	int actionDiff = action.getActionValue() -
     					 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
-    	if(player.getExcomunicateFlag().contains("DOUBLESERVANTS")){ // excommunicate flag
+    	if(player.isFlagged("DOUBLESERVANTS")){ // excommunicate flag
         	System.out.println("EFFETTO DOUBLESERVANTS EXCOMMUNICATE");
     		player.getResources().addResource("SERVANTS", 2*actionDiff);
     	}
@@ -142,7 +147,8 @@ public class MoveUtils {
      */
     public static boolean checkCoinForTribute(Board board, Player player, Action action){  // change the state
     	if(action.getActionRegionId() < 4 || 										   //Not a tower action
-    	   !((TowerRegion)board.getRegion(action.getActionRegionId())).isTowerBusy()){ //Tower is empty
+    		 !((TowerRegion)board.getRegion(action.getActionRegionId())).isTowerBusy() || //Tower is empty
+    	       player.isFlagged("NOTRIBUTE")){ // Leader Card
     		return true;
     	}
     	player.getResources().addResource("COINS", -3);
@@ -161,6 +167,11 @@ public class MoveUtils {
     	}
     	
     	if(card.getType().equals("TERRITORYCARD")){
+    		
+    		if(player.isFlagged("NOMILITARYRULE")){ // Leader Card
+    			return true;
+    		}
+    		
     		int milPoints = player.getResources().getResource("MILITARY_POINTS");
     		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){
     		case 2: 
@@ -231,12 +242,15 @@ public class MoveUtils {
 				  				 .getBonus();
 		if(bonus != null){
 			//Excommunication Effect debuff
-			for(String key : bonus.getResourceSet().keySet()){
-				if(player.getExcomunicateFlag().contains(key)){
-					for(String excommunicateFlag: player.getExcomunicateFlag()){
-						player.getResources().addResource(excommunicateFlag, -1);
-					}
-				}
+			if(player.isFlagged("LESSRESOURCE")){
+				 JsonArray malusResource = player.getDictionaryFlag().get("LESSRESOURCE").asArray();
+				 for(String key: bonus.getResourceSet().keySet()){
+					 malusResource.forEach(member ->{
+						 if(member.asString().equals(key)){
+							 player.getResources().addResource(key, -1);
+						 }
+					 });
+				 }	 
 			}	
 			player.getResources().addResource(bonus);
 		}

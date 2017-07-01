@@ -16,10 +16,6 @@ public class ExcommunicationCard extends Card{
 		return this.period;
 	}
 	
-	public void activateExcommunication(Player target){
-		
-	}
-	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("name: "+this.getName()+"\nperiod: "+period);

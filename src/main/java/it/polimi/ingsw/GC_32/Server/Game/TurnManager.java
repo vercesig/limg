@@ -57,6 +57,10 @@ public class TurnManager {
 		return this.roundID;
 	}
 	
+	public int getPeriod(){
+		return getRoundID()/2;
+	}
+	
 	// restituisce il player a cui passare il lock
 	public UUID nextPlayer(){
 		turnID++;		

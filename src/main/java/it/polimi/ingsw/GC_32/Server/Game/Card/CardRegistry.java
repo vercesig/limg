@@ -1,22 +1,22 @@
-package it.polimi.ingsw.GC_32.Server.Game;
+package it.polimi.ingsw.GC_32.Server.Game.Card;
 
 import java.util.HashMap;
 import java.util.Set;
 
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
-import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 
 public class CardRegistry {
 
 	private static CardRegistry instance;
 	private HashMap<String,Deck<DevelopmentCard>> developmentCardDecks;
 	private HashMap<Integer,Deck<ExcommunicationCard>> excommunicationCardDecks;
+	private Deck<LeaderCard> leaderDeck;
 	
 	
 	private CardRegistry(){
 		this.developmentCardDecks = new HashMap<String, Deck<DevelopmentCard>>();
 		this.excommunicationCardDecks = new HashMap<Integer, Deck<ExcommunicationCard>>();
+		this.leaderDeck = new Deck<LeaderCard> ();
 	}
 	
 	public static CardRegistry getInstance(){
@@ -30,6 +30,10 @@ public class CardRegistry {
 		this.developmentCardDecks.put(deckType, deck);
 	}
 	
+	public void registerDeck(Deck <LeaderCard> deck){
+		this.leaderDeck = deck;
+	}
+	
 	public void registerDeck(Integer deckPeriod, Deck<ExcommunicationCard> deck){
 		this.excommunicationCardDecks.put(deckPeriod, deck);
 	}
@@ -40,6 +44,10 @@ public class CardRegistry {
 	
 	public Deck<ExcommunicationCard> getDeck(Integer deckPeriod){
 		return excommunicationCardDecks.get(deckPeriod);
+	}
+	
+	public Deck<LeaderCard> getLeaderDeck(){
+		return leaderDeck;
 	}
 	
 	public Set<String> getAllCardType(){

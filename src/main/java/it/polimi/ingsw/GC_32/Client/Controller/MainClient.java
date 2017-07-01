@@ -184,6 +184,9 @@ public class MainClient{
 						//System.out.println("[MAINCLIENT] synchronizing board");
 						client.setClientBoard(new ClientBoard(board));
 						
+						//set excommunication cards
+						client.getBoard().setExcommunicationCards(messagePayload.get("EXCOMMUNICATIONCARDS"));
+						
 						client.graphicInterface.registerBoard(client.getBoard());
 						client.graphicInterface.registerPlayers(client.getPlayers());
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
@@ -309,6 +312,26 @@ public class MainClient{
 						client.getClientInterface().openContext(messagePayload);
 						break;
 					
+					case "ASKLDRACK": //ACK AZIONE LEADER
+						JsonObject payload = Json.parse(messagePayload.get("PAYLOAD").asString()).asObject(); // non so come mai ma va parsato il payload
+						String decision = payload.get("DECISION").asString();
+						String cardName = payload.get("LEADERCARD").asString();
+						
+						if(payload.get("RESULT").asBoolean()){
+							client.getClientInterface().displayMessage("Leader "+ decision + 
+									" action performed.\nYou "+ decision+"ed your leader card "+
+									cardName);
+							if(decision.equals("DISCARD")){
+								System.out.println("PRIMA DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
+								client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").remove(cardName);
+								System.out.println("DOPO DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
+							}
+						} if(!payload.get("RESULT").asBoolean()){
+							client.getClientInterface().displayMessage("Impossible to perform the action " + decision + " .\n" 
+							+ "You don't have the requirements to play the card or it's on the game.\n");
+						}
+						break;
+						
 					case "MSG":
 						if(!messagePayload.get("FLAG").asBoolean()){
 							if(!client.getUUID().equals(messagePayload.get("RECEIVER").asString())){

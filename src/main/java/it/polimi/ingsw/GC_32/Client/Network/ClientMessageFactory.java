@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.Network;
 
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
 public class ClientMessageFactory {
@@ -40,6 +41,30 @@ public class ClientMessageFactory {
 		return ASKACT.toString();
 	}
 	
+	//leader ASKCHEK
+		public static String buildASKLDRACTmessage(String gameUUID, String leader, String decision){
+			JsonObject ASKLDRACT = new JsonObject();
+			JsonObject ASKLDRACTpayload = new JsonObject();
+			ASKLDRACT.add("MESSAGETYPE", "ASKLDRACT");
+			ASKLDRACTpayload.add("LEADERCARD", leader); // name of the leader card
+			ASKLDRACTpayload.add("DECISION", decision); // string of the type of action
+			ASKLDRACT.add("PAYLOAD", ASKLDRACTpayload);
+			ASKLDRACT.add("GameID", gameUUID);
+			return ASKLDRACT.toString();
+		}
+		
+		//leader distribution card
+		public static String buildLDRSETmessage(String gameUUID, String playerUUID, JsonArray cardList){
+			JsonObject LDRSET = new JsonObject();
+			JsonObject LDRSETPayload = new JsonObject();
+			LDRSETPayload.add("LIST", cardList);
+			LDRSETPayload.add("PLAYERID", playerUUID);
+			LDRSET.add("MESSAGETYPE", "LDRSET");
+			LDRSET.add("PAYLOAD", LDRSETPayload);
+			LDRSET.add("GameID", gameUUID);
+			return LDRSET.toString();
+		}
+		
 	public static String buildTRNENDmessage(String gameUUID, String name){
 		JsonObject TRNEND = new JsonObject();
 		JsonObject TRNENDPayload = new JsonObject();

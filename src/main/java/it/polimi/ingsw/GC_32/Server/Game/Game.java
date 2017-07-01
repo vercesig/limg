@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,7 +23,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
-
+import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
@@ -44,6 +47,7 @@ public class Game implements Runnable{
 		
 	private UUID lock;
 	
+	private LeaderHandler leaderHandler;
 	private TurnManager turnManager;
 	private MoveChecker mv;
 	private ContextManager cm;
@@ -101,6 +105,7 @@ public class Game implements Runnable{
 	
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
 		}
+		this.leaderHandler = new LeaderHandler(this);
 		LOGGER.log(Level.INFO, "done");
 	}
 	
@@ -132,9 +137,62 @@ public class Game implements Runnable{
 			Thread.sleep(200);
 		} catch (InterruptedException e) {}
 		
-		LOGGER.log(Level.INFO, "giving lock to the first player...");
-		setLock(turnManager.nextPlayer());
-		LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+	////-------------------------LEADER DISTRIBUTION ----------------////////
+			LOGGER.log(Level.INFO, "giving lock to the first player...");
+			if(true){  // da settare se si vuole giocare con le carte Leader
+				boolean flag = true;
+				while(leaderHandler.getRunning()){ // da settare se si vuole giocare con le carte Leader
+					if(flag){
+						LOGGER.log(Level.INFO, "leader rule activated. Distribuiting card");
+						Player firstPlayer = this.playerList.get(0);
+						setLock(firstPlayer.getUUID());
+						leaderHandler.leaderPhase(firstPlayer);
+						flag = false; // blocca l'accesso al primo send;
+					}
+					//ricezione messaggi
+					GameMessage message = null;
+					
+					try{
+						message = MessageManager.getInstance().getQueueForGame(this.gameUUID).take();
+					} catch(InterruptedException e){
+						Thread.currentThread().interrupt();
+						LOGGER.log(Level.FINEST, "InterruptedException when taking packet", e);
+					}
+			
+					if(message != null){
+						JsonObject Jsonmessage = message.getMessage().asObject();
+						switch(message.getOpcode()){
+						case "LDRSET":
+							JsonArray json = Jsonmessage.get("LIST").asArray();
+							//setto la lista
+							leaderHandler.setList(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()), json);
+							int index = leaderHandler.getIndex(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()))+1;
+							System.out.println("TURNO: " + leaderHandler.getTurn() + "\nPlayerIndice: " + (index -1));
+							
+							if(index < playerList.size()){   						///STACK 1
+								setLock(playerList.get(index).getUUID());
+								leaderHandler.leaderPhase(playerList.get(index));
+								break;
+							}
+							if(index == playerList.size() && leaderHandler.getTurn() < 3 ){   /// STACK 2
+								leaderHandler.addTurn();
+								setLock(playerList.get(0).getUUID());
+								leaderHandler.leaderPhase(playerList.get(0)); // ricomincia con il primo
+								break;
+							}
+							if(index == playerList.size() && leaderHandler.getTurn() == 3){  // sono 4 turni per 4 carte
+								leaderHandler.setInactive();
+								break;
+							}
+						}
+					}
+				}
+			}
+			setLock(playerList.get(0).getUUID()); // inizio con il Primo player
+		//	setLock(turnManager.nextPlayer());
+			LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+			
+		///----------------------FINE LEADER DISTRIBUTION--------------------------------------///////////
 		
 		// ask action
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
@@ -187,20 +245,75 @@ public class Game implements Runnable{
 		    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, false));
 			    		}
 		    			break;
+				//RAPPORTO AL VATICANO
 					case "SENDPOPE":
 						LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
 						boolean answer = Jsonmessage.get("ANSWER").asBoolean();
 						int points = Jsonmessage.get("FAITH_NEEDED").asInt();
-						if(answer){ // true ==> scomunica
+						int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
+						if(answer){ 
+							
+							//ATTIVAZIONE CARTA SCOMUNICA
 							System.out.println("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
-							///...
-						}
+							ExcommunicationCard card = this.excommunicationCards[this.turnManager.getPeriod()];
+							System.out.println("Attivo effetto carta: " +card.getName());
+							
+							if(!card.getInstantEffect().isEmpty()){
+								card.getInstantEffect().get(0).apply(getBoard(), playerList.get(playerIndex), null, null);
+							}
+							else 
+								System.out.println("Non ha effetti instantanei!");
+							if(!card.getPermanentEffect().isEmpty()){
+								playerList.get(playerIndex).addEffect(card.getPermanentEffect().get(0));
+							}
+							else
+								System.out.println("Non ha effetti permanenti!");
+						}	
 						else{
-							System.out.println("PAGAAA....DEVI PAGAREE!!!");
-							int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -points);
+							System.out.println("Sostegno alla Chiesa!");
+							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
+							System.out.println("Punti Fede Giocatore: " + faithScore);
+							
+							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
+							int victoryPointsConverted = 0;
+							Reader scoreJs = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excommunication_track.json"));
+							try {
+								JsonObject excommunicationJson = Json.parse(scoreJs).asObject();	
+								try{
+									victoryPointsConverted += excommunicationJson.get(Integer.toString(faithScore)).asInt();
+								}catch(NullPointerException e){
+									victoryPointsConverted = faithScore*2; // caso faithPoints > 15
+								}
+							} catch (IOException e) {} 
+							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
+								victoryPointsConverted += 5;
+							}
+							System.out.println("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
+							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	
+					//LEADER ACTION
+					case "ASKLDRACT":
+						String cardName = Jsonmessage.get("LEADERCARD").asString();
+						String decision = Jsonmessage.get("DECISION").asString();
+						System.out.println("LEADERCARD: " +cardName);
+						System.out.println("DECISION:" + decision);
+						Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+						boolean result;
+						if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
+							System.out.println("ATTIVATO!");
+							result = true;
+							if(decision.equals("DISCARD")){	//GUADAGNA UN PRIVILEGIO
+								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
+							}
+						}
+						else{
+							System.out.println("QUALCOSA NON VA!\n NON PUOI ATTIVARE QUESTA AZIONE LEADER!\n");
+							result = false;
+						}
+						MessageManager.getInstance().sendMessge(ServerMessageFactory
+								.buildASKLDRACKmessage(this, p, cardName, decision, result));		
+						break;
 					case "TRNEND":
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
@@ -219,18 +332,19 @@ public class Game implements Runnable{
 						if(!turnManager.isGameEnd()){
 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 							if(turnManager.isRoundEnd()){
+							//if(true){  DEBUG
 								LOGGER.log(Level.INFO, "round end");
 								
 								if(turnManager.isPeriodEnd()){
-								
+							//	if(true){	DEBUG
 									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
 									int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
 									
-									Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+									Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
 									MessageManager.getInstance().sendMessge(ServerMessageFactory
-													  .buildCONTEXTmessage(this, p, ContextType.EXCOMMUNICATION, 
+													  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
 															excommunicationLevel,
-															p.getResources().getResource("FAITH_POINTS")));
+															pl.getResources().getResource("FAITH_POINTS")));
 
 									try{ // wait for TRNBGN message
 										Thread.sleep(200);
@@ -239,9 +353,11 @@ public class Game implements Runnable{
 								}
 								LOGGER.log(Level.INFO, "giving lock to the next player");
 								UUID nextPlayer = turnManager.nextPlayer();
+								
+								//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
 								for(int i = 0; i < this.playerList.size(); i++){
 									if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
-																	  .getExcomunicateFlag().contains("SKIPTURN")){
+																	  .isFlagged("SKIPTURN")){
 										break;
 									}
 									nextPlayer = turnManager.nextPlayer();
@@ -413,6 +529,10 @@ public class Game implements Runnable{
 		return this.excommunicationCards[period-1];
 	}
 	
+	public ExcommunicationCard[] getExcommunicationCard(){
+		return this.excommunicationCards;
+	}
+	
 	public void setLock(UUID player){
 		this.lock = player;
 	}
@@ -428,15 +548,6 @@ public class Game implements Runnable{
 			player.getFamilyMember()[3].setActionValue(this.orangeDice);
 		});
 	}
-	
-	/*private void checkExcommunication(){
-		int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
-		playerList.forEach(player -> {
-			if(player.getResources().getResource("VICTORY")<=excommunicationLevel){
-				LOGGER.info("TIE! beccati la scomunica!");
-			}
-		});
-	}*/
 	
 	public void moveFamiliar(Board board, Player player, Action action){
 		

@@ -45,7 +45,7 @@ public class EndPhase {
 			LinkedList<Player> militaryScore = new LinkedList<>();
 			game.getPlayerList().forEach(player -> {militaryScore.add(player);});
 			militaryScore.sort(new Comparator<Player>(){ // ordino questa lista per player con piu' military_poits
-				@Override
+				@Override  // DA TESTARE
 				public int compare(Player p1, Player p2) {
 					return ((Integer)p1.getResources()
 							           .getResource("MILITARY_POINTS"))
@@ -60,7 +60,7 @@ public class EndPhase {
 			game.getPlayerList().forEach( player -> {
 				
 				// carte impresa
-				if(!player.getExcomunicateFlag().contains("NOENDPURPLE")){
+				if(!player.isFlagged("NOENDPURPLE")){
 					LinkedList <DevelopmentCard> ventureCard = player.getPersonalBoard().getCardsOfType("VENTURECARD");
 					for (DevelopmentCard card: ventureCard){
 						card.getPermanentEffect().forEach(effect -> effect.apply(game.getBoard(), player, null, null));
@@ -70,7 +70,7 @@ public class EndPhase {
 				
 				try{
 					// carte territorio
-					if(!player.getExcomunicateFlag().contains("NOENDGREEN")){
+					if(!player.isFlagged("NOENDGREEN")){
 						score =+ json.get("TERRITORYCARD").asObject()
 												    .get( ((Integer)player.getPersonalBoard()
 							    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
@@ -80,7 +80,7 @@ public class EndPhase {
 				// carte personaggio
 				
 				try{
-					if(!player.getExcomunicateFlag().contains("NOENDBLUE")){
+					if(!player.isFlagged("NOENDBLUE")){
 						score =+ json.get("CHARACTERCARD").asObject()
 							    					.get( ((Integer)player.getPersonalBoard()
 							    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
@@ -106,22 +106,22 @@ public class EndPhase {
 				score += resource/conversion;
 				
 				//perdi un punto vittori per ogni risorsa
-				if(player.getExcomunicateFlag().contains("LESSFORRESOURCE")){
+				if(player.isFlagged("LESSFORRESOURCE")){
 					score -= resource;
 				}
 				
 				//perdi un punto vittoria per ogni 5 punti vittoria
-				if(player.getExcomunicateFlag().contains("LESSFORVICTORY")){
+				if(player.isFlagged("LESSFORVICTORY")){
 					score -= score/5;
 				}
 				
 				//perdi un punto vittoria per ogni punto militare
-				if(player.getExcomunicateFlag().contains("LESSFORMILITARY")){
+				if(player.isFlagged("LESSFORMILITARY")){
 					score -= player.getResources().getResource("MILITARY_POINTS");
 				}
 
 				// perdi un punto vittoria per ogni wood e stone nei costi carte building
-				if(player.getExcomunicateFlag().contains("LESSFORBUILDING")){
+				if(player.isFlagged("LESSFORBUILDING")){
 					for(DevelopmentCard card : player.getPersonalBoard().getCardsOfType("BUILDINGCARD")){
 						score -= countBuildingCost(card.getCost().get(0)); // Carte Building hanno un solo costo
 					}

@@ -142,30 +142,100 @@ public class JsonImporter {
 	public static List<ExcommunicationCard> importExcommunicationCard(Reader fileReader) throws IOException{
 		
 		ArrayList<ExcommunicationCard> cardList = new ArrayList<ExcommunicationCard>();
-		
 		JsonArray jsonCardList = Json.parse(fileReader).asArray();
 		
 		for(JsonValue item : jsonCardList){
 			JsonObject card = item.asObject();
-			JsonValue name = card.get("name");
-			JsonValue period = card.get("period");
-	
-			String instantEffect = card.get("instantEffect").asString();
-			String permanentEffect = card.get("permanentEffect").asString();
+
+			String name = card.get("name").asString();
+			int period = card.get("period").asInt();
 			
-			ExcommunicationCard newCard = new ExcommunicationCard(name.asString(),period.asInt());
-			newCard.registerInstantEffect(EffectRegistry.getInstance().getEffect(instantEffect));
-			newCard.registerPermanentEffect(EffectRegistry.getInstance().getEffect(permanentEffect));
+			ExcommunicationCard newCard = new ExcommunicationCard(name, period);
+
+			try{
+				if(!card.get("instantEffect").isNull() && !card.get("instantPayload").isNull()){
+					newCard.registerInstantEffect(EffectRegistry.getInstance()
+							.getEffect(card.get("instantEffect").asString(),
+									   card.get("instantPayload").asArray()));
+				}
+			}
+			catch(NullPointerException e){}
+			
+			try{
+				if(!card.get("permanentEffect").isNull()){
+					try{
+						card.get("permanentPayload").isNull();;
+					}
+					catch(NullPointerException e){	// carte con Payload Permanent nullo
+						newCard.registerPermanentEffect(EffectRegistry.getInstance()
+						       .getEffect(card.get("permanentEffect").asString()));
+					}
+					newCard.registerPermanentEffect((EffectRegistry.getInstance()
+							.getEffect(card.get("permanentEffect").asString(),
+									   card.get("permanentPayload").asObject())));
+				}
+			}catch(NullPointerException e){}
 			
 			cardList.add(newCard);
 		}
+		return cardList;
+	}
+	
+	public static List<LeaderCard> importLeaderCard(Reader fileReader) throws IOException{
 		
+		ArrayList<LeaderCard> cardList = new ArrayList<LeaderCard>();
+		JsonArray jsonCardList = Json.parse(fileReader).asArray();
+		
+		for(JsonValue item : jsonCardList){
+			JsonObject card = item.asObject();
+
+			String name = card.get("name").asString();
+			JsonObject requirements =  card.get("requirements").asObject();
+			
+			LeaderCard newCard = new LeaderCard(name, requirements);
+			
+			try{
+				card.get("instantEffect");
+				try{
+					card.get("instantPayload");
+					newCard.registerInstantEffect(EffectRegistry.getInstance()
+							.getEffect(card.get("instantEffect").asString(),
+									   card.get("instantPayload")));
+				}catch(NullPointerException e){ // carte con payload instant nullo
+					newCard.registerInstantEffect(EffectRegistry.getInstance()
+						    .getEffect(card.get("instantEffect").asString()));
+				}
+			}catch(NullPointerException e){}
+		
+			
+			try{
+				card.get("permanentEffect");
+				try{
+					card.get("permanentPayload");
+					newCard.registerPermanentEffect((EffectRegistry.getInstance()
+							.getEffect(card.get("permanentEffect").asString(),
+									   card.get("permanentPayload").asObject())));
+				}catch(NullPointerException e){
+					newCard.registerInstantEffect(EffectRegistry.getInstance()
+						    .getEffect(card.get("permanentEffect").asString()));
+				}
+				
+			}
+			catch(NullPointerException e){}
+			try{
+				if(!card.get("flagEffect").isNull() && !card.get("flagPayload").isNull()){
+					newCard.registerPermanentEffect(EffectRegistry.getInstance()
+						    .getEffect(card.get("flagEffect").asString(), card.get("flagPayload")));
+				}
+			} catch(NullPointerException e){}	
+			
+			cardList.add(newCard);
+		}
 		return cardList;
 	}
 	
 	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
 		
-		ArrayList<DevelopmentCard> cardList = new ArrayList<DevelopmentCard>();
 		JsonArray JsonCardList = Json.parse(fileReader).asArray();
 		
 		for(JsonValue item : JsonCardList){

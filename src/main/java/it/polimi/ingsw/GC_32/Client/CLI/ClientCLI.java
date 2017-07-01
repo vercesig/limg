@@ -33,13 +33,14 @@ public class ClientCLI implements ClientInterface{
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		
-		this.contextList = new Context[5];
+		this.contextList = new Context[6];
 		contextList[0] = new ZeroLevelContext(this);
 		
 		contextList[1] = new PrivilegeContext();
 		contextList[2] = new ServantContext();
 		contextList[3] = new ExcommunicationContext();
 		contextList[4] = new ChangeEffectContext();
+		contextList[5] = new LeaderSetContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 		
@@ -71,6 +72,10 @@ public class ClientCLI implements ClientInterface{
 	
 	public String getUUID(){
 		return this.UUID;
+	}
+	
+	public String getGameUUID(){
+		return this.gameUUID;
 	}
 	
 	public boolean isWaiting(){
@@ -114,6 +119,10 @@ public class ClientCLI implements ClientInterface{
 		
 		//inizialize changeEffectContext
 		contextList[4].registerClientPlayer(playerListReference.get(UUID));
+		
+		//inizialize leaderSetContext
+		contextList[5].registerGameUUID(gameUUID);
+		contextList[5].registerPlayerUUID(UUID);
 		
 		//inizialize privilegeContext
 		contextList[1].registerClientPlayer(playerListReference.get(UUID));

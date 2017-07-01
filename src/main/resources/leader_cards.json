@@ -1,0 +1,275 @@
+[
+    {
+        "name": "Francesco Sforza",
+        "requirements": {
+            "CARDTYPE": {
+                "VENTURECARD": 5
+            }
+        },
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "HARVEST",
+            "EXCLUSIVEBONUS": null,
+            "BONUSRESOURCE": null,
+            "REGIONID": 1,
+            "FLAGREGION": null,
+            "BONUSACTIONVALUE": 1
+        }
+    },
+    {
+        "name": "Ludovico Ariosto",
+        "requirements": {
+            "CARDTYPE": {
+                "CHARACTERCARD": 5
+            }
+        },
+        "flagPayload": [
+            "FAMILYOCCUPY"
+        ],
+        "flagEffect": "FLAG"
+    },
+    {
+        "name": "Filippo Brunelleschi",
+        "requirements": {
+            "CARDTYPE": {
+                "BUILDINGCARD": 5
+            }
+        },
+        "flagPayload": [
+            "NOTRIBUTE"
+        ],
+        "flagEffect": "FLAG"
+    },
+    {
+        "name": "Sigismondo Malatesta",
+        "permanentEffect": "GREYFAMILY",
+        "requirements": {
+            "RESOURCE": {
+                "FAITH_POINTS": 3,
+                "MILITARY_POINTS": 7
+            }
+        }
+    },
+    {
+        "name": "Girolamo Savonarola",
+        "requirements": {
+            "RESOURCE": {
+                "COINS": 18
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 1
+        }
+    },
+    {
+        "name": "Michelangelo Buonarroti",
+        "requirements": {
+            "RESOURCE": {
+                "STONE": 10
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 3
+        }
+    },
+    {
+        "name": "Giovanni delle Bande Nere",
+        "requirements": {
+            "RESOURCE": {
+                "MILITARY_POINTS": 12
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "STONE": 1,
+            "COINS": 1,
+            "WOOD": 1
+        }
+    },
+    {
+        "name": "Leonardo da Vinci",
+        "requirements": {
+            "CARDTYPE": {
+                "TERRITORYCARD": 2,
+                "CHARACTERCARD": 4
+            }
+        },
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "PRODUCTION",
+            "EXCLUSIVEBONUS": null,
+            "BONUSRESOURCE": null,
+            "REGIONID": 0,
+            "FLAGREGION": null,
+            "BONUSACTIONVALUE": 0
+        }
+    },
+    {
+        "name": "Sandro Botticelli",
+        "requirements": {
+            "RESOURCE": {
+                "WOOD": 10
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 1,
+            "MILITARY_POINTS": 2
+        }
+    },
+    {
+        "name": "Ludovico il Moro",
+        "permanentEffect": "FAMILYCOLORDICE",
+        "requirements": {
+            "CARDTYPE": {
+                "VENTURECARD": 2,
+                "TERRYTORYCARD": 2,
+                "BUILDINGCARD": 2,
+                "CHARACTERCARD": 2
+            }
+        }
+    },
+    {
+        "name": "Lucrezia Borgia",
+        "permanentEffect": "FAMILYCOLORBONUS",
+        "requirements": {
+            "CARDTYPE": [
+                {
+                    "VENTURECARD": 6
+                },
+                {
+                    "CHARACTERCARD": 6
+                },
+                {
+                    "BUILDINGCARD": 6
+                },
+                {
+                    "TERRYTORYCARD": 6
+                }
+            ]
+        }
+    },
+    {
+        "name": "Federico da Montefeltro",
+        "requirements": {
+            "CARDTYPE": {
+                "TERRITORYCARD": 5
+            }
+        },
+        "instantEffect": "FAMILYSIXVALOR"
+    },
+    {
+        "name": "Lorenzo de' Medici",
+        "permanentEffect": "JOLLY",
+        "requirements": {
+            "RESOURCE": {
+                "VICTORY_POINTS": 35
+            }
+        }
+    },
+    {
+        "name": "Sisto IV",
+        "requirements": {
+            "RESOURCE": {
+                "STONE": 6,
+                "SERVANTS": 6,
+                "COINS": 6,
+                "WOOD": 6
+            }
+        },
+        "flagPayload": [
+            "MOREFAITH"
+        ],
+        "flagEffect": "FLAG"
+    },
+    {
+        "name": "Cesare Borgia",
+        "requirements": {
+            "CARDTYPE": {
+                "BUILDINGCARD": 3
+            },
+            "RESOURCE": {
+                "FAITH_POINTS": 2,
+                "COINS": 12
+            }
+        },
+        "flagPayload": [
+            "NOMILITARYRULE"
+        ],
+        "flagEffect": "FLAG"
+    },
+    {
+        "name": "Santa Rita",
+        "requirements": {
+            "RESOURCE": {
+                "FAITH_POINTS": 8
+            }
+        },
+        "flagPayload": [
+            "DOUBLE"
+        ],
+        "flagEffect": "FLAG"
+    },
+    {
+        "name": "Cosimo de' Medici",
+        "requirements": {
+            "CARDTYPE": {
+                "BUILDINGCARD": 4,
+                "CHARACTERCARD": 2
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 1,
+            "SERVANTS": 3
+        }
+    },
+    {
+        "name": "Bartolomeo Colleoni",
+        "requirements": {
+            "CARDTYPE": {
+                "VENTURECARD": 2,
+                "TERRITORYCARD": 4
+            }
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 4
+        }
+    },
+    {
+        "name": "Ludovico III Gonzaga",
+        "requirements": {
+            "RESOURCE": {
+                "SERVANTS": 15
+            }
+        },
+        "instantEffect": "PRIVILEGE",
+        "instantPayload": {
+            "NUMBER": 1,
+            "COST": null
+        }
+    },
+    {
+        "name": "Pico della Mirandola",
+        "permanentEffect": "PERMANENT",
+        "requirements": {
+            "CARDTYPE": {
+                "VENTURECARD": 4,
+                "BUILDINGCARD": 2
+            }
+        },
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "EXCLUSIVEBONUS": null,
+            "BONUSRESOURCE": {
+                "COINS": 3
+            },
+            "REGIONID": 7,
+            "FLAGREGION": null,
+            "BONUSACTIONVALUE": 0
+        }
+    }
+]
