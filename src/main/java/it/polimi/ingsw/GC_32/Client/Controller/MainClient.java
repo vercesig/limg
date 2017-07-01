@@ -149,7 +149,7 @@ public class MainClient{
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					
 					String playerID;
-					
+										
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();

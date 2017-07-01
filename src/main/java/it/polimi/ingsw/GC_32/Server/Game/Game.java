@@ -496,7 +496,7 @@ public class Game implements Runnable{
 				
 				LOGGER.info("PRIMA DEL PRIVILEGE:\n" + player);
 				player.getResources().addResource("COINS", 1);
-				player.getResources().addResource( new ResourceSet(COUNCILPRIVILEGEresponse.asArray().get(0).asObject()));
+				player.getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
 				LOGGER.info("DOPO DEL PRIVILEGE:\n" + player);
 				break;
 			case "MARKET":

@@ -23,8 +23,6 @@ public class AskActDialog extends Context{
 		super(client);
 	}
 	
-	private boolean flagAction = true;
-	
 	public String open(Object object) {
 		
 		int familyMemberIndex = 0;
@@ -33,8 +31,10 @@ public class AskActDialog extends Context{
 		int indexCost = 0;
 		String actionType = null;
 		String cardName = null;
+		
+		runFlag = true;
 	
-		while(flagAction){
+		while(runFlag){
 			boolean actionFlag = true;
 			while(actionFlag){						
 				System.out.println("type the ID of the family member you want to place\n" +
@@ -183,7 +183,6 @@ public class AskActDialog extends Context{
 					System.out.println("please, type a valid letter");
 				}
 			}
-			break;
 		}
 						
 		System.out.println("action sent to the server... waiting for response");
