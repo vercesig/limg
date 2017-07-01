@@ -221,7 +221,7 @@ public class ServerMessageFactory {
 		CHGBOARDSTAT.add("TYPE", "FAMILY");
 		JsonObject CHGBOARDSTATpayload = new JsonObject();
 		
-		CHGBOARDSTATpayload.add("REGIONID", action.getActionRegionId());
+		CHGBOARDSTATpayload.add("REGIONID", action.getRegionId());
 		CHGBOARDSTATpayload.add("SPACEID", action.getActionSpaceId());
 		CHGBOARDSTATpayload.add("PLAYERID", playerUUID);
 		CHGBOARDSTATpayload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt());
@@ -278,7 +278,7 @@ public class ServerMessageFactory {
 		JsonObject payload = new JsonObject();
 		if(result){
 			payload.add("RESULT", true);
-			payload.add("REGIONID", action.getActionRegionId());
+			payload.add("REGIONID", action.getRegionId());
 			payload.add("SPACEID", action.getActionSpaceId());
 			payload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt());
 			payload.add("ACTIONTYPE", action.getActionType());

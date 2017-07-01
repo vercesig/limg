@@ -1,64 +1,73 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Action;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class ChangeEffectTest {
+	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@Test
 	public void checkChangeEffect(){
+		JsonObject payload1 = new JsonObject();
+		JsonObject payload2 = new JsonObject();
+		JsonArray payload = new JsonArray();
 		
-		JsonArray payloadArray = new JsonArray();
-		JsonObject choose1 = new JsonObject();
-		JsonObject choose2 = new JsonObject();
-		
-		choose1.add("WOOD", -2);
-		choose1.add("COINS", -2);
-		choose1.add("MILITARY", 1);
-		choose1.add("SERVANTS", 1);
-		
-		choose2.add("VICTORY", -1);
-		choose2.add("FAITH", 2);
-		
-		payloadArray.add(choose1);
-		payloadArray.add(choose2);
-		
-		Player testPlayer = new Player();
-		testPlayer.getResources().setResource("WOOD", 5);
-		testPlayer.getResources().setResource("COINS", 8);
-		testPlayer.getResources().setResource("MILITARY", 17);
-		testPlayer.getResources().setResource("SERVANTS", 2);
-		testPlayer.getResources().setResource("VICTORY", 23);
-		testPlayer.getResources().setResource("FAITH", 1);
+		JsonObject in1 = new JsonObject();
+		in1.add("WOOD", 2).add("COINS", 2);
+		JsonObject out1 = new JsonObject().add("MILITARY", 1).add("SERVANTS", 1);
+		JsonObject in2 = new JsonObject().add("VICTORY", 1);
+		JsonObject out2 = new JsonObject().add("FAITH", 2);
 		
 		
-		Effect chooseEffectTest = EffectRegistry.getInstance().getEffect("CHANGE", payloadArray);
+		payload1.add("RESOURCEIN", in1);
+		payload1.add("RESOURCEOUT", out1);
+		payload2.add("RESOURCEIN", in2);
+		payload2.add("RESOURCEOUT", out2);
+		payload.add(payload1).add(payload2);
+		
+		ResourceSet playerResources = new ResourceSet();
+		Player testPlayer = mock(Player.class);
+		when(testPlayer.getResources()).thenReturn(playerResources);
+		playerResources.setResource("WOOD", 5);
+		playerResources.setResource("COINS", 8);
+		playerResources.setResource("MILITARY", 17);
+		playerResources.setResource("SERVANTS", 2);
+		playerResources.setResource("VICTORY", 23);
+		playerResources.setResource("FAITH", 1);
+		
+		
+		Effect choiceEffectTest = ChangeEffect.changeEffectBuilder.apply(payload);
 		
 		Action testAction1 = new Action("HARVEST",5,2,2);
-		testAction1.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 0));
+		testAction1.setAdditionalInfo(new JsonObject().add("CHANGEID", 0));
 		
-		chooseEffectTest.apply(null, testPlayer, testAction1, null);
+		choiceEffectTest.apply(null, testPlayer, testAction1, null);
 		
-		assertEquals(3, testPlayer.getResources().getResource("WOOD"));
-		assertEquals(6, testPlayer.getResources().getResource("COINS"));
-		assertEquals(18, testPlayer.getResources().getResource("MILITARY"));
-		assertEquals(3, testPlayer.getResources().getResource("SERVANTS"));
+		assertEquals(3, playerResources.getResource("WOOD"));
+		assertEquals(6, playerResources.getResource("COINS"));
+		assertEquals(18, playerResources.getResource("MILITARY"));
+		assertEquals(3, playerResources.getResource("SERVANTS"));
 		
 
 		Action testAction2 = new Action("HARVEST",5,2,2);
-		testAction2.setAdditionalInfo(new JsonObject().add("INDEX_EFFECT", 1));
+		testAction2.setAdditionalInfo(new JsonObject().add("CHANGEID", 1));
 		
-		chooseEffectTest.apply(null, testPlayer, testAction2, null);
+		choiceEffectTest.apply(null, testPlayer, testAction2, null);
 		
-		assertEquals(22, testPlayer.getResources().getResource("VICTORY"));
-		assertEquals(3, testPlayer.getResources().getResource("FAITH"));
+		assertEquals(22, playerResources.getResource("VICTORY"));
+		assertEquals(3, playerResources.getResource("FAITH"));
 	}
 	
 }

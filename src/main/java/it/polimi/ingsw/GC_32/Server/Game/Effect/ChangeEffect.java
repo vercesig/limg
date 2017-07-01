@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
@@ -13,7 +14,6 @@ public class ChangeEffect {
 
 	static EffectBuilder changeEffectBuilder = (JsonValue payload) -> {
 
-		
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
 			
 				JsonValue indexResponse = a.getAdditionalInfo().get("CHANGEID");				
@@ -25,8 +25,9 @@ public class ChangeEffect {
 					effectArray.add(payload.asObject());
 				
 				if(indexResponse.isNumber()){
-					p.getResources().addResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject().get("RESOURCEOUT").asObject()));
-					p.getResources().subResource(new ResourceSet(effectArray.get(indexResponse.asInt()).asObject().get("RESOURCEIN").asObject()));
+					JsonObject selectedChange = effectArray.get(indexResponse.asInt()).asObject();
+					p.getResources().subResource(new ResourceSet(selectedChange.get("RESOURCEIN").asObject()));
+					p.getResources().addResource(new ResourceSet(selectedChange.get("RESOURCEOUT").asObject()));
 				}
 			};	
 		return changeEffect;

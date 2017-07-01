@@ -2,7 +2,7 @@ package it.polimi.ingsw.GC_32.Common.Game;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.eclipsesource.json.Json;
@@ -19,7 +19,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     
     public ResourceSet(JsonObject jsonResourceSet) {
     	this();
-    	for(Member singleResource: jsonResourceSet){
+    	for(Member singleResource : jsonResourceSet){
     		this.setResource(singleResource.getName(), singleResource.getValue().asInt());
     	}
     }
@@ -63,24 +63,19 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
     
     public void addResource(ResourceSet resource){
-    	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
+    	for(Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
     		this.addResource(entry.getKey(), entry.getValue());
     	}
     }
     
     public void subResource(ResourceSet resource){
-    	for(Map.Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
+    	for(Entry<String,Integer> entry : resource.getResourceSet().entrySet()){
     			this.subResource(entry.getKey(), entry.getValue());
     	}
     }
     
     public void subResource(String resourceName, int quantity){
-    	if(this.resourceSet.containsKey(resourceName)){
-    		int prevValue = this.resourceSet.get(resourceName);
-    		this.resourceSet.put(resourceName, prevValue - quantity);
-    	} else {
-    		this.setResource(resourceName, -quantity);
-    	}
+    	this.addResource(resourceName, -quantity);
     }
     
     public JsonObject toJson(){
@@ -98,7 +93,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
      */
     
     public boolean isValid(){
-    	for(Map.Entry<String,Integer> resource: this.resourceSet.entrySet()){
+    	for(Entry<String,Integer> resource: this.resourceSet.entrySet()){
     		if(resource.getValue() < 0){
     			return false;
     		}
@@ -128,7 +123,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		thisResourcesDiff.removeAll(otherResources);
 		otherResourcesDiff.removeAll(thisResources);
 		if(!thisResourcesDiff.isEmpty() && otherResourcesDiff.isEmpty()){
-			for(Map.Entry<String, Integer> element: this.resourceSet.entrySet()){
+			for(Entry<String, Integer> element: this.resourceSet.entrySet()){
 				if( element.getValue() < resource.getResource(element.getKey())){
 					return -1;
 				}
@@ -156,7 +151,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     @Override
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
-		for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
+		for(Entry<String, Integer> element : resourceSet.entrySet()){
 			tmp.append(" "+element.getKey()+" :"+element.getValue().toString());
 		}
 		return new String(tmp);
@@ -165,7 +160,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     public HashMap<String,String> getDecomposedResourceSetString(){
     	HashMap<String,String> tmp = new HashMap<String,String>();
     	
-    	for(Map.Entry<String, Integer> element : resourceSet.entrySet()){
+    	for(Entry<String, Integer> element : resourceSet.entrySet()){
 			tmp.put(element.getKey()+":",element.getValue().toString());
 		}
 		return tmp;

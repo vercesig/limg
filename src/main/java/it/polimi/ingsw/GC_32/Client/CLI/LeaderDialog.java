@@ -1,10 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.util.ArrayList;
-
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 

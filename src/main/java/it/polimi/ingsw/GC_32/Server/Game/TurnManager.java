@@ -7,8 +7,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
-
 public class TurnManager {
 	
 	private final static Logger LOGGER = Logger.getLogger(TurnManager.class.getName());
@@ -42,7 +40,7 @@ public class TurnManager {
 		Collections.shuffle(list);
 		for(int i=0; i<playerListSize; i++){
 			tmpPlayerList.add(game.getPlayerList().get(list.get(i)).getUUID());
-			memoryTurnOrder.add(GameRegistry.getInstance().getPlayerFromID(game.getPlayerList().get(list.get(i)).getUUID()));
+			memoryTurnOrder.add(game.getPlayerList().get(list.get(i)));
 		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			tmpPlayerList.forEach(UUID -> turnOrderQueue.add(UUID));
@@ -68,7 +66,8 @@ public class TurnManager {
 	}
 	
 	public boolean isRoundEnd(){
-	if(turnID-(game.getPlayerList().get(0).getFamilyMember().length*game.getPlayerList().size())==0){
+	if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
+			   	game.getPlayerList().size())) == 0){
 			LOGGER.log(Level.INFO, "updating turn order");
 			updateTurnOrder();
 			roundID++;

@@ -29,11 +29,17 @@ public class MessageManagerTest {
 	@Test
 	public void checkPutRecivedMessage(){
 		String message = "test message";
-		UUID gameUUID = UUID.randomUUID();
-		GameMessage testGameMessage = new GameMessage(gameUUID, UUID.randomUUID(), "TESTMSG", Json.value(message));
+		UUID gameID = UUID.randomUUID();
+		UUID playerID = UUID.randomUUID();
+		Game game = mock(Game.class);
+		when(game.getLock()).thenReturn(playerID);
+		when(game.getUUID()).thenReturn(gameID);
+		GameRegistry.getInstance().registerGame(game);
+		MessageManager.getInstance().registerGame(game);
+		GameMessage testGameMessage = new GameMessage(gameID, playerID, "TESTMSG", Json.value(message));
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
-		assertTrue(MessageManager.getInstance().getQueueForGame(gameUUID).contains(testGameMessage));
+		assertTrue(MessageManager.getInstance().getQueueForGame(gameID).contains(testGameMessage));
 	}
 	
 	@Test
@@ -63,8 +69,9 @@ public class MessageManagerTest {
 		when(game.getLock()).thenReturn(testUUID);
 		String message = "test message";
 		MessageManager.getInstance().registerGame(game);
+		MessageManager.getInstance().chatManager.kill();
 		
-		GameMessage testGameMessage = new GameMessage(null, testUUID,"TSTMSG", Json.value(message));
+		GameMessage testGameMessage = new GameMessage(UUID.randomUUID(), testUUID,"MSG", Json.value(message));
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
 		assertTrue(MessageManager.getInstance().getCommonReceiveQueue().size() > 0);	

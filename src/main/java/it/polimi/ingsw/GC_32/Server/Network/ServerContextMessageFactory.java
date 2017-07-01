@@ -40,7 +40,7 @@ public class ServerContextMessageFactory {
 	
 	public static JsonObject buildActionMessage(Action a){
 		JsonObject INFORMATION = new JsonObject();
-		INFORMATION.add("OPCODE", "ACTION").add("REGION_ID", a.getActionRegionId());
+		INFORMATION.add("OPCODE", "ACTION").add("REGION_ID", a.getRegionId());
 		return INFORMATION;
 	}
 }

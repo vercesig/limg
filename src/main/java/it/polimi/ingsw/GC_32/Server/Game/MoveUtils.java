@@ -4,6 +4,7 @@ import com.eclipsesource.json.JsonArray;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
@@ -12,14 +13,14 @@ public class MoveUtils {
 	public MoveUtils(){}
 	
 	static public boolean checkValidRegionID(Board board, Player player, Action action){	
-		if(board.getRegion(action.getActionRegionId()) == null){		
+		if(board.getRegion(action.getRegionId()) == null){		
 			return false;
 		}
 		return true;
 	}
 
 	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){
-		if(board.getRegion(action.getActionRegionId())
+		if(board.getRegion(action.getRegionId())
 				.getActionSpace(action.getActionSpaceId()) == null){
 			return false;
 		}
@@ -34,7 +35,7 @@ public class MoveUtils {
      * @return
      */
     static public boolean checkActionValue(Board board, Action action){
-    	return (board.getRegion(action.getActionRegionId())
+    	return (board.getRegion(action.getRegionId())
     				 .getActionSpace(action.getActionSpaceId())
     				 .getActionValue() <= action.getActionValue());
     }
@@ -46,7 +47,7 @@ public class MoveUtils {
      * @return
      */
     public static boolean familyColor(Board board, Player player, Action action){
-    	if(action.getActionRegionId() == 2 || action.getActionRegionId() == 3){
+    	if(action.getRegionId() == 2 || action.getRegionId() == 3){
     		return true;
     	}
     	try{
@@ -57,7 +58,7 @@ public class MoveUtils {
     	catch(NullPointerException e){};
       	for (FamilyMember f : player.getFamilyMember()){
     		try{
-    			if(f.getPosition().getRegionID() == action.getActionRegionId() && !f.getColor().equals(DiceColor.GREY)){
+    			if(f.getPosition().getRegionID() == action.getRegionId() && !f.getColor().equals(DiceColor.GREY)){
     				System.out.println("COLOR RULE NON RISPETTATA");
     				return false;
     			}
@@ -77,8 +78,8 @@ public class MoveUtils {
     	if(player.isFlagged("FAMILYOCCUPY")){
     		return true;
     	}
-    	return !(board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
-    			 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
+    	return !(board.getRegion(action.getRegionId()).getActionSpace(action.getActionSpaceId()).isSingleActionSpace() &&
+    			 board.getRegion(action.getRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
     }
     
     /** CheckBlockedSpace: checks player count and the presence of additional
@@ -90,15 +91,15 @@ public class MoveUtils {
     public static boolean checkBlockedZone(int numberOfPlayer, Action action){	
     	// Can't access to: Harvest-1,Production-1 and Market 2-3
     	if(numberOfPlayer < 3){
-    		if((action.getActionRegionId() <=1 && action.getActionSpaceId()==1) ||
-    				(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    		if((action.getRegionId() <=1 && action.getActionSpaceId()==1) ||
+    				(action.getRegionId() == 3 && action.getActionSpaceId() >= 2)){
     	    	System.out.println("ZONA BLOCCATA");
     			return true;
     		}
     	}
     	//  Can't access to: Market 2-3
     	if(numberOfPlayer <4){
-    		if(action.getActionRegionId() == 3 && action.getActionSpaceId() >= 2){
+    		if(action.getRegionId() == 3 && action.getActionSpaceId() >= 2){
     	    	System.out.println("ZONA BLOCCATA");
     			return true;
     		}
@@ -107,18 +108,12 @@ public class MoveUtils {
 	}
     
     public static boolean checkNotFoundCard(Board board, Action action){
-    	if(action.getActionRegionId() < 4){
+    	if(action.getRegionId() < 4){
     		return true;
     	}
-    	try{
-    		DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
-				  .getTowerLayers()[action.getActionSpaceId()]
-				  .getCard();
-    		return true;
-    	}catch(NullPointerException e){
-    		System.out.println("NOT FOUND A CARD");
-    		return false;
-    	}
+    	TowerLayer layer =((TowerRegion) board.getRegion(action.getRegionId()))
+				  							  .getTowerLayers()[action.getActionSpaceId()];
+    	return (layer.getCard() != null);
     }
     /** checks if the player has enough servants to meet the actionspace requirements
      * @param board
@@ -132,7 +127,7 @@ public class MoveUtils {
     	}  	
     	System.out.println("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
     	int actionDiff = action.getActionValue() -
-    					 board.getRegion(action.getActionRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
+    					 board.getRegion(action.getRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
     	if(player.isFlagged("DOUBLESERVANTS")){ // excommunicate flag
         	System.out.println("EFFETTO DOUBLESERVANTS EXCOMMUNICATE");
     		player.getResources().addResource("SERVANTS", 2*actionDiff);
@@ -146,19 +141,19 @@ public class MoveUtils {
     /** checks if the tower is already occupied and if so, if the player can pay the 3 coin tribute
      */
     public static boolean checkCoinForTribute(Board board, Player player, Action action){  // change the state
-    	if(action.getActionRegionId() < 4 || 										   //Not a tower action
-    		 !((TowerRegion)board.getRegion(action.getActionRegionId())).isTowerBusy() || //Tower is empty
-    	       player.isFlagged("NOTRIBUTE")){ // Leader Card
+    	if(action.getRegionId() < 4 || 										   	//Not a tower action
+    	   !(board.getTowerRegion()[action.getRegionId() - 4].isTowerBusy()) || //Tower is empty
+    	   player.isFlagged("NOTRIBUTE")){										// Leader Card
     		return true;
     	}
-    	player.getResources().addResource("COINS", -3);
+    	player.getResources().subResource("COINS", 3);
     	return player.getResources().isValid();
     }
     
     /** checks if the card can be inserted into the personalBoard
      */
     public static boolean checkPersonalBoardRequirement(Board board, Player player, Action action){
-    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getRegionId()))
     											  .getTowerLayers()[action.getActionSpaceId()]
     											  .getCard();
     	String cardType = card.getType();
@@ -196,9 +191,9 @@ public class MoveUtils {
      * @return
      */
     public static boolean checkCardCost(Board board, Player player, Action action){ 	// change the state
-    	if(action.getActionRegionId()<4)
+    	if(action.getRegionId()<4)
     		return true;
-    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getActionRegionId()))
+    	DevelopmentCard card =((TowerRegion) board.getRegion(action.getRegionId()))
 				  .getTowerLayers()[action.getActionSpaceId()]
 				  .getCard();
     	
@@ -237,13 +232,13 @@ public class MoveUtils {
 	}
 	
 	public static void addActionSpaceBonus(Board board, Player player, Action action){
-		ResourceSet bonus = board.getRegion(action.getActionRegionId())
+		ResourceSet bonus = board.getRegion(action.getRegionId())
 				  				 .getActionSpace(action.getActionSpaceId())
 				  				 .getBonus();
 		if(bonus != null){
 			//Excommunication Effect debuff
 			if(player.isFlagged("LESSRESOURCE")){
-				 JsonArray malusResource = player.getDictionaryFlag().get("LESSRESOURCE").asArray();
+				 JsonArray malusResource = player.getFlags().get("LESSRESOURCE").asArray();
 				 for(String key: bonus.getResourceSet().keySet()){
 					 malusResource.forEach(member ->{
 						 if(member.asString().equals(key)){

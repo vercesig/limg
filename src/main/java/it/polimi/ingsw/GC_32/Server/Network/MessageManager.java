@@ -23,7 +23,7 @@ public class MessageManager {
 	private ConcurrentLinkedQueue<GameMessage> RMISendQueue;
 	private ConcurrentLinkedQueue<GameMessage> socketSendQueue;
 	
-	private ChatManager chatManager;
+	protected ChatManager chatManager;
 	protected Set<String> chatMessageTypeSet;
 	
 	private MessageManager(){

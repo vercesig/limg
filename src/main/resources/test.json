@@ -119,7 +119,7 @@
 	  }],
 	"permanentEffect" : null,
 	"permanentPayload" : null,
-	"minimumActionValue" : null,
+	"minimumActionValue" : 1,
 	"period" : 3,
 	"cardType" : "CHARACTERCARD"
 },
@@ -142,7 +142,7 @@
 	  }],
 	"permanentEffect" : null,
 	"permanentPayload" : null,
-	"minimumActionValue" : null,
+	"minimumActionValue" : 1,
 	"period" : 2,
 	"cardType" : "CHARACTERCARD"
 },
@@ -165,7 +165,7 @@
 	  }],
 	"permanentEffect" : null,
 	"permanentPayload" : null,
-	"minimumActionValue" : null,
+	"minimumActionValue" : 1,
 	"period" : 1,
 	"cardType" : "CHARACTERCARD"
 },
@@ -188,7 +188,7 @@
 	  }],
 	"permanentEffect" : null,
 	"permanentPayload" : null,
-	"minimumActionValue" : null,
+	"minimumActionValue" : 1,
 	"period" : 3,
 	"cardType" : "CHARACTERCARD"
 },

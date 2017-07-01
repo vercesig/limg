@@ -5,8 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
 
-public class ChatManager implements Runnable{
+public class ChatManager implements KillableRunnable{
 	private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 	private LinkedBlockingQueue<GameMessage> queue;
 	private boolean stop;
@@ -38,5 +39,9 @@ public class ChatManager implements Runnable{
 				}
 			}
 		}
+	}
+	
+	public void kill(){
+		this.stop = true;
 	}
 }

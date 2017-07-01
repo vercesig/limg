@@ -42,14 +42,14 @@ public class JsonImporter {
 			String cardType = card.get("cardType").asString();
 			Integer period = card.get("period").asInt();
 			Integer actionValue;
- 			
-			try{
+			
+			if(cardType.equals("TERRITORYCARD") || cardType.equals("BUILDINGCARD")){
 				JsonValue action = card.get("minimumActionValue");	
 				actionValue = action.asInt();
-				actionValue = 0;
-			}catch(NullPointerException e){
+			} else {
 				actionValue = 0;
 			}
+
 			DevelopmentCard newCard = new DevelopmentCard(name, period, cardType, actionValue);
 						
 			// registrazione costi e requisiti

@@ -21,7 +21,7 @@ public class Action{
     }
     
     public void setAdditionalInfo(JsonObject info){
-    	this.additionalInfo = info;
+    	this.additionalInfo.merge(info);
     }
     
     public JsonObject getAdditionalInfo(){
@@ -41,7 +41,7 @@ public class Action{
     public int getActionSpaceId(){
     	return this.actionSpaceId;
     }
-    public int getActionRegionId(){
+    public int getRegionId(){
     	return this.actionRegionId;
     }
     

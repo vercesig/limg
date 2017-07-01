@@ -1,10 +1,10 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.FamilyMember;
-import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class TowerRegion extends Region {
 
@@ -31,34 +31,34 @@ public class TowerRegion extends Region {
 	}
 	
 	public boolean isTowerBusy(){
-		for(int i=0; i<this.getTrack().length; i++){
-			if(this.getTrack()[i].getPlayers().size()>0){
-				return true;
-			}
-		}
-		return false;
+		return this.towerBusy;
 	}
 	
 	public TowerLayer[] getTowerLayers(){
 		return this.towerLayers;
 	}
 	
-	public boolean canIPlaceFamilyMember(Player player){
+	public boolean canIPlaceFamilyMember(FamilyMember familyMember){
 		// c'è già un familiare del mio stesso colore sulla torre
-		for(TowerLayer level : towerLayers){
-			if(level.getActionSpace().getPlayers().get(0).getUUID() == player.getUUID()){
+		for(TowerLayer layer : towerLayers){
+			ArrayList<FamilyMember> occupants = layer.getActionSpace().getOccupants();
+			if(!occupants.isEmpty()){
+				if(occupants.get(0).getColor() == familyMember.getColor())
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public void placeFamilyMember(FamilyMember familyMember, int layer){
-		if(canIPlaceFamilyMember(familyMember.getOwner())){
+	public boolean placeFamilyMember(FamilyMember familyMember, int layer){
+		if(canIPlaceFamilyMember(familyMember)){
 			towerLayers[layer].getActionSpace().addFamilyMember(familyMember);
-		}
-		if(!this.towerBusy){
-			this.towerBusy = true;
+			if(!this.towerBusy){
+				this.towerBusy = true;
+			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

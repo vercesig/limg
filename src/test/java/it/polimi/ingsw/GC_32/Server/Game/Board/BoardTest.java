@@ -2,6 +2,9 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
@@ -10,25 +13,32 @@ public class BoardTest{
 	
 	private Board board;
 	
+	@Before
+	public void initTest() throws IOException{
+		Setup setup = new Setup();
+		setup.loadCard("test.json");
+		setup.loadBonusSpace("bonus_space.json");
+		setup.loadBonusTile("bonus_tile.json");
+		this.board = new Board();
+	}
+	
 	@Test
 	public void checkTowerRegionSet(){
-		Setup setup = new Setup();
-		try{
-			setup.loadCard("test.json");
-		}
-		catch(Exception e){}
-		this.board = new Board();
 		assertEquals(4, this.board.getTowerRegion().length);
 	}
 	
 	@Test
 	public void checkGetRegion(){
-		this.board = new Board();
+		assertEquals(8, this.board.getRegionMap().size());
 		assertTrue(this.board.getRegion(0) instanceof ProductionRegion);
 		assertTrue(this.board.getRegion(1) instanceof HarvestRegion);
 		assertTrue(this.board.getRegion(2) instanceof CouncilRegion);
 		assertTrue(this.board.getRegion(3) instanceof MarketRegion);
-		assertNull(this.board.getRegion(4));
+		assertTrue(this.board.getRegion(4) instanceof TowerRegion);
+		assertTrue(this.board.getRegion(5) instanceof TowerRegion);
+		assertTrue(this.board.getRegion(6) instanceof TowerRegion);
+		assertTrue(this.board.getRegion(7) instanceof TowerRegion);
+		assertNull(this.board.getRegion(8));
 	}
 	
 	@Test

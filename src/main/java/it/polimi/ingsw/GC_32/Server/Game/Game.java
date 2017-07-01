@@ -477,7 +477,7 @@ public class Game implements Runnable{
 				}
 				break;
 			default:
-				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getActionRegionId()));
+				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getRegionId()));
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
 				
