@@ -21,15 +21,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 	public void run(){
 		open(null);
 	}
-	
-	public AskActDialog getAskAct(){
-		return this.askAct;
-	}
-	
-	public LeaderDialog getLeaderDialog(){
-		return this.leaderDialog;
-	}
-	
+		
 	public String open(Object object){
 		
 		runFlag = true;
@@ -41,7 +33,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 					+ "- chat room: to chat with other players\n"
 					+ "- change name: to change the name of your playe\n"
 					+ "- leader: perform a special action leader\n"
-					+ "- action: make an action (if isn't your turn your requests won't be applied)");
+					+ "- action: make an action");
 				
 			command = in.nextLine();
 			switch(command){
@@ -67,7 +59,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 			case "leader":
 				client.getSendQueue().add(leaderDialog.open(object));
 				try{ //waiting for other context
-					Thread.sleep(500);
+					Thread.sleep(200);
 				}catch(InterruptedException e){}
 				break;	
 				
@@ -79,9 +71,11 @@ public class ZeroLevelContext extends Context implements Runnable{
 				if(!client.isWaiting()){
 					client.getSendQueue().add(askAct.open(object));
 					try{ //waiting for other context
-						Thread.sleep(500);
+						Thread.sleep(200);
 					}catch(InterruptedException e){}
-				}	
+				}else{
+					System.out.println("isn't your turn");
+				}
 				break;	
 			}
 		}

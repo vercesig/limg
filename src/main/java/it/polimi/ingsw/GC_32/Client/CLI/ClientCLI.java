@@ -20,6 +20,9 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	
 	// network management
 	private ConcurrentLinkedQueue<Object> contextQueue;
+	private ConcurrentLinkedQueue<String> messageQueue;
+	
+	
 	private ConcurrentLinkedQueue<String> sendQueue;
 	private ConcurrentLinkedQueue<String> clientsendQueue;
 	
@@ -32,14 +35,14 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	
 	private boolean leaderStartPhase = true;
 	
-	private boolean stop;
+	private boolean stop = false;
 	
 	public ClientCLI(){		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
+		messageQueue = new ConcurrentLinkedQueue<String>();
 		
 		this.contextList = new Context[6];
-		contextList[0] = new ZeroLevelContext(this);
-		
+		contextList[0] = new ZeroLevelContext(this);		
 		contextList[1] = new PrivilegeContext(this);
 		contextList[2] = new ServantContext(this);
 		contextList[3] = new ExcommunicationContext(this);
@@ -48,14 +51,12 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		contextList[5] = new LeaderSetContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
-		
-		stop = false;
 	}
 	
 	public void run(){	
 		
-		while(true){
-			
+		while(!stop){
+						
 			while(!contextQueue.isEmpty()){
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
@@ -69,13 +70,9 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 					idleRun=false;			
 			}
 			
-			if(!idleRun&&!leaderStartPhase){
-				try{ //display eventually messages
-					Thread.sleep(500);
-				}catch(InterruptedException e){}
-				idleRun=true;
-				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
-				zeroLevelContextThread.start();
+			// show messages
+			while(!messageQueue.isEmpty()){
+				System.out.println(messageQueue.poll());
 			}
 			
 			// spedisco messaggi
@@ -84,6 +81,12 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 					sendQueue.add(message);
 				});
 				clientsendQueue.clear();		
+			}
+			
+			if(!idleRun&&!leaderStartPhase){
+				idleRun=true;
+				zeroLevelContextThread = new Thread((Runnable) contextList[0]);
+				zeroLevelContextThread.start();
 			}
 		}
 	}
@@ -119,7 +122,23 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	public boolean isWaiting(){
 		return this.wait;
 	}
+	
+	public void displayMessage(String message){
+		this.messageQueue.add(message);
+	}
+	
+	public ConcurrentLinkedQueue<String> getSendQueue(){
+		return this.sendQueue;
+	}
 		
+	public void leaderStartPhaseEnd(){
+		this.leaderStartPhase=false;
+	}
+	
+	public void openContext(JsonObject contextMessage){
+		this.contextQueue.add(contextMessage);
+	}
+	
 	public HashMap<String, ClientPlayer> getPlayerList(){
 		return this.playerListReference;
 	}
@@ -144,23 +163,6 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		System.out.println("| > "+ playerID+ ":");
 		System.out.println("| "+ message +"\n|");
 		System.out.println("| ===========================================");		
-	}
-	
-	public void displayMessage(String message){
-		System.out.println(message);
-	}
-	
-	public ConcurrentLinkedQueue<String> getSendQueue(){
-		return this.sendQueue;
-	}
-		
-	public void leaderStartPhaseEnd(){
-		this.leaderStartPhase=false;
-	}
-	
-	@Override
-	public void openContext(JsonObject contextMessage){
-		this.contextQueue.add(contextMessage);
 	}
 	
 	@Override

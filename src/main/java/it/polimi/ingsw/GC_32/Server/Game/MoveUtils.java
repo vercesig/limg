@@ -57,7 +57,12 @@ public class MoveUtils {
     			return true;
     	}
       	for (FamilyMember f : player.getFamilyMember()){
-			if(f.getPosition().getRegionID() == action.getRegionId() && !f.getColor().equals(DiceColor.GREY)){
+      		/*System.out.println(f.toString());
+      		System.out.println(f.getPosition().getRegionID());
+      		System.out.println(board.getRegion(action.getRegionId()));
+      		System.out.println(action.getRegionId());
+      		System.out.println(f.getColor());*/
+			if(f.getPosition()!=null && f.getPosition().getRegionID() == action.getRegionId() && !f.getColor().equals(DiceColor.GREY)){
 				System.out.println("COLOR RULE NON RISPETTATA");
 				return false;
 			}
