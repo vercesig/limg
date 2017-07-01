@@ -139,7 +139,7 @@ public class ServerMessageFactory {
 		GMSTRT.add("GAMEUUID", game.getUUID().toString());
 		GameMessage GMSTRTmessage = new GameMessage(game.getUUID(), null, "GMSTRT", GMSTRT);
 		GMSTRTmessage.setBroadcast();
-		
+
 		LOGGER.log(Level.INFO, "done, GMSTRT ready to be sent");		
 		
 		return GMSTRTmessage;
