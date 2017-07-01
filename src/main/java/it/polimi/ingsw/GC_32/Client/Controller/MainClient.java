@@ -241,6 +241,10 @@ public class MainClient{
 									client.getPlayers().get(messagePayload.get("PAYLOAD").asObject().get("PLAYERID").asString())
 									.getFamilyMembers()[familyMemberID]);							
 						}
+						if("FLUSHFAMILY".equals(messagePayload.get("TYPE").asString())){
+							if(messagePayload.get("PAYLOAD").asObject().get("TURNENDFLAG").asBoolean())
+								client.getBoard().flushFamilyMember();
+						}
 			 			break;
 					case "DICEROLL":
 						int blackDice = messagePayload.get("BLACKDICE").asInt();

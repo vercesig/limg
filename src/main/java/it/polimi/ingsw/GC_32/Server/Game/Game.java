@@ -373,13 +373,14 @@ public class Game implements Runnable{
 								diceRoll();
 								
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
 								getPlayerList().forEach(gamePlayer -> {
 									MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
 								});
 								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
 								
 								try{ // wait for TRNBGN message
-								    Thread.sleep(200);
+								    Thread.sleep(500);
 								}catch(InterruptedException e){
 								    Thread.currentThread().interrupt();
 								}

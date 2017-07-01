@@ -232,12 +232,22 @@ public class ServerMessageFactory {
 		JsonObject CHGBOARDSTAT = new JsonObject();
 		CHGBOARDSTAT.add("TYPE", "FAMILY");
 		JsonObject CHGBOARDSTATpayload = new JsonObject();
-		
 		CHGBOARDSTATpayload.add("REGIONID", action.getRegionId());
 		CHGBOARDSTATpayload.add("SPACEID", action.getActionSpaceId());
 		CHGBOARDSTATpayload.add("PLAYERID", playerUUID);
 		CHGBOARDSTATpayload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt());
+		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload);
 		
+		GameMessage CHGBOARDSTATmessage = new GameMessage(game.getUUID(), null, "CHGBOARDSTAT", CHGBOARDSTAT);
+		CHGBOARDSTATmessage.setBroadcast();
+		return CHGBOARDSTATmessage;
+	}
+	
+	public static GameMessage buildCHGBOARDSTATmessage(Game game, boolean turnEndFlag){
+		JsonObject CHGBOARDSTAT = new JsonObject();
+		CHGBOARDSTAT.add("TYPE", "FLUSHFAMILY");
+		JsonObject CHGBOARDSTATpayload = new JsonObject();
+		CHGBOARDSTATpayload.add("TURNENDFLAG", turnEndFlag);
 		CHGBOARDSTAT.add("PAYLOAD", CHGBOARDSTATpayload);
 		
 		GameMessage CHGBOARDSTATmessage = new GameMessage(game.getUUID(), null, "CHGBOARDSTAT", CHGBOARDSTAT);

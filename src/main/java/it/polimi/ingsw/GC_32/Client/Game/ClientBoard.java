@@ -33,6 +33,10 @@ public class ClientBoard {
 		return this.excommunicationCards;
 	}
 	
+	public void flushFamilyMember(){
+		region.forEach(region -> region.flushFamilyMember());
+	}
+	
 	public void setExcommunicationCards(JsonValue jsonList){
 		jsonList.asArray().forEach(card ->{
 			excommunicationCards.add(card.asString());

@@ -105,4 +105,8 @@ public class ClientActionSpace {
 		tmp.append("-------------------------------------\n");
 		return new String(tmp);
 	}
+	
+	public void flushFamilyMember(){
+		this.occupants.clear();
+	}
 }

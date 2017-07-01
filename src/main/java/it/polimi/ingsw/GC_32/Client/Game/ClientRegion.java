@@ -46,4 +46,8 @@ public class ClientRegion {
 	public String getType(){
 		return this.type;
 	}
+	
+	public void flushFamilyMember(){
+		actionSpaces.forEach(actionSpace -> actionSpace.flushFamilyMember());
+	}
 }
