@@ -40,21 +40,11 @@ public class Card {
 	}
 	
 	public ArrayList<Effect> getInstantEffect(){
-		try{
-		return this.instantEffect;		
-		}
-		catch(NullPointerException e){
-			return null;
-		}
+		return this.instantEffect;
 	}
 	
 	public ArrayList<Effect> getPermanentEffect(){
-		try{
 		return this.permanentEffect;
-		}
-		catch(NullPointerException e){
-			return null;
-		}
 	}
 	
 	public void registerInstantEffect(Effect e){

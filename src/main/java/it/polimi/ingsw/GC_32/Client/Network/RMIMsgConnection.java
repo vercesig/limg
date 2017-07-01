@@ -20,7 +20,7 @@ public class RMIMsgConnection implements MsgConnection{
 		try{
 			this.serverConn = (RMIConnection) rmiRegistry.lookup("LIMG_Conn");
 		} catch(NotBoundException e){
-			throw new IOException("Server Connection Object not Found");
+			throw new IOException("Server Connection Object not Found", e);
 		}
 		this.playerID = this.serverConn.open();
 	}

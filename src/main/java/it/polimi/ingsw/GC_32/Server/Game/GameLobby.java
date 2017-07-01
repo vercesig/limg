@@ -41,7 +41,9 @@ public class GameLobby implements KillableRunnable{
                     }
                     try {
                         Thread.sleep(200);
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e){
+                        Thread.currentThread().interrupt();
+                    }
                 }
                 break;
             }

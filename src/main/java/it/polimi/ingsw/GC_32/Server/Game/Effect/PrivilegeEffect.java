@@ -23,11 +23,12 @@ public class PrivilegeEffect {
 				
 				boolean isCostPrivilege = false;
 				boolean isValid = true;
-				ResourceSet cost = null;											
-				try{
-					cost = new ResourceSet(payload.asObject().get("COST").asObject());
+				ResourceSet cost = null;
+				JsonValue jCost = payload.asObject().get("COST");
+				if(jCost != null){
+					cost = new ResourceSet(jCost.asObject());
 					isCostPrivilege = true;
-				}catch(NullPointerException ecc){}
+				}
 				
 				if(isCostPrivilege){
 					JsonArray privilegePayload = new JsonArray();				

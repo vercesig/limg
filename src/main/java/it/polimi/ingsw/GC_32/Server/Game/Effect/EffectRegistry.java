@@ -40,6 +40,7 @@ public class EffectRegistry{
             PermanentEffect.loadBuilder();
             UniqueEffect.loadBuilder();
             PrivilegeEffect.loadBuilder();
+            ExcomunicateEffect.loadBuilder();
         }
         return instance;
     }

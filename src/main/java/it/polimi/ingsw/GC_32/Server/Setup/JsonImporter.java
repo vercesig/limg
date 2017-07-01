@@ -22,7 +22,7 @@ import com.eclipsesource.json.JsonValue;
 
 public class JsonImporter {
 
-	private JsonImporter(){};
+	private JsonImporter(){}
 	
 	/**
 	 * method which return a list of development card from an external file correctly formatted. The method accept a FileReader object as parameter, 
@@ -64,32 +64,8 @@ public class JsonImporter {
 			String name = card.get("name").asString();
 			int period = card.get("period").asInt();
 			
-			ExcommunicationCard newCard = new ExcommunicationCard(name, period);
-
-			try{
-				if(!card.get("instantEffect").isNull() && !card.get("instantPayload").isNull()){
-					newCard.registerInstantEffect(EffectRegistry.getInstance()
-							.getEffect(card.get("instantEffect").asString(),
-									   card.get("instantPayload").asArray()));
-				}
-			}
-			catch(NullPointerException e){}
-			
-			try{
-				if(!card.get("permanentEffect").isNull()){
-					try{
-						card.get("permanentPayload").isNull();;
-					}
-					catch(NullPointerException e){	// carte con Payload Permanent nullo
-						newCard.registerPermanentEffect(EffectRegistry.getInstance()
-						       .getEffect(card.get("permanentEffect").asString()));
-					}
-					newCard.registerPermanentEffect((EffectRegistry.getInstance()
-							.getEffect(card.get("permanentEffect").asString(),
-									   card.get("permanentPayload").asObject())));
-				}
-			}catch(NullPointerException e){}
-			
+			ExcommunicationCard newCard = new ExcommunicationCard(name, period);		
+			registerSingleEffect(newCard, card);
 			cardList.add(newCard);
 		}
 		return cardList;
@@ -108,41 +84,16 @@ public class JsonImporter {
 			
 			LeaderCard newCard = new LeaderCard(name, requirements);
 			
-			try{
-				card.get("instantEffect");
-				try{
-					card.get("instantPayload");
-					newCard.registerInstantEffect(EffectRegistry.getInstance()
-							.getEffect(card.get("instantEffect").asString(),
-									   card.get("instantPayload")));
-				}catch(NullPointerException e){ // carte con payload instant nullo
-					newCard.registerInstantEffect(EffectRegistry.getInstance()
-						    .getEffect(card.get("instantEffect").asString()));
-				}
-			}catch(NullPointerException e){}
-		
-			
-			try{
-				card.get("permanentEffect");
-				try{
-					card.get("permanentPayload");
-					newCard.registerPermanentEffect((EffectRegistry.getInstance()
-							.getEffect(card.get("permanentEffect").asString(),
-									   card.get("permanentPayload").asObject())));
-				}catch(NullPointerException e){
-					newCard.registerInstantEffect(EffectRegistry.getInstance()
-						    .getEffect(card.get("permanentEffect").asString()));
-				}
-				
+			registerSingleEffect(newCard, card);
+			List<Tuple<JsonValue, JsonValue>> flagEffectList = parseEffect(card.get("flagEffect"),
+			                                                               card.get("flagPayload"));
+			if(!flagEffectList.isEmpty()){
+			    newCard.registerPermanentEffect(getEffectFromRegistry(flagEffectList.get(0)
+			                                                                        .getFirstArg()
+			                                                                        .asString(),
+			                                    flagEffectList.get(0).getSecondArg()));
 			}
-			catch(NullPointerException e){}
-			try{
-				if(!card.get("flagEffect").isNull() && !card.get("flagPayload").isNull()){
-					newCard.registerPermanentEffect(EffectRegistry.getInstance()
-						    .getEffect(card.get("flagEffect").asString(), card.get("flagPayload")));
-				}
-			} catch(NullPointerException e){}	
-			
+
 			cardList.add(newCard);
 		}
 		return cardList;
@@ -282,5 +233,23 @@ public class JsonImporter {
                                       .getEffect(effectCode);
         }
 	    return regEffect;
+	}
+	
+	private static void registerSingleEffect(Card newCard, JsonObject card){
+	    List<Tuple<JsonValue, JsonValue>> instantEffectList = parseEffect(card.get("instantEffect"),
+                                                                          card.get("instantPayload"));
+	    if(!instantEffectList.isEmpty()){
+	        Tuple<JsonValue, JsonValue> instantEffect = instantEffectList.get(0);
+	        newCard.registerInstantEffect(getEffectFromRegistry(instantEffect.getFirstArg().asString(),
+	                                                            instantEffect.getSecondArg()));
+	    }
+
+	    List<Tuple<JsonValue, JsonValue>> permanentEffectList = parseEffect(card.get("instantEffect"),
+                                                                            card.get("instantPayload"));
+	    if(!permanentEffectList.isEmpty()){
+            Tuple<JsonValue, JsonValue> permanentEffect = instantEffectList.get(0);
+            newCard.registerPermanentEffect(getEffectFromRegistry(permanentEffect.getFirstArg().asString(),
+	                                                              permanentEffect.getSecondArg()));
+	    }
 	}
 }

@@ -223,7 +223,7 @@ public class MainClient{
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento board
-						if(messagePayload.get("TYPE").asString().equals("BOARD")){
+						if("BOARD".equals(messagePayload.get("TYPE").asString())){
 							JsonArray cardLayout = Json.parse(messagePayload.get("PAYLOAD").asString()).asArray();
 							cardLayout.forEach(JSONcard -> {
 								JsonObject card = JSONcard.asObject();
@@ -233,7 +233,7 @@ public class MainClient{
 								client.getBoard().getRegionList().get(regionID).getActionSpaceList().get(spaceID).setCard(cardName);
 							});
 						}
-						if(messagePayload.get("TYPE").asString().equals("FAMILY")){							
+						if("FAMILY".equals(messagePayload.get("TYPE").asString())){							
 							int regionID = messagePayload.get("PAYLOAD").asObject().get("REGIONID").asInt();
 							int spaceID = messagePayload.get("PAYLOAD").asObject().get("SPACEID").asInt();
 							int familyMemberID = messagePayload.get("PAYLOAD").asObject().get("FAMILYMEMBER_ID").asInt();
@@ -305,10 +305,10 @@ public class MainClient{
 							client.getClientInterface().displayMessage("Leader "+ decision + 
 									" action performed.\nYou "+ decision+"ed your leader card "+
 									cardName);
-							if(decision.equals("DISCARD")){
-								System.out.println("PRIMA DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
-								client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").remove(cardName);
-								System.out.println("DOPO DEL DISCARD: " + client.getPlayers().get(client.getUUID().toString()).getCards().get("LEADER").toString());
+							if("DISCARD".equals(decision)){
+								System.out.println("PRIMA DEL DISCARD: " + client.getPlayers().get(client.getUUID()).getCards().get("LEADER").toString());
+								client.getPlayers().get(client.getUUID()).getCards().get("LEADER").remove(cardName);
+								System.out.println("DOPO DEL DISCARD: " + client.getPlayers().get(client.getUUID()).getCards().get("LEADER").toString());
 							}
 						} if(!payload.get("RESULT").asBoolean()){
 							client.getClientInterface().displayMessage("Impossible to perform the action " + decision + " .\n" 
