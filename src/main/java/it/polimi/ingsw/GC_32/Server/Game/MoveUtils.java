@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
@@ -50,20 +52,15 @@ public class MoveUtils {
     	if(action.getRegionId() == 2 || action.getRegionId() == 3){
     		return true;
     	}
-    	try{
-    		if(action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() == 0){
+    	JsonValue familyMemberId = action.getAdditionalInfo().get("FAMILYMEMBER_ID");
+    	if(familyMemberId != null && familyMemberId.asInt() == 0){
     			return true;
-    		}
-    	} 
-    	catch(NullPointerException e){};
+    	}
       	for (FamilyMember f : player.getFamilyMember()){
-    		try{
-    			if(f.getPosition().getRegionID() == action.getRegionId() && !f.getColor().equals(DiceColor.GREY)){
-    				System.out.println("COLOR RULE NON RISPETTATA");
-    				return false;
-    			}
-    		}
-    		catch(NullPointerException e){};	
+			if(f.getPosition().getRegionID() == action.getRegionId() && !f.getColor().equals(DiceColor.GREY)){
+				System.out.println("COLOR RULE NON RISPETTATA");
+				return false;
+			}
     	}
       	return true;
     }
@@ -194,29 +191,31 @@ public class MoveUtils {
     	if(action.getRegionId()<4)
     		return true;
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getRegionId()))
-				  .getTowerLayers()[action.getActionSpaceId()]
-				  .getCard();
+    	                                          .getTowerLayers()[action.getActionSpaceId()]
+    	                                          .getCard();
+
+		ResourceSet requirements = card.getRequirments();
+		if(requirements != null && player.getResources().compareTo(requirements) < 0){
+			System.out.println("NO REQUIREMENTS RISPETTATI");
+			return false;
+		} else {
+		    System.out.println("CARTA SENZA REQUIREMENTS");
+		}	
     	
-    	try{
-    		ResourceSet requirements = card.getRequirments();
-    		if(player.getResources().compareTo(requirements)<0){
-    			System.out.println("NO REQUIREMENTS RISPETTATI");
-    			return false;
-    		}
-    	}catch(NullPointerException e){
-    		System.out.println("CARTA SENZA REQUIREMENTS");
-    	}	
-    	
-    	try{
-    		ResourceSet cost = card.getCost().get(action.getAdditionalInfo().get("COSTINDEX").asInt());
-    		System.out.println("PLAYER RESOURCES: " + player.getResources());
-    		System.out.println("COST: " + cost);
-    		player.getResources().subResource(cost);
-    	} catch(IndexOutOfBoundsException e){
+		JsonValue costIndex = action.getAdditionalInfo().get("COSTINDEX");
+		if(costIndex != null){
+		    costIndex = Json.value(0);
+		}
+		if(costIndex.asInt() < card.getCost().size()){
+		    ResourceSet cost = card.getCost().get(costIndex.asInt());
+		    System.out.println("PLAYER RESOURCES: " + player.getResources());
+		    System.out.println("COST: " + cost);
+		    player.getResources().subResource(cost);
+		    return player.getResources().isValid();
+		} else {
     		System.out.println("CARTA SENZA COSTO");
     		return true;
-    	}
-    	return player.getResources().isValid();
+		}
     }
     
     public static void applyEffects(Board board, Player player, Action action, ContextManager cm){

@@ -45,7 +45,7 @@ public class Setup {
 		LOGGER.log(Level.INFO, "loading development card...");
 		Reader developmentCardFile = inputReader;
 		
-		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCard(developmentCardFile));
+		Deck<DevelopmentCard> developmentCardDeck = new Deck<DevelopmentCard>(JsonImporter.importDevelopmentCards(developmentCardFile));
 		HashMap<String, List<DevelopmentCard>> tmpDecks = new HashMap<String, List<DevelopmentCard>>();
 		
 		//suddivide i mazzi per tipologia di carta
@@ -86,7 +86,7 @@ public class Setup {
 		
 		// preparazione carte scomunica
 		Reader excommunicationCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excom_cards.json"));
-		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck<ExcommunicationCard>(JsonImporter.importExcommunicationCard(excommunicationCardFile));
+		Deck<ExcommunicationCard> excommunicationCardDeck = new Deck<ExcommunicationCard>(JsonImporter.importExcommunicationCards(excommunicationCardFile));
 		
 		HashMap<Integer, List<ExcommunicationCard>> tmpSubDecks = new HashMap<Integer, List<ExcommunicationCard>>();
 		// divido carte scomunica per periodo
@@ -106,7 +106,7 @@ public class Setup {
 		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");
 		// Carte Leader
 		Reader leaderCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("leader_cards.json"));
-		Deck <LeaderCard> leaderDeck = new Deck <LeaderCard> (JsonImporter.importLeaderCard((leaderCardFile))); 
+		Deck <LeaderCard> leaderDeck = new Deck <LeaderCard> (JsonImporter.importLeaderCards((leaderCardFile))); 
 		CardRegistry.getInstance().registerDeck(leaderDeck);
 	}
 	

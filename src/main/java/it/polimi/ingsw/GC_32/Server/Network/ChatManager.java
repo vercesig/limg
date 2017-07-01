@@ -19,22 +19,18 @@ public class ChatManager implements KillableRunnable{
 	
 	public void run(){
 		while(!stop){
-			for(GameMessage message: queue){
+			GameMessage message = null;
+			try{
+				message = queue.take();
+			} catch(InterruptedException e){}
+			if(message != null){
 				switch(message.getOpcode()){
 					case "CHGNAME":
-						GameRegistry.getInstance()
-									  .getPlayerFromID(message.getPlayerUUID())
-									  .setPlayerName(message.getMessage().asObject().get("NAME").asString());
-						message.setBroadcast();
-						MessageManager.getInstance().sendMessge(message);
-						LOGGER.log(Level.INFO, "player "+message.getPlayerID()+
-											   " changed name to "+message.getMessage().asObject().get("NAME").asString());
-						queue.remove(message);
+						manageChangeName(message);
 						break;
 					case "MSG":
 						message.setBroadcast();
 						MessageManager.getInstance().sendMessge(message);
-						queue.remove(message);
 						break;
 				}
 			}
@@ -43,5 +39,17 @@ public class ChatManager implements KillableRunnable{
 	
 	public void kill(){
 		this.stop = true;
+	}
+	
+	private void manageChangeName(GameMessage message){
+	    GameRegistry.getInstance()
+                    .getPlayerFromID(message.getPlayerUUID())
+                    .setPlayerName(message.getMessage().asObject().get("NAME").asString());
+	    message.setBroadcast();
+	    MessageManager.getInstance().sendMessge(message);
+	    LOGGER.log(Level.INFO, "player {} changed name to {}",
+	                           new Object[]{message.getPlayerID(),
+	                                        message.getMessage().asObject()
+	                                               .get("NAME").asString()});
 	}
 }

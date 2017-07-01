@@ -18,7 +18,7 @@ public class JsonImporterTest{
 	@Test
 	public void checkDevelopmentCardImport() throws IOException{
 		Reader reader = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testDevelopmentCards.json"));
-		List<DevelopmentCard> cardList = JsonImporter.importDevelopmentCard(reader);
+		List<DevelopmentCard> cardList = JsonImporter.importDevelopmentCards(reader);
 		DevelopmentCard card = cardList.get(0);
 		assertNotNull(card);
 		assertEquals("TestCard", card.getName());
@@ -40,7 +40,7 @@ public class JsonImporterTest{
 	@Test
 	public void checkExcommunicationCardImport() throws IOException{
 		Reader reader = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("testExcommunicationCards.json"));
-		List<ExcommunicationCard> exCardList = JsonImporter.importExcommunicationCard(reader);
+		List<ExcommunicationCard> exCardList = JsonImporter.importExcommunicationCards(reader);
 		ExcommunicationCard card = exCardList.get(0);
 		assertEquals("TestExCard", card.getName());
 		assertEquals(1, card.getPeriod());

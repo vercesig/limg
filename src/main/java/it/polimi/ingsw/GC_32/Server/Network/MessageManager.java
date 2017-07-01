@@ -25,6 +25,8 @@ public class MessageManager {
 	
 	protected ChatManager chatManager;
 	protected Set<String> chatMessageTypeSet;
+
+    protected Thread chatManagerThread;
 	
 	private MessageManager(){
 		this.commonReceiveQueue = new LinkedBlockingQueue<>();
@@ -36,7 +38,8 @@ public class MessageManager {
 		this.chatMessageTypeSet.add("CHGNAME");
 		
 		this.chatManager = new ChatManager(commonReceiveQueue);
-		new Thread(chatManager).start();
+		this.chatManagerThread = new Thread(chatManager);
+		this.chatManagerThread.start();
 	}
 	
 	public static MessageManager getInstance(){
@@ -93,7 +96,7 @@ public class MessageManager {
 		return this.gameReceiveQueueList.get(uuid);
 	}
 	
-	public LinkedBlockingQueue<GameMessage> getCommonReceiveQueue(){
+	protected LinkedBlockingQueue<GameMessage> getCommonReceiveQueue(){
 		return this.commonReceiveQueue;
 	}
 }

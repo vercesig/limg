@@ -43,7 +43,9 @@ public class RMIServer implements RMIConnection{
 	public String getMessage(UUID id) throws RemoteException{
 		try {
 			return rmiQueue.get(id).take();
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+		    Thread.currentThread().interrupt();
+		}
 		return null;
 	}
 

@@ -67,11 +67,11 @@ public class MainClient{
 		switch(type){
 		case "s":
 			this.network = new SocketMsgConnection();
-			this.network.open("127.0.0.1", 9500);
+			this.network.open("localhost", 9500);
 			return true;
 		case "r":
 			this.network = new RMIMsgConnection();
-			this.network.open("127.0.0.1", 1099);
+			this.network.open("localhost", 1099);
 			return true;
 		default:
 			return false;

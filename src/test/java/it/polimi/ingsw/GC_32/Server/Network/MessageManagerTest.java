@@ -62,19 +62,16 @@ public class MessageManagerTest {
 		assertTrue(MessageManager.getInstance().getRMISendQueue().contains(testGameMessageRMI));		
 	}
 	
-	@Test
+	@SuppressWarnings("deprecation")
+    @Test
 	public void checkHasMessage(){
-		Game game = mock(Game.class);
-		UUID testUUID = UUID.randomUUID();
-		when(game.getLock()).thenReturn(testUUID);
 		String message = "test message";
-		MessageManager.getInstance().registerGame(game);
-		MessageManager.getInstance().chatManager.kill();
+		MessageManager.getInstance().chatManagerThread.stop();
 		
-		GameMessage testGameMessage = new GameMessage(UUID.randomUUID(), testUUID,"MSG", Json.value(message));
+		GameMessage testGameMessage = new GameMessage(UUID.randomUUID(), UUID.randomUUID(),"MSG", Json.value(message));
 		MessageManager.getInstance().putRecivedMessage(testGameMessage);
 		
-		assertTrue(MessageManager.getInstance().getCommonReceiveQueue().size() > 0);	
+		assertTrue(MessageManager.getInstance().getCommonReceiveQueue().size() > 0);
 	}
 	
 	@Test

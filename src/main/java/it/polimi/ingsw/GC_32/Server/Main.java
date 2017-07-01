@@ -28,5 +28,6 @@ public class Main {
 		rmiListenerThread.start();
 
 		GameLobby gameLobby = new GameLobby();
+		gameLobby.run();
     }
 }

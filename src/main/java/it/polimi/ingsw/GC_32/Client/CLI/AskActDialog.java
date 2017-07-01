@@ -3,6 +3,8 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
@@ -14,6 +16,8 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class AskActDialog extends Context{
+	
+	private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
 	
 	private ClientCLI client;
 	private boolean flagAction;
@@ -37,7 +41,8 @@ public class AskActDialog extends Context{
 		while(flagAction){
 			boolean actionFlag = true;
 			while(actionFlag){						
-				System.out.println("type the ID of the family member you want to place\nThe symbol '>' means that the family member is busy\n");
+				System.out.println("type the ID of the family member you want to place\n" +
+								   "The symbol '>' means that the family member is busy\n");
 				int i = 0;
 				for(ClientFamilyMember fm : client.getPlayerList().get(client.getUUID()).getFamilyMembers()){
 					System.out.println("["+i+"] "+fm.toString());
@@ -157,12 +162,13 @@ public class AskActDialog extends Context{
 						}
 					}	
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					LOGGER.log(Level.FINEST, "Could Not load cards", e1);
 				}
 				break;
 			}	
 			
-			System.out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
+			System.out.println("action is ready to be sent to the server.\n" +
+							   "Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
 			
 			//TODO printare riassunto della mossa
 			
