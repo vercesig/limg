@@ -7,7 +7,10 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class RMIListener implements Runnable{
 	Registry rmiRegistry;
@@ -35,13 +38,26 @@ public class RMIListener implements Runnable{
 	@Override
 	public void run() {
 		while(!stop){
-			if(MessageManager.getInstance().getRMISendQueue().size() > 0){
+			if(!MessageManager.getInstance().getRMISendQueue().isEmpty()){
 				GameMessage message = MessageManager.getInstance().getRMISendQueue().poll();
 				if(message != null && this.rmiQueue.get(message.getPlayerUUID())!=null){
-						this.rmiQueue.get(message.getPlayerUUID()).add(message.toJson().toString());
+				    sendMessage(message);
 				}
 			}
 		}
+	}
+	
+	private void sendMessage(GameMessage message){
+	    if(!message.isBroadcast()){
+	        this.rmiQueue.get(message.getPlayerUUID()).add(message.toJson().toString());
+	    } else {
+	        for(Player player : GameRegistry.getInstance().getGame(message.getGameID())
+	                                                      .getPlayerList()){
+	            if(GameRegistry.getInstance().getConnectionMode(player.getUUID()) == ConnectionType.RMI){
+	                this.rmiQueue.get(player.getUUID()).add(message.toJson().toString());
+	            }
+	        }
+	    }
 	}
 
 	/**
