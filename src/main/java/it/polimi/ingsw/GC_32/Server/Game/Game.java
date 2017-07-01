@@ -109,18 +109,21 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "done");
 	}
 	
+	@Override
 	public void run(){
 		LOGGER.log(Level.INFO, "notifying connected players on game settings...");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 
-		playerList.forEach(player -> {
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player));
-		});
+		playerList.forEach(player ->
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player))
+		);
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
 			Thread.sleep(200);
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+		    Thread.currentThread().interrupt();
+		}
 		LOGGER.log(Level.INFO, "done");	
 		
 		LOGGER.log(Level.INFO, "ready to play");
@@ -135,7 +138,9 @@ public class Game implements Runnable{
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
 			Thread.sleep(200);
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+		    Thread.currentThread().interrupt();
+		}
 		
 	////-------------------------LEADER DISTRIBUTION ----------------////////
 			LOGGER.log(Level.INFO, "giving lock to the first player...");
@@ -147,7 +152,7 @@ public class Game implements Runnable{
 						Player firstPlayer = this.playerList.get(0);
 						setLock(firstPlayer.getUUID());
 						leaderHandler.leaderPhase(firstPlayer);
-						flag = false; // blocca l'accesso al primo send;
+						flag = false; // blocca l'accesso al primo send
 					}
 					//ricezione messaggi
 					GameMessage message = null;
@@ -160,14 +165,14 @@ public class Game implements Runnable{
 					}
 			
 					if(message != null){
-						JsonObject Jsonmessage = message.getMessage().asObject();
+						JsonObject jsonMessage = message.getMessage().asObject();
 						switch(message.getOpcode()){
 						case "LDRSET":
-							JsonArray json = Jsonmessage.get("LIST").asArray();
+							JsonArray json = jsonMessage.get("LIST").asArray();
 							//setto la lista
 							leaderHandler.setList(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()), json);
 							int index = leaderHandler.getIndex(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()))+1;
-							System.out.println("TURNO: " + leaderHandler.getTurn() + "\nPlayerIndice: " + (index -1));
+							LOGGER.info("TURNO: " + leaderHandler.getTurn() + "\nPlayerIndice: " + (index -1));
 							
 							if(index < playerList.size()){   						///STACK 1
 								setLock(playerList.get(index).getUUID());
@@ -184,6 +189,8 @@ public class Game implements Runnable{
 								leaderHandler.setInactive();
 								break;
 							}
+						default:
+						    break;
 						}
 					}
 				}
@@ -207,37 +214,37 @@ public class Game implements Runnable{
 			}
 
 			if(message != null){
-				JsonObject Jsonmessage = message.getMessage().asObject();
+				JsonObject jsonMessage = message.getMessage().asObject();
 				switch(message.getOpcode()){
 					case "ASKACT":
 						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
 						int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-						int pawnID = Jsonmessage.get("FAMILYMEMBER_ID").asInt();
+						int pawnID = jsonMessage.get("FAMILYMEMBER_ID").asInt();
 						int actionValue = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())
 																	.getFamilyMember()[pawnID].getActionValue();
 	
-						int regionID = Jsonmessage.get("REGIONID").asInt();
-						int spaceID = Jsonmessage.get("SPACEID").asInt();
-						String actionType = Jsonmessage.get("ACTIONTYPE").asString();
+						int regionID = jsonMessage.get("REGIONID").asInt();
+						int spaceID = jsonMessage.get("SPACEID").asInt();
+						String actionType = jsonMessage.get("ACTIONTYPE").asString();
 	
 						Action action = new Action(actionType,actionValue,regionID,spaceID);
-						action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", Jsonmessage.get("FAMILYMEMBER_ID").asInt()));
-						action.getAdditionalInfo().add("COSTINDEX", Jsonmessage.get("COSTINDEX").asInt()); // Cost Index
-						action.getAdditionalInfo().add("CARDNAME", Jsonmessage.get("CARDNAME").asString());
+						action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
+						action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
+						action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
 						
 						Player player = playerList.get(index);
 						memoryAction.put(player.getUUID(), action);
 						
-						System.out.println("INIZIO CHECK: ");
-						System.out.println("STATO PRIMA DELL'ESECUZIONE:");
-						System.out.println(action);
-						System.out.println(player);
+						LOGGER.info("INIZIO CHECK: ");
+						LOGGER.info("STATO PRIMA DELL'ESECUZIONE:");
+						LOGGER.info(action.toString());
+						LOGGER.info(player.toString());
 			    		if(mv.checkMove(this, player, action, cm)){
-			    			System.out.println("check with copy: PASSATO");
+			    			LOGGER.info("check with copy: PASSATO");
 			    			makeMove(player, action);
-			    			System.out.println("AZIONE ESEGUITA!\n");
-							System.out.println("STATO DOPO AZIONE: ");
-			    			System.out.println(player);
+			    			LOGGER.info("AZIONE ESEGUITA!\n");
+							LOGGER.info("STATO DOPO AZIONE: ");
+			    			LOGGER.info(player.toString());
 			    			
 			    			// notifiche server
 			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
@@ -248,31 +255,31 @@ public class Game implements Runnable{
 				//RAPPORTO AL VATICANO
 					case "SENDPOPE":
 						LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
-						boolean answer = Jsonmessage.get("ANSWER").asBoolean();
-						int points = Jsonmessage.get("FAITH_NEEDED").asInt();
+						boolean answer = jsonMessage.get("ANSWER").asBoolean();
+						int points = jsonMessage.get("FAITH_NEEDED").asInt();
 						int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
 						if(answer){ 
 							
 							//ATTIVAZIONE CARTA SCOMUNICA
-							System.out.println("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
+							LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
 							ExcommunicationCard card = this.excommunicationCards[this.turnManager.getPeriod()];
-							System.out.println("Attivo effetto carta: " +card.getName());
+							LOGGER.info("Attivo effetto carta: " +card.getName());
 							
 							if(!card.getInstantEffect().isEmpty()){
 								card.getInstantEffect().get(0).apply(getBoard(), playerList.get(playerIndex), null, null);
 							}
 							else 
-								System.out.println("Non ha effetti instantanei!");
+								LOGGER.info("Non ha effetti instantanei!");
 							if(!card.getPermanentEffect().isEmpty()){
 								playerList.get(playerIndex).addEffect(card.getPermanentEffect().get(0));
 							}
 							else
-								System.out.println("Non ha effetti permanenti!");
+								LOGGER.info("Non ha effetti permanenti!");
 						}	
 						else{
-							System.out.println("Sostegno alla Chiesa!");
+							LOGGER.info("Sostegno alla Chiesa!");
 							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							System.out.println("Punti Fede Giocatore: " + faithScore);
+							LOGGER.info("Punti Fede Giocatore: " + faithScore);
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
@@ -288,33 +295,33 @@ public class Game implements Runnable{
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
-							System.out.println("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
+							LOGGER.info("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
 							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	
 					//LEADER ACTION
 					case "ASKLDRACT":
-						String cardName = Jsonmessage.get("LEADERCARD").asString();
-						String decision = Jsonmessage.get("DECISION").asString();
-						System.out.println("LEADERCARD: " +cardName);
-						System.out.println("DECISION:" + decision);
+						String cardName = jsonMessage.get("LEADERCARD").asString();
+						String decision = jsonMessage.get("DECISION").asString();
+						LOGGER.info("LEADERCARD: " +cardName);
+						LOGGER.info("DECISION:" + decision);
 						Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
 						boolean result;
 						if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
-							System.out.println("ATTIVATO!");
+							LOGGER.info("ATTIVATO!");
 							result = true;
 							if(decision.equals("DISCARD")){	//GUADAGNA UN PRIVILEGIO
 								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
 								JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 								
-								System.out.println("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
+								LOGGER.info("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
 								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource("COINS", 1);
 								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-								System.out.println("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
+								LOGGER.info("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
 							}
 						}
 						else{
-							System.out.println("QUALCOSA NON VA!\n NON PUOI ATTIVARE QUESTA AZIONE LEADER!\n");
+							LOGGER.info("QUALCOSA NON VA!\n NON PUOI ATTIVARE QUESTA AZIONE LEADER!\n");
 							result = false;
 						}
 						MessageManager.getInstance().sendMessge(ServerMessageFactory
@@ -326,15 +333,17 @@ public class Game implements Runnable{
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
 						
 						try{ // wait for TRNBGN message
-						Thread.sleep(200);
-						}catch(InterruptedException e){}
+						    Thread.sleep(200);
+						}catch(InterruptedException e){
+						    Thread.currentThread().interrupt();
+						}
 						
 						memoryAction.remove(getLock());
 						
 						LOGGER.info("ricevo turn end [GAME]");
-						System.out.println("ROUND ID: "+ turnManager.getRoundID());
-						System.out.println("PERIOD ID: "+ turnManager.getRoundID()/2);
-						System.out.println("TURN ID: "+ turnManager.getTurnID());
+						LOGGER.info("ROUND ID: "+ turnManager.getRoundID());
+						LOGGER.info("PERIOD ID: "+ turnManager.getRoundID()/2);
+						LOGGER.info("TURN ID: "+ turnManager.getTurnID());
 						if(!turnManager.isGameEnd()){
 							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
 							if(turnManager.isRoundEnd()){
@@ -392,14 +401,14 @@ public class Game implements Runnable{
 	
 	public void makeMove(Player player, Action action){
 		
-		System.out.println(contextInfoContainer.isEmpty());
+		LOGGER.info(Boolean.valueOf(contextInfoContainer.isEmpty()).toString());
 		
-		System.out.println("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
+		LOGGER.info("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
 		MoveUtils.applyEffects(this.board, player, action, cm);
-		System.out.println("DOPO GLI EFFETTI PERMANENTI:\n" + action);
-		System.out.println("PRIMA DEL BONUS:\n" + player);
+		LOGGER.info("DOPO GLI EFFETTI PERMANENTI:\n" + action);
+		LOGGER.info("PRIMA DEL BONUS:\n" + player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
-		System.out.println("DOPO DEL BONUS:\n" + player);
+		LOGGER.info("DOPO DEL BONUS:\n" + player);
 		moveFamiliar(this.board, player, action);
 		
 		switch(action.getActionType()){
@@ -445,9 +454,9 @@ public class Game implements Runnable{
 					}
 				}
 				notCHANGEeffectCardList.forEach(card -> { 
-					card.getPermanentEffect().forEach(effect -> {
-						effect.apply(board, player, action, cm);
-					});
+					card.getPermanentEffect().forEach(effect ->
+						effect.apply(board, player, action, cm)
+					);
 				});
 				break;
 			case "HARVEST":				
@@ -467,12 +476,12 @@ public class Game implements Runnable{
 				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
 				JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 				
-				System.out.println(COUNCILPRIVILEGEresponse.toString());
+				LOGGER.info(COUNCILPRIVILEGEresponse.toString());
 				
-				System.out.println("PRIMA DEL PRIVILEGE:\n" + player);
+				LOGGER.info("PRIMA DEL PRIVILEGE:\n" + player);
 				player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(COUNCILPRIVILEGEresponse.asArray().get(0).asObject()));
-				System.out.println("DOPO DEL PRIVILEGE:\n" + player);
+				LOGGER.info("DOPO DEL PRIVILEGE:\n" + player);
 				break;
 			case "MARKET":
 				if(action.getActionSpaceId() == 3){
@@ -488,11 +497,9 @@ public class Game implements Runnable{
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
 				
-				if(card.getType().equals("CHARACTERCARD")){
-					if(card.getPermanentEffect()!= null){
-						card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
-						System.out.println("AGGIUNTO EFFETTO PERMANENTE");
-					}	
+				if(card.getType().equals("CHARACTERCARD") && card.getPermanentEffect()!= null){
+					card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
+					LOGGER.info("AGGIUNTO EFFETTO PERMANENTE");
 				}
 				if(!card.getInstantEffect().isEmpty()){
 					card.getInstantEffect().forEach(effect -> effect.apply(board, player, action, cm));

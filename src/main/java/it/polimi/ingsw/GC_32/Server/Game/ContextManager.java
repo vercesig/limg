@@ -84,7 +84,7 @@ public class ContextManager{
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
-			if(message != null && message.getOpcode().equals("CONTEXTREPLY")){
+			if(message != null && "CONTEXTREPLY".equals(message.getOpcode())){
 				JsonValue contextReply = message.getMessage();
 				String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
 				if(waitingContextResponse.equals(contextType)){
