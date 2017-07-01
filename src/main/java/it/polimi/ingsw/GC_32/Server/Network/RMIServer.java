@@ -2,8 +2,8 @@ package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
@@ -12,9 +12,9 @@ import it.polimi.ingsw.GC_32.Common.Network.RMIConnection;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 public class RMIServer implements RMIConnection{
-	private HashMap<UUID, LinkedBlockingQueue<String>> rmiQueue;
+	private ConcurrentHashMap<UUID, LinkedBlockingQueue<String>> rmiQueue;
 
-	public RMIServer(HashMap<UUID, LinkedBlockingQueue<String>> queue) throws RemoteException{
+	public RMIServer(ConcurrentHashMap<UUID, LinkedBlockingQueue<String>> queue) throws RemoteException{
 		UnicastRemoteObject.exportObject(this, 0);
 		this.rmiQueue = queue;
 	}

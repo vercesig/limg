@@ -125,7 +125,7 @@ public class MainClient{
 				
 			while(true){
 				
-				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
+				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis() && client.actionRunningFlag){
 					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
 					client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 					client.actionRunningFlag=false;
@@ -147,14 +147,11 @@ public class MainClient{
 				if(network.hasMessage()){
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
-					
 					String playerID;
-					
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();
-						
-				String name = messagePayload.get("NAME").asString();
+						String name = messagePayload.get("NAME").asString();
 						client.getPlayers().get(playerID).setName(name);
 						break;
 					case "CONNEST":

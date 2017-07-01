@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
@@ -15,7 +15,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
 public class RMIListener implements Runnable{
 	Registry rmiRegistry;
 	RMIServer server;
-	HashMap<UUID, LinkedBlockingQueue<String>> rmiQueue;
+	ConcurrentHashMap<UUID, LinkedBlockingQueue<String>> rmiQueue;
 	boolean stop;
 
 	/**
@@ -25,7 +25,7 @@ public class RMIListener implements Runnable{
 	 */
 	public RMIListener(int port) throws IOException{
 		this.rmiRegistry = LocateRegistry.createRegistry(port);
-		this.rmiQueue = new HashMap<>();
+		this.rmiQueue = new ConcurrentHashMap<>();
 		this.server = new RMIServer(this.rmiQueue);
 		this.stop = false;
 		try{
@@ -40,7 +40,7 @@ public class RMIListener implements Runnable{
 		while(!stop){
 			if(!MessageManager.getInstance().getRMISendQueue().isEmpty()){
 				GameMessage message = MessageManager.getInstance().getRMISendQueue().poll();
-				if(message != null && this.rmiQueue.get(message.getPlayerUUID())!=null){
+				if(message != null){
 				    sendMessage(message);
 				}
 			}
@@ -48,7 +48,7 @@ public class RMIListener implements Runnable{
 	}
 	
 	private void sendMessage(GameMessage message){
-	    if(!message.isBroadcast()){
+	    if(!message.isBroadcast() && this.rmiQueue.get(message.getPlayerUUID()) != null){
 	        this.rmiQueue.get(message.getPlayerUUID()).add(message.toJson().toString());
 	    } else {
 	        for(Player player : GameRegistry.getInstance().getGame(message.getGameID())
