@@ -24,7 +24,7 @@ public class RMIServer implements RMIConnection{
 		Player newPlayer = new Player();
 		GameRegistry.getInstance().registerPlayer(newPlayer, ConnectionType.RMI);
 		rmiQueue.put(newPlayer.getUUID(), new LinkedBlockingQueue<>());
-		rmiQueue.get(newPlayer.getUUID()).add((ServerMessageFactory.buildCONNESTmessage(newPlayer.getUUID()).toString()));
+		rmiQueue.get(newPlayer.getUUID()).add((ServerMessageFactory.buildCONNESTmessage(newPlayer.getUUID()).toJson().toString()));
 		return newPlayer.getUUID();
 	}
 

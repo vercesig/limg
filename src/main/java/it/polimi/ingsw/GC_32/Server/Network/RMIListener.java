@@ -38,7 +38,7 @@ public class RMIListener implements Runnable{
 			if(MessageManager.getInstance().getRMISendQueue().size() > 0){
 				GameMessage message = MessageManager.getInstance().getRMISendQueue().poll();
 				if(message != null && this.rmiQueue.get(message.getPlayerUUID())!=null){
-						this.rmiQueue.get(message.getPlayerUUID()).add(message.toString());
+						this.rmiQueue.get(message.getPlayerUUID()).add(message.toJson().toString());
 				}
 			}
 		}

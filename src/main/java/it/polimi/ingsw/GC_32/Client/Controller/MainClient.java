@@ -148,6 +148,8 @@ public class MainClient{
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					
+					System.out.println(message.toString());
+					
 					String playerID;
 					
 					switch(message.get("MESSAGETYPE").asString()){					
@@ -188,7 +190,7 @@ public class MainClient{
 						client.getBoard().setExcommunicationCards(messagePayload.get("EXCOMMUNICATIONCARDS"));
 						
 						client.graphicInterface.registerBoard(client.getBoard());
-						client.graphicInterface.registerPlayers(client.getPlayers());
+						client.graphicInterface.registerPlayers(client.getPlayers());						
 						client.graphicInterface.displayMessage("game start, "+client.getPlayers().size()+" players connected");
 						
 						client.graphicInterface.registerActionRunningGameFlag(client.actionRunningFlag);
