@@ -23,14 +23,13 @@ public class EndPhase {
 	public static int countBuildingCost(ResourceSet cost){
 		int wood = 0;
 		int stone = 0;
-		try{
-			wood = cost.getResource("WOOD");
+		if(cost.getResourceSet().get("WOOD") != null){
+			wood = cost.getResourceSet().get("WOOD");
 		}
-		catch(NullPointerException e){}
-		try{
-			stone = cost.getResource("STONE");
+		
+		if(cost.getResourceSet().get("STONE") != null){
+			stone = cost.getResourceSet().get("STONE");
 		}
-		catch(NullPointerException e){}
 		return wood + stone;
 	}
 	
@@ -68,24 +67,23 @@ public class EndPhase {
 				}	
 				int score = player.getResources().getResource("VICTORY_POINTS");
 				
-				try{
+				if(json.get("TERRITORYCARD")!=null){
 					// carte territorio
 					if(!player.isFlagged("NOENDGREEN")){
 						score =+ json.get("TERRITORYCARD").asObject()
 												    .get( ((Integer)player.getPersonalBoard()
 							    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
 					}
-				} catch (NullPointerException e){}
-					
+				}	
 				// carte personaggio
 				
-				try{
+				if(json.get("CHARACTERCARD")!=null){
 					if(!player.isFlagged("NOENDBLUE")){
 						score =+ json.get("CHARACTERCARD").asObject()
 							    					.get( ((Integer)player.getPersonalBoard()
 							    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
 					}
-				} catch (NullPointerException e){}
+				}
 				
 				// military
 				if(militaryScore.getFirst().getUUID().equals(player.getUUID())){
