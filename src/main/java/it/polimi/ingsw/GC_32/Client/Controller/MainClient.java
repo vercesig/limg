@@ -258,6 +258,11 @@ public class MainClient{
 					case "TRNBGN":
 						client.getClientInterface().leaderStartPhaseEnd();
 						String playerUUID = messagePayload.get("PLAYERID").asString();
+						System.out.println("TRNBGN");
+						System.out.println(playerUUID.equals(client.getUUID()));
+						System.out.println(playerUUID);
+
+						System.out.println(client.getUUID().equals(playerUUID));
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization
 							client.startTimeout = System.currentTimeMillis();

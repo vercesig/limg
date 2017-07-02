@@ -41,14 +41,14 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		messageQueue = new ConcurrentLinkedQueue<String>();
 		
-		this.contextList = new Context[6];
+		this.contextList = new Context[7];
 		contextList[0] = new ZeroLevelContext(this);		
 		contextList[1] = new PrivilegeContext(this);
 		contextList[2] = new ServantContext(this);
 		contextList[3] = new ExcommunicationContext(this);
 		contextList[4] = new ChangeEffectContext(this);
-		//contextList[5] = new ActionEffectContext(this);
 		contextList[5] = new LeaderSetContext(this);
+		contextList[6] = new ActionEffectContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
 	}

@@ -181,6 +181,7 @@ public class JsonImporter {
         for(Tuple<JsonValue, JsonValue> effect: instantEffectList){
             newCard.registerInstantEffect(getEffectFromRegistry(effect.getFirstArg().asString(),
                                                                 effect.getSecondArg()));
+            newCard.registerInstantEffectType(effect.getFirstArg().asString());
         }
 
         JsonValue permanentEffect = card.get("permanentEffect");
@@ -190,6 +191,7 @@ public class JsonImporter {
         for(Tuple<JsonValue, JsonValue> effect : permanentEffectList){
             newCard.registerPermanentEffect(getEffectFromRegistry(effect.getFirstArg().asString(), effect.getSecondArg()));
             newCard.addPayload(effect.getSecondArg()); //used by CHANGE effect for pretty context build
+            newCard.registerPermanentEffectType(effect.getFirstArg().asString());
         }
         return newCard;
 	}

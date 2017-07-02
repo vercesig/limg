@@ -428,7 +428,8 @@ public class Game implements Runnable{
 		LOGGER.info("PRIMA DEL BONUS:\n" + player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		LOGGER.info("DOPO DEL BONUS:\n" + player);
-		moveFamiliar(this.board, player, action);
+		if(!action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
+			moveFamiliar(this.board, player, action);
 		
 		switch(action.getActionType()){
 			case "PRODUCTION":
@@ -521,7 +522,29 @@ public class Game implements Runnable{
 					LOGGER.info("AGGIUNTO EFFETTO PERMANENTE");
 				}
 				if(!card.getInstantEffect().isEmpty()){
-					card.getInstantEffect().forEach(effect -> effect.apply(board, player, action, cm));
+					card.getInstantEffect().forEach(effect -> {
+						System.out.println("***************************** effetto istantaneo attivato");
+						effect.apply(board, player, action, cm); // only ACTION effect doesn't close the context
+						JsonValue effectAction = cm.waitForContextReply();
+						System.out.println("**************************** dopo effetoo istantaneo");
+						
+						int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()));
+						int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
+	
+						int regionID = effectAction.asObject().get("REGIONID").asInt();
+						int spaceID = effectAction.asObject().get("SPACEID").asInt();
+						String actionType = effectAction.asObject().get("ACTIONTYPE").asString();
+	
+						Action bonusAction = new Action(actionType,actionValue,regionID,spaceID);
+						action.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt());
+						action.getAdditionalInfo().add("BONUSFLAG", Json.value(true));
+						action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
+						
+						Player bonusPlayer = playerList.get(index);
+						
+						
+						
+					});
 				}
 				break;
 		}

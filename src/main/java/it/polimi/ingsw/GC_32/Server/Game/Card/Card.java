@@ -12,8 +12,11 @@ public class Card {
 	private final String name;
 	private ArrayList<Effect> instantEffect;
 	private ArrayList<Effect> permanentEffect; 
-	private ArrayList<JsonValue> payloadInfo;
+	
+	private ArrayList<JsonValue> payloadInfo; // need by effect type CHANGE
+	
 	private HashSet<String> permanentEffectType;
+	private HashSet<String> instantEffectType;
 	
 	public Card(String name){
 		this.name = name;
@@ -21,6 +24,7 @@ public class Card {
 		this.permanentEffect = new ArrayList<Effect>();
 		this.payloadInfo = new ArrayList<JsonValue>();
 		this.permanentEffectType = new HashSet<String>();
+		this.instantEffectType = new HashSet<String>();
 	}
 		
 	public String getName(){
@@ -45,6 +49,10 @@ public class Card {
 	
 	public ArrayList<Effect> getPermanentEffect(){
 		return this.permanentEffect;
+	}
+	
+	public void registerInstantEffectType(String effectType){
+		this.instantEffectType.add(effectType);
 	}
 	
 	public void registerInstantEffect(Effect e){

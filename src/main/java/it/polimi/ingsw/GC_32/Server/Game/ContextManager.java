@@ -73,27 +73,30 @@ public class ContextManager{
 	}
 	
 	public boolean isThereAnyOpenContext(){
-		return waitingContextResponse == null;
+		return waitingContextResponse != null;
 	}
 	
 	public JsonValue waitForContextReply(){
 		GameMessage message = null;
-		while(true){
-			try{
-				message = MessageManager.getInstance().getQueueForGame(game.getUUID()).take();
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-			if(message != null && "CONTEXTREPLY".equals(message.getOpcode())){
-				JsonValue contextReply = message.getMessage();
-				String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
-				if(waitingContextResponse.equals(contextType)){
-					this.pendingMessage = message;
-					JsonValue returnValue = contextReply.asObject().get("PAYLOAD");
-					return returnValue;
+		if(isThereAnyOpenContext()){ // non attendere se non ci sono context da aprire
+			while(true){
+				try{
+					message = MessageManager.getInstance().getQueueForGame(game.getUUID()).take();
+				} catch(InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+				if(message != null && "CONTEXTREPLY".equals(message.getOpcode())){
+					JsonValue contextReply = message.getMessage();
+					String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
+					if(waitingContextResponse.equals(contextType)){
+						this.pendingMessage = message;
+						JsonValue returnValue = contextReply.asObject().get("PAYLOAD");
+						return returnValue;
+					}
 				}
 			}
 		}
+		return null;
 	}
 	
 	public void setContextAck(boolean accepted, Player player){

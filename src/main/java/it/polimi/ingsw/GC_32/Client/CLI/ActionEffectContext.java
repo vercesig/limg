@@ -18,13 +18,15 @@ public class ActionEffectContext extends Context{
 		JsonObject Jsonpayload = payload.get("PAYLOAD").asObject();
 		
 		String actionType = Jsonpayload.get("TYPE").asString();
-		int regionID = Jsonpayload.get("REGIONID").asInt();
+		int regionID = 0;
+		if(!Jsonpayload.get("REGIONID").isNull())
+			 regionID = Jsonpayload.get("REGIONID").asInt();
 		int bonusActionValue = Jsonpayload.get("BONUSACTIONVALUE").asInt();
 		ResourceSet bonusResource = null;
 		if(!Jsonpayload.get("BONUSRESOURCE").isNull())
 			bonusResource = new ResourceSet(Jsonpayload.get("BONUSRESOURCE").asObject());
 		
-		String flagRegion = Jsonpayload.get("FLAGREGION").asString();
+		boolean flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
 		
 		payload.remove("TYPE");
 		payload.remove("REGIONID");
@@ -44,7 +46,7 @@ public class ActionEffectContext extends Context{
 		while(runFlag){
 				
 				while(flagAction){
-					if(flagRegion.equals("ALL")){
+					if(flagRegion){
 						System.out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
 						actionFlag = true;
 						while(actionFlag){
@@ -94,8 +96,7 @@ public class ActionEffectContext extends Context{
 							break;
 						case "n":
 							actionFlag = false;
-							close();
-							return null;
+							break;
 						default:
 							System.out.println("please, type a valid letter");
 						}
