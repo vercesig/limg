@@ -384,7 +384,7 @@ public class Game implements Runnable{
 								try{ // wait for TRNBGN message
 								    Thread.sleep(500);
 								}catch(InterruptedException e){
-								    Thread.currentThread().interrupt();
+								    Thread.currentThread().interrupt(); 
 								}
 								
 								LOGGER.log(Level.INFO, "giving lock to the next player");
