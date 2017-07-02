@@ -258,7 +258,6 @@ public class Game implements Runnable{
 					case "SENDPOPE":
 						LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
 						boolean answer = jsonMessage.get("ANSWER").asBoolean();
-						int points = jsonMessage.get("FAITH_NEEDED").asInt();
 						int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
 						if(answer){ 
 							
@@ -285,15 +284,13 @@ public class Game implements Runnable{
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
-							Reader scoreJs = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("excommunication_track.json"));
-							try {
-								JsonObject excommunicationJson = Json.parse(scoreJs).asObject();	
-								try{
-									victoryPointsConverted += excommunicationJson.get(Integer.toString(faithScore)).asInt();
-								}catch(NullPointerException e){
-									victoryPointsConverted = faithScore*2; // caso faithPoints > 15
-								}
-							} catch (IOException e) {} 
+							
+							if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore)!=null){
+								victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
+							}
+							else
+								victoryPointsConverted = faithScore*2; // caso faithPoints > 15
+							
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
