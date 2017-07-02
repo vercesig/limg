@@ -88,7 +88,7 @@ public class Game implements Runnable{
 		ArrayList<PersonalBonusTile> bonusTile = GameConfig.getInstance().getBonusTileList();
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int k=0; k<bonusTile.size(); k++){
-			list.add(new Integer(k));
+			list.add(Integer.valueOf(k));
 		}
 		Collections.shuffle(list);
 		

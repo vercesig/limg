@@ -41,7 +41,7 @@ public class TurnManager {
 		ArrayList<UUID> tmpPlayerList = new ArrayList<>();		
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int i=0; i<playerListSize; i++){
-			list.add(new Integer(i));
+			list.add(Integer.valueOf(i));
 		}
 		Collections.shuffle(list);
 		for(int i=0; i<playerListSize; i++){

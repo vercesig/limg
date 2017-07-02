@@ -23,14 +23,14 @@ public class ServantContext extends Context{
 		System.out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
 				+ "\nDo you want to spend any of these?? type 0 if you don't want spend any servant, "
 				+ "else type the number of servants you want to spend");
-		runFlag = true;
-		while(runFlag){
+		
+		while(true){
 			command = in.nextLine();
 			try{
 				if(Integer.parseInt(command)<=numberOfServants){
 					CONTEXTREPLYpayloadinfo.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
 					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
-					close();					
+					return CONTEXTREPLY.toString();
 				}else{
 					System.out.println("type a valid quantity");
 				}
@@ -38,7 +38,6 @@ public class ServantContext extends Context{
 				System.out.println("type a valid number");
 			}
 		}
-		return CONTEXTREPLY.toString();
 	}
 	
 }

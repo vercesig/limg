@@ -30,7 +30,8 @@ public class LeaderUtils {
 			if(leaderCard.isOnTheGame()){
 				System.out.println("AZIONE NON CONSENTITA, CARTA GIA' GIOCATA"); 
 				return false;
-			} return true;
+			} 
+			return true;
 		
 		case "ACTIVATE":
 			if(!leaderCard.isOnTheGame() && !leaderCard.hasATokenAbility()){
@@ -55,6 +56,7 @@ public class LeaderUtils {
 				}
 				return true;
 			}
+			return false;
 		default:
 			return false;
 		}
@@ -63,7 +65,7 @@ public class LeaderUtils {
 	private static boolean hasRequirements(UUID playerUUID, LeaderCard leader){
 		Player player = GameRegistry.getInstance().getPlayerFromID(playerUUID);
 		JsonObject requirements = leader.getRequirements();
-		try{
+		if(requirements.get("CARDTYPE")!=null){
 			if(!requirements.get("CARDTYPE").isNull()){
 				JsonObject cardType = requirements.get("CARDTYPE").asObject();
 				for(Member item : cardType){
@@ -74,15 +76,15 @@ public class LeaderUtils {
 					}
 				}
 			}
-		}catch(NullPointerException e){};
-		try{
+		}
+		if(requirements.get("RESOURCE")!=null){ 
 			if(!requirements.get("RESOURCE").isNull()){
 				if(player.getResources().compareTo(new ResourceSet(requirements.get("RESOURCE").asObject()))<0){
 					System.out.println("RISORSE INSUFFICIENTI");
 					return false;
 				}
 			}
-		} catch (NullPointerException e){};	
+		}	
 		return true;
 	}
 }

@@ -66,7 +66,7 @@ public class LeaderHandler {
 	}
 	
 	public List <LeaderCard> getList(Player player){	
-		List <LeaderCard> list = new ArrayList<LeaderCard>();
+		List <LeaderCard> list;
 		if(getIndex(player) - turnId < 0){
 			if ((game.getPlayerList().size() +(getIndex(player) - turnId))<0){ //modulo! // a partire da turno 3
 				list = collection.get(-(game.getPlayerList().size() +(getIndex(player) - turnId)));
@@ -117,7 +117,7 @@ public class LeaderHandler {
 				player.getPersonalBoard().addCardLeader(leaderCard);
 				System.out.println("AGGIUNGO: " + leaderCard.getName());
 			}
-		});;
+		});
 		
 		// set to collection
 		setList(player, newlist);

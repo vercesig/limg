@@ -138,7 +138,7 @@ public class MainClient{
 					JsonObject JsonMessage = Json.parse(message).asObject();					
 					JsonMessage.add("GameID", client.gameUUID);
 					
-					if(JsonMessage.get("MESSAGETYPE").asString().equals("ASKACT")){
+					if("ASKACT".equals(JsonMessage.get("MESSAGETYPE").asString())){
 						client.actionRunningFlag=false;
 					}
 					

@@ -28,9 +28,7 @@ public class ExcommunicationContext extends Context{
 				if(playerFaithPoints<faithPointsNeeded){
 					System.out.println("\n>Sorry, but unfortunately you don't have enough faith points.\n"
 							+ "You should type: n\nI hope the excommunicate card won't be a serious problem for you...");
-					excommunicationFlag = true;
-					close();
-					break;
+					return ClientMessageFactory.buldSENDPOPEmessage(client.getGameUUID(), client.getPlayerUUID(), true, faithPointsNeeded);
 				}
 				System.out.println("\n>The Pope is really happy with you.\n May God bless you!\n");
 				return ClientMessageFactory.buldSENDPOPEmessage(client.getGameUUID(), client.getPlayerUUID(), false, faithPointsNeeded);

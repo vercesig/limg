@@ -116,7 +116,7 @@ public class ChangeEffectContext extends Context{
 								System.out.println("type a valid number or choose an effect you can activate");
 							}					
 						}catch(NumberFormatException e){
-							if(command.equals("n")){
+							if("n".equals(command)){
 								indexArray.add(command);
 								actionFlag = false;
 								i++;
