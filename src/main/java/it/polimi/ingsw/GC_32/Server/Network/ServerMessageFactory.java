@@ -273,8 +273,8 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("ACTIONTYPE", (String) payload[1]);
 			break;
 		case EXCOMMUNICATION:
-			CONTEXTpayload.add("PLAYER_FAITH", (int) payload[0]);
-			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[1]);
+			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[0]);
+			CONTEXTpayload.add("PLAYER_FAITH", (int) payload[1]);
 			break;
 		case LEADERSET:
 			CONTEXTpayload.add("LIST", (JsonArray) payload[0]);

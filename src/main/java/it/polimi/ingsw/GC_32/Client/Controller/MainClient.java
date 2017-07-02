@@ -129,7 +129,7 @@ public class MainClient{
 				
 				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
 					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
-					client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+				//	client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 					client.actionRunningFlag=false;
 				}
 				

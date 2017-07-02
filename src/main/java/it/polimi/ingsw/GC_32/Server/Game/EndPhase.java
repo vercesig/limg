@@ -1,13 +1,11 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -21,20 +19,20 @@ public class EndPhase {
 	public static int countBuildingCost(ResourceSet cost){
 		int wood = 0;
 		int stone = 0;
-		if(Integer.valueOf(cost.getResource("WOOD"))!=null)
-			wood = cost.getResource("WOOD");
 
-		if(Integer.valueOf(cost.getResource("STONE"))!=null)
-			stone = cost.getResource("STONE");
-
+		if(cost.getResourceSet().get("WOOD") != null){
+			wood = cost.getResourceSet().get("WOOD");
+		}
+		
+		if(cost.getResourceSet().get("STONE") != null){
+			stone = cost.getResourceSet().get("STONE");
+		}
 		return wood + stone;
 	}
 	
 	public static void endGame(Game game){
 		
-		Reader path = new InputStreamReader(game.getClass().getClassLoader().getResourceAsStream("score_conversion.json"));
-		try {
-			JsonObject json = Json.parse(path).asObject();
+			HashMap <String, JsonValue> json = GameConfig.getInstance().getPointsConversion();
 			JsonObject finalScore = new JsonObject();
 			int firstMilitary = json.get("FIRSTMILITARY").asInt();
 			int secondMilitary = json.get("SECONDMILITARY").asInt();
@@ -66,24 +64,23 @@ public class EndPhase {
 				}	
 				int score = player.getResources().getResource("VICTORY_POINTS");
 				
-				try{
+				if(json.get("TERRITORYCARD")!=null){
 					// carte territorio
 					if(!player.isFlagged("NOENDGREEN")){
 						score =+ json.get("TERRITORYCARD").asObject()
 												    .get( ((Integer)player.getPersonalBoard()
 							    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
 					}
-				} catch (NullPointerException e){}
-					
+				}	
 				// carte personaggio
 				
-				try{
+				if(json.get("CHARACTERCARD")!=null){
 					if(!player.isFlagged("NOENDBLUE")){
 						score =+ json.get("CHARACTERCARD").asObject()
 							    					.get( ((Integer)player.getPersonalBoard()
 							    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
 					}
-				} catch (NullPointerException e){}
+				}
 				
 				// military
 				if(militaryScore.getFirst().getUUID().equals(player.getUUID())){
@@ -126,8 +123,6 @@ public class EndPhase {
 				}
 				finalScore.add(player.getID(), score); // jsonObject
 			});
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));
-			
-		} catch (IOException e) {}	
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));	
 	}
 }

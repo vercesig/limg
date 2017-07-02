@@ -8,6 +8,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Effect.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
@@ -91,18 +92,15 @@ public class JsonImporter {
 			    newCard.registerPermanentEffect(getEffectFromRegistry(flagEffectList.get(0)
 			                                                                        .getFirstArg()
 			                                                                        .asString(),
-			                                    flagEffectList.get(0).getSecondArg()));
+			                                                                        flagEffectList.get(0).getSecondArg()));
 			}
-
 			cardList.add(newCard);
 		}
 		return cardList;
 	}
 	
 	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
-		
 		JsonArray JsonCardList = Json.parse(fileReader).asArray();
-		
 		for(JsonValue item : JsonCardList){
 			JsonObject card = item.asObject();
 			if(card.get("name").asString().equals(cardName)){
@@ -134,8 +132,24 @@ public class JsonImporter {
 	 * @throws IOException 
 	 */
 	public static JsonArray importBonusSpace(Reader fileReader) throws IOException{
-		
 		return Json.parse(fileReader).asArray();
+	}
+	
+	//import ExcommunicationTrack
+	public static HashMap<Integer, Integer> importExcommunicationTrack(Reader fileReader) throws IOException{
+		HashMap<Integer, Integer> track = new HashMap <Integer, Integer> ();
+		JsonObject jsonTrack = Json.parse(fileReader).asObject();
+		jsonTrack.forEach(member -> 
+			track.put(Integer.parseInt((member.getName())), (Integer) member.getValue().asInt()));
+		return track;
+	}
+	
+	//import pointsConversion
+	public static HashMap <String, JsonValue> importPointsConversion(Reader fileReader) throws IOException{
+		HashMap<String, JsonValue> pointsConversion = new HashMap <String, JsonValue> ();
+		JsonObject jsonPointsConversion = Json.parse(fileReader).asObject();
+		jsonPointsConversion.forEach(member -> pointsConversion.put(member.getName(), member.getValue()));
+		return pointsConversion;
 	}
 	
 	public static DevelopmentCard parseCard(JsonValue jCard){
