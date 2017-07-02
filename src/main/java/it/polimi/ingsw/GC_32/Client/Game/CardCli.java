@@ -19,7 +19,8 @@ public class CardCli {
 	}
 	
 	private static void loadEffect(ArrayList<String> array, String key, JsonObject json){
-		try{
+		
+		if(json.get(key)!= null){
 			if(json.get(key).isArray()){  // example [{"COINS":1},{"WOOD":1}]
 				for(JsonValue js : json.get(key).asArray()){  
 					if(js.isObject()){
@@ -34,7 +35,6 @@ public class CardCli {
 					}
 					if(js.isString()){
 						array.add(key + ": " + js.asString());
-				
 					}
 				}	
 			}
@@ -52,7 +52,8 @@ public class CardCli {
 				array.add(key + ": " + json.get(key).asString());
 			}
 		} 
-		catch(NullPointerException e){array.add(key + ": none");}
+		else
+			array.add(key + ": none");
 	}
 	
 	private static void printImage(StringBuilder stringBuilder, int length, int height){
