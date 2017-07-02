@@ -165,5 +165,22 @@ public class ResourceSet implements Comparable<ResourceSet> {
 		}
 		return tmp;
     }
+    
+    public boolean contains(ResourceSet resource){
+    	HashSet<String> thisresource = new HashSet<String>();
+    	HashSet<String> otherresource = new HashSet<String>();
+    	for(Entry<String, Integer> item : this.getResourceSet().entrySet()){
+    		thisresource.add(item.getKey());
+    	}
+    	for(Entry<String, Integer> item : resource.getResourceSet().entrySet()){
+    		otherresource.add(item.getKey());
+    	}
+    	boolean result = true;
+    	for(String resourceName : otherresource){
+    		result = result & thisresource.contains(resourceName);
+    	}
+    	return result;
+    	
+    }
 	
 }

@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
@@ -34,9 +36,7 @@ public class EndPhase {
 	
 	public static void endGame(Game game){
 		
-		Reader path = new InputStreamReader(game.getClass().getClassLoader().getResourceAsStream("score_conversion.json"));
-		try {
-			JsonObject json = Json.parse(path).asObject();
+			HashMap <String, JsonValue> json = GameConfig.getInstance().getPointsConversion();
 			JsonObject finalScore = new JsonObject();
 			int firstMilitary = json.get("FIRSTMILITARY").asInt();
 			int secondMilitary = json.get("SECONDMILITARY").asInt();
@@ -128,8 +128,6 @@ public class EndPhase {
 				}
 				finalScore.add(player.getID(), score); // jsonObject
 			});
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));
-			
-		} catch (IOException e) {}	
+			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildENDGAMEmessage(game, finalScore));	
 	}
 }

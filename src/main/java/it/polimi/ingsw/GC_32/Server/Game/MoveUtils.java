@@ -208,13 +208,20 @@ public class MoveUtils {
 		}	
     	
 		JsonValue costIndex = action.getAdditionalInfo().get("COSTINDEX");
-		if(costIndex != null){
+		if(costIndex == null){
 		    costIndex = Json.value(0);
 		}
 		if(costIndex.asInt() < card.getCost().size()){
 		    ResourceSet cost = card.getCost().get(costIndex.asInt());
 		    System.out.println("PLAYER RESOURCES: " + player.getResources());
 		    System.out.println("COST: " + cost);
+		    
+		    if(action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE")!=null){ // only for ACTION effect
+		    	ResourceSet bonusResource = new ResourceSet(action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE").asObject());
+		    	if(card.getCost().get(costIndex.asInt()).contains(bonusResource)){
+		    		cost.subResource(bonusResource);
+		    	}
+		    }
 		    player.getResources().subResource(cost);
 		    return player.getResources().isValid();
 		} else {

@@ -78,7 +78,7 @@ public class ContextManager{
 	
 	public JsonValue waitForContextReply(){
 		GameMessage message = null;
-		if(isThereAnyOpenContext()){ // non attendere se non ci sono context da aprire
+		if(isThereAnyOpenContext()){ // non attendere se non ci sono context aperti
 			while(true){
 				try{
 					message = MessageManager.getInstance().getQueueForGame(game.getUUID()).take();
@@ -90,6 +90,7 @@ public class ContextManager{
 					String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
 					if(waitingContextResponse.equals(contextType)){
 						this.pendingMessage = message;
+						System.out.println("dentro context");
 						JsonValue returnValue = contextReply.asObject().get("PAYLOAD");
 						return returnValue;
 					}
@@ -102,7 +103,8 @@ public class ContextManager{
 	public void setContextAck(boolean accepted, Player player){
 		if(accepted){
 			this.waitingContextResponse = null;
-			this.payloadReplayQueue.add(this.pendingMessage.getMessage());
+			if(this.pendingMessage != null)
+				this.payloadReplayQueue.add(this.pendingMessage.getMessage());
 			this.pendingMessage = null;
 		}
 		MessageManager.getInstance()

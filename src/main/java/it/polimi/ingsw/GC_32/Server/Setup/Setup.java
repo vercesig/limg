@@ -110,23 +110,33 @@ public class Setup {
 		CardRegistry.getInstance().registerDeck(leaderDeck);
 	}
 	
-	public void loadBonusTile(Reader bonusTileReader) throws IOException{
+	public void loadBonusTile(String path) throws IOException{
+		Reader bonusTileReader = new InputStreamReader(this.getClass()
+													 .getClassLoader()
+													 .getResourceAsStream(path));
 		GameConfig.getInstance().registerBonusTile(JsonImporter.importPersonalBonusTile(bonusTileReader));
 	}
 	
-	public void loadBonusTile(String path) throws IOException{
-		this.loadBonusTile(new InputStreamReader(this.getClass()
-													 .getClassLoader()
-													 .getResourceAsStream(path)));
-	}
-	
-	public void loadBonusSpace(Reader bonusSpaceReader) throws IOException{
+	public void loadBonusSpace(String path) throws IOException {
+		Reader bonusSpaceReader =  new InputStreamReader(this.getClass()
+													  .getClassLoader()
+													  .getResourceAsStream(path));
 		GameConfig.getInstance().registerBonusSpace(JsonImporter.importBonusSpace((bonusSpaceReader)));
 	}
 	
-	public void loadBonusSpace(String path) throws IOException {
-		this.loadBonusSpace(new InputStreamReader(this.getClass()
-													  .getClassLoader()
-													  .getResourceAsStream(path)));
+	public void loadExcommunicationTrack(String path) throws IOException {
+		Reader fileReader = new InputStreamReader(this.getClass()
+															.getClassLoader()
+															.getResourceAsStream(path));
+		GameConfig.getInstance().registerExcommunicationTrack(JsonImporter
+																.importExcommunicationTrack(fileReader));
+	}
+	
+	public void loadConversionPoints(String path) throws IOException {
+		Reader fileReader = new InputStreamReader(this.getClass()
+															.getClassLoader()
+															.getResourceAsStream(path));
+		GameConfig.getInstance().registerPointsConversion(JsonImporter
+																.importPointsConversion((fileReader)));
 	}
 }

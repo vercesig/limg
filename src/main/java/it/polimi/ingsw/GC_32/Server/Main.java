@@ -19,6 +19,8 @@ public class Main {
 		setup.loadCard("cards.json");
 		setup.loadBonusTile("bonus_tile.json");
 		setup.loadBonusSpace("bonus_space.json");
+		setup.loadExcommunicationTrack("excommunication_track.json");
+		setup.loadConversionPoints("score_conversion.json");
 
 		LOGGER.log(Level.INFO, "inizializing socket-side network...");
 		SocketListener socketListener = new SocketListener(9500);

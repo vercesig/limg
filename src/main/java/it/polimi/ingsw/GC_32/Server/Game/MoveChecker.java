@@ -24,9 +24,13 @@ public class MoveChecker{
     }
     
    public boolean checkFamiliarMove(Game game, Board board, Player player, Action action){
+	   if(action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()){
+		   return true;
+	   }else{
 	   return (MoveUtils.familyColor(board, player, action) &&
 			   MoveUtils.isFreeSingleSpace(board, player, action) &&
 			   !MoveUtils.checkBlockedZone(game.getPlayerList().size(), action));
+	   }
    }
    
    public boolean checkActionSpaceCost(Board board, Player player, Action action){
