@@ -7,12 +7,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-
+import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class AskActDialog extends Context{
@@ -109,57 +111,49 @@ public class AskActDialog extends Context{
 				break;
 			default:
 				actionType = "TOWER";
-				
+
 				actionFlag = true;
 				
 				System.out.println("Development card on this tower layer: ");
-				try {
-					Reader json = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("cards.json"));
-					cardName = this.client.getBoard().getRegionList().get(regionID)
-							.getActionSpaceList().get(spaceID).getCardName();
-					JsonValue card = JsonImporter.importSingleCard(json, cardName);
-							
-					System.out.println(card);
+				
+				cardName = this.client.getBoard().getRegionList().get(regionID)
+						.getActionSpaceList().get(spaceID).getCardName();
+											
+				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
+				System.out.println(card);
+				
+				JsonArray costList = card.get("cost").asArray();
+				if(costList.size() == 1){
+					actionFlag = false;
+					break;
+				}
+				System.out.println("Choose one cost of the card: ");
+				for(JsonValue js : costList){
+						System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
+					}
+				
+				System.out.println("type 0 or 1");
+				
+				while(actionFlag){
+					command = in.nextLine();
+					
 					try{
-						JsonArray costList = card.asObject().get("cost").asArray();
-						if(costList.size() == 1){
+						if(Integer.parseInt(command) == 0){
+							indexCost = 0;
+							actionFlag = false;
+							break;
+						}	
+						if(Integer.parseInt(command) == 1){
+							indexCost = 1;
 							actionFlag = false;
 							break;
 						}
-						System.out.println("Choose one cost of the card: ");
-						for(JsonValue js : costList){
-							System.out.print("> ");	
-							System.out.println(new ResourceSet(js.asObject()).toString() + " ");
-							}
+						else
+							System.out.println("please, type a valid number");
+					} catch(NumberFormatException e){
+						System.out.println("type a valid number");
 					}
-					catch(IndexOutOfBoundsException | NullPointerException e){
-						break;
-					}
-					System.out.println("type 0 or 1");
-					
-					while(actionFlag){
-						command = in.nextLine();
-						
-						try{
-							if(Integer.parseInt(command) == 0){
-								indexCost = 0;
-								actionFlag = false;
-								break;
-							}	
-							if(Integer.parseInt(command) == 1){
-								indexCost = 1;
-								actionFlag = false;
-								break;
-							}
-							else
-								System.out.println("please, type a valid number");
-						} catch(NumberFormatException e){
-							System.out.println("type a valid number");
-						}
-					}	
-				} catch (IOException e1) {
-					LOGGER.log(Level.FINEST, "Could Not load cards", e1);
-				}
+				}	
 				break;
 			}	
 			
@@ -184,7 +178,7 @@ public class AskActDialog extends Context{
 				}
 			}
 		}
-						
+	
 		System.out.println("action sent to the server... waiting for response");
 		
 		return ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName);

@@ -281,12 +281,16 @@ public class MainClient{
 						break;
 						
 					case "ACTCHK":
+						System.out.println("ACTCHK\n"+messagePayload.get("RESULT").asBoolean());
 						boolean result = messagePayload.get("RESULT").asBoolean();
 						if(!result){
 							client.graphicInterface.displayMessage("> THE ACTION IS NOT VALID!\n "
 												+ "please type a valid action.");
 						}
 						else{
+							if(!messagePayload.get("BONUSACTION").asBoolean())
+								client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+							
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
 
 							for(int k=0; k<client.getPlayers().get(client.getUUID()).getTrack().length; k++){

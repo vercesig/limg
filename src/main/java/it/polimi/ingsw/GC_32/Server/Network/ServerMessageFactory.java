@@ -302,7 +302,7 @@ public class ServerMessageFactory {
 			payload.add("RESULT", true);
 			payload.add("REGIONID", action.getRegionId());
 			payload.add("SPACEID", action.getActionSpaceId());
-			payload.add("FAMILYMEMBER_ID", action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt());
+			payload.add("BONUSACTION", action.getAdditionalInfo().get("BONUSFLAG").asBoolean());
 			payload.add("ACTIONTYPE", action.getActionType());
 		}
 		else

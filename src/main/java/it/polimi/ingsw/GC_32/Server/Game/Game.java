@@ -232,6 +232,7 @@ public class Game implements Runnable{
 						action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
 						action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
 						action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
+						action.getAdditionalInfo().add("BONUSFLAG", Json.value(false));
 						
 						Player player = playerList.get(index);
 						memoryAction.put(player.getUUID(), action);
@@ -524,27 +525,32 @@ public class Game implements Runnable{
 				}
 				if(!card.getInstantEffect().isEmpty()){
 					card.getInstantEffect().forEach(effect -> {
-						System.out.println("***************************** effetto istantaneo attivato");
 						effect.apply(board, player, action, cm); // only ACTION effect doesn't close the context
 						JsonValue effectAction = cm.waitForContextReply();
-						System.out.println("**************************** dopo effetoo istantaneo");
-						
-						int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()));
-						int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
-	
-						int regionID = effectAction.asObject().get("REGIONID").asInt();
-						int spaceID = effectAction.asObject().get("SPACEID").asInt();
-						String actionType = effectAction.asObject().get("ACTIONTYPE").asString();
-	
-						Action bonusAction = new Action(actionType,actionValue,regionID,spaceID);
-						action.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt());
-						action.getAdditionalInfo().add("BONUSFLAG", Json.value(true));
-						action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
-						
-						Player bonusPlayer = playerList.get(index);
-						
-						
-						
+						cm.setContextAck(true, player);
+						if(!(effectAction==null)){
+							int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(UUID.fromString(effectAction.asObject().get("PLAYERID").asString())));
+							int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
+		
+							int regionID = effectAction.asObject().get("REGIONID").asInt();
+							int spaceID = effectAction.asObject().get("SPACEID").asInt();
+							String actionType = effectAction.asObject().get("ACTIONTYPE").asString();
+		
+							Action bonusAction = new Action(actionType,actionValue,regionID,spaceID);
+							bonusAction.setAdditionalInfo(new JsonObject());
+							bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));							
+							bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
+							//action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
+							
+							Player bonusPlayer = playerList.get(index);
+				    		if(mv.checkMove(this, bonusPlayer, bonusAction, cm)){
+				    			makeMove(bonusPlayer, bonusAction);
+				    			// notifiche server
+				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, true));
+				    		} else {
+			    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, false));
+				    		}						
+						}
 					});
 				}
 				break;
