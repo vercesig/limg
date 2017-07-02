@@ -10,21 +10,18 @@ public class ExcommunicationContext extends Context{
 		super(client);
 	}
 	
-	private boolean excommunicationFlag;
-	
 	public String open(Object object){
-		
-		runFlag = true;
-		
+			
 		JsonObject JsonPayload = (JsonObject) object;
 		int playerFaithPoints = JsonPayload.get("PLAYER_FAITH").asInt();
 		int faithPointsNeeded = JsonPayload.get("FAITH_NEEDED").asInt();
 		
 		System.out.println("\n >You have "+playerFaithPoints+ " faith points.\nFor this period "+faithPointsNeeded+" are required to support the Church.\n"
 				+ "you can choose if support it, and spend all your faith points, or to not support it. In this case you whill suffer the excommunication"
-				+ " of this period.\nType 'y' if you want to support the church, 'n' if you don't want to support it");
+				+ " of this period.\n");
 		
-		while(runFlag){
+		while(true){
+			System.out.println("Type 'y' if you want to support the church, 'n' if you don't want to support it");			
 			command = in.nextLine();
 			switch(command){
 			case "y":
@@ -34,19 +31,14 @@ public class ExcommunicationContext extends Context{
 					break;
 				}
 				System.out.println("\n>The Pope is really happy with you.\n May God bless you!\n");
-				excommunicationFlag = false;
-				close();
-				break;
+				return ClientMessageFactory.buldSENDPOPEmessage(client.getGameUUID(), client.getPlayerUUID(), false, faithPointsNeeded);
 			case "n":
 				System.out.println("\n>The Pope is really angry with you.\n\nYOU HAVE BEEN EXCOMMUNICATED!!!");
-				excommunicationFlag = true;
-				close();
-				break;
+				return ClientMessageFactory.buldSENDPOPEmessage(client.getGameUUID(), client.getPlayerUUID(), true, faithPointsNeeded);
 			default:
 				System.out.println("type a valid command");
 				break;
 			}		
-		}
-		return ClientMessageFactory.buldSENDPOPEmessage(client.getGameUUID(), client.getPlayerUUID(), excommunicationFlag, faithPointsNeeded);
+		}	
 	}
 }

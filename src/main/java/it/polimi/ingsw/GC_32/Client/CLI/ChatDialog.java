@@ -74,7 +74,7 @@ public class ChatDialog extends Context {
 					}		
 					runFlag = false;
 				}
-				if(command.equals("quit")){
+				if("quit".equals(command)){
 					System.out.println("[!] Exiting from the chat.\n\n");
 					return;
 				}
@@ -132,7 +132,7 @@ public class ChatDialog extends Context {
 				switch(command){
 				case("change"):
 					System.out.println("You decided to change your name.");
-					runFlag = false;;
+					runFlag = false;
 					break;
 				case("quit"):
 					System.out.println("Exiting from this section");

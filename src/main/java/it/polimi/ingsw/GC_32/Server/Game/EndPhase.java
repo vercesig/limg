@@ -21,14 +21,12 @@ public class EndPhase {
 	public static int countBuildingCost(ResourceSet cost){
 		int wood = 0;
 		int stone = 0;
-		try{
+		if(Integer.valueOf(cost.getResource("WOOD"))!=null)
 			wood = cost.getResource("WOOD");
-		}
-		catch(NullPointerException e){}
-		try{
+
+		if(Integer.valueOf(cost.getResource("STONE"))!=null)
 			stone = cost.getResource("STONE");
-		}
-		catch(NullPointerException e){}
+
 		return wood + stone;
 	}
 	

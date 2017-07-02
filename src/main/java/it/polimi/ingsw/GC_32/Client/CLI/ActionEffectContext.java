@@ -5,7 +5,6 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
-import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ActionEffectContext extends Context{
@@ -30,8 +29,6 @@ public class ActionEffectContext extends Context{
 			bonusResource = new ResourceSet(Jsonpayload.get("BONUSRESOURCE").asObject());
 		
 		boolean flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
-		
-		String playerUUID = client.getPlayerUUID();
 		
 		payload.remove("TYPE");
 		payload.remove("REGIONID");
@@ -99,7 +96,6 @@ public class ActionEffectContext extends Context{
 				
 				JsonArray costList = card.get("cost").asArray();
 				if(costList.size() == 1){
-					actionFlag = false;
 					break;
 				}else{
 					System.out.println("Choose one cost of the card: ");
@@ -112,13 +108,11 @@ public class ActionEffectContext extends Context{
 						
 						try{
 							if(Integer.parseInt(command) == 0){
-								indexCost = 0;
-								actionFlag = false;
+								indexCost = 0;;
 								break;
 							}	
 							if(Integer.parseInt(command) == 1){
 								indexCost = 1;
-								actionFlag = false;
 								break;
 							}
 							else
@@ -137,11 +131,9 @@ public class ActionEffectContext extends Context{
 					command = in.nextLine();
 					switch(command){
 					case "y":
-						actionFlag = false;
 						close();
 						break;
 					case "n":
-						actionFlag = false;
 						break;
 					default:
 						System.out.println("please, type a valid letter");

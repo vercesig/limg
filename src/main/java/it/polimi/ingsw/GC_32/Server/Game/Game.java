@@ -173,7 +173,7 @@ public class Game implements Runnable{
 							//setto la lista
 							leaderHandler.setList(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()), json);
 							int index = leaderHandler.getIndex(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()))+1;
-							LOGGER.info("TURNO: " + leaderHandler.getTurn() + "\nPlayerIndice: " + (index -1));
+							LOGGER.log(Level.INFO, "TURNO: %d\nPlayerIndice: %d", new Object[]{leaderHandler.getTurn(), (index -1)});
 							
 							if(index < playerList.size()){   						///STACK 1
 								setLock(playerList.get(index).getUUID());
@@ -190,6 +190,7 @@ public class Game implements Runnable{
 								leaderHandler.setInactive();
 								break;
 							}
+							break;
 						default:
 						    break;
 						}
@@ -281,7 +282,7 @@ public class Game implements Runnable{
 						else{
 							LOGGER.info("Sostegno alla Chiesa!");
 							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							LOGGER.info("Punti Fede Giocatore: " + faithScore);
+							LOGGER.log(Level.INFO, "Punti Fede Giocatore: %d" ,faithScore);
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
@@ -297,7 +298,7 @@ public class Game implements Runnable{
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
-							LOGGER.info("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
+							LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %d" ,victoryPointsConverted);
 							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	

@@ -34,7 +34,7 @@ public class ClientCardRegistry {
 			cardList.forEach(item -> addCard(item));
 		} 
 		catch (IOException e) {}
-	};
+	}
 	
 	private Reader getReader(String path){
 		return  new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path));

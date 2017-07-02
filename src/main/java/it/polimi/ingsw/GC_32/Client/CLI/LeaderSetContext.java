@@ -33,19 +33,19 @@ public class LeaderSetContext extends Context{
 		System.out.println("type the index of the card you want to get");
 		while(!optionSelected){	
 			try{
-					command = in.nextLine();	
-					
-					if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=3){
-						if(cardList.size()<Integer.parseInt(command)){
-							System.out.println("type a valid index");
-							break;
-						} 
-						index = Integer.parseInt(command);
-						System.out.println("You choose the card: " +cardList.get(index));
-						optionSelected = true;
-					}else{
+				command = in.nextLine();	
+				
+				if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<cardList.size()){
+					if(cardList.size()<Integer.parseInt(command)){
 						System.out.println("type a valid index");
-					}
+						break;
+					} 
+					index = Integer.parseInt(command);
+					System.out.println("You choose the card: " +cardList.get(index));
+					optionSelected = true;
+				}else{
+					System.out.println("type a valid index");
+				}
 			}catch(NumberFormatException e) {
 				System.out.println("type a number, please");
 				}

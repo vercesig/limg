@@ -177,7 +177,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	}
     	boolean result = true;
     	for(String resourceName : otherresource){
-    		result = result & thisresource.contains(resourceName);
+    		result = result && thisresource.contains(resourceName);
     	}
     	return result;
     	

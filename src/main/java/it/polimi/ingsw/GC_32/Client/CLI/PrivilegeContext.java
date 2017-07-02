@@ -30,10 +30,10 @@ public class PrivilegeContext extends Context{
 		ResourceSet cost = null;
 		boolean isCostPrivilege = false;
 		
-		try{
+		if(JsonPayload.get("COST")!=null){
 			cost = new ResourceSet(JsonPayload.get("COST").asObject());
 			isCostPrivilege = true;
-		}catch(NullPointerException e){}
+		}
 		
 		JsonObject CONTEXTREPLY = new JsonObject();
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
@@ -58,7 +58,7 @@ public class PrivilegeContext extends Context{
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
-			if(command.equals("n")&&isCostPrivilege){
+			if("n".equals(command)&&isCostPrivilege){
 				choosedResources.add(command);
 				//sendQueue.add(CONTEXTREPLY.toString());
 				//close();

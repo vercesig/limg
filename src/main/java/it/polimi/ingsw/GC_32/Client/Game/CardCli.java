@@ -10,7 +10,7 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class CardCli {
 	
-	public CardCli() {};
+	public CardCli() {}
 	
 	private static void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
 		for(int i=0; i<howManyTimes; i++){
@@ -134,7 +134,7 @@ public class CardCli {
 				if(req.get("CARDTYPE")!= null){
 					for (Member item: req.get("CARDTYPE").asObject()){
 						tmp.append(item.getName() + ": " + item.getValue().asInt());
-					};
+					}
 				}
 				requirements = "requirements: " + new String(tmp);
 			}
