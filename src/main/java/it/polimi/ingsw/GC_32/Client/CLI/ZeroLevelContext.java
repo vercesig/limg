@@ -53,7 +53,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 			case "chat room":
 				try {
 					chatRoom.openChat();
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				    Thread.currentThread().interrupt();
+				}
 				break;
 				
 			case "leader":

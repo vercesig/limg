@@ -32,8 +32,8 @@ public class TurnManagerTest{
 	
 	@Test
 	public void checkConstructor(){
-		assertEquals(1, turnManager.getTurnID());
+		assertEquals(0, turnManager.getTurnID());
 		assertEquals(0, turnManager.getRoundID());
-		assertEquals(0, turnManager.getPeriod());
+		assertEquals(1, turnManager.getPeriod());
 	}
 }

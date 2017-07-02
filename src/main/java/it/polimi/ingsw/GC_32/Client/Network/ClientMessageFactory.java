@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.Network;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 

@@ -10,7 +10,7 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class CardCli {
 	
-	public CardCli() {};
+	private CardCli(){}
 	
 	private static void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
 		for(int i=0; i<howManyTimes; i++){

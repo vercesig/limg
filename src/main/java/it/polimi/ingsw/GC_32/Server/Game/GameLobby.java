@@ -27,7 +27,7 @@ public class GameLobby implements KillableRunnable{
         LOGGER.log(Level.INFO, "GameLobby start, waiting for players");
         while(!stop){
             if(GameRegistry.getInstance().getConnectedPlayers().size()>=MIN_PLAYERS){
-                LOGGER.log(Level.INFO, "minimum number of players ("+MIN_PLAYERS+") achieved.");
+                LOGGER.log(Level.INFO, "minimum number of players (%s) achieved.", MIN_PLAYERS);
                 LOGGER.log(Level.INFO, "timeout started, waiting for other players");
                 long startTimeoutTime = System.currentTimeMillis();
                 while(true){
@@ -36,7 +36,7 @@ public class GameLobby implements KillableRunnable{
                         break;
                     }
                     if(GameRegistry.getInstance().getConnectedPlayers().size()==MAX_PLAYERS){
-                        LOGGER.log(Level.INFO, "maximum number of players ("+MAX_PLAYERS+") achieved. timeout stopped");
+                        LOGGER.log(Level.INFO, "maximum number of players (%s) achieved. timeout stopped", MAX_PLAYERS);
                         break;
                     }
                     try {
@@ -51,7 +51,7 @@ public class GameLobby implements KillableRunnable{
         UUID newGameId = UUID.randomUUID();
         game = new Game(GameRegistry.getInstance().getConnectedPlayers(), newGameId);
         GameRegistry.getInstance().registerGame(game);
-        LOGGER.log(Level.INFO, "new game created with "+game.getPlayerList().size()+" players");
+        LOGGER.log(Level.INFO, "new game created with %s players", game.getPlayerList().size());
         LOGGER.log(Level.INFO, "launching game thread");
         Thread gameThread = new Thread(game);
         gameThread.start();

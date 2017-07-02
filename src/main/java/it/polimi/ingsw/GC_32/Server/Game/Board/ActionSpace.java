@@ -211,9 +211,11 @@ public class ActionSpace{
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("// "+ regionID +" //" + " [" + actionSpaceID + " ]" + "*" + actionValue + " \n");
-		try{
-		tmp.append(bonus.toString());
-		} catch(NullPointerException e){ tmp.append("null\n");}
+		if(bonus != null){
+		    tmp.append(bonus.toString());
+		} else {
+		    tmp.append("null\n");
+		}
 		return new String(tmp);
 	}
 	

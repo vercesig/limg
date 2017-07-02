@@ -78,6 +78,10 @@ public class ResourceSet implements Comparable<ResourceSet> {
     	this.addResource(resourceName, -quantity);
     }
     
+    public boolean hasResource(String resourceName){
+        return this.resourceSet.containsKey(resourceName);
+    }
+    
     public JsonObject toJson(){
     	JsonObject resource = new JsonObject();
     	for(String key : this.getResourceSet().keySet()){
@@ -167,20 +171,8 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
     
     public boolean contains(ResourceSet resource){
-    	HashSet<String> thisresource = new HashSet<String>();
-    	HashSet<String> otherresource = new HashSet<String>();
-    	for(Entry<String, Integer> item : this.getResourceSet().entrySet()){
-    		thisresource.add(item.getKey());
-    	}
-    	for(Entry<String, Integer> item : resource.getResourceSet().entrySet()){
-    		otherresource.add(item.getKey());
-    	}
-    	boolean result = true;
-    	for(String resourceName : otherresource){
-    		result = result & thisresource.contains(resourceName);
-    	}
-    	return result;
-    	
+        return this.resourceSet.keySet()
+                               .containsAll(resource.getResourceSet().keySet());
     }
 	
 }

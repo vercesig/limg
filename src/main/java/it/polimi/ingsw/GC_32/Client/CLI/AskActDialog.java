@@ -1,9 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
@@ -14,8 +10,6 @@ import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
-import it.polimi.ingsw.GC_32.Server.Setup.JsonImporter;
 
 public class AskActDialog extends Context{
 

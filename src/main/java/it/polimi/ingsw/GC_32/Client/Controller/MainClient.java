@@ -14,6 +14,7 @@ import com.eclipsesource.json.JsonObject.Member;
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
+import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Client.Network.SocketMsgConnection;
@@ -103,6 +104,7 @@ public class MainClient{
 		
 		MainClient client = new MainClient();
 		Scanner in = new Scanner(System.in);
+		ClientCardRegistry.getInstance().init();
 		
 		
 		System.out.println("welcome in LORENZO IL MAGNIFICO\n");
@@ -136,7 +138,7 @@ public class MainClient{
 					JsonObject JsonMessage = Json.parse(message).asObject();					
 					JsonMessage.add("GameID", client.gameUUID);
 					
-					if(JsonMessage.get("MESSAGETYPE").asString().equals("ASKACT")){
+					if("ASKACT".equals(JsonMessage.get("MESSAGETYPE").asString())){
 						client.actionRunningFlag=false;
 					}
 					

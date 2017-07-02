@@ -35,7 +35,7 @@ public class ShowCardDialog extends Context{
 				
 				while(!optionSelected){
 					command = in.nextLine();
-					if(command.equals("q")){
+					if("q".equals(command)){
 						optionSelected = true;
 					}
 					try{

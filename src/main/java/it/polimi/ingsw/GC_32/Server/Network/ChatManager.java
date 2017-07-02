@@ -22,7 +22,9 @@ public class ChatManager implements KillableRunnable{
 			GameMessage message = null;
 			try{
 				message = queue.take();
-			} catch(InterruptedException e){}
+			} catch(InterruptedException e){
+			    Thread.currentThread().interrupt();
+			}
 			if(message != null){
 				switch(message.getOpcode()){
 					case "CHGNAME":
@@ -32,6 +34,8 @@ public class ChatManager implements KillableRunnable{
 						message.setBroadcast();
 						MessageManager.getInstance().sendMessge(message);
 						break;
+					default:
+					    break;
 				}
 			}
 		}

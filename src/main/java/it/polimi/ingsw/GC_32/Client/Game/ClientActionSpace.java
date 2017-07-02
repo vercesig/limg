@@ -90,9 +90,9 @@ public class ClientActionSpace {
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("regionID :"+this.regionID+"\nactionSpaceID :"+this.actionSpaceID+"\nactionValue :"
 				+this.actionValue+"\nsingleFlag :"+this.single+"\nblocked :" + this.blocked);
-		try{
+		if(bonus != null){
 			tmp.append("bonus :"+bonus.toString()+"\n");
-		}catch(NullPointerException e){
+		} else {
 			tmp.append("no bonus\n");
 		}
 		tmp.append("occupants :");

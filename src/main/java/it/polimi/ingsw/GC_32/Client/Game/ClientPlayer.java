@@ -41,7 +41,7 @@ public class ClientPlayer {
 	public void setName(String name){
 		this.name = name;
 		for(int i=0; i<familyMembers.length; i++){
-			familyMembers[i].setName(name);;
+			familyMembers[i].setName(name);
 		}
 	}
 	
