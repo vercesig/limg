@@ -61,7 +61,7 @@ public class ShowCardDialog extends Context{
 			}
 			case("region"):	{
 				int regionID = 4;
-				int spaceID = 0;
+				int spaceID;
 				System.out.println("type the regionID of the card yo want to see\n[4-7]");
 				boolean optionSelected = false;
 				
@@ -82,8 +82,7 @@ public class ShowCardDialog extends Context{
 				while(!optionSelected){	
 					System.out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
 					command = in.nextLine();	
-					if(command.equals("q")){
-						optionSelected = true;
+					if("q".equals(command)){
 						break;
 					}	
 					try{
@@ -128,7 +127,7 @@ public class ShowCardDialog extends Context{
 				System.out.println(stringList.toString());
 				while(!optionSelected){
 					command = in.nextLine();
-					if(command.equals("q")){
+					if("q".equals(command)){
 						break;
 					}
 					try{

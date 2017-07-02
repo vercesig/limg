@@ -165,31 +165,31 @@ public class Game implements Runnable{
 					if(message != null){
 						JsonObject jsonMessage = message.getMessage().asObject();
 						switch(message.getOpcode()){
-    						case "LDRSET":
-    							JsonArray json = jsonMessage.get("LIST").asArray();
-    							//setto la lista
-    							leaderHandler.setList(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()), json);
-    							int index = leaderHandler.getIndex(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()))+1;
-    							LOGGER.log(Level.INFO, "TURNO: {}\nPlayerIndice: {}", new Object[]{leaderHandler.getTurn(), (index -1)});
-    							
-    							if(index < playerList.size()){   						///STACK 1
-    								setLock(playerList.get(index).getUUID());
-    								leaderHandler.leaderPhase(playerList.get(index));
-    								break;
-    							}
-    							if(index == playerList.size() && leaderHandler.getTurn() < 3 ){   /// STACK 2
-    								leaderHandler.addTurn();
-    								setLock(playerList.get(0).getUUID());
-    								leaderHandler.leaderPhase(playerList.get(0)); // ricomincia con il primo
-    								break;
-    							}
-    							if(index == playerList.size() && leaderHandler.getTurn() == 3){  // sono 4 turni per 4 carte
-    								leaderHandler.setInactive();
-    								break;
-    							}
-    							break;
-    						default:
-    						    break;
+						case "LDRSET":
+							JsonArray json = jsonMessage.get("LIST").asArray();
+							//setto la lista
+							leaderHandler.setList(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()), json);
+							int index = leaderHandler.getIndex(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID()))+1;
+							LOGGER.log(Level.INFO, "TURNO: %d\nPlayerIndice: %d", new Object[]{leaderHandler.getTurn(), (index -1)});
+							
+							if(index < playerList.size()){   						///STACK 1
+								setLock(playerList.get(index).getUUID());
+								leaderHandler.leaderPhase(playerList.get(index));
+								break;
+							}
+							if(index == playerList.size() && leaderHandler.getTurn() < 3 ){   /// STACK 2
+								leaderHandler.addTurn();
+								setLock(playerList.get(0).getUUID());
+								leaderHandler.leaderPhase(playerList.get(0)); // ricomincia con il primo
+								break;
+							}
+							if(index == playerList.size() && leaderHandler.getTurn() == 3){  // sono 4 turni per 4 carte
+								leaderHandler.setInactive();
+								break;
+							}
+							break;
+						default:
+						    break;
 						}
 					}
 				}
@@ -237,14 +237,14 @@ public class Game implements Runnable{
 						
 						LOGGER.info("INIZIO CHECK: ");
 						LOGGER.info("STATO PRIMA DELL'ESECUZIONE:");
-						LOGGER.info(() -> action.toString());
-						LOGGER.info(() -> player.toString());
+						LOGGER.info(action.toString());
+						LOGGER.info(player.toString());
 			    		if(mv.checkMove(this, player, action, cm)){
 			    			LOGGER.info("check with copy: PASSATO");
 			    			makeMove(player, action);
 			    			LOGGER.info("AZIONE ESEGUITA!\n");
 							LOGGER.info("STATO DOPO AZIONE: ");
-			    			LOGGER.info(() -> player.toString());
+			    			LOGGER.info(player.toString());
 			    			
 			    			// notifiche server
 			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
@@ -278,7 +278,7 @@ public class Game implements Runnable{
 						else{
 							LOGGER.info("Sostegno alla Chiesa!");
 							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
+							LOGGER.info("Punti Fede Giocatore: " + faithScore);
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
@@ -292,7 +292,7 @@ public class Game implements Runnable{
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
-							LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
+							LOGGER.info("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
 							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	
@@ -300,14 +300,14 @@ public class Game implements Runnable{
 					case "ASKLDRACT":
 						String cardName = jsonMessage.get("LEADERCARD").asString();
 						String decision = jsonMessage.get("DECISION").asString();
-						LOGGER.log(Level.INFO, "LEADERCARD: %s", cardName);
-						LOGGER.log(Level.INFO, "DECISION: %s", decision);
+						LOGGER.info("LEADERCARD: " +cardName);
+						LOGGER.info("DECISION:" + decision);
 						Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
 						boolean result;
 						if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
 							LOGGER.info("ATTIVATO!");
 							result = true;
-							if("DISCARD".equals(decision)){	//GUADAGNA UN PRIVILEGIO
+							if(decision.equals("DISCARD")){	//GUADAGNA UN PRIVILEGIO
 								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
 								JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 								
@@ -363,64 +363,59 @@ public class Game implements Runnable{
 						}	
 						try{ // wait for TRNBGN message
 							Thread.sleep(500);
-						} catch(InterruptedException e){
-						    Thread.currentThread().interrupt();
-						}
+						}catch(InterruptedException e){}
 						
-    					if(turnManager.DoesPopeWantToSeeYou()){	
-    						LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
-    						int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 
-    						
-    						Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
-    						MessageManager.getInstance().sendMessge(ServerMessageFactory
-    										  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
-    												excommunicationLevel,
-    						pl.getResources().getResource("FAITH_POINTS")));
-    
-    						turnManager.goodbyePope();	
-    					}
-    					
-    					if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){
-    						
-    						// reset board
-    						getBoard().flushBoard();
-    						getBoard().placeCards(this);
-    						diceRoll();
-    						turnManager.setToUpdate(false);
-    						
-    						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
-    						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
-    						getPlayerList().forEach(gamePlayer -> {
-    							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
-    						});
-    						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
-    						
-    						try{ // wait for TRNBGN message
-    						    Thread.sleep(500);
-    						}catch(InterruptedException e){
-    						    Thread.currentThread().interrupt(); 
-    						}
-    					}
+					if(turnManager.DoesPopeWantToSeeYou()){	
+						LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
+						int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 
+						
+						Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+						MessageManager.getInstance().sendMessge(ServerMessageFactory
+										  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
+												excommunicationLevel,
+						pl.getResources().getResource("FAITH_POINTS")));
+
+						turnManager.goodbyePope();	
+					}
 					
-    					LOGGER.log(Level.INFO, "giving lock to the next player");
-    					UUID nextPlayer = turnManager.nextPlayer();
-    							
-    					/*	//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
-    					for(int i = 0; i < this.playerList.size(); i++){
-    						if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
-    														  .isFlagged("SKIPTURN")){
-    							break;
-    						}
-    						nextPlayer = turnManager.nextPlayer();
-    					}*/
-    					
-    					setLock(nextPlayer);
-    					LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-    					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
-    					break;
-    				default:
-    				    break;
+					if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){
+						
+						// reset board
+						getBoard().flushBoard();
+						getBoard().placeCards(this);
+						diceRoll();
+						turnManager.setToUpdate(false);
+						
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
+						getPlayerList().forEach(gamePlayer -> {
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
+						});
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
+						
+						try{ // wait for TRNBGN message
+						    Thread.sleep(500);
+						}catch(InterruptedException e){
+						    Thread.currentThread().interrupt(); 
+						}
+					}	
 					
+					LOGGER.log(Level.INFO, "giving lock to the next player");
+					UUID nextPlayer = turnManager.nextPlayer();
+							
+					/*	//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
+					for(int i = 0; i < this.playerList.size(); i++){
+						if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
+														  .isFlagged("SKIPTURN")){
+							break;
+						}
+						nextPlayer = turnManager.nextPlayer();
+					}*/
+					
+					setLock(nextPlayer);
+					LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
+					break;
 				}
 			}
 		}
@@ -428,14 +423,14 @@ public class Game implements Runnable{
 	
 	public void makeMove(Player player, Action action){
 		
-		LOGGER.info(() -> Boolean.toString(contextInfoContainer.isEmpty()));
+		LOGGER.info(Boolean.valueOf(contextInfoContainer.isEmpty()).toString());
 		
-		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action);
+		LOGGER.info("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
 		MoveUtils.applyEffects(this.board, player, action, cm);
-		LOGGER.log(Level.INFO, "DOPO GLI EFFETTI PERMANENTI:\n%s", action);
-		LOGGER.log(Level.INFO, "PRIMA DEL BONUS:\n%s", player);
+		LOGGER.info("DOPO GLI EFFETTI PERMANENTI:\n" + action);
+		LOGGER.info("PRIMA DEL BONUS:\n" + player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
-		LOGGER.log(Level.INFO, "DOPO DEL BONUS:\n%s", player);
+		LOGGER.info("DOPO DEL BONUS:\n" + player);
 		if(!action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
 			moveFamiliar(this.board, player, action);
 		
@@ -504,12 +499,12 @@ public class Game implements Runnable{
 				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
 				JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 				
-				LOGGER.info(() -> COUNCILPRIVILEGEresponse.toString());
+				LOGGER.info(COUNCILPRIVILEGEresponse.toString());
 				
-				LOGGER.log(Level.INFO, "PRIMA DEL PRIVILEGE:\n%s", player);
+				LOGGER.info("PRIMA DEL PRIVILEGE:\n" + player);
 				player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-				LOGGER.log(Level.INFO, "DOPO DEL PRIVILEGE:\n%s", player);
+				LOGGER.info("DOPO DEL PRIVILEGE:\n" + player);
 				break;
 			case "MARKET":
 				if(action.getActionSpaceId() == 3){
@@ -525,7 +520,7 @@ public class Game implements Runnable{
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
 				
-				if("CHARACTERCARD".equals(card.getType()) && card.getPermanentEffect()!= null){
+				if(card.getType().equals("CHARACTERCARD") && card.getPermanentEffect()!= null){
 					card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
 					LOGGER.info("AGGIUNTO EFFETTO PERMANENTE");
 				}

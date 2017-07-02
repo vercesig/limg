@@ -30,8 +30,6 @@ public class ActionEffectContext extends Context{
 		
 		boolean flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
 		
-		String playerUUID = client.getPlayerUUID();
-		
 		payload.remove("TYPE");
 		payload.remove("REGIONID");
 		payload.remove("FLAGREGION");
@@ -98,7 +96,6 @@ public class ActionEffectContext extends Context{
 				
 				JsonArray costList = card.get("cost").asArray();
 				if(costList.size() == 1){
-					actionFlag = false;
 					break;
 				}else{
 					System.out.println("Choose one cost of the card: ");
@@ -111,13 +108,11 @@ public class ActionEffectContext extends Context{
 						
 						try{
 							if(Integer.parseInt(command) == 0){
-								indexCost = 0;
-								actionFlag = false;
+								indexCost = 0;;
 								break;
 							}	
 							if(Integer.parseInt(command) == 1){
 								indexCost = 1;
-								actionFlag = false;
 								break;
 							}
 							else
@@ -136,11 +131,9 @@ public class ActionEffectContext extends Context{
 					command = in.nextLine();
 					switch(command){
 					case "y":
-						actionFlag = false;
 						close();
 						break;
 					case "n":
-						actionFlag = false;
 						break;
 					default:
 						System.out.println("please, type a valid letter");

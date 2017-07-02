@@ -62,7 +62,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 				client.getSendQueue().add(leaderDialog.open(object));
 				try{ //waiting for other context
 					Thread.sleep(200);
-				}catch(InterruptedException e){}
+				}catch(InterruptedException e){
+					Thread.currentThread().interrupt();
+				}
 				break;	
 				
 			case "change name":
@@ -76,7 +78,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 						client.getSendQueue().add(response);
 					try{ //waiting for other context
 						Thread.sleep(200);
-					}catch(InterruptedException e){}
+					}catch(InterruptedException e){
+						Thread.currentThread().interrupt();
+					}
 				}else{
 					System.out.println("isn't your turn");
 				}

@@ -19,7 +19,7 @@ public class AskActDialog extends Context{
 		super(client);
 	}
 	
-	public String open(Object object) {
+	public String open(Object object){
 		
 		int familyMemberIndex = 0;
 		int regionID = 0;
@@ -29,8 +29,10 @@ public class AskActDialog extends Context{
 		String cardName = null;
 		
 		runFlag = true;
+		boolean sendFlag;
 	
 		while(runFlag){
+			sendFlag = true;
 			boolean actionFlag = true;
 			while(actionFlag){						
 				System.out.println("type the ID of the family member you want to place\n" +
@@ -112,65 +114,73 @@ public class AskActDialog extends Context{
 				
 				cardName = this.client.getBoard().getRegionList().get(regionID)
 						.getActionSpaceList().get(spaceID).getCardName();
-											
+								
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
-				System.out.println(card);
 				
-				JsonArray costList = card.get("cost").asArray();
-				if(costList.size() == 1){
-					actionFlag = false;
+				if(card==null){
+					System.out.println("no card on this tower layer");
+					sendFlag = false;
 					break;
 				}
-				System.out.println("Choose one cost of the card: ");
-				for(JsonValue js : costList){
-						System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
+				
+				System.out.println(card);
+				
+				if(card.get("cost") != null){
+					JsonArray costList = card.get("cost").asArray();
+					if(costList.size() == 1){
+						break;
 					}
-				
-				System.out.println("type 0 or 1");
-				
-				while(actionFlag){
-					command = in.nextLine();
-					
-					try{
-						if(Integer.parseInt(command) == 0){
-							indexCost = 0;
-							actionFlag = false;
-							break;
-						}	
-						if(Integer.parseInt(command) == 1){
-							indexCost = 1;
-							actionFlag = false;
-							break;
+					System.out.println("Choose one cost of the card: ");
+					for(JsonValue js : costList){
+							System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
 						}
-						else
-							System.out.println("please, type a valid number");
-					} catch(NumberFormatException e){
-						System.out.println("type a valid number");
-					}
-				}	
+					
+					System.out.println("type 0 or 1");
+					
+					while(actionFlag){
+						command = in.nextLine();						
+						try{
+							if(Integer.parseInt(command) == 0){
+								indexCost = 0;
+								break;
+							}	
+							if(Integer.parseInt(command) == 1){
+								indexCost = 1;
+								break;
+							}
+							else
+								System.out.println("please, type a valid number");
+						} catch(NumberFormatException e){
+							System.out.println("type a valid number");
+						}
+					}	
+				}
 				break;
 			}	
 			
-			System.out.println("action is ready to be sent to the server.\n" +
-							   "Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
-			
-			//TODO printare riassunto della mossa
-			
-			actionFlag = true;
-			while(actionFlag){
-				command = in.nextLine();
-				switch(command){
-				case "y":
-					actionFlag = false;
-					close();
-					break;
-				case "n":
-					actionFlag = false;
-					break;
-				default:
-					System.out.println("please, type a valid letter");
+			if(sendFlag){
+				System.out.println("action is ready to be sent to the server.\n" +
+						   "Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
+	
+				//TODO printare riassunto della mossa
+				
+				actionFlag = true;
+				while(actionFlag){
+					command = in.nextLine();
+					switch(command){
+					case "y":
+						actionFlag = false;
+						close();
+						break;
+					case "n":
+						actionFlag = false;
+						break;
+					default:
+						System.out.println("please, type a valid letter");
+					}
 				}
 			}
+			
 		}
 	
 		System.out.println("action sent to the server... waiting for response");
