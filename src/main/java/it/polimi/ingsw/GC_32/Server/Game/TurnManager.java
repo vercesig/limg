@@ -22,7 +22,7 @@ public class TurnManager {
 	public TurnManager(Game game){
 		LOGGER.log(Level.INFO, "tunrmanager inizialized");
 		
-		this.turnID = 1;
+		this.turnID = 0;
 		this.roundID = 0;
 		this.game = game;
 		this.turnOrderQueue = new LinkedList<UUID>();
@@ -73,6 +73,7 @@ public class TurnManager {
 			   	game.getPlayerList().size())) == 0){
 			LOGGER.log(Level.INFO, "updating turn order");
 			updateTurnOrder();
+			turnID=0;
 			roundID++;
 			return true;
 		}
@@ -110,17 +111,5 @@ public class TurnManager {
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			newTurnOrder.forEach(player -> turnOrderQueue.add(player.getUUID()));
 		}
-	}
-	
-	/**
-	 * solo per il turno finale
-	 * - i giocatori che non hanno i punti fede richiesti, dopo aver attivato
-	 *   gli effetti della scomunica, guadagnano tanti punti vittoria quanti
-	 *   i punti fede posseduti
-	 * - calcolo punteggio tenendo conto di eventuali scomuniche del terzo 
-	 *   periodo
-	 * 
-	 */
-	
-	
+	}	
 }
