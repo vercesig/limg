@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
+
 public class ZeroLevelContext extends Context implements Runnable{
 
 	private ShowCardDialog showCard;
@@ -30,7 +32,8 @@ public class ZeroLevelContext extends Context implements Runnable{
 					+ "- chat room: to chat with other players\n"
 					+ "- change name: to change the name of your playe\n"
 					+ "- leader: perform a special action leader\n"
-					+ "- action: make an action");
+					+ "- action: make an action\n"
+					+ "- end turn: to pass your turn");
 				
 			command = in.nextLine();
 			switch(command){
@@ -75,7 +78,10 @@ public class ZeroLevelContext extends Context implements Runnable{
 				}else{
 					System.out.println("isn't your turn");
 				}
-				break;	
+				break;
+			case "end turn":
+				client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.getGameUUID(), client.getPlayerList().get(client.getPlayerUUID()).getName()));	
+				break;
 			}
 		}
 		return null;

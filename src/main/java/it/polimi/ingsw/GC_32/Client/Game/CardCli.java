@@ -116,7 +116,7 @@ public class CardCli {
 		
 		ArrayList<String> cost = new ArrayList<>();
 		
-		if(!json.get("cost").isNull()){
+		if(json.get("cost")!= null){
 			for(JsonValue js : json.get("cost").asArray()){
 				cost.add(new ResourceSet(js.asObject()).toString());
 			}
@@ -124,11 +124,25 @@ public class CardCli {
 			cost.add("cost: none");
 		
 		String requirements;
-		try{
-			requirements = "requirements: " + new ResourceSet(json.get("requirements").asObject()).toString();
-		} catch(NullPointerException e){
-			requirements = "requirements: none";
+		if(json.get("requirements")!= null){
+		JsonObject req = json.get("requirements").asObject();
+			if(json.get("cost")== null){ // Carta Leader
+				StringBuilder tmp = new StringBuilder();
+				if(req.get("RESOURCE")!= null){
+					tmp.append(new ResourceSet(req.get("RESOURCE").asObject()).toString());
+				}
+				if(req.get("CARDTYPE")!= null){
+					for (Member item: req.get("CARDTYPE").asObject()){
+						tmp.append(item.getName() + ": " + item.getValue().asInt());
+					};
+				}
+				requirements = "requirements: " + new String(tmp);
+			}
+			else
+				requirements = "requirements:" + (new ResourceSet(req)).toString();
 		}
+		else
+			requirements = "requirements: none";
 		
 		ArrayList<String> effectInstant = new ArrayList<>();
 		ArrayList<String> InstantPayload = new ArrayList<>();
