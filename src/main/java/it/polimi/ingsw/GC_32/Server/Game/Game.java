@@ -263,7 +263,7 @@ public class Game implements Runnable{
 							
 							//ATTIVAZIONE CARTA SCOMUNICA
 							LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
-							ExcommunicationCard card = this.excommunicationCards[this.turnManager.getPeriod()];
+							ExcommunicationCard card = this.excommunicationCards[this.turnManager.getPeriod()-1]; // periodi sono shiftati di 1
 							LOGGER.info("Attivo effetto carta: " +card.getName());
 							
 							if(!card.getInstantEffect().isEmpty()){
@@ -342,76 +342,82 @@ public class Game implements Runnable{
 						
 						LOGGER.info("ricevo turn end [GAME]");
 						LOGGER.info("ROUND ID: "+ turnManager.getRoundID());
-						LOGGER.info("PERIOD ID: "+ turnManager.getRoundID()/2);
+						LOGGER.info("PERIOD ID: "+ turnManager.getPeriod());
 						LOGGER.info("TURN ID: "+ turnManager.getTurnID());
-						if(!turnManager.isGameEnd()){
-							LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
-							if(turnManager.isRoundEnd()){
-							//if(true){  DEBUG
-								LOGGER.log(Level.INFO, "round end");
-								
-								if(turnManager.isPeriodEnd()){
-							//	if(true){	DEBUG
-									LOGGER.log(Level.INFO, "period "+turnManager.getRoundID()/2+" finished");
-									int excommunicationLevel = 3 + turnManager.getTurnID()/2 -1 ; //calcolo punti fede richiesti 
-									
-									Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
-									MessageManager.getInstance().sendMessge(ServerMessageFactory
-													  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
-															excommunicationLevel,
-															pl.getResources().getResource("FAITH_POINTS")));
-
-									try{ // wait for TRNBGN message
-										Thread.sleep(500);
-									}catch(InterruptedException e){}
-										
-								}
-								// reset board
-								getBoard().flushBoard();
-								getBoard().placeCards(this);
-								diceRoll();
-								
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
-								getPlayerList().forEach(gamePlayer -> {
-									MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
-								});
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
-								
-								try{ // wait for TRNBGN message
-								    Thread.sleep(500);
-								}catch(InterruptedException e){
-								    Thread.currentThread().interrupt(); 
-								}
-								
-								LOGGER.log(Level.INFO, "giving lock to the next player");
-								UUID nextPlayer = turnManager.nextPlayer();
-								
-								//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
-								for(int i = 0; i < this.playerList.size(); i++){
-									if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
-																	  .isFlagged("SKIPTURN")){
-										break;
-									}
-									nextPlayer = turnManager.nextPlayer();
-								}
-								setLock(nextPlayer);
-								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-								// ask action
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
-							}else{
-								LOGGER.log(Level.INFO, "giving lock to the next player");
-								setLock(turnManager.nextPlayer());
-								LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-								// ask action
-								MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
-							}
-						} else {
-							LOGGER.log(Level.INFO, "game end");
+						
+						if(turnManager.isGameEnd()){
+							LOGGER.log(Level.INFO, "Game end");
 							EndPhase.endGame(this);
 							//stopGame();
+							break;
+						}	
+							
+						LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
+						if(turnManager.isRoundEnd()){ // cambio round
+							
+							System.out.println("ROUND FINITO!");
+							LOGGER.log(Level.INFO, "round end");
+							if(turnManager.isPeriodEnd()){ //cambio periodo
+								System.out.println("PERIODO FINITO!");
+								this.turnManager.distributeVaticanReport();
+							}		
+							turnManager.setToUpdate(true);
+						}	
+						try{ // wait for TRNBGN message
+							Thread.sleep(500);
+						}catch(InterruptedException e){}
+						
+					if(turnManager.DoesPopeWantToSeeYou()){	
+						LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
+						int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 
+						
+						Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+						MessageManager.getInstance().sendMessge(ServerMessageFactory
+										  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
+												excommunicationLevel,
+						pl.getResources().getResource("FAITH_POINTS")));
+
+						turnManager.goodbyePope();	
+					}
+					
+					if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){
+						
+						// reset board
+						getBoard().flushBoard();
+						getBoard().placeCards(this);
+						diceRoll();
+						turnManager.setToUpdate(false);
+						
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
+						getPlayerList().forEach(gamePlayer -> {
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
+						});
+						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
+						
+						try{ // wait for TRNBGN message
+						    Thread.sleep(500);
+						}catch(InterruptedException e){
+						    Thread.currentThread().interrupt(); 
 						}
-						break;
+					}	
+					
+					LOGGER.log(Level.INFO, "giving lock to the next player");
+					UUID nextPlayer = turnManager.nextPlayer();
+							
+					/*	//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
+					for(int i = 0; i < this.playerList.size(); i++){
+						if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
+														  .isFlagged("SKIPTURN")){
+							break;
+						}
+						nextPlayer = turnManager.nextPlayer();
+					}*/
+					
+					setLock(nextPlayer);
+					LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
+					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
+					break;
 				}
 			}
 		}

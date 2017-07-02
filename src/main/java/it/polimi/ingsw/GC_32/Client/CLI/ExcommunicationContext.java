@@ -20,7 +20,7 @@ public class ExcommunicationContext extends Context{
 		int playerFaithPoints = JsonPayload.get("PLAYER_FAITH").asInt();
 		int faithPointsNeeded = JsonPayload.get("FAITH_NEEDED").asInt();
 		
-		System.out.println("\n >You have "+playerFaithPoints+ " faith points.\nFor this period "+faithPointsNeeded+" are required to support the Church.\n"
+		System.out.println("\n >You have "+playerFaithPoints+ " faith points.\nFor this period you need to spend "+faithPointsNeeded+" to support the Church.\n"
 				+ "you can choose if support it, and spend all your faith points, or to not support it. In this case you whill suffer the excommunication"
 				+ " of this period.\nType 'y' if you want to support the church, 'n' if you don't want to support it");
 		
@@ -31,6 +31,8 @@ public class ExcommunicationContext extends Context{
 				if(playerFaithPoints<faithPointsNeeded){
 					System.out.println("\n>Sorry, but unfortunately you don't have enough faith points.\n"
 							+ "You should type: n\nI hope the excommunicate card won't be a serious problem for you...");
+					excommunicationFlag = true;
+					close();
 					break;
 				}
 				System.out.println("\n>The Pope is really happy with you.\n May God bless you!\n");

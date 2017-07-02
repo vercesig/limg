@@ -13,7 +13,10 @@ public class TurnManager {
 	
 	private int turnID;
 	private int roundID;
+	private int visitPope;
+	private int period;
 	
+	private boolean update;
 	private LinkedList<UUID> turnOrderQueue;
 	private ArrayList<Player> memoryTurnOrder; // tiene memeotia del precedente ordine di turno
 	
@@ -24,9 +27,12 @@ public class TurnManager {
 		
 		this.turnID = 0;
 		this.roundID = 0;
+		this.period = 1;
+		this.visitPope = 0;
 		this.game = game;
 		this.turnOrderQueue = new LinkedList<UUID>();
 		this.memoryTurnOrder = new ArrayList<Player>();
+		this.update = false;
 		
 		LOGGER.log(Level.INFO, "setting first turn order");
 		
@@ -59,7 +65,15 @@ public class TurnManager {
 	}
 	
 	public int getPeriod(){
-		return getRoundID()/2;
+		return this.period;
+	}
+	
+	public boolean isToUpdate(){
+		return this.update;
+	}
+	
+	public boolean DoesPopeWantToSeeYou(){
+		return visitPope>0;
 	}
 	
 	// restituisce il player a cui passare il lock
@@ -69,8 +83,9 @@ public class TurnManager {
 	}
 	
 	public boolean isRoundEnd(){
-	if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
-			   	game.getPlayerList().size())) == 0){
+	//if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
+	//		   	game.getPlayerList().size())) == 0){
+		if(turnID == 4){
 			LOGGER.log(Level.INFO, "updating turn order");
 			updateTurnOrder();
 			turnID=0;
@@ -80,14 +95,30 @@ public class TurnManager {
 		return false;
 	}
 	
+	public void goodbyePope(){
+		System.out.println("INVITI CHE MI MANCANO: " + (visitPope -1));
+		this.visitPope --;
+	}
+	
+	public void distributeVaticanReport(){
+		this.visitPope = game.getPlayerList().size();
+	}
+	
 	public boolean isPeriodEnd(){
-		return roundID!=0&&roundID%2==0;
-		
+		if (roundID!=0&&roundID%2==0){
+			this.period ++;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isGameEnd(){
-		return isPeriodEnd()&&roundID%6==0;
+		return roundID!=0&&roundID%6==0;
 		
+	}
+	
+	public void setToUpdate(boolean update){
+		this.update = update;
 	}
 	
 	public void updateTurnOrder(){
