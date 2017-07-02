@@ -283,7 +283,6 @@ public class MainClient{
 						}
 						else{
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
-							client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 
 							for(int k=0; k<client.getPlayers().get(client.getUUID()).getTrack().length; k++){
 								client.getPlayers().get(client.getUUID()).getTrack()[k].addScore(

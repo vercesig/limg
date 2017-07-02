@@ -331,8 +331,9 @@ public class Game implements Runnable{
 					case "TRNEND":
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
 						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
-						
+						if(memoryAction.get(getLock())!=null){
+							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
+						}
 						try{ // wait for TRNBGN message
 						    Thread.sleep(500);
 						}catch(InterruptedException e){
