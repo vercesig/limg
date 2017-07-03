@@ -1,8 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,7 +85,7 @@ public class Game implements Runnable{
 		ArrayList<PersonalBonusTile> bonusTile = GameConfig.getInstance().getBonusTileList();
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int k=0; k<bonusTile.size(); k++){
-			list.add(Integer.valueOf(k));
+			list.add(k);
 		}
 		Collections.shuffle(list);
 		
@@ -281,7 +278,7 @@ public class Game implements Runnable{
 						else{
 							LOGGER.info("Sostegno alla Chiesa!");
 							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							LOGGER.log(Level.INFO, "Punti Fede Giocatore: %d" ,faithScore);
+							LOGGER.info("Punti Fede Giocatore: " + faithScore);
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
@@ -295,7 +292,7 @@ public class Game implements Runnable{
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
-							LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %d" ,victoryPointsConverted);
+							LOGGER.info("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
 							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	

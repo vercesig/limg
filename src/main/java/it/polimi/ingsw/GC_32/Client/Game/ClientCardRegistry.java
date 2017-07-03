@@ -15,10 +15,7 @@ public class ClientCardRegistry {
 	private HashMap<String, JsonObject> cardRegistry;
 	
 	private ClientCardRegistry(){
-		this.cardRegistry = new HashMap<String, JsonObject>();
-		loadJson("cards.json");
-		loadJson("excom_cards.json");
-		loadJson("leader_cards.json");
+		this.cardRegistry = new HashMap<>();
 	}
 	
 	public static ClientCardRegistry getInstance(){
@@ -28,12 +25,15 @@ public class ClientCardRegistry {
 		return instance;
 	}
 	
-	private void loadJson(String path){
-		try {
-			JsonArray cardList = Json.parse(getReader(path)).asArray();
-			cardList.forEach(item -> addCard(item));
-		} 
-		catch (IOException e) {}
+	public void init() throws IOException{
+	    loadJson("cards.json");
+	    loadJson("excom_cards.json");
+	    loadJson("leader_cards.json");
+	}
+	
+	private void loadJson(String path) throws IOException{
+	    JsonArray cardList = Json.parse(getReader(path)).asArray();
+	    cardList.forEach(item -> addCard(item));
 	}
 	
 	private Reader getReader(String path){

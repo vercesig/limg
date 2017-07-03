@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
@@ -29,12 +30,11 @@ public class PrivilegeContext extends Context{
 		int numberOfPrivilege = JsonPayload.get("NUMBER").asInt();
 		ResourceSet cost = null;
 		boolean isCostPrivilege = false;
-		
-		if(JsonPayload.get("COST")!=null){
-			cost = new ResourceSet(JsonPayload.get("COST").asObject());
+		JsonValue jCost = JsonPayload.get("COST");
+		if(jCost != null){
+			cost = new ResourceSet(jCost.asObject());
 			isCostPrivilege = true;
 		}
-		
 		JsonObject CONTEXTREPLY = new JsonObject();
 		CONTEXTREPLY.add("MESSAGETYPE", "CONTEXTREPLY");
 		JsonObject CONTEXTREPLYpayload = new JsonObject();
@@ -58,7 +58,7 @@ public class PrivilegeContext extends Context{
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
-			if("n".equals(command)&&isCostPrivilege){
+			if(command.equals("n")&&isCostPrivilege){
 				choosedResources.add(command);
 				//sendQueue.add(CONTEXTREPLY.toString());
 				//close();

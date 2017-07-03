@@ -26,46 +26,46 @@ public class LeaderUtils {
 		}
 		LeaderCard leaderCard = p.getPersonalBoard().getLeaderCards().get(index);
 		switch(decision){
-		case "DISCARD":
-			if(leaderCard.isOnTheGame()){
-				System.out.println("AZIONE NON CONSENTITA, CARTA GIA' GIOCATA"); 
-				return false;
-			} 
-			return true;
-		
-		case "ACTIVATE":
-			if(!leaderCard.isOnTheGame() && !leaderCard.hasATokenAbility()){
-				return false;
-			}
-			if(leaderCard.getInstantEffect()!=null){ //ha senso attivare l'effetto
-				return true;
-			}
-			return false;
-			
-		case "PLAY" :
-			if(hasRequirements(playerUUID, leaderCard) && !leaderCard.isOnTheGame()){
-				leaderCard.playCard();
-				// Attivo l'effetto Flag della carta
-				if(leaderCard.getFlagEffect()!=null){
-					leaderCard.getFlagEffect().apply(null, GameRegistry.getInstance().getPlayerFromID(playerUUID)
-							, null, null);
-				}
-				// Attivo l'effetto permanente della carta
-				if(leaderCard.getPermanentEffect()!=null){
-					GameRegistry.getInstance().getPlayerFromID(playerUUID).addEffect(leaderCard.getPermanentEffect().get(0));
-				}
-				return true;
-			}
-			return false;
-		default:
-			return false;
+    		case "DISCARD":
+    			if(leaderCard.isOnTheGame()){
+    				System.out.println("AZIONE NON CONSENTITA, CARTA GIA' GIOCATA"); 
+    				return false;
+    			} 
+    			return true;
+
+    		case "ACTIVATE":
+    			if(!leaderCard.isOnTheGame() && !leaderCard.hasATokenAbility()){
+    				return false;
+    			}
+    			if(leaderCard.getInstantEffect()!=null){ //ha senso attivare l'effetto
+    				return true;
+    			}
+    			return false;
+
+    		case "PLAY":
+    			if(hasRequirements(playerUUID, leaderCard) && !leaderCard.isOnTheGame()){
+    				leaderCard.playCard();
+    				// Attivo l'effetto Flag della carta
+    				if(leaderCard.getFlagEffect()!=null){
+    					leaderCard.getFlagEffect().apply(null, GameRegistry.getInstance().getPlayerFromID(playerUUID)
+    							, null, null);
+    				}
+    				// Attivo l'effetto permanente della carta
+    				if(leaderCard.getPermanentEffect()!=null){
+    					GameRegistry.getInstance().getPlayerFromID(playerUUID).addEffect(leaderCard.getPermanentEffect().get(0));
+    				}
+    				return true;
+    			}
+    			return false;
+    		default:
+    			return false;
 		}
 	}
 
 	private static boolean hasRequirements(UUID playerUUID, LeaderCard leader){
 		Player player = GameRegistry.getInstance().getPlayerFromID(playerUUID);
 		JsonObject requirements = leader.getRequirements();
-		if(requirements.get("CARDTYPE")!=null){
+		try{
 			if(!requirements.get("CARDTYPE").isNull()){
 				JsonObject cardType = requirements.get("CARDTYPE").asObject();
 				for(Member item : cardType){
@@ -76,15 +76,15 @@ public class LeaderUtils {
 					}
 				}
 			}
-		}
-		if(requirements.get("RESOURCE")!=null){ 
+		}catch(NullPointerException e){};
+		try{
 			if(!requirements.get("RESOURCE").isNull()){
 				if(player.getResources().compareTo(new ResourceSet(requirements.get("RESOURCE").asObject()))<0){
 					System.out.println("RISORSE INSUFFICIENTI");
 					return false;
 				}
 			}
-		}	
+		} catch (NullPointerException e){};	
 		return true;
 	}
 }

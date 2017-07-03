@@ -104,6 +104,7 @@ public class MainClient{
 		
 		MainClient client = new MainClient();
 		Scanner in = new Scanner(System.in);
+		ClientCardRegistry.getInstance().init();
 		
 		ClientCardRegistry.getInstance();
 		

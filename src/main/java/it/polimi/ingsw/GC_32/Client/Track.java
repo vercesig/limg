@@ -20,9 +20,10 @@ public class Track {
 			}
 		}
 	}
+
 	//TO-DO
 	public String toString(){
-		return null;
+		return "";
 	}
 
 }

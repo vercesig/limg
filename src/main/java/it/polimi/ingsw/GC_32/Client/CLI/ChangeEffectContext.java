@@ -49,7 +49,8 @@ public class ChangeEffectContext extends Context{
 				out.println(resourceIn+" -> "
 								  +new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 
-				if(client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().compareTo(resourceIn)==-1){
+				if(client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources()
+				                                                     .compareTo(resourceIn) < 0){
 					out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
 					i++;
 					indexArray.add("n");
@@ -86,7 +87,8 @@ public class ChangeEffectContext extends Context{
 					
 					ResourceSet resourceIn = new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEIN").asObject());
 					
-					boolean lessResource = client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().compareTo(resourceIn)==-1;
+					boolean lessResource = (client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources()
+					                                                                          .compareTo(resourceIn) < 0);
 					lessResourceFlag[j] = lessResource;
 					
 					StringBuilder output = new StringBuilder();

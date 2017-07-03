@@ -163,7 +163,7 @@ public class MoveUtils {
     			return false;
     	}
     	
-    	if(card.getType().equals("TERRITORYCARD")){
+    	if("TERRITORYCARD".equals(card.getType())){
     		
     		if(player.isFlagged("NOMILITARYRULE")){ // Leader Card
     			return true;

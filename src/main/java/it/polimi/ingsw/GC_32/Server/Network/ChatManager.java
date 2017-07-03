@@ -34,6 +34,8 @@ public class ChatManager implements KillableRunnable{
 						message.setBroadcast();
 						MessageManager.getInstance().sendMessge(message);
 						break;
+					default:
+					    break;
 				}
 			}
 		}

@@ -66,16 +66,16 @@ public class LeaderHandler {
 	}
 	
 	public List <LeaderCard> getList(Player player){	
-		List <LeaderCard> list;
+		List<LeaderCard> list;
 		if(getIndex(player) - turnId < 0){
 			if ((game.getPlayerList().size() +(getIndex(player) - turnId))<0){ //modulo! // a partire da turno 3
 				list = collection.get(-(game.getPlayerList().size() +(getIndex(player) - turnId)));
-			}
-			else
+			} else {
 				list = collection.get(game.getPlayerList().size() +(getIndex(player) - turnId)); // prendo lista 4 per player 1;
-		}
-		else 
+			}
+		} else { 
 			list = collection.get(getIndex(player) - turnId ); // esemp
+		}
 		return list;
 	}
 	

@@ -54,7 +54,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 				try {
 					chatRoom.openChat();
 				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
+				    Thread.currentThread().interrupt();
 				}
 				break;
 				

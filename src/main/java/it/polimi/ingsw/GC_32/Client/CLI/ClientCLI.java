@@ -65,7 +65,7 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 				try{ //waiting for other context
 					Thread.sleep(500);
 				}catch(InterruptedException e){
-					Thread.currentThread().interrupt();
+				    Thread.currentThread().interrupt();
 				}
 				
 				if(contextQueue.isEmpty())
