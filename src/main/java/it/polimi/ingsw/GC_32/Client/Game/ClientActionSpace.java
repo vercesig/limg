@@ -16,7 +16,7 @@ public class ClientActionSpace {
 	private Boolean single;
 	// solo per tower region
 	private String cardName;
-	private Boolean blocked;
+	protected Boolean blocked;
 	
 	public ResourceSet getBonus(){
 		return this.bonus;
@@ -46,6 +46,10 @@ public class ClientActionSpace {
 	
 	public void Unlock(){
 		this.blocked = false;
+	}
+	
+	public ArrayList<ClientFamilyMember> getOccupants(){
+		return this.occupants;
 	}
 	
 	public void addFamilyMember(ClientFamilyMember familyMember){

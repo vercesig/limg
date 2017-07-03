@@ -180,6 +180,7 @@ public class MainClient{
 							client.getPlayers().put(player.asString(), new ClientPlayer());
 						});
 						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
+						System.out.println(messagePayload.toString());
 						client.setClientBoard(new ClientBoard(board));
 						
 						//set excommunication cards

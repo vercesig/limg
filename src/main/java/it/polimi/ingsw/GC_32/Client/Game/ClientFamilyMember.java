@@ -2,7 +2,7 @@ package it.polimi.ingsw.GC_32.Client.Game;
 
 public class ClientFamilyMember {
 
-	private int actionValue = 0;
+	protected int actionValue = 0;
 	private String owner;
 	private boolean busy;
 	

@@ -49,6 +49,10 @@ public class ClientBoard {
 		this.orangeDice = orangeValue;
 	}
 	
+	public int[] getDiceValue(){
+		return new int[]{blackDice,whiteDice,orangeDice};
+	}
+	
 	private void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
 		for(int i=0; i<howManyTimes; i++){
 			stringBuilder.append(string);
