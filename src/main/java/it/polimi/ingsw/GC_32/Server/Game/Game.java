@@ -237,14 +237,14 @@ public class Game implements Runnable{
 						
 						LOGGER.info("INIZIO CHECK: ");
 						LOGGER.info("STATO PRIMA DELL'ESECUZIONE:");
-						LOGGER.info(action.toString());
-						LOGGER.info(player.toString());
+						LOGGER.info(action::toString);
+						LOGGER.info(player::toString);
 			    		if(mv.checkMove(this, player, action, cm)){
 			    			LOGGER.info("check with copy: PASSATO");
 			    			makeMove(player, action);
 			    			LOGGER.info("AZIONE ESEGUITA!\n");
 							LOGGER.info("STATO DOPO AZIONE: ");
-			    			LOGGER.info(player.toString());
+			    			LOGGER.info(player::toString);
 			    			
 			    			// notifiche server
 			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
@@ -278,7 +278,7 @@ public class Game implements Runnable{
 						else{
 							LOGGER.info("Sostegno alla Chiesa!");
 							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							LOGGER.info("Punti Fede Giocatore: " + faithScore);
+							LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
 							
 							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 							int victoryPointsConverted = 0;
@@ -292,7 +292,7 @@ public class Game implements Runnable{
 							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 								victoryPointsConverted += 5;
 							}
-							LOGGER.info("Punti Vittoria convertiti Giocatore: " + victoryPointsConverted);
+							LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
 							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 						}
 						break;	
@@ -300,14 +300,14 @@ public class Game implements Runnable{
 					case "ASKLDRACT":
 						String cardName = jsonMessage.get("LEADERCARD").asString();
 						String decision = jsonMessage.get("DECISION").asString();
-						LOGGER.info("LEADERCARD: " +cardName);
-						LOGGER.info("DECISION:" + decision);
+						LOGGER.log(Level.INFO, "LEADERCARD: %s", cardName);
+						LOGGER.log(Level.INFO, "DECISION: %s", decision);
 						Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
 						boolean result;
 						if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
 							LOGGER.info("ATTIVATO!");
 							result = true;
-							if(decision.equals("DISCARD")){	//GUADAGNA UN PRIVILEGIO
+							if("DISCARD".equals(decision)){	//GUADAGNA UN PRIVILEGIO
 								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
 								JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 								
@@ -363,7 +363,9 @@ public class Game implements Runnable{
 						}	
 						try{ // wait for TRNBGN message
 							Thread.sleep(500);
-						}catch(InterruptedException e){}
+						}catch(InterruptedException e){
+						    Thread.currentThread().interrupt();
+						}
 						
 					if(turnManager.DoesPopeWantToSeeYou()){	
 						LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
@@ -423,14 +425,14 @@ public class Game implements Runnable{
 	
 	public void makeMove(Player player, Action action){
 		
-		LOGGER.info(Boolean.valueOf(contextInfoContainer.isEmpty()).toString());
+		LOGGER.info(() -> Boolean.toString(contextInfoContainer.isEmpty()));
 		
-		LOGGER.info("PRIMA DEGLI EFFETTI PERMANENTI:\n" + action);
+		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action);
 		MoveUtils.applyEffects(this.board, player, action, cm);
-		LOGGER.info("DOPO GLI EFFETTI PERMANENTI:\n" + action);
-		LOGGER.info("PRIMA DEL BONUS:\n" + player);
+		LOGGER.log(Level.INFO, "DOPO GLI EFFETTI PERMANENTI:\n%s", action);
+		LOGGER.log(Level.INFO, "PRIMA DEL BONUS:\n%s", player);
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
-		LOGGER.info("DOPO DEL BONUS:\n" + player);
+		LOGGER.log(Level.INFO, "DOPO DEL BONUS:\n%s", player);
 		if(!action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
 			moveFamiliar(this.board, player, action);
 		
@@ -499,12 +501,12 @@ public class Game implements Runnable{
 				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
 				JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
 				
-				LOGGER.info(COUNCILPRIVILEGEresponse.toString());
+				LOGGER.info(COUNCILPRIVILEGEresponse::asString);
 				
-				LOGGER.info("PRIMA DEL PRIVILEGE:\n" + player);
+				LOGGER.log(Level.INFO, "PRIMA DEL PRIVILEGE:\n%s", player);
 				player.getResources().addResource("COINS", 1);
 				player.getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-				LOGGER.info("DOPO DEL PRIVILEGE:\n" + player);
+				LOGGER.log(Level.INFO, "DOPO DEL PRIVILEGE:\n%s", player);
 				break;
 			case "MARKET":
 				if(action.getActionSpaceId() == 3){
@@ -520,7 +522,7 @@ public class Game implements Runnable{
 				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
 				takeCard(this.board, player, action);
 				
-				if(card.getType().equals("CHARACTERCARD") && card.getPermanentEffect()!= null){
+				if("CHARACTERCARD".equals(card.getType()) && card.getPermanentEffect()!= null){
 					card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
 					LOGGER.info("AGGIUNTO EFFETTO PERMANENTE");
 				}
