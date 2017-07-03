@@ -43,4 +43,28 @@ public class ClientPlayerTest{
 		this.clientPlayer.addCard("TEST", "TESTCARD");
 		assertNotNull(this.clientPlayer.toString());
 	}
+	
+	@Test
+	public void checkSetName(){
+		clientPlayer.setName("example name");
+		assertEquals(clientPlayer.getName(),"example name");
+		for(int i=0; i<clientPlayer.getFamilyMembers().length; i++){
+			assertEquals(clientPlayer.getFamilyMembers()[i].getOwner(),"example name");
+		}
+	}
+	
+	@Test
+	public void checkGetFamilyMembers(){
+		assertNotNull(this.clientPlayer.getFamilyMembers());
+	}
+	
+	@Test
+	public void checkGetTrack(){
+		assertNotNull(this.clientPlayer.getTrack());
+	}
+	
+	@Test
+	public void checkGetCard(){
+		assertNotNull(this.clientPlayer.getCards());
+	}
 }
