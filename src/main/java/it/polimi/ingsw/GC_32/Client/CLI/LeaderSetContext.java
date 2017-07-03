@@ -25,35 +25,35 @@ public class LeaderSetContext extends Context{
 		list.forEach(js -> {
 			cardList.add(js.asString());
 		});
-		System.out.println("Choose one of the following card");
+		out.println("Choose one of the following card");
 			for(int i=0; i<cardList.size(); i++){
 				System.out.println(i + "]" + cardList.get(i));
 		}
 		boolean optionSelected = false;
-		System.out.println("type the index of the card you want to get");
+		out.println("type the index of the card you want to get");
 		while(!optionSelected){	
 			try{
 				command = in.nextLine();	
 				
 				if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<cardList.size()){
 					if(cardList.size()<Integer.parseInt(command)){
-						System.out.println("type a valid index");
+						out.println("type a valid index");
 						break;
 					} 
 					index = Integer.parseInt(command);
-					System.out.println("You choose the card: " +cardList.get(index));
+					out.println("You choose the card: " +cardList.get(index));
 					optionSelected = true;
 				}else{
-					System.out.println("type a valid index");
+					out.println("type a valid index");
 				}
 			}catch(NumberFormatException e) {
-				System.out.println("type a number, please");
+				out.println("type a number, please");
 				}
 		}
 		client.getPlayerList().get(client.getPlayerUUID()).addCard("LEADER", cardList.get(index));
 		cardList.remove(index);
 		list.remove(index);
-		System.out.println("Prima di inviare al Server:" + list);		
+		out.println("Prima di inviare al Server:" + list);		
 		return ClientMessageFactory.buildLDRSETmessage(client.getGameUUID(), client.getPlayerUUID(), list);
 	}
 }

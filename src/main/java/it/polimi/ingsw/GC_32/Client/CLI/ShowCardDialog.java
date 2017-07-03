@@ -16,21 +16,21 @@ public class ShowCardDialog extends Context{
 	@Override
 	public String open(Object object) {
 		
-			System.out.println("type a command:\n-region: show detail of a card on the board\n-player: show detail of a player's card"
+			out.println("type a command:\n-region: show detail of a card on the board\n-player: show detail of a player's card"
 					+ "\n-excommunication: to show the excommunication cards on the board"
 					+ "\n-quit: to exit");
 			command = in.nextLine();
 			switch (command){
 
 			case("excommunication"): {						
-				System.out.println("Excommunication cards on the board are these:\n");
+				out.println("Excommunication cards on the board are these:\n");
 				
 				for(int i=0; i<	client.getBoard().getExcommunicationCards().size(); i++){
-					System.out.println("Period: "+i+ " Card: " + client.getBoard()
+					out.println("Period: "+i+ " Card: " + client.getBoard()
 																		.getExcommunicationCards()
 																		.get(i) + '\n');
 				}
-				System.out.println("type the period of the card to show or q to quit:");
+				out.println("type the period of the card to show or q to quit:");
 				boolean optionSelected = false;
 				
 				while(!optionSelected){
@@ -62,7 +62,7 @@ public class ShowCardDialog extends Context{
 			case("region"):	{
 				int regionID = 4;
 				int spaceID;
-				System.out.println("type the regionID of the card yo want to see\n[4-7]");
+				out.println("type the regionID of the card yo want to see\n[4-7]");
 				boolean optionSelected = false;
 				
 				while(!optionSelected){
@@ -73,14 +73,14 @@ public class ShowCardDialog extends Context{
 							break;
 						}
 						else
-							System.out.println("type a valid number or type q to exit");
+							out.println("type a valid number or type q to exit");
 					}catch(NumberFormatException e){
-						System.out.println("type a valid number or type q to exit");
+						out.println("type a valid number or type q to exit");
 					}
 				}
 				
 				while(!optionSelected){	
-					System.out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
+					out.println("ok, now type the spaceID of the card yo want to see\n[0-3]");
 					command = in.nextLine();	
 					if("q".equals(command)){
 						break;
@@ -96,17 +96,17 @@ public class ShowCardDialog extends Context{
 								String nameCard = client.getBoard().getRegionList().get(regionID)
 										.getActionSpaceList().get(spaceID).getCardName();
 								
-								System.out.println("Showing details of " + nameCard);
+								out.println("Showing details of " + nameCard);
 								
-								System.out.println(CardCli.print(nameCard, ClientCardRegistry.getInstance()
+								out.println(CardCli.print(nameCard, ClientCardRegistry.getInstance()
 										.getDetails(nameCard)));	
 							}
 						else
-							System.out.println("There are not any cards on this space");
+							out.println("There are not any cards on this space");
 						}	
 					}
 					catch(NumberFormatException e){
-						System.out.println("type a valid number or type q to exit");
+						out.println("type a valid number or type q to exit");
 					}	
 				}	
 				break;
@@ -116,15 +116,15 @@ public class ShowCardDialog extends Context{
 				boolean optionSelected = false;
 				ClientPlayer player = client.getPlayerList().get(client.getPlayerUUID());
 				ArrayList<String> stringList = new ArrayList<String>();
-				System.out.println("Chose the index of your player's card to show more details\n");
+				out.println("Chose the index of your player's card to show more details\n");
 				
 				player.getCards().forEach((cardtype, cardlist) ->{
 					cardlist.forEach(card ->{
 						stringList.add(card);
-						System.out.println(stringList.indexOf(card) + "]" + card);
+						out.println(stringList.indexOf(card) + "]" + card);
 					});
 				});	
-				System.out.println(stringList.toString());
+				out.println(stringList.toString());
 				while(!optionSelected){
 					command = in.nextLine();
 					if("q".equals(command)){
@@ -133,13 +133,13 @@ public class ShowCardDialog extends Context{
 					try{
 						if(Integer.parseInt(command) < stringList.size() && Integer.parseInt(command) >= 0){
 								String name = stringList.get(Integer.parseInt(command));
-								System.out.println(CardCli.print(name, ClientCardRegistry.getInstance()
+								out.println(CardCli.print(name, ClientCardRegistry.getInstance()
 										.getDetails(name)));
 						}
 						else
-							System.out.println("type a valid index or type q to exit");
+							out.println("type a valid index or type q to exit");
 					}catch(NumberFormatException e){
-						System.out.println("type a valid index or type q to exit");
+						out.println("type a valid index or type q to exit");
 					}
 				}	
 				break;
@@ -148,7 +148,7 @@ public class ShowCardDialog extends Context{
 				return null;
 			
 			default:
-				System.out.println("please, type a valid string");
+				out.println("please, type a valid string");
 				break;
 			}
 		return null;

@@ -35,60 +35,60 @@ public class AskActDialog extends Context{
 			sendFlag = true;
 			boolean actionFlag = true;
 			while(actionFlag){						
-				System.out.println("type the ID of the family member you want to place\n" +
+				out.println("type the ID of the family member you want to place\n" +
 								   "The symbol '>' means that the family member is busy\n");
 				int i = 0;
 				for(ClientFamilyMember fm : client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers()){
-					System.out.println("["+i+"] "+fm.toString());
+					out.println("["+i+"] "+fm.toString());
 					i++;
 				}						
 				command = in.nextLine();
 				try{
 					if(Integer.parseInt(command)<client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers().length){
 						if(client.getPlayerList().get(client.getPlayerUUID()).getFamilyMembers()[Integer.parseInt(command)].isBusy()){
-							System.out.println("the choosen family member is already busy, please enter a valid index");
+							out.println("the choosen family member is already busy, please enter a valid index");
 						}else{
 							actionFlag = false;
 							familyMemberIndex = Integer.parseInt(command);
 						}
 					}
 					else{
-						System.out.println("Invalid Family member Index");
+						out.println("Invalid Family member Index");
 					}
 				}catch(NumberFormatException e){
-					System.out.println("type a valid number");
+					out.println("type a valid number");
 				}
 			}
 			actionFlag=true;
-			System.out.println("type the regionID where you would place your pawn");
+			out.println("type the regionID where you would place your pawn");
 			while(actionFlag){
 				command = in.nextLine();
 				try{
 					if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
-						System.out.println(">region with that id does not exist");
-						System.out.println("type a number between 0-7");
+						out.println(">region with that id does not exist");
+						out.println("type a number between 0-7");
 					}else{
 						regionID = Integer.parseInt(command);
 						actionFlag = false;
 					}
 				}catch(NumberFormatException e){
-					System.out.println("type a valid number");
+					out.println("type a valid number");
 				}
 			}
 			actionFlag = true;
-			System.out.println("ok, now type the spaceID where you would place your pawn");
+			out.println("ok, now type the spaceID where you would place your pawn");
 			while(actionFlag){
 				command = in.nextLine();
 				try{
 					if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
-						System.out.println(">action space with that id does not exist");
-						System.out.println("type a number between 0-3");
+						out.println(">action space with that id does not exist");
+						out.println("type a number between 0-3");
 					}else{
 						spaceID = Integer.parseInt(command);
 						actionFlag = false;
 					}
 				}catch(NumberFormatException e){
-					System.out.println("type a valid number");
+					out.println("type a valid number");
 				}
 			}
 			
@@ -110,7 +110,7 @@ public class AskActDialog extends Context{
 
 				actionFlag = true;
 				
-				System.out.println("Development card on this tower layer: ");
+				out.println("Development card on this tower layer: ");
 				
 				cardName = this.client.getBoard().getRegionList().get(regionID)
 						.getActionSpaceList().get(spaceID).getCardName();
@@ -118,24 +118,24 @@ public class AskActDialog extends Context{
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
 				
 				if(card==null){
-					System.out.println("no card on this tower layer");
+					out.println("no card on this tower layer");
 					sendFlag = false;
 					break;
 				}
 				
-				System.out.println(card);
+				out.println(card);
 				
 				if(card.get("cost") != null){
 					JsonArray costList = card.get("cost").asArray();
 					if(costList.size() == 1){
 						break;
 					}
-					System.out.println("Choose one cost of the card: ");
+					out.println("Choose one cost of the card: ");
 					for(JsonValue js : costList){
-							System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
+							out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
 						}
 					
-					System.out.println("type 0 or 1");
+					out.println("type 0 or 1");
 					
 					while(actionFlag){
 						command = in.nextLine();						
@@ -149,9 +149,9 @@ public class AskActDialog extends Context{
 								break;
 							}
 							else
-								System.out.println("please, type a valid number");
+								out.println("please, type a valid number");
 						} catch(NumberFormatException e){
-							System.out.println("type a valid number");
+							out.println("type a valid number");
 						}
 					}	
 				}
@@ -159,7 +159,7 @@ public class AskActDialog extends Context{
 			}	
 			
 			if(sendFlag){
-				System.out.println("action is ready to be sent to the server.\n" +
+				out.println("action is ready to be sent to the server.\n" +
 						   "Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
 	
 				//TODO printare riassunto della mossa
@@ -176,14 +176,14 @@ public class AskActDialog extends Context{
 						actionFlag = false;
 						break;
 					default:
-						System.out.println("please, type a valid letter");
+						out.println("please, type a valid letter");
 					}
 				}
 			}
 			
 		}
 	
-		System.out.println("action sent to the server... waiting for response");
+		out.println("action sent to the server... waiting for response");
 		
 		return ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName);
 	}

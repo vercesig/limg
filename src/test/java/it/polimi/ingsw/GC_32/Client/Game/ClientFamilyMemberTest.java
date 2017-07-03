@@ -10,4 +10,10 @@ public class ClientFamilyMemberTest{
 		ClientFamilyMember cfm = new ClientFamilyMember();
 		assertNotNull(cfm.toString());
 	}
+	
+	@Test
+	public void checkSetName(){
+		ClientFamilyMember cfm = new ClientFamilyMember();
+		
+	}
 }

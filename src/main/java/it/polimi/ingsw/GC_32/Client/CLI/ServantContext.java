@@ -20,7 +20,7 @@ public class ServantContext extends Context{
 		CONTEXTREPLYpayload.add("PAYLOAD", CONTEXTREPLYpayloadinfo);
 		CONTEXTREPLYpayload.add("CONTEXT_TYPE", "SERVANT");
 		
-		System.out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
+		out.println("you have "+numberOfServants+" servants to spend to increase your "+actionType+" action"
 				+ "\nDo you want to spend any of these?? type 0 if you don't want spend any servant, "
 				+ "else type the number of servants you want to spend");
 		
@@ -32,10 +32,10 @@ public class ServantContext extends Context{
 					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 					return CONTEXTREPLY.toString();
 				}else{
-					System.out.println("type a valid quantity");
+					out.println("type a valid quantity");
 				}
 			}catch(NumberFormatException e){
-				System.out.println("type a valid number");
+				out.println("type a valid number");
 			}
 		}
 	}

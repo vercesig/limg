@@ -27,7 +27,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 		
 		while(runFlag){
 
-			System.out.println("type a command:\n- board: display the board status\n- players: display players' status\n"
+			out.println("type a command:\n- board: display the board status\n- players: display players' status\n"
 					+ "- show card: to show details of cards on the game\n"
 					+ "- chat room: to chat with other players\n"
 					+ "- change name: to change the name of your playe\n"
@@ -39,7 +39,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 			switch(command){
 			
 			case "board":
-				System.out.println(this.client.getBoard().toString());
+				out.println(this.client.getBoard().toString());
 				break;
 			
 			case "players":
@@ -82,7 +82,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 						Thread.currentThread().interrupt();
 					}
 				}else{
-					System.out.println("isn't your turn");
+					out.println("isn't your turn");
 				}
 				break;
 			case "end turn":

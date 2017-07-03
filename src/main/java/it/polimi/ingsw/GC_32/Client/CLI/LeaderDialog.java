@@ -17,7 +17,7 @@ public class LeaderDialog extends Context{
 		runFlag=true;
 		ClientPlayer player = client.getPlayerList().get(client.getPlayerUUID());
 
-		System.out.println("In this section you can activate a Leader Action. You can perform one of these action:\n"
+		out.println("In this section you can activate a Leader Action. You can perform one of these action:\n"
 				+ "-discard: to discard a card and get a council privilege\n"
 				+ "-activate an effect: actvate a special effect of a leader card\n"
 				+ "-play: to put on the game the card. you can activate the effect only to cards on the game.");
@@ -41,37 +41,37 @@ public class LeaderDialog extends Context{
 					optionSelected = true;
 					break;
 				default:
-					System.out.println("type a valid option");
+					out.println("type a valid option");
 					break;
 				}
 			}
 			optionSelected = false;
-			System.out.println("Choose one of the following card: ");
+			out.println("Choose one of the following card: ");
 			for(int i=0; i<player.getCards().get("LEADER").size(); i++){
 				System.out.println(i + "]" + player.getCards().get("LEADER").get(i));
 			}	
-			System.out.println("type the index of the card you want ");
+			out.println("type the index of the card you want ");
 			while(!optionSelected){	
 				try{
 					command = in.nextLine();	
 					
 					if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=3){
 						if(player.getCards().get("LEADER").size()<Integer.parseInt(command)){
-							System.out.println("type a valid index");
+							out.println("type a valid index");
 							break;
 						} 
 						index = Integer.parseInt(command);
-						System.out.println("You choose the card: " + player.getCards().get("LEADER").get(index));
+						out.println("You choose the card: " + player.getCards().get("LEADER").get(index));
 						optionSelected = true;
 					}else{
-						System.out.println("type a valid index");
+						out.println("type a valid index");
 					}
 			}catch(NumberFormatException e) {
-				System.out.println("type a number, please");
+				out.println("type a number, please");
 				}
 		}
 			
-		System.out.println("NAME:"+ player.getCards().get("LEADER").get(index) + " ACTION:" + decision);
+		out.println("NAME:"+ player.getCards().get("LEADER").get(index) + " ACTION:" + decision);
 		close();
 		}
 	return ClientMessageFactory.buildASKLDRACTmessage(client.getGameUUID(),player.getCards().get("LEADER").get(index), decision);

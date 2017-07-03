@@ -45,12 +45,12 @@ public class PrivilegeContext extends Context{
 		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 		
 		if(!isCostPrivilege){
-			System.out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
+			out.println("you have "+numberOfPrivilege+" privilege to spend. Each privilege could "
 					+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
 					+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
 					+ "to the resource you want to exchange with your privilege");
 		}else{
-			System.out.println("you have this effect to consume :\n"+cost.toString()+" -> PRIVILEGE :"+numberOfPrivilege+"\nEach privilege could "
+			out.println("you have this effect to consume :\n"+cost.toString()+" -> PRIVILEGE :"+numberOfPrivilege+"\nEach privilege could "
 					+ "be transformed into:\n- (0) 1 WOOD and 1 STONE\n- (1) 2 SERVANTS\n- (2) 2 COINS\n"
 					+ "- (3) 2 MILITARY POINTS\n- (4) 1 FAITH POINT\ntype the number corrisponding "
 					+ "to the resource you want to exchange with your privilege. type 'n' if you don't want to apply the effect");
@@ -87,15 +87,15 @@ public class PrivilegeContext extends Context{
 					break;
 				}
 			}catch(NumberFormatException e){
-				System.out.println("type a valid number");
+				out.println("type a valid number");
 			}
 			if(!choosedResources.contains(command)){
 				numberOfPrivilege--;
 				choosedResources.add(command);
-				System.out.println(numberOfPrivilege+" elapsed");
+				out.println(numberOfPrivilege+" elapsed");
 			}
 			else{
-				System.out.println("you can't choose the same resource two times, please enter"
+				out.println("you can't choose the same resource two times, please enter"
 						+ " a different choise");
 			}
 			if(numberOfPrivilege==0)

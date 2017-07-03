@@ -38,24 +38,24 @@ public class ChangeEffectContext extends Context{
 			
 			boolean actionFlag = true;
 			
-			System.out.println("--------------------  "+CHANGEcardName.get(i).asString()+"  --------------------\n");
+			out.println("--------------------  "+CHANGEcardName.get(i).asString()+"  --------------------\n");
 			
 			JsonValue item = CHANGEresourcePayload.get(i);
 			if(item.isObject()){ // CHANGE singolo
 				
 				ResourceSet resourceIn = new ResourceSet(item.asArray().asObject().get("RESOURCEIN").asObject());
 				
-				System.out.println("this card offer only this exchange:");
-				System.out.println(resourceIn+" -> "
+				out.println("this card offer only this exchange:");
+				out.println(resourceIn+" -> "
 								  +new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 
 				if(client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().compareTo(resourceIn)==-1){
-					System.out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
+					out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
 					i++;
 					indexArray.add("n");
 				}
 				else{
-					System.out.println("type 'y' if you want apply this effect, otherwise type 'n'");
+					out.println("type 'y' if you want apply this effect, otherwise type 'n'");
 					while(actionFlag){
 						command = in.nextLine();
 						switch(command){
@@ -70,12 +70,12 @@ public class ChangeEffectContext extends Context{
 							i++;
 							break;
 						default:
-							System.out.println("type a valid argument");
+							out.println("type a valid argument");
 						}
 					}	
 				}
 			}else{ // CHANGE esclusivo
-				System.out.println("select what exchange you want apply. please type the corresponding ID of the effect you want activate\n"
+				out.println("select what exchange you want apply. please type the corresponding ID of the effect you want activate\n"
 						+ "type 'n' if you don't want to apply this effect. An 'X' next to the choise means you can't perform that change because you "
 						+ "haven't enought resources:");
 				
@@ -93,14 +93,14 @@ public class ChangeEffectContext extends Context{
 					output.append(lessResource ? "X" : " ");
 					output.append("["+j+"]  "+resourceIn.toString()+" -> "
 							  				 +new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
-					System.out.println(output);
+					out.println(output);
 				}
 				boolean finalResourceFlag = true;
 				for(int k=0; k<lessResourceFlag.length; k++)
 					finalResourceFlag = finalResourceFlag&&lessResourceFlag[k];
 				
 				if(finalResourceFlag){
-					System.out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
+					out.println(" *** :( you can't activate this effect because you haven't enought resources ***");
 					i++;
 					indexArray.add("n");
 				}
@@ -113,7 +113,7 @@ public class ChangeEffectContext extends Context{
 								actionFlag = false;
 								i++;
 							}else{
-								System.out.println("type a valid number or choose an effect you can activate");
+								out.println("type a valid number or choose an effect you can activate");
 							}					
 						}catch(NumberFormatException e){
 							if("n".equals(command)){
@@ -121,7 +121,7 @@ public class ChangeEffectContext extends Context{
 								actionFlag = false;
 								i++;
 							}else{
-								System.out.println("type a valid number");
+								out.println("type a valid number");
 							}
 						}
 					}
