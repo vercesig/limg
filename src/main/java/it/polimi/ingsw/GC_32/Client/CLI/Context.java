@@ -14,7 +14,7 @@ public abstract class Context{
 	
 	public Context(ClientCLI client){
 		this.in = new Scanner(System.in);
-		this.out = new PrintWriter(System.out);
+		this.out = new PrintWriter(System.out, true);
 		this.client = client;
 	}
 	

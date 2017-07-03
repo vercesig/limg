@@ -43,7 +43,7 @@ public class ActionEffectContext extends Context{
 		out.println("you have a bonus "+actionType+" action to perform.\n"+bonusActionValue+" is the action value of"
 				+ " your bonus action");
 		if(bonusResource!=null)
-			System.out.println("the action will also apply this discount on the cost of the card you will take\n"+bonusResource.toString());
+			out.println("the action will also apply this discount on the cost of the card you will take\n"+bonusResource.toString());
 		
 		while(runFlag){
 				

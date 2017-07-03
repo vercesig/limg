@@ -27,7 +27,7 @@ public class LeaderSetContext extends Context{
 		});
 		out.println("Choose one of the following card");
 			for(int i=0; i<cardList.size(); i++){
-				System.out.println(i + "]" + cardList.get(i));
+				out.println(i + "]" + cardList.get(i));
 		}
 		boolean optionSelected = false;
 		out.println("type the index of the card you want to get");
