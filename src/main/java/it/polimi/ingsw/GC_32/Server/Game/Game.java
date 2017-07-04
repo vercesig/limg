@@ -8,18 +8,14 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
-import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
-import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
@@ -48,6 +44,7 @@ public class Game implements Runnable{
 	private TurnManager turnManager;
 	private MoveChecker mv;
 	private ContextManager cm;
+	private MessageHandler messageHandler;
 	private ActionHandler actionHandler;
 	
 	// context management
@@ -62,7 +59,6 @@ public class Game implements Runnable{
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
-
 		
 		contextInfoContainer = new HashMap<String, JsonValue>();
 		
@@ -77,7 +73,10 @@ public class Game implements Runnable{
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
+	    
+		this.messageHandler = new MessageHandler(this);
 	    this.actionHandler = new ActionHandler(this);
+	    this.leaderHandler = new LeaderHandler(this);
 		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
@@ -104,7 +103,6 @@ public class Game implements Runnable{
 	
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
 		}
-		this.leaderHandler = new LeaderHandler(this);
 		LOGGER.log(Level.INFO, "done");
 	}
 	
@@ -217,13 +215,12 @@ public class Game implements Runnable{
 			}
 
 			if(message != null){
-				actionHandler.handleMessage(message);
+				messageHandler.handleMessage(message);
 			}
 		}
 	}
 	
 	public void makeMove(Player player, Action action){
-		
 		LOGGER.info(() -> Boolean.toString(contextInfoContainer.isEmpty()));
 		
 		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action);
@@ -237,138 +234,19 @@ public class Game implements Runnable{
 		
 		switch(action.getActionType()){
 			case "PRODUCTION":
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
-				cm.openContext(ContextType.SERVANT, player, action, null);
-				
-				JsonValue SERVANTProductionresponse = cm.waitForContextReply();
-				action.setActionValue(action.getActionValue() + SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
-				
-				JsonArray CHANGEcontextPayload = new JsonArray();
-				JsonArray CHANGEnameCardArray = new JsonArray();
-				
-				ArrayList<DevelopmentCard> CHANGEeffectCardList = new ArrayList<DevelopmentCard>();
-				ArrayList<DevelopmentCard> notCHANGEeffectCardList = new ArrayList<DevelopmentCard>();
-				
-				player.getPersonalBoard().getCardsOfType("BUILDINGCARD").forEach(card -> {
-					if(card.getMinimumActionvalue() <= action.getActionValue()){ 
-						// cards with CHANGE effect
-						if(card.getPermanentEffectType().contains("CHANGE")){
-							CHANGEeffectCardList.add(card);
-							card.getPayloadInfo().forEach(payload -> {
-								CHANGEcontextPayload.add(payload);
-								CHANGEnameCardArray.add(card.getName());
-							});
-						}else{
-							notCHANGEeffectCardList.add(card);
-						}
-					}
-				});
-				JsonArray CHANGEpacket = new JsonArray();
-				CHANGEpacket.asArray().add(CHANGEnameCardArray);
-				CHANGEpacket.asArray().add(CHANGEcontextPayload);
-				
-				// c'è almeno una carta con effetto CHANGE
-				if(!CHANGEeffectCardList.isEmpty()){
-					cm.openContext(ContextType.CHANGE, player, action, CHANGEpacket);
-					
-					JsonArray indexResponse = cm.waitForContextReply().asObject().get("CHANGEIDARRAY").asArray();
-					for(int i=0; i<CHANGEeffectCardList.size(); i++){
-						action.getAdditionalInfo().set("CHANGEID", indexResponse.get(i));
-						CHANGEeffectCardList.get(i).getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
-					}
-				}
-				notCHANGEeffectCardList.forEach(card -> { 
-					card.getPermanentEffect().forEach(effect ->
-						effect.apply(board, player, action, cm)
-					);
-				});
+				actionHandler.handleProduction(player, action);
 				break;
 			case "HARVEST":				
-				player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
-				cm.openContext(ContextType.SERVANT, player, action, null);
-				
-				JsonValue SERVANTHarvestresponse = cm.waitForContextReply();
-				action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
-				
-				player.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> {
-					if(card.getMinimumActionvalue() <= action.getActionValue()){ 
-						card.getPermanentEffect().forEach(effect -> effect.apply(board, player, action, cm));
-					}
-				});
+				actionHandler.handleHarvest(player, action);
 				break;
 			case "COUNCIL":
-				cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
-				JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
-				
-				LOGGER.info(COUNCILPRIVILEGEresponse::asString);
-				
-				LOGGER.log(Level.INFO, "PRIMA DEL PRIVILEGE:\n%s", player);
-				player.getResources().addResource("COINS", 1);
-				player.getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-				LOGGER.log(Level.INFO, "DOPO DEL PRIVILEGE:\n%s", player);
+				actionHandler.handleCouncil(player, action);
 				break;
 			case "MARKET":
-				if(action.getActionSpaceId() == 3){
-					cm.openContext(ContextType.PRIVILEGE, player, action, Json.value(2));
-					JsonValue MARKETPRIVILEGEresponse = cm.waitForContextReply();
-
-					player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-					player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(1).asString()).asObject()));
-				}
+				actionHandler.handleMarket(player, action);
 				break;
 			default:
-				TowerRegion selectedTower = (TowerRegion)(board.getRegion(action.getRegionId()));
-				DevelopmentCard card = selectedTower.getTowerLayers()[action.getActionSpaceId()].getCard();
-				takeCard(this.board, player, action);
-				
-				if("CHARACTERCARD".equals(card.getType()) && card.getPermanentEffect()!= null){
-					card.getPermanentEffect().forEach(effect -> player.addEffect(effect));
-					LOGGER.info("AGGIUNTO EFFETTO PERMANENTE");
-				}
-				if(!card.getInstantEffect().isEmpty()){
-					card.getInstantEffect().forEach(effect -> {
-						effect.apply(board, player, action, cm); // only ACTION effect doesn't close the context
-						JsonValue effectAction = cm.waitForContextReply();
-						cm.setContextAck(true, player);
-						if(!(effectAction==null)){
-							int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(UUID.fromString(effectAction.asObject().get("PLAYERID").asString())));
-							int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
-		
-							int regionID = effectAction.asObject().get("REGIONID").asInt();
-							int spaceID = effectAction.asObject().get("SPACEID").asInt();
-							String actionType = effectAction.asObject().get("ACTIONTYPE").asString();
-		
-							Action bonusAction = new Action(actionType,actionValue,regionID,spaceID);
-							bonusAction.setAdditionalInfo(new JsonObject());
-							bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));							
-							bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
-							//action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
-							
-							Player bonusPlayer = player;
-				    		while(!mv.checkMove(this, bonusPlayer, bonusAction, cm)){ // se l'azione non è valida		    			
-				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, false));				    			
-				    			effect.apply(board, player, action, cm);
-				    			effectAction = cm.waitForContextReply();
-								cm.setContextAck(true, player);								
-								if(!(effectAction==null)){
-									actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
-									regionID = effectAction.asObject().get("REGIONID").asInt();
-									spaceID = effectAction.asObject().get("SPACEID").asInt();
-									actionType = effectAction.asObject().get("ACTIONTYPE").asString();
-				
-									bonusAction = new Action(actionType,actionValue,regionID,spaceID);
-									bonusAction.setAdditionalInfo(new JsonObject());
-									bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));							
-									bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
-									//action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());								
-								}				    			
-				    		} 
-				    		makeMove(bonusPlayer, bonusAction);
-			    			// notifiche server
-			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, true));					
-						}
-					});
-				}
+				actionHandler.handleTower(player, action);
 				break;
 		}
 		
