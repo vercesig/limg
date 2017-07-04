@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -19,21 +20,23 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	private String gameUUID;
 	
 	// network management
-	private ConcurrentLinkedQueue<Object> contextQueue;
-	private ConcurrentLinkedQueue<String> messageQueue;
+	protected ConcurrentLinkedQueue<Object> contextQueue;
+	protected ConcurrentLinkedQueue<String> messageQueue;
 	
 	
 	private ConcurrentLinkedQueue<String> sendQueue;
-	private ConcurrentLinkedQueue<String> clientsendQueue;
+	protected ConcurrentLinkedQueue<String> clientsendQueue;
 	
 	// context management
 	private Context[] contextList;
 	private Thread zeroLevelContextThread;
 	
+	protected PrintWriter out;
+	
 	private boolean idleRun = false; // if zeroLevel must run
 	private boolean wait = true; // if player is waiting he can't display action menu;
 	
-	private boolean leaderStartPhase = true;
+	protected boolean leaderStartPhase = true;
 	
 	private boolean stop = false;
 	
@@ -51,6 +54,8 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		contextList[6] = new ActionEffectContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
+		
+		out = new PrintWriter(System.out, true);
 	}
 	
 	public void run(){	
@@ -74,7 +79,7 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 			
 			// show messages
 			while(!messageQueue.isEmpty()){
-				System.out.println(messageQueue.poll());
+				out.println(messageQueue.poll());
 			}
 			
 			// spedisco messaggi
@@ -108,6 +113,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	public void registerPlayerUUID(String UUID){
 		this.playerUUID = UUID;
 	}
+	
+	public Context[] getContextList(){
+		return this.contextList;
+	}
 		
 	public ClientBoard getBoard(){
 		return this.boardReference;
@@ -123,11 +132,7 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	
 	public boolean isWaiting(){
 		return this.wait;
-	}
-	
-	public void displayMessage(String message){
-		this.messageQueue.add(message);
-	}
+	}	
 	
 	public ConcurrentLinkedQueue<String> getSendQueue(){
 		return this.sendQueue;
@@ -149,22 +154,27 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		this.sendQueue = queue;		
 	}
 	
+	public void displayMessage(String message){
+		this.messageQueue.add("[server message]-----------------------------\n"+message+""
+									   + "\n---------------------------------------------");
+	}
+	
 	public void displaySendMessage(String playerID, String message){
-		System.out.println("---------------------------------------");
-		System.out.println("|      YOU SENT A MESSAGE !!!      ");	
-		System.out.println("|-------------------------------------------");
-		System.out.println("| > "+ playerID+ ":");
-		System.out.println("| "+ message +"\n|");
-		System.out.println("| ===========================================");
+		out.println("| ===========================================\n"
+				   +"|               YOU SENT A MESSAGE !!!       \n"
+				   +"| ===========================================\n"
+				   +"| > "+ playerID+ ":\n"
+				   +"| "+ message +"\n|\n"
+				   +"| ===========================================\n");
 	}
 	
 	public void receiveMessage(String playerID, String message) {
-		System.out.println("---------------------------------------");
-		System.out.println("|      YOU RECEIVED A MESSAGE !!!      ");	
-		System.out.println("|-------------------------------------------");
-		System.out.println("| > "+ playerID+ ":");
-		System.out.println("| "+ message +"\n|");
-		System.out.println("| ===========================================");		
+		out.println("| ===========================================\n"
+				   +"|           YOU RECEIVED A MESSAGE !!!       \n"
+				   +"| ===========================================\n"
+				   +"| > "+ playerID+ ":\n"
+				   +"| "+ message +"\n|\n"
+				   +"| ===========================================\n");	
 	}
 	
 	@Override

@@ -59,7 +59,9 @@ public class ZeroLevelContext extends Context implements Runnable{
 				break;
 				
 			case "leader":
-				client.getSendQueue().add(leaderDialog.open(object));
+				String leaderResponse = leaderDialog.open(object);
+				if(leaderResponse!=null&&!"".equals(leaderResponse))
+					client.getSendQueue().add(leaderDialog.open(object));
 				try{ //waiting for other context
 					Thread.sleep(200);
 				}catch(InterruptedException e){
@@ -74,7 +76,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 			case "action":		
 				if(!client.isWaiting()){
 					String response = askAct.open(object);
-					if(response!=null)
+					if(response!=null&&!"".equals(response))
 						client.getSendQueue().add(response);
 					try{ //waiting for other context
 						Thread.sleep(200);

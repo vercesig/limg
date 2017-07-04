@@ -60,15 +60,12 @@ public class PrivilegeContext extends Context{
 			command = in.nextLine();
 			if("n".equals(command)&&isCostPrivilege){
 				choosedResources.add(command);
-				//sendQueue.add(CONTEXTREPLY.toString());
-				//close();
 				return CONTEXTREPLY.toString();
-			}
-			
+			}		
 			try{
 				switch(Integer.parseInt(command)){
 				case 0:
-					CONTEXTREPLYpayloadinfo.add(values[0]); // per privilegi non triggerati da effe
+					CONTEXTREPLYpayloadinfo.add(values[0]);
 					break;
 				case 1:
 					CONTEXTREPLYpayloadinfo.add(values[1]);

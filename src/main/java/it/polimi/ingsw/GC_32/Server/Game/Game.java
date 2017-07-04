@@ -111,10 +111,6 @@ public class Game implements Runnable{
 	public void run(){
 		LOGGER.log(Level.INFO, "notifying connected players on game settings...");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
-
-		playerList.forEach(player ->
-			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player))
-		);
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
 		try {
@@ -194,7 +190,14 @@ public class Game implements Runnable{
 					}
 				}
 			}
-			//setLock(playerList.get(0).getUUID()); // inizio con il Primo player
+			
+			playerList.forEach(player -> MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player)));
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
+			
 			setLock(turnManager.nextPlayer());
 			LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
 			
@@ -543,14 +546,28 @@ public class Game implements Runnable{
 							bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
 							//action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
 							
-							Player bonusPlayer = playerList.get(index);
-				    		if(mv.checkMove(this, bonusPlayer, bonusAction, cm)){
-				    			makeMove(bonusPlayer, bonusAction);
-				    			// notifiche server
-				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, true));
-				    		} else {
-			    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, false));
-				    		}						
+							Player bonusPlayer = player;
+				    		while(!mv.checkMove(this, bonusPlayer, bonusAction, cm)){ // se l'azione non è valida		    			
+				    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, false));				    			
+				    			effect.apply(board, player, action, cm);
+				    			effectAction = cm.waitForContextReply();
+								cm.setContextAck(true, player);								
+								if(!(effectAction==null)){
+									actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
+									regionID = effectAction.asObject().get("REGIONID").asInt();
+									spaceID = effectAction.asObject().get("SPACEID").asInt();
+									actionType = effectAction.asObject().get("ACTIONTYPE").asString();
+				
+									bonusAction = new Action(actionType,actionValue,regionID,spaceID);
+									bonusAction.setAdditionalInfo(new JsonObject());
+									bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));							
+									bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
+									//action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());								
+								}				    			
+				    		} 
+				    		makeMove(bonusPlayer, bonusAction);
+			    			// notifiche server
+			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, bonusPlayer, bonusAction, true));					
 						}
 					});
 				}

@@ -4,6 +4,7 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Client.Game.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
@@ -73,8 +74,7 @@ public class ActionEffectContext extends Context{
 					command = in.nextLine();
 					try{
 						if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
-							out.println(">action space with that id does not exist");
-							out.println("type a number between 0-3");
+							out.println("action space with that id does not exist\ntype a number between 0-3");
 						}else{
 							choosedSpaceID = Integer.parseInt(command);
 							actionFlag = false;
@@ -82,58 +82,57 @@ public class ActionEffectContext extends Context{
 					}catch(NumberFormatException e){
 						System.out.println("type a valid number");
 					}
-				}
-				
+				}				
 				actionFlag = true;
 				
-				out.println("Development card on this tower layer: ");
-				
+				out.println("Development card on this tower layer: ");				
 				String cardName = this.client.getBoard().getRegionList().get(choosedRegionID)
 						.getActionSpaceList().get(choosedSpaceID).getCardName();
 											
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
-				out.println(card);
+				out.println(CardCli.print(cardName, card));
 				
-				JsonArray costList = card.get("cost").asArray();
-				if(costList.size() == 1){
-					break;
-				}else{
-					out.println("Choose one cost of the card: ");
-					for(JsonValue js : costList){
-							out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
-						}
-					out.println("type 0 or 1");
-					while(actionFlag){
-						command = in.nextLine();
-						
-						try{
-							if(Integer.parseInt(command) == 0){
-								indexCost = 0;;
-								break;
-							}	
-							if(Integer.parseInt(command) == 1){
-								indexCost = 1;
-								break;
+				if(card.get("cost")!=null){
+					JsonArray costList = card.get("cost").asArray();
+					if(costList.size() == 1){
+						break;
+					}else{
+						out.println("Choose one cost of the card: ");
+						for(JsonValue js : costList){
+								out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
 							}
-							else
-								out.println("please, type a valid number");
-						} catch(NumberFormatException e){
-							System.out.println("type a valid number");
+						out.println("type 0 or 1");
+						while(actionFlag){
+							command = in.nextLine();
+							
+							try{
+								if(Integer.parseInt(command) == 0){
+									indexCost = 0;;
+									break;
+								}	
+								if(Integer.parseInt(command) == 1){
+									indexCost = 1;
+									break;
+								}
+								else
+									out.println("please, type a valid number");
+							} catch(NumberFormatException e){
+								System.out.println("type a valid number");
+							}
 						}
 					}
 				}
-				out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
-				
-				//TODO printare riassunto della mossa
-				
+				out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");				
 				actionFlag = true;
 				while(actionFlag){
 					command = in.nextLine();
 					switch(command){
 					case "y":
+						actionFlag = false;
 						close();
 						break;
 					case "n":
+						actionFlag = false;
 						break;
 					default:
 						out.println("please, type a valid letter");

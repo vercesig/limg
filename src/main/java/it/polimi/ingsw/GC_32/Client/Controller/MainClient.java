@@ -151,7 +151,9 @@ public class MainClient{
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					String playerID;
-
+					
+					System.out.println(message.toString());
+					
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();
@@ -180,7 +182,6 @@ public class MainClient{
 							client.getPlayers().put(player.asString(), new ClientPlayer());
 						});
 						JsonObject board = Json.parse(messagePayload.get("BOARD").asString()).asObject();
-						System.out.println(messagePayload.toString());
 						client.setClientBoard(new ClientBoard(board));
 						
 						//set excommunication cards
@@ -305,6 +306,8 @@ public class MainClient{
 						}	
 						break;
 					case "CONTEXT":
+						if(messagePayload.get("CONTEXTID").asInt()==6) // only for ACTION effect
+							client.graphicInterface.getContextList()[6].close();
 						client.getClientInterface().openContext(messagePayload);
 						break;
 					

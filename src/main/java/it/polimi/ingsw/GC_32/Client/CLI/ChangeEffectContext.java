@@ -36,18 +36,14 @@ public class ChangeEffectContext extends Context{
 		
 		while(runFlag){
 			
-			boolean actionFlag = true;
-			
-			out.println("--------------------  "+CHANGEcardName.get(i).asString()+"  --------------------\n");
-			
+			boolean actionFlag = true;			
+			out.println("--------------------  "+CHANGEcardName.get(i).asString()+"  --------------------\n");			
 			JsonValue item = CHANGEresourcePayload.get(i);
-			if(item.isObject()){ // CHANGE singolo
-				
+			if(item.isObject()){ // CHANGE singolo				
 				ResourceSet resourceIn = new ResourceSet(item.asArray().asObject().get("RESOURCEIN").asObject());
 				
 				out.println("this card offer only this exchange:");
-				out.println(resourceIn+" -> "
-								  +new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
+				out.println(resourceIn+" -> "+new ResourceSet(item.asObject().get("RESOURCEOUT").asObject()).toString()+"\n");
 
 				if(client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources()
 				                                                     .compareTo(resourceIn) < 0){
@@ -85,8 +81,7 @@ public class ChangeEffectContext extends Context{
 				
 				for(int j=0; j<item.asArray().size(); j++){
 					
-					ResourceSet resourceIn = new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEIN").asObject());
-					
+					ResourceSet resourceIn = new ResourceSet(item.asArray().get(j).asObject().get("RESOURCEIN").asObject());					
 					boolean lessResource = (client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources()
 					                                                                          .compareTo(resourceIn) < 0);
 					lessResourceFlag[j] = lessResource;

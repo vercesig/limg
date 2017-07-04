@@ -46,7 +46,7 @@ public class ClientPlayer {
 	}
 	
 	public void setPersonalBonusTile(String bonusTile){
-			this.bonusTile = bonusTile;
+			this.bonusTile = "\n"+bonusTile+"\n";
 		}
 	
 	public String getName(){
@@ -82,20 +82,50 @@ public class ClientPlayer {
 		this.playerResources.addResource(resources);
 	}
 	
+	private void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
+		for(int i=0; i<howManyTimes; i++){
+			stringBuilder.append(string);
+		}
+	}
+	
 	public String toString(){
+		int x = 100;
 		StringBuilder tmp = new StringBuilder();
-		tmp.append(name+"\n");
-		tmp.append(playerResources.toString()+"\n");
+		fillWith(tmp, x, "=");
+		tmp.append(" "+name+" ");
+		tmp.append("\n\n");
+		int numberOfDashes = (x - "RESOURCES".length() -2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" RESOURCES -");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append("\n");
+		tmp.append(playerResources.toString()+"\n\n");
+		numberOfDashes = (x - "FAMILY MEMBERS".length() -2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" FAMILY MEMBERS ");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append("\n");
 		for(int i=0; i<familyMembers.length; i++){
 			tmp.append(i +"] " + familyMembers[i].toString());
 		}
+		numberOfDashes = (x - "CARDS".length() - 2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" CARDS -");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append("\n");
 		for(Entry<String, ArrayList<String>> item : cards.entrySet()){
 			tmp.append(item.getKey()+" : ");
 			for(String card : item.getValue()){
-				tmp.append(card+" ");
+				tmp.append(card+", ");
 			}
+			tmp.append("\n");
 		}
-		tmp.append(bonusTile+"\n---------------------------------------------");
+		numberOfDashes = (x - "BONUS TILE".length() - 2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" BONUS TILE ");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(bonusTile);
+		fillWith(tmp, x, "-");
 		return new String(tmp);
 	}
 	

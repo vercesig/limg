@@ -17,8 +17,7 @@ public class LeaderSetContext extends Context{
 		int index = 0;
 		runFlag=true;
 		
-		JsonObject jsonPayload = (JsonObject) object;
-		
+		JsonObject jsonPayload = (JsonObject) object;		
 		JsonArray list = jsonPayload.get("LIST").asArray();
 		
 		ArrayList <String> cardList = new ArrayList<String>();
@@ -47,13 +46,12 @@ public class LeaderSetContext extends Context{
 					out.println("type a valid index");
 				}
 			}catch(NumberFormatException e) {
-				out.println("type a number, please");
+				out.println("type a valid number, please");
 				}
 		}
 		client.getPlayerList().get(client.getPlayerUUID()).addCard("LEADER", cardList.get(index));
 		cardList.remove(index);
-		list.remove(index);
-		out.println("Prima di inviare al Server:" + list);		
+		list.remove(index);	
 		return ClientMessageFactory.buildLDRSETmessage(client.getGameUUID(), client.getPlayerUUID(), list);
 	}
 }

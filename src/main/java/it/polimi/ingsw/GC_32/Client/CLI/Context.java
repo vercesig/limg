@@ -20,7 +20,7 @@ public abstract class Context{
 	
 	public abstract String open(Object object);
 	
-	protected void close(){
+	public void close(){
 		this.runFlag = false;
 	}
 	

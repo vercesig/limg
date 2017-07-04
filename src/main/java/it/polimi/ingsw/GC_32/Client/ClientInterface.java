@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Client.CLI.Context;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 
@@ -24,6 +25,7 @@ public interface ClientInterface extends Runnable{
 	public void registerGameUUID(String UUID);
 	
 	public void leaderStartPhaseEnd();
+	public Context[] getContextList();
 	
 	//Game Change
 	public void waitTurn(boolean flag);

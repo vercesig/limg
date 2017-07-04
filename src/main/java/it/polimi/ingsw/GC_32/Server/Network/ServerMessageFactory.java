@@ -159,6 +159,9 @@ public class ServerMessageFactory {
  			});
  			STATCHNGCardpayload.add(type, tmpCardArray);
  		});
+ 		JsonArray leaderCardArray = new JsonArray();
+ 		player.getPersonalBoard().getLeaderCards().forEach(leader -> leaderCardArray.add(leader.getName()));
+ 		STATCHNGCardpayload.add("LEADER", leaderCardArray);
  		
  		JsonArray familyStatus = new JsonArray();
  		for(int i=0; i<player.getFamilyMember().length; i++){
@@ -287,7 +290,11 @@ public class ServerMessageFactory {
 			CONTEXTpayload.add("PAYLOAD", (JsonObject) payload[0]);
 		}	
 		CONTEXT.add("PAYLOAD", CONTEXTpayload);
-		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);
+		GameMessage CONTEXTmessage = new GameMessage(game.getUUID(), player.getUUID(), "CONTEXT", CONTEXT);
+		if(type.equals(ContextType.EXCOMMUNICATION)){
+			CONTEXTmessage.setBroadcast();
+		}
+		return CONTEXTmessage;			
 	}
 	
 	public static GameMessage buildCONTEXTACKMessage(Game game, Player player, boolean accepted) {

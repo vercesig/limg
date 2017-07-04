@@ -20,7 +20,7 @@ public class LeaderDialog extends Context{
 		out.println("In this section you can activate a Leader Action. You can perform one of these action:\n"
 				+ "-discard: to discard a card and get a council privilege\n"
 				+ "-activate an effect: actvate a special effect of a leader card\n"
-				+ "-play: to put on the game the card. you can activate the effect only to cards on the game.");
+				+ "-play: to put on the game the card. you can activate the effect only to cards on the game.\n type 'q' if you want return to the main menù");
 		
 		while(runFlag){
 			
@@ -40,6 +40,8 @@ public class LeaderDialog extends Context{
 					decision = "PLAY";
 					optionSelected = true;
 					break;
+				case "q":
+					return "";
 				default:
 					out.println("type a valid option");
 					break;
@@ -50,7 +52,6 @@ public class LeaderDialog extends Context{
 			for(int i=0; i<player.getCards().get("LEADER").size(); i++){
 				System.out.println(i + "]" + player.getCards().get("LEADER").get(i));
 			}	
-			out.println("type the index of the card you want ");
 			while(!optionSelected){	
 				try{
 					command = in.nextLine();	
@@ -67,11 +68,11 @@ public class LeaderDialog extends Context{
 						out.println("type a valid index");
 					}
 			}catch(NumberFormatException e) {
-				out.println("type a number, please");
+				if("q".equals(command))
+					return "";
+				out.println("type a valid number, please");
 				}
 		}
-			
-		out.println("NAME:"+ player.getCards().get("LEADER").get(index) + " ACTION:" + decision);
 		close();
 		}
 	return ClientMessageFactory.buildASKLDRACTmessage(client.getGameUUID(),player.getCards().get("LEADER").get(index), decision);

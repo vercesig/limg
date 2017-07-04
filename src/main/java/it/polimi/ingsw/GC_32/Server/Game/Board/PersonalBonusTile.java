@@ -29,7 +29,7 @@ public class PersonalBonusTile {
 	}
 	
 	public String toString(){
-		return "BONUS TILE\n"+"production :"+personalProductionBonus.toString()+"\nharvest :"+personalHarvestBonus.toString();
+		return "production :"+personalProductionBonus.toString()+"\nharvest :"+personalHarvestBonus.toString();
 	}
 }
 	

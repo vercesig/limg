@@ -42,11 +42,11 @@ public class ChatDialog extends Context {
 						out.println("[!] Exiting from the chat.");
 						return;
 					default:
-						out.println("------------------------------------");
+						out.println("--------------------------------------");
 						out.println("| Just select one of those options\n"
-					+ "  > personal: personal message. Only the player selected can display these message\n"
-								+ "  > all: send a message to the chat room. Everyone can see these message!\n"
-					+ "  > quit: to exit from ```Lorenzo il Magnifico's Chat```\n");
+					+ "|	> personal: personal message. Only the player selected can display these message\n"
+					+ "|	> all: send a message to the chat room. Everyone can see these message!\n"
+					+ "|	> quit: to exit from ```Lorenzo il Magnifico's Chat```\n");
 						out.println("--------------------------------------");
 						break;
 					}
@@ -63,7 +63,7 @@ public class ChatDialog extends Context {
 			runFlag = true;
 			while(runFlag){
 				command = in.nextLine();
-				out.println("| Player to send the message: " + command);
+				out.println("| 	Player to send the message: " + command);
 				if(onlinePlayers.contains(command)){
 					int index = onlinePlayers.lastIndexOf((command));
 					name = onlinePlayers.get(index);
@@ -80,9 +80,9 @@ public class ChatDialog extends Context {
 				}
 			}
 		}
-		out.println("------------------------------------");
-		out.println("| Type the message:                 |");
 		out.println("---------------------------------------------");
+		out.println("|	 Type the message:                 ");
+		
 			
 		runFlag = true;
 		while(runFlag){
@@ -97,19 +97,7 @@ public class ChatDialog extends Context {
 			out.print("| [!] Sending the message to " + name);
 			} else
 				out.print("| [!] Sending the message");	
-		//animazione . . . 
-				
-		for(int i=0; i<3;i++){
-			Thread.sleep(500);
-			out.print(".");
-		}
-		out.print("\n[PROGRESS]: [");
-			
-		for(int i=0; i<20; i++){
-			Thread.sleep(100);
-			out.print("#");	
-		}
-		out.println("]");
+		
 		if(!all){
 			client.getSendQueue().add(ClientMessageFactory.buildMSGmessage(client.getPlayerUUID(), message, uuidReceiver, false));
 			client.displaySendMessage(client.getPlayerList().get(client.getPlayerUUID()).getName(), message);
@@ -122,9 +110,9 @@ public class ChatDialog extends Context {
 		String name = null;
 		out.println("-------------------------------------------------");
 		out.println(" In this section you can change your Player name.\n"
-				+ "Just type one of those options\n"
-				+ "  > change: to change your Player's name\n"
-				+ "  > quit: to return in the main scree");
+				+ "| Just type one of those options\n"
+				+ "|	> change: to change your Player's name\n"
+				+ "|	> quit: to return in the main scree");
 		
 		runFlag = true;
 		while(runFlag){	
