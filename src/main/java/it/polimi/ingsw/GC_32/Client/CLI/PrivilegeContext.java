@@ -58,7 +58,7 @@ public class PrivilegeContext extends Context{
 		Set<String> choosedResources = new HashSet<String>();
 		while(runFlag){
 			command = in.nextLine();
-			if("n".equals(command)&&isCostPrivilege){
+			if("n".equals(command) && isCostPrivilege){
 				choosedResources.add(command);
 				return CONTEXTREPLY.toString();
 			}		

@@ -46,7 +46,7 @@ public class EndPhase {
 							           .compareTo((Integer)p2
 							        		   		.getResources()
 							        		   		.getResource("MILITARY_POINTS"));
-				};    
+				}
 			});
 			for(int i=0; i < militaryScore.size()-2; i++){
 				militaryScore.removeLast(); // ipotizzando che il sort abbia ordinato in modo crescente.
@@ -59,27 +59,28 @@ public class EndPhase {
 					for (DevelopmentCard card: ventureCard){
 						card.getPermanentEffect().forEach(effect -> effect.apply(game.getBoard(), player, null, null));
 					}
-				}	
+				}
 				int score = player.getResources().getResource("VICTORY_POINTS");
 				
-				try{
-					// carte territorio
-					if(!player.isFlagged("NOENDGREEN")){
-						score =+ json.get("TERRITORYCARD").asObject()
-												    .get( ((Integer)player.getPersonalBoard()
-							    .getCardsOfType("TERRITORYCARD").size()).toString()).asInt(); 
-					}
-				} catch (NullPointerException e){}
-					
-				// carte personaggio
-				
-				try{
-					if(!player.isFlagged("NOENDBLUE")){
-						score =+ json.get("CHARACTERCARD").asObject()
-							    					.get( ((Integer)player.getPersonalBoard()
-							    					.getCardsOfType("CHARACTERCARD").size()).toString()).asInt(); 
-					}
-				} catch (NullPointerException e){}
+				// carte territorio
+				if(!player.isFlagged("NOENDGREEN")){
+                    JsonValue jTerrCard = json.get("TERRITORYCARD");
+                    if(jTerrCard != null){
+                        score =+ jTerrCard.asObject().get(Integer.toString(player.getPersonalBoard()
+                                                                                 .getCardsOfType("TERRITORYCARD")
+                                                                                 .size())).asInt(); 
+                    }
+                }
+                    
+                // carte personaggio
+                if(!player.isFlagged("NOENDBLUE")){
+                    JsonValue jCharCard = json.get("CHARACTERCARD");
+                    if(jCharCard != null){
+                        score =+ jCharCard.asObject().get(Integer.toString(player.getPersonalBoard()
+                                                                                 .getCardsOfType("CHARACTERCARD")
+                                                                                 .size())).asInt();
+                    }
+                }
 				
 				// military
 				if(militaryScore.getFirst().getUUID().equals(player.getUUID())){

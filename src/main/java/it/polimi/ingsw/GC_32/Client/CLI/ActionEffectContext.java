@@ -91,7 +91,7 @@ public class ActionEffectContext extends Context{
 											
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
 				out.println(CardCli.print(cardName, card));
-				
+
 				if(card.get("cost")!=null){
 					JsonArray costList = card.get("cost").asArray();
 					if(costList.size() == 1){
