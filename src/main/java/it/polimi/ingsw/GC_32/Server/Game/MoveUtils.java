@@ -1,10 +1,13 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.logging.Level;
+
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
@@ -12,7 +15,9 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 
 public class MoveUtils {
-	public MoveUtils(){}
+    private static Logger LOGGER = Logger.getLogger(MoveUtils.class.toString());
+    
+	private MoveUtils(){}
 	
 	static public boolean checkValidRegionID(Board board, Player player, Action action){	
 		if(board.getRegion(action.getRegionId()) == null){		
@@ -43,10 +48,7 @@ public class MoveUtils {
     }
  
     /** checks if the region is already occupied by a familiar of the same color
-     * @param board
-     * @param player
-     * @param action
-     * @return
+     * @return false if the region has a same-color familiar, false otherwise
      */
     public static boolean familyColor(Board board, Player player, Action action){
     	if(action.getRegionId() == 2 || action.getRegionId() == 3){
@@ -86,21 +88,19 @@ public class MoveUtils {
     
     /** CheckBlockedSpace: checks player count and the presence of additional
      *  production/harvest/market spaces
-     * @param numberOfPlayer
-     * @param action
-     * @return
+     * @return true if the action is on a blocked area, false otherwise
      */
     public static boolean checkBlockedZone(int numberOfPlayer, Action action){	
     	// Can't access to: Harvest-1,Production-1 and Market 2-3
     	if(numberOfPlayer < 3){
-    		if((action.getRegionId() <=1 && action.getActionSpaceId()==1) ||
-    				(action.getRegionId() == 3 && action.getActionSpaceId() >= 2)){
+    		if(action.getRegionId() <= 1 && action.getActionSpaceId() == 1 ||     //Deny Harvest and production regions
+    		   action.getRegionId() == 3 && action.getActionSpaceId() >= 2){      //Deny Extra market spots
     	    	System.out.println("ZONA BLOCCATA");
     			return true;
     		}
     	}
     	//  Can't access to: Market 2-3
-    	if(numberOfPlayer <4){
+    	if(numberOfPlayer < 4){
     		if(action.getRegionId() == 3 && action.getActionSpaceId() >= 2){
     	    	System.out.println("ZONA BLOCCATA");
     			return true;
@@ -108,7 +108,12 @@ public class MoveUtils {
     	}
     	return false;
 	}
-    
+
+    /**
+     * Checks that the actionspace actually has a card
+     * @return false if the actionspace should have a card and doesn't,
+     * true otherwise
+     */
     public static boolean checkNotFoundCard(Board board, Action action){
     	if(action.getRegionId() < 4){
     		return true;
@@ -117,26 +122,26 @@ public class MoveUtils {
 				  							  .getTowerLayers()[action.getActionSpaceId()];
     	return (layer.getCard() != null);
     }
+
     /** checks if the player has enough servants to meet the actionspace requirements
-     * @param board
-     * @param player
-     * @param action
-     * @return
+     * @return true if the player has enough servants, false otherwise
      */
+    //TODO: maybe split this
     public static boolean checkServants(Board board, Player player, Action action){ // change the state
     	if(checkActionValue(board, action)){
     		return true;
-    	}  	
-    	System.out.println("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
-    	int actionDiff = action.getActionValue() -
-    					 board.getRegion(action.getRegionId()).getActionSpace(action.getActionSpaceId()).getActionValue();
-    	if(player.isFlagged("DOUBLESERVANTS")){ // excommunicate flag
-        	System.out.println("EFFETTO DOUBLESERVANTS EXCOMMUNICATE");
-    		player.getResources().addResource("SERVANTS", 2*actionDiff);
     	}
-    	else
+    	LOGGER.info("PROVO A PAGARE IN SERVITORI LA DIFFERENZA: ");
+    	int actionDiff = action.getActionValue() -
+    					 board.getRegion(action.getRegionId())
+    					      .getActionSpace(action.getActionSpaceId()).getActionValue();
+    	if(player.isFlagged("DOUBLESERVANTS")){ // excommunicate flag
+        	LOGGER.info("EFFETTO DOUBLESERVANTS EXCOMMUNICATE");
+    		player.getResources().addResource("SERVANTS", 2*actionDiff);
+    	} else {
     		player.getResources().addResource("SERVANTS", actionDiff);
-    	System.out.println(" " + player.getResources().isValid());
+    	}
+    	LOGGER.log(Level.INFO, " %s", player.getResources().isValid());
     	return player.getResources().isValid();
     }
     
@@ -159,40 +164,36 @@ public class MoveUtils {
     											  .getTowerLayers()[action.getActionSpaceId()]
     											  .getCard();
     	String cardType = card.getType();
-    	if(player.getPersonalBoard().getCardsOfType(cardType).size() == 6){
+    	if(player.getPersonalBoard().getCardsOfType(cardType).size() >= 6){
     			return false;
     	}
     	
     	if("TERRITORYCARD".equals(card.getType())){
-    		
     		if(player.isFlagged("NOMILITARYRULE")){ // Leader Card
     			return true;
     		}
     		
     		int milPoints = player.getResources().getResource("MILITARY_POINTS");
     		switch(player.getPersonalBoard().getCardsOfType("TERRITORYCARD").size()){
-    		case 2: 
-    			return milPoints >= 3; 
-    		case 3:
-    			return milPoints >= 7;
-    		case 4:
-    			return milPoints >= 12;
-    		case 5:
-    			return milPoints >= 18;
-    		default:
-    			return true;
+        		case 2: 
+        			return milPoints >= 3;
+        		case 3:
+        			return milPoints >= 7;
+        		case 4:
+        			return milPoints >= 12;
+        		case 5:
+        			return milPoints >= 18;
+        		default:
+        			return true;
     		}
     	} 
     	return true;	
     }
     
     /** Checks if the player can buy the card
-     * @param board
-     * @param player
-     * @param action
-     * @return
+     * @return true if the card can be bought, false if not
      */
-    public static boolean checkCardCost(Board board, Player player, Action action){ 	// change the state
+    public static boolean checkCardCost(Board board, Player player, Action action){
     	if(action.getRegionId()<4)
     		return true;
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getRegionId()))
@@ -201,11 +202,16 @@ public class MoveUtils {
 
 		ResourceSet requirements = card.getRequirments();
 		if(requirements != null && player.getResources().compareTo(requirements) < 0){
-			System.out.println("NO REQUIREMENTS RISPETTATI");
+			LOGGER.info("NO REQUIREMENTS RISPETTATI");
 			return false;
 		} else {
-		    System.out.println("CARTA SENZA REQUIREMENTS");
-		}	
+		    LOGGER.info("CARTA SENZA REQUIREMENTS");
+		}
+		
+		if(card.getCost().isEmpty()){
+		    LOGGER.info("CARTA SENZA COSTO");
+            return true;
+		}
     	
 		JsonValue costIndex = action.getAdditionalInfo().get("COSTINDEX");
 		if(costIndex == null){
@@ -213,21 +219,21 @@ public class MoveUtils {
 		}
 		if(costIndex.asInt() < card.getCost().size()){
 		    ResourceSet cost = card.getCost().get(costIndex.asInt());
-		    System.out.println("PLAYER RESOURCES: " + player.getResources());
-		    System.out.println("COST: " + cost);
+		    LOGGER.log(Level.INFO, "PLAYER RESOURCES: %s", player.getResources());
+		    LOGGER.log(Level.INFO, "COST: %s", cost);
 		    
-		    if(action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE")!=null){ // only for ACTION effect
-		    	ResourceSet bonusResource = new ResourceSet(action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE").asObject());
+		    if(action.getAdditionalInfo() != null &&
+		       action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE") != null){ // only for ACTION effect
+		    	ResourceSet bonusResource = new ResourceSet(action.getAdditionalInfo().asObject()
+		    	                                                  .get("BONUSACTIONVALUE").asObject());
 		    	if(card.getCost().get(costIndex.asInt()).contains(bonusResource)){
 		    		cost.subResource(bonusResource);
 		    	}
 		    }
 		    player.getResources().subResource(cost);
 		    return player.getResources().isValid();
-		} else {
-    		System.out.println("CARTA SENZA COSTO");
-    		return true;
 		}
+		return false;
     }
     
     public static void applyEffects(Board board, Player player, Action action, ContextManager cm){

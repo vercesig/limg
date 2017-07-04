@@ -33,7 +33,7 @@ public class TowerLayer {
 	 */
 	public TowerLayer(int regionID, int actionSpaceID){
 		boolean single = true;
-		int actionValue = 2*actionSpaceID + 1;
+		int actionValue = 2 * actionSpaceID + 1;
 		this.actionSpace = new ActionSpace(null, actionValue, single, regionID, actionSpaceID);
 	}
 	

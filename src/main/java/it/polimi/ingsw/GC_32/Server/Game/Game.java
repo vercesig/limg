@@ -645,7 +645,7 @@ public class Game implements Runnable{
 		
 		int pawnID = action.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt();
 		player.moveFamilyMember(pawnID, action, board); // calls: player's moveFamilyMember and sets the position of this familyMember
-															// calls: action's space addFamilyMember and sets this familymember as an occupant.
+		                                                // calls: action's space addFamilyMember and sets this familymember as an occupant.
 	}
 	
 	public void takeCard(Board board, Player player, Action action){

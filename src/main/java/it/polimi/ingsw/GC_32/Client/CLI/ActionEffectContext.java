@@ -107,7 +107,7 @@ public class ActionEffectContext extends Context{
 							
 							try{
 								if(Integer.parseInt(command) == 0){
-									indexCost = 0;;
+									indexCost = 0;
 									break;
 								}	
 								if(Integer.parseInt(command) == 1){
