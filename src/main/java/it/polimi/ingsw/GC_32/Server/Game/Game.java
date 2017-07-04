@@ -48,10 +48,11 @@ public class Game implements Runnable{
 	private TurnManager turnManager;
 	private MoveChecker mv;
 	private ContextManager cm;
+	private ActionHandler actionHandler;
 	
 	// context management
 	private HashMap<String, JsonValue> contextInfoContainer;
-	private HashMap<UUID, Action> memoryAction;
+
 	private final UUID gameUUID;
 	
 	private boolean runGameFlag = true;
@@ -61,8 +62,8 @@ public class Game implements Runnable{
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
+
 		
-		this.memoryAction = new HashMap<>();
 		contextInfoContainer = new HashMap<String, JsonValue>();
 		
 		LOGGER.log(Level.INFO, "setting up game...");
@@ -76,7 +77,7 @@ public class Game implements Runnable{
 		for(int i=0; i<3; i++){
 			this.excommunicationCards[i] = CardRegistry.getInstance().getDeck(i+1).drawRandomElement();
 		}
-		
+	    this.actionHandler = new ActionHandler(this);
 		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
@@ -216,212 +217,7 @@ public class Game implements Runnable{
 			}
 
 			if(message != null){
-				JsonObject jsonMessage = message.getMessage().asObject();
-				switch(message.getOpcode()){
-					case "ASKACT":
-						LOGGER.log(Level.INFO, "processing ASKACT message from "+message.getPlayerID());
-						int index = playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-						int pawnID = jsonMessage.get("FAMILYMEMBER_ID").asInt();
-						int actionValue = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())
-																	.getFamilyMember()[pawnID].getActionValue();
-	
-						int regionID = jsonMessage.get("REGIONID").asInt();
-						int spaceID = jsonMessage.get("SPACEID").asInt();
-						String actionType = jsonMessage.get("ACTIONTYPE").asString();
-	
-						Action action = new Action(actionType,actionValue,regionID,spaceID);
-						action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
-						action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
-						action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
-						action.getAdditionalInfo().add("BONUSFLAG", Json.value(false));
-						
-						Player player = playerList.get(index);
-						memoryAction.put(player.getUUID(), action);
-						
-						LOGGER.info("INIZIO CHECK: ");
-						LOGGER.info("STATO PRIMA DELL'ESECUZIONE:");
-						LOGGER.info(action::toString);
-						LOGGER.info(player::toString);
-			    		if(mv.checkMove(this, player, action, cm)){
-			    			LOGGER.info("check with copy: PASSATO");
-			    			makeMove(player, action);
-			    			LOGGER.info("AZIONE ESEGUITA!\n");
-							LOGGER.info("STATO DOPO AZIONE: ");
-			    			LOGGER.info(player::toString);
-			    			
-			    			// notifiche server
-			    			MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, true));
-			    		} else {
-		    				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(this, player, action, false));
-			    		}
-		    			break;
-				//RAPPORTO AL VATICANO
-					case "SENDPOPE":
-						LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
-						boolean answer = jsonMessage.get("ANSWER").asBoolean();
-						int playerIndex= playerList.indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-						if(answer){ 
-							
-							//ATTIVAZIONE CARTA SCOMUNICA
-							LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
-							ExcommunicationCard card = this.excommunicationCards[this.turnManager.getPeriod()-1]; // periodi sono shiftati di 1
-							LOGGER.info("Attivo effetto carta: " +card.getName());
-							
-							if(!card.getInstantEffect().isEmpty()){
-								card.getInstantEffect().get(0).apply(getBoard(), playerList.get(playerIndex), null, null);
-							}
-							else 
-								LOGGER.info("Non ha effetti instantanei!");
-							if(!card.getPermanentEffect().isEmpty()){
-								playerList.get(playerIndex).addEffect(card.getPermanentEffect().get(0));
-							}
-							else
-								LOGGER.info("Non ha effetti permanenti!");
-						}	
-						else{
-							LOGGER.info("Sostegno alla Chiesa!");
-							int faithScore = playerList.get(playerIndex).getResources().getResource("FAITH_POINTS");	
-							LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
-							
-							playerList.get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
-							int victoryPointsConverted = 0;
-							
-							if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore)!=null){
-								victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
-							}
-							else
-								victoryPointsConverted = faithScore*2; // caso faithPoints > 15
-							
-							if(playerList.get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
-								victoryPointsConverted += 5;
-							}
-							LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
-							playerList.get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
-						}
-						break;	
-					//LEADER ACTION
-					case "ASKLDRACT":
-						String cardName = jsonMessage.get("LEADERCARD").asString();
-						String decision = jsonMessage.get("DECISION").asString();
-						LOGGER.log(Level.INFO, "LEADERCARD: %s", cardName);
-						LOGGER.log(Level.INFO, "DECISION: %s", decision);
-						Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
-						boolean result;
-						if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
-							LOGGER.info("ATTIVATO!");
-							result = true;
-							if("DISCARD".equals(decision)){	//GUADAGNA UN PRIVILEGIO
-								cm.openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
-								JsonValue COUNCILPRIVILEGEresponse = cm.waitForContextReply();
-								
-								LOGGER.info("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
-								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource("COINS", 1);
-								GameRegistry.getInstance().getPlayerFromID(getLock()).getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-								LOGGER.info("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(getLock()));
-							}
-						}
-						else{
-							LOGGER.info("QUALCOSA NON VA!\n NON PUOI ATTIVARE QUESTA AZIONE LEADER!\n");
-							result = false;
-						}
-						MessageManager.getInstance().sendMessge(ServerMessageFactory
-								.buildASKLDRACKmessage(this, p, cardName, decision, result));		
-						break;
-					case "TRNEND":
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, GameRegistry.getInstance().getPlayerFromID(getLock())));
-						if(memoryAction.get(getLock())!=null){
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getLock().toString(), memoryAction.get(getLock())));
-						}
-						try{ // wait for TRNBGN message
-						    Thread.sleep(500);
-						}catch(InterruptedException e){
-						    Thread.currentThread().interrupt();
-						}
-						
-						memoryAction.remove(getLock());
-						
-						LOGGER.info("ricevo turn end [GAME]");
-						LOGGER.info("ROUND ID: "+ turnManager.getRoundID());
-						LOGGER.info("PERIOD ID: "+ turnManager.getPeriod());
-						LOGGER.info("TURN ID: "+ turnManager.getTurnID());
-						
-						if(turnManager.isGameEnd()){
-							LOGGER.log(Level.INFO, "Game end");
-							EndPhase.endGame(this);
-							//stopGame();
-							break;
-						}	
-							
-						LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
-						if(turnManager.isRoundEnd()){ // cambio round
-							
-							System.out.println("ROUND FINITO!");
-							LOGGER.log(Level.INFO, "round end");
-							if(turnManager.isPeriodEnd()){ //cambio periodo
-								System.out.println("PERIODO FINITO!");
-								this.turnManager.distributeVaticanReport();
-							}		
-							turnManager.setToUpdate(true);
-						}	
-						try{ // wait for TRNBGN message
-							Thread.sleep(500);
-						}catch(InterruptedException e){
-						    Thread.currentThread().interrupt();
-						}
-						
-					if(turnManager.DoesPopeWantToSeeYou()){	
-						LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
-						int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 
-						
-						Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
-						MessageManager.getInstance().sendMessge(ServerMessageFactory
-										  .buildCONTEXTmessage(this, pl, ContextType.EXCOMMUNICATION, 
-												excommunicationLevel,
-						pl.getResources().getResource("FAITH_POINTS")));
-
-						turnManager.goodbyePope();	
-					}
-					
-					if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){
-						
-						// reset board
-						getBoard().flushBoard();
-						getBoard().placeCards(this);
-						diceRoll();
-						turnManager.setToUpdate(false);
-						
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, getBoard()));
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(this, true));
-						getPlayerList().forEach(gamePlayer -> {
-							MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, gamePlayer));
-						});
-						MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
-						
-						try{ // wait for TRNBGN message
-						    Thread.sleep(500);
-						}catch(InterruptedException e){
-						    Thread.currentThread().interrupt(); 
-						}
-					}	
-					
-					LOGGER.log(Level.INFO, "giving lock to the next player");
-					UUID nextPlayer = turnManager.nextPlayer();
-							
-					/*	//Skip Turn  ///DA TESTARE E NON FUNZIONA A COLPO D'OCCHIO
-					for(int i = 0; i < this.playerList.size(); i++){
-						if(!GameRegistry.getInstance().getPlayerFromID(nextPlayer)
-														  .isFlagged("SKIPTURN")){
-							break;
-						}
-						nextPlayer = turnManager.nextPlayer();
-					}*/
-					
-					setLock(nextPlayer);
-					LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
-					MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(this, getLock()));
-					break;
-				}
+				actionHandler.handleMessage(message);
 			}
 		}
 	}
@@ -626,7 +422,7 @@ public class Game implements Runnable{
 		this.lock = player;
 	}
 	
-	private void diceRoll(){
+	protected void diceRoll(){
 		Random randomGenerator = new Random();
 		this.blackDice = 1+randomGenerator.nextInt(6);
 		this.orangeDice = 1+randomGenerator.nextInt(6);
@@ -654,5 +450,15 @@ public class Game implements Runnable{
 		player.takeCard(board, action);													// calls: action's space addFamilyMember and sets this familymember as an occupant.
 	}
 	
+	protected ContextManager getContextManager(){
+	    return this.cm;
+	}
 	
+	protected MoveChecker getMoveChecker(){
+	    return this.mv;
+	}
+	
+	protected void sendDICEROLL(){
+	    MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
+	}
 }

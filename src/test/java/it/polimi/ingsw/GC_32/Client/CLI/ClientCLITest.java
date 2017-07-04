@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
