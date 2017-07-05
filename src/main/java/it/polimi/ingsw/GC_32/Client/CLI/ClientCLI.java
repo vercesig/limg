@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.eclipsesource.json.JsonObject;
@@ -31,6 +32,8 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	private Context[] contextList;
 	private Thread zeroLevelContextThread;
 	
+	// input handling
+	protected Scanner in;
 	protected PrintWriter out;
 	
 	private boolean idleRun = false; // if zeroLevel must run
@@ -41,6 +44,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	private boolean stop = false;
 	
 	public ClientCLI(){		
+		
+		out = new PrintWriter(System.out, true);
+		in = new Scanner(System.in);
+		
 		contextQueue = new ConcurrentLinkedQueue<Object>();
 		messageQueue = new ConcurrentLinkedQueue<String>();
 		
@@ -54,8 +61,6 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 		contextList[6] = new ActionEffectContext(this);
 		
 		clientsendQueue = new ConcurrentLinkedQueue<String>();
-		
-		out = new PrintWriter(System.out, true);
 	}
 	
 	public void run(){	
@@ -65,7 +70,9 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 			while(!contextQueue.isEmpty()){
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
-				clientsendQueue.add(contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD")));
+				String response = contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD"));
+				if(!"".equals(response))
+					clientsendQueue.add(response);
 				
 				try{ //waiting for other context
 					Thread.sleep(500);
@@ -97,6 +104,15 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 			}
 		}
 	}
+	
+	public Scanner getIn(){
+		return this.in;
+	}
+	
+	public PrintWriter getOut(){
+		return this.out;
+	}
+	
 	
 	public void registerBoard(ClientBoard board){
 		this.boardReference = board;

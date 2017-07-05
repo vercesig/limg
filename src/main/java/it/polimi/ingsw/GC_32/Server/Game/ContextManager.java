@@ -67,6 +67,15 @@ public class ContextManager{
 						extraInfo));
 				waitingContextResponse = "ACTION";
 				break;
+			case EXCOMMUNICATION:
+				MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCONTEXTmessage(
+						this.game, 
+						player, 
+						ContextType.EXCOMMUNICATION,
+						extraInfo.asArray().get(0).asInt(), //excommunicationlevel
+						extraInfo.asArray().get(1).asInt()));
+				waitingContextResponse = "EXCOMMUNICATION";
+				break;
 			default:
 				break;
 		}

@@ -278,6 +278,7 @@ public class ServerMessageFactory {
 		case EXCOMMUNICATION:
 			CONTEXTpayload.add("FAITH_NEEDED", (int) payload[0]);
 			CONTEXTpayload.add("PLAYER_FAITH", (int) payload[1]);
+			CONTEXTpayload.add("PLAYERID", (String) player.getUUID().toString());
 			break;
 		case LEADERSET:
 			CONTEXTpayload.add("LIST", (JsonArray) payload[0]);

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -9,12 +11,15 @@ public abstract class Context{
 	protected PrintWriter out;
 	protected ClientCLI client;
 	
+	protected BufferedReader reader;
+	
 	protected boolean runFlag; // flag used to stop/start the context
 	protected String command; // use this string as a buffer to save in.nextLine output
 	
 	public Context(ClientCLI client){
-		this.in = new Scanner(System.in);
-		this.out = new PrintWriter(System.out, true);
+		reader = new BufferedReader(new InputStreamReader(System.in));
+		this.in = client.getIn();
+		this.out = client.getOut();
 		this.client = client;
 	}
 	

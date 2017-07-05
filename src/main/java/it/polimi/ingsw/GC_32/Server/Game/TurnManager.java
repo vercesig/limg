@@ -85,7 +85,7 @@ public class TurnManager {
 	public boolean isRoundEnd(){
 	//if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
 	//		   	game.getPlayerList().size())) == 0){
-		if(turnID == 4){
+		if(turnID == 2){
 			LOGGER.log(Level.INFO, "updating turn order");
 			updateTurnOrder();
 			turnID=0;

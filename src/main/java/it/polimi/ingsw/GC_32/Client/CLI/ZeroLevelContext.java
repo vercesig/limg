@@ -35,7 +35,13 @@ public class ZeroLevelContext extends Context implements Runnable{
 					+ "- action: make an action\n"
 					+ "- end turn: to pass your turn");
 				
-			command = in.nextLine();
+			try{ // consente di interrompere lo zeroLevel sull'inputstream in seguito ad interrupt dovuti all'apertura di nuovi context
+				while(!reader.ready()){
+					Thread.sleep(200);
+				}
+				command = reader.readLine();
+			}catch(Exception e){}
+			
 			switch(command){
 			
 			case "board":

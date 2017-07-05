@@ -90,6 +90,7 @@ public class ActionHandler{
     public void handleProduction(Player player, Action action){
         player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
         contextManager.openContext(ContextType.SERVANT, player, action, null);
+        contextManager.setContextAck(true, player);
         
         JsonValue SERVANTProductionresponse = contextManager.waitForContextReply();
         action.setActionValue(action.getActionValue() + SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
@@ -138,6 +139,7 @@ public class ActionHandler{
     public void handleHarvest(Player player, Action action){
         player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
         contextManager.openContext(ContextType.SERVANT, player, action, null);
+        contextManager.setContextAck(true, player);
         
         JsonValue SERVANTHarvestresponse = contextManager.waitForContextReply();
         action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
@@ -151,6 +153,7 @@ public class ActionHandler{
     
     public void handleCouncil(Player player, Action action){
         contextManager.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
+        contextManager.setContextAck(true, player);
         JsonValue COUNCILPRIVILEGEresponse = contextManager.waitForContextReply();
         
         LOGGER.info(COUNCILPRIVILEGEresponse::asString);
@@ -162,9 +165,13 @@ public class ActionHandler{
     }
     
     public void handleMarket(Player player, Action action){
-        contextManager.openContext(ContextType.PRIVILEGE, player, action, Json.value(2));
-        JsonValue MARKETPRIVILEGEresponse = contextManager.waitForContextReply();
-        player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-        player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(1).asString()).asObject()));
+    	if(action.getActionSpaceId() == 3){
+			game.getContextManager().openContext(ContextType.PRIVILEGE, player, action, Json.value(2));
+			JsonValue MARKETPRIVILEGEresponse = game.getContextManager().waitForContextReply();
+			game.getContextManager().setContextAck(true, player);
+			
+			player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
+			player.getResources().addResource( new ResourceSet(Json.parse(MARKETPRIVILEGEresponse.asArray().get(1).asString()).asObject()));
+		}
     }
 }

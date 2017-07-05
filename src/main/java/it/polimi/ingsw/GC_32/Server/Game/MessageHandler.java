@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
@@ -94,7 +95,7 @@ public class MessageHandler{
     }
     
     protected void handleSENDPOPE(GameMessage message, JsonObject jsonMessage){
-        boolean answer = jsonMessage.get("ANSWER").asBoolean();
+      /*  boolean answer = jsonMessage.get("ANSWER").asBoolean();
         int playerIndex= game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
         if(answer){ 
             
@@ -132,7 +133,7 @@ public class MessageHandler{
             }
             LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
             game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
-        }
+        }*/
     }
     
     protected void handleASKLDRACT(GameMessage message, JsonObject jsonMessage){
@@ -209,19 +210,69 @@ public class MessageHandler{
         } catch(InterruptedException e){
             Thread.currentThread().interrupt();
         }
-        
+                
         if(turnManager.DoesPopeWantToSeeYou()){ 
-            LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
-            int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 
-            
-            Player pl = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
-            MessageManager.getInstance().sendMessge(ServerMessageFactory
-                                                    .buildCONTEXTmessage(game, pl, 
-                                                                         ContextType.EXCOMMUNICATION, 
-                                                                         excommunicationLevel,
-                                                                         pl.getResources().getResource("FAITH_POINTS")));
-    
-            turnManager.goodbyePope();  
+        	
+        	LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
+			int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 	
+        	
+        	game.getPlayerList().forEach(excommPlayer -> {
+				System.out.println("eccoci");
+				JsonArray excommPayload = new JsonArray();
+				excommPayload.add(excommunicationLevel);
+				excommPayload.add(excommPlayer.getResources().getResource("FAITH_POINTS"));
+				game.getContextManager().openContext(ContextType.EXCOMMUNICATION, excommPlayer, null, excommPayload);
+				
+				JsonObject excommMessage = game.getContextManager().waitForContextReply().asObject();
+				game.getContextManager().setContextAck(true, excommPlayer);
+				
+				System.out.println("dopo ricezione sendpope");
+				
+				boolean answer = excommMessage.get("ANSWER").asBoolean();
+				int playerIndex= game.getPlayerList().indexOf(excommPlayer); 
+				if(answer){ 
+					
+					//ATTIVAZIONE CARTA SCOMUNICA
+					LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
+					ExcommunicationCard card = game.getExcommunicationCard(this.turnManager.getPeriod()-1); // periodi sono shiftati di 1
+					LOGGER.info("Attivo effetto carta: " +card.getName());
+					
+					if(!card.getInstantEffect().isEmpty()){
+						System.out.println(card);
+						System.out.println(card.getInstantEffect());
+						System.out.println(card.getInstantEffect().get(0));
+						card.getInstantEffect().get(0).apply(game.getBoard(), excommPlayer, null, null);
+					}
+					else 
+						LOGGER.info("Non ha effetti instantanei!");
+					if(!card.getPermanentEffect().isEmpty()){
+						game.getPlayerList().get(playerIndex).addEffect(card.getPermanentEffect().get(0));
+					}
+					else
+						LOGGER.info("Non ha effetti permanenti!");
+				}	
+				else{
+					LOGGER.info("Sostegno alla Chiesa!");
+					int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");	
+					LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
+					
+					game.getPlayerList().get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
+					int victoryPointsConverted = 0;
+					
+					if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore)!=null){
+						victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
+					}
+					else
+						victoryPointsConverted = faithScore*2; // caso faithPoints > 15
+					
+					if(game.getPlayerList().get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
+						victoryPointsConverted += 5;
+					}
+					LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
+					game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
+				}
+				turnManager.goodbyePope();
+			});	
         }
         
         if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){

@@ -15,7 +15,6 @@ public class SocketMsgConnection implements MsgConnection{
 	
 	public void open(String ip, int port) throws IOException{
 		socket = new Socket(ip, port);
-		//System.out.println("[SOCKETMSGCONNECTION] connected to server");
 		in = new Scanner(socket.getInputStream());
 		out = new PrintWriter(socket.getOutputStream());
 	}
