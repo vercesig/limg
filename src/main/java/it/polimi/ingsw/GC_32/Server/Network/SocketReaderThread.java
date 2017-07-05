@@ -24,6 +24,12 @@ public class SocketReaderThread implements Runnable{
 		LOGGER.log(Level.INFO, "ready to recive and send message");
 		while(true){		
 			
+			try{ // send packet in order and without losses
+				Thread.sleep(100);
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
+			}
+			
 			// se ci sono messaggi in coda li spedisco sul relativo socket
 			while(!MessageManager.getInstance().getSocketSendQueue().isEmpty()){
 				GameMessage message = MessageManager.getInstance().getSocketSendQueue().poll();
