@@ -139,9 +139,9 @@ public class ActionHandler{
     public void handleHarvest(Player player, Action action){
         player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
         contextManager.openContext(ContextType.SERVANT, player, action, null);
-        contextManager.setContextAck(true, player);
         
         JsonValue SERVANTHarvestresponse = contextManager.waitForContextReply();
+        contextManager.setContextAck(true, player);
         action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
         
         player.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> {
@@ -153,10 +153,8 @@ public class ActionHandler{
     
     public void handleCouncil(Player player, Action action){
         contextManager.openContext(ContextType.PRIVILEGE, player, action, Json.value(1));
-        contextManager.setContextAck(true, player);
         JsonValue COUNCILPRIVILEGEresponse = contextManager.waitForContextReply();
-        
-        LOGGER.info(COUNCILPRIVILEGEresponse::asString);
+        contextManager.setContextAck(true, player);
         
         LOGGER.log(Level.INFO, "PRIMA DEL PRIVILEGE:\n%s", player);
         player.getResources().addResource("COINS", 1);

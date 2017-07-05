@@ -29,7 +29,9 @@ public class ActionEffectContext extends Context{
 		if(!Jsonpayload.get("BONUSRESOURCE").isNull())
 			bonusResource = new ResourceSet(Jsonpayload.get("BONUSRESOURCE").asObject());
 		
-		boolean flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
+		boolean flagRegion = false;
+		if(!Jsonpayload.get("FLAGREGION").isNull())
+			flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
 		
 		payload.remove("TYPE");
 		payload.remove("REGIONID");
@@ -40,6 +42,7 @@ public class ActionEffectContext extends Context{
 		int indexCost = 0;
 		
 		boolean actionFlag;
+		boolean sendFlag;
 		
 		out.println("you have a bonus "+actionType+" action to perform.\n"+bonusActionValue+" is the action value of"
 				+ " your bonus action");
@@ -47,7 +50,7 @@ public class ActionEffectContext extends Context{
 			out.println("the action will also apply this discount on the cost of the card you will take\n"+bonusResource.toString());
 		
 		while(runFlag){
-				
+				sendFlag = true;
 				if(flagRegion){
 					out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
 					actionFlag = true;
@@ -90,6 +93,12 @@ public class ActionEffectContext extends Context{
 						.getActionSpaceList().get(choosedSpaceID).getCardName();
 											
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
+				
+				if(card==null){
+					out.println("no card on this tower layer");
+					sendFlag = false;
+					break;
+				}
 				out.println(CardCli.print(cardName, card));
 
 				if(card.get("cost")!=null){
@@ -122,20 +131,22 @@ public class ActionEffectContext extends Context{
 						}
 					}
 				}
-				out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");				
-				actionFlag = true;
-				while(actionFlag){
-					command = in.nextLine();
-					switch(command){
-					case "y":
-						actionFlag = false;
-						close();
-						break;
-					case "n":
-						actionFlag = false;
-						break;
-					default:
-						out.println("please, type a valid letter");
+				if(sendFlag){
+					out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");				
+					actionFlag = true;
+					while(actionFlag){
+						command = in.nextLine();
+						switch(command){
+						case "y":
+							actionFlag = false;
+							close();
+							break;
+						case "n":
+							actionFlag = false;
+							break;
+						default:
+							out.println("please, type a valid letter");
+						}
 					}
 				}
 			}

@@ -71,9 +71,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 				contextList[0].close();
 				JsonObject contextMessage = (JsonObject) contextQueue.poll();
 				String response = contextList[contextMessage.get("CONTEXTID").asInt()].open(contextMessage.get("PAYLOAD"));
-				if(!"".equals(response))
+				if(!"".equals(response)){
+					System.out.println("inviando messaggio "+response);
 					clientsendQueue.add(response);
-				
+				}
 				try{ //waiting for other context
 					Thread.sleep(500);
 				}catch(InterruptedException e){

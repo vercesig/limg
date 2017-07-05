@@ -85,6 +85,10 @@ public class ContextManager{
 		return waitingContextResponse != null;
 	}
 	
+	public String getWaitContextResponse(){
+		return this.waitingContextResponse;
+	}
+	
 	public JsonValue waitForContextReply(){
 		GameMessage message = null;
 		if(isThereAnyOpenContext()){ // non attendere se non ci sono context aperti
@@ -99,7 +103,6 @@ public class ContextManager{
 					String contextType = contextReply.asObject().get("CONTEXT_TYPE").asString();
 					if(waitingContextResponse.equals(contextType)){
 						this.pendingMessage = message;
-						System.out.println("dentro context");
 						JsonValue returnValue = contextReply.asObject().get("PAYLOAD");
 						return returnValue;
 					}

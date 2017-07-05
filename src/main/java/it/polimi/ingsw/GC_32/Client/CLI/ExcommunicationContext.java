@@ -44,12 +44,13 @@ public class ExcommunicationContext extends Context{
 				case "y":
 					if(playerFaithPoints<faithPointsNeeded){
 						out.println(">Sorry, but unfortunately you don't have enough faith points.\n"
-								+ "You should type: n\nI hope the excommunicate card won't be a serious problem for you...");
+								+ "I hope the excommunication card won't be a serious problem for you...");
 						CONTEXTREPLYpayloadinfo.add("ANSWER", Json.value(true));
-						return CONTEXTREPLY.toString();
+					}else{
+						out.println(">The Pope is really happy with you.\n May God bless you!\n");
+						CONTEXTREPLYpayloadinfo.add("ANSWER", Json.value(false));
 					}
-					out.println(">The Pope is really happy with you.\n May God bless you!\n");
-					CONTEXTREPLYpayloadinfo.add("ANSWER", Json.value(false));
+					System.out.println(CONTEXTREPLY.toString());
 					return CONTEXTREPLY.toString();
 				case "n":
 					out.println(">The Pope is really angry with you.\n\nYOU HAVE BEEN EXCOMMUNICATED!!!");

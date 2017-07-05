@@ -40,12 +40,6 @@ public class MessageHandler{
                 LOGGER.log(Level.INFO, "processing ASKACT message from ", message.getPlayerID());
                 handleASKACT(message, jsonMessage);
                 break;
-            //RAPPORTO AL VATICANO
-            case "SENDPOPE":
-                LOGGER.info("ricevo risposte dal rapporto in vaticano [GAME]");
-                handleSENDPOPE(message, jsonMessage);
-                break;  
-            //LEADER ACTION
             case "ASKLDRACT":
                 handleASKLDRACT(message, jsonMessage);
                 break;
@@ -93,49 +87,7 @@ public class MessageHandler{
             MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, player, action, false));
         }
     }
-    
-    protected void handleSENDPOPE(GameMessage message, JsonObject jsonMessage){
-      /*  boolean answer = jsonMessage.get("ANSWER").asBoolean();
-        int playerIndex= game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-        if(answer){ 
-            
-            //ATTIVAZIONE CARTA SCOMUNICA
-            LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
-            ExcommunicationCard card = game.getExcommunicationCard(game.getTurnManager().getPeriod() - 1); // periodi sono shiftati di 1
-            LOGGER.log(Level.INFO, "Attivo effetto carta: %s", card.getName());
-            
-            if(!card.getInstantEffect().isEmpty()){
-                card.getInstantEffect().get(0).apply(game.getBoard(), game.getPlayerList().get(playerIndex), null, null);
-            }
-            else 
-                LOGGER.info("Non ha effetti instantanei!");
-            if(!card.getPermanentEffect().isEmpty()){
-                game.getPlayerList().get(playerIndex).addEffect(card.getPermanentEffect().get(0));
-            }
-            else
-                LOGGER.info("Non ha effetti permanenti!");
-        } else {
-            LOGGER.info("Sostegno alla Chiesa!");
-            int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");    
-            LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
-            
-            game.getPlayerList().get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
-            int victoryPointsConverted = 0;
-            
-            if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore)!=null){
-                victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
-            }
-            else
-                victoryPointsConverted = faithScore*2; // caso faithPoints > 15
-            
-            if(game.getPlayerList().get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
-                victoryPointsConverted += 5;
-            }
-            LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
-            game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
-        }*/
-    }
-    
+        
     protected void handleASKLDRACT(GameMessage message, JsonObject jsonMessage){
         String cardName = jsonMessage.get("LEADERCARD").asString();
         String decision = jsonMessage.get("DECISION").asString();
@@ -217,17 +169,14 @@ public class MessageHandler{
 			int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 	
         	
         	game.getPlayerList().forEach(excommPlayer -> {
-				System.out.println("eccoci");
 				JsonArray excommPayload = new JsonArray();
 				excommPayload.add(excommunicationLevel);
 				excommPayload.add(excommPlayer.getResources().getResource("FAITH_POINTS"));
-				game.getContextManager().openContext(ContextType.EXCOMMUNICATION, excommPlayer, null, excommPayload);
 				
+				game.getContextManager().openContext(ContextType.EXCOMMUNICATION, excommPlayer, null, excommPayload);
 				JsonObject excommMessage = game.getContextManager().waitForContextReply().asObject();
 				game.getContextManager().setContextAck(true, excommPlayer);
-				
-				System.out.println("dopo ricezione sendpope");
-				
+								
 				boolean answer = excommMessage.get("ANSWER").asBoolean();
 				int playerIndex= game.getPlayerList().indexOf(excommPlayer); 
 				if(answer){ 
