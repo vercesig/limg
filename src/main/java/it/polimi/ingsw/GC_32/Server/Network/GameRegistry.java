@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Server.Network;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -62,5 +63,15 @@ public class GameRegistry {
 		  			.getPlayerList()
 		  			.iterator().forEachRemaining(player -> tmp.add(player.getUUID()));
 		return tmp;
+	}
+	
+	public List<Player> getPlayerNotInGame(){
+	    ArrayList<Player> playerList = new ArrayList<>();
+	    playerTranslationTable.forEach( (uuid, player) -> {
+	       if(player.getGameID() == null){
+	           playerList.add(player);
+	       }
+	    });
+	    return playerList;
 	}
 }

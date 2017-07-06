@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
@@ -72,7 +73,11 @@ public class DeckTest{
 	public void checkMultiDraw(){
 		ArrayList<String> list = new StringGenerator().generateStringList(100);
 		this.deck = new Deck<String>(list);
-		assertEquals(this.deck.drawManyElements(10), list.subList(0, 10));
+		List<String> generatedDeck = this.deck.drawManyElements(10);
+		assertEquals(10, generatedDeck.size());
+		for(String element: generatedDeck){
+		    assertEquals(true, list.contains(element));
+		}
 	}
 	
 	@Test

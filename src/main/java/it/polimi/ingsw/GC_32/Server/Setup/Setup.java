@@ -106,7 +106,7 @@ public class Setup {
 		LOGGER.log(Level.INFO, "excommunication card correctly loaded into CardRegistry");
 		// Carte Leader
 		Reader leaderCardFile = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("leader_cards.json"));
-		Deck <LeaderCard> leaderDeck = new Deck <LeaderCard> (JsonImporter.importLeaderCards((leaderCardFile))); 
+		Deck<LeaderCard> leaderDeck = new Deck<>(JsonImporter.importLeaderCards(leaderCardFile)); 
 		CardRegistry.getInstance().registerDeck(leaderDeck);
 	}
 	
