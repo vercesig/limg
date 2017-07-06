@@ -83,11 +83,11 @@ public class MessageManager {
 		}
 	}
 	
-	protected ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
+	public ConcurrentLinkedQueue<GameMessage> getSocketSendQueue(){
 		return this.socketSendQueue;
 	}
 	
-	protected ConcurrentLinkedQueue<GameMessage> getRMISendQueue(){
+	public ConcurrentLinkedQueue<GameMessage> getRMISendQueue(){
 		return this.RMISendQueue;
 	}
 	

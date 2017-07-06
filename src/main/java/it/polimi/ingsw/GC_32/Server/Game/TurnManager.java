@@ -72,8 +72,8 @@ public class TurnManager {
 		return this.update;
 	}
 	
-	public boolean DoesPopeWantToSeeYou(){
-		return visitPope>0;
+	public boolean doesPopeWantToSeeYou(){
+		return visitPope > 0;
 	}
 	
 	// restituisce il player a cui passare il lock

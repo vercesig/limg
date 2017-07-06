@@ -46,6 +46,7 @@ public class Game implements Runnable{
 	private ContextManager cm;
 	private MessageHandler messageHandler;
 	private ActionHandler actionHandler;
+    private EndPhaseHandler endPhaseHandler;
 	
 	// context management
 	private HashMap<String, JsonValue> contextInfoContainer;
@@ -77,6 +78,7 @@ public class Game implements Runnable{
 		this.messageHandler = new MessageHandler(this);
 	    this.actionHandler = new ActionHandler(this);
 	    this.leaderHandler = new LeaderHandler(this);
+	    this.endPhaseHandler = new EndPhaseHandler(this);
 		LOGGER.log(Level.INFO, "decks succesfprivateully loaded");
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
@@ -338,6 +340,10 @@ public class Game implements Runnable{
 	
 	protected MoveChecker getMoveChecker(){
 	    return this.mv;
+	}
+	
+	protected EndPhaseHandler getEndPhaseHandler(){
+	    return this.endPhaseHandler;
 	}
 	
 	protected void sendDICEROLL(){

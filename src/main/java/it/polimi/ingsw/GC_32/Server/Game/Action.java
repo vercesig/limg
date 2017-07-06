@@ -62,6 +62,14 @@ public class Action{
     					+ actionValue + " actionSpaceId:" + actionSpaceId + 
     					" actionRegionId:" + actionRegionId +
     					" additionalInfo:"+ ((additionalInfo != null) ? additionalInfo.toString() : ""));
-    return stringBuilder.toString();
+    	return stringBuilder.toString();
+    }
+    
+    public boolean equals(Action otherAction){
+        return (this.actionValue == otherAction.getActionValue() &&
+                this.actionSpaceId == otherAction.getActionSpaceId() &&
+                this.actionRegionId == otherAction.getRegionId() &&
+                this.type == otherAction.getActionType() &&
+                this.additionalInfo.equals(otherAction.getAdditionalInfo()));
     }
 }  

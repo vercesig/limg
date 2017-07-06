@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game.Effect;
 
-import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Server.Game.Action;
