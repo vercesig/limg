@@ -68,7 +68,9 @@ public class MainClient{
 		switch(type){
 		case "s":
 			this.network = new SocketMsgConnection();
+			Thread socketMsgConnectionThread = new Thread((Runnable) this.network);
 			this.network.open("localhost", 9500);
+			socketMsgConnectionThread.start();
 			return true;
 		case "r":
 			this.network = new RMIMsgConnection();
@@ -157,7 +159,8 @@ public class MainClient{
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
 						playerID = messagePayload.get("PLAYERID").asString();
-						String name = messagePayload.get("NAME").asString();
+					
+					String name = messagePayload.get("NAME").asString();
 						client.getPlayers().get(playerID).setName(name);
 						break;
 					case "CONNEST":

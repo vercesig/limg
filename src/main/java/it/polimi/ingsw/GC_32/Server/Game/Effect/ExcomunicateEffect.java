@@ -11,9 +11,9 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 public class ExcomunicateEffect {
 	// Excommunication card 1-1, 1-2, 1-3, 1-4
 		static EffectBuilder lessEffectBuilder = (JsonValue json) -> {
-
+			
 			Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
-				p.getFlags().put("LESSRESOURCE", new JsonArray()); 
+				p.getFlags().put("LESSRESOURCE", json.asArray()); 
 				System.out.println("ATTIVATO EFFETTO LESSRESOURCE");
 			};
 			return e;
@@ -23,7 +23,7 @@ public class ExcomunicateEffect {
 		static EffectBuilder noEndPoint = (JsonValue json) -> {
 			
 			Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
-				p.getFlags().put("NOENDPOINTS", new JsonArray());
+				p.getFlags().put("NOENDPOINTS", json.asArray());
 				System.out.println("ATTIVATO EFFETTO NOENDPOINTS");
 			};
 			return e;
@@ -31,6 +31,7 @@ public class ExcomunicateEffect {
 		
 		static EffectBuilder flagEffect = (JsonValue json) -> {
 			Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
+				p.getFlags().put(json.asString(), null);
 				System.out.println("ATTIVATO EFFETTO FLAG");
 			};
 			return e;

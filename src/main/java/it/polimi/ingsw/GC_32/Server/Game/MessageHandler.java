@@ -185,11 +185,9 @@ public class MessageHandler{
 					LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
 					ExcommunicationCard card = game.getExcommunicationCard(this.turnManager.getPeriod()-1); // periodi sono shiftati di 1
 					LOGGER.info("Attivo effetto carta: " +card.getName());
+					System.out.println("Attivo effetto carta: " +card.getName());
 					
 					if(!card.getInstantEffect().isEmpty()){
-						System.out.println(card);
-						System.out.println(card.getInstantEffect());
-						System.out.println(card.getInstantEffect().get(0));
 						card.getInstantEffect().get(0).apply(game.getBoard(), excommPlayer, null, null);
 					}
 					else 
@@ -203,7 +201,7 @@ public class MessageHandler{
 				else{
 					LOGGER.info("Sostegno alla Chiesa!");
 					int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");	
-					LOGGER.log(Level.INFO, "Punti Fede Giocatore: %s", faithScore);
+					LOGGER.log(Level.INFO, "Punti Fede Giocatore: %d", faithScore);
 					
 					game.getPlayerList().get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
 					int victoryPointsConverted = 0;
@@ -217,7 +215,7 @@ public class MessageHandler{
 					if(game.getPlayerList().get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 						victoryPointsConverted += 5;
 					}
-					LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %s", victoryPointsConverted);
+					LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %d", victoryPointsConverted);
 					game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 				}
 				turnManager.goodbyePope();

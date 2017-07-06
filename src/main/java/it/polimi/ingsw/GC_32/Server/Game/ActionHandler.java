@@ -90,9 +90,9 @@ public class ActionHandler{
     public void handleProduction(Player player, Action action){
         player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
         contextManager.openContext(ContextType.SERVANT, player, action, null);
-        contextManager.setContextAck(true, player);
         
         JsonValue SERVANTProductionresponse = contextManager.waitForContextReply();
+        contextManager.setContextAck(true, player);
         action.setActionValue(action.getActionValue() + SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
         
         JsonArray CHANGEcontextPayload = new JsonArray();

@@ -67,7 +67,7 @@ public class ZeroLevelContext extends Context implements Runnable{
 			case "leader":
 				String leaderResponse = leaderDialog.open(object);
 				if(leaderResponse!=null&&!"".equals(leaderResponse))
-					client.getSendQueue().add(leaderDialog.open(object));
+					client.getSendQueue().add(leaderResponse);
 				try{ //waiting for other context
 					Thread.sleep(200);
 				}catch(InterruptedException e){

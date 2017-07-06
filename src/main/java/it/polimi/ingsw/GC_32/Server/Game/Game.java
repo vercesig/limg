@@ -223,12 +223,16 @@ public class Game implements Runnable{
 	public void makeMove(Player player, Action action){
 		LOGGER.info(() -> Boolean.toString(contextInfoContainer.isEmpty()));
 		
-		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action);
+		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action.toString());
+		System.out.println("prima effetti permanenti\n"+action.toString());
 		MoveUtils.applyEffects(this.board, player, action, cm);
-		LOGGER.log(Level.INFO, "DOPO GLI EFFETTI PERMANENTI:\n%s", action);
-		LOGGER.log(Level.INFO, "PRIMA DEL BONUS:\n%s", player);
+		LOGGER.log(Level.INFO, "DOPO GLI EFFETTI PERMANENTI:\n%s", action.toString());
+		System.out.println("dopo effetti permanenti\n"+action.toString());
+		LOGGER.log(Level.INFO, "PRIMA DEL BONUS:\n%s", player.toString());
+		System.out.println("PRIMA DEL BONUS:\n"+ player.toString());
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
-		LOGGER.log(Level.INFO, "DOPO DEL BONUS:\n%s", player);
+		LOGGER.log(Level.INFO, "DOPO DEL BONUS:\n%s", player.toString());
+		System.out.println("dopo DEL BONUS:\n"+ player.toString());
 		if(!action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
 			moveFamiliar(this.board, player, action);
 		
