@@ -46,11 +46,7 @@ public class ResourceSet implements Comparable<ResourceSet> {
     }
     
     public boolean hasNegativeValue(){
-    	for(String key : this.getResourceSet().keySet()){
-    		if(this.getResourceSet().get(key) < 0){
-    			return true;
-    		}
-    	}return false;
+        return this.isValid();
     }
     
     public void addResource(String resourceName, int quantity){

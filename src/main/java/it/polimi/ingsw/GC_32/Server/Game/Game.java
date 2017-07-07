@@ -351,4 +351,8 @@ public class Game implements Runnable{
 	protected void sendDICEROLL(){
 	    MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
 	}
+	
+	protected MessageHandler getMessageHandler(){
+	    return this.messageHandler;
+	}
 }

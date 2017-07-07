@@ -243,19 +243,31 @@ public class MessageHandler{
     }
     
     public Action parseASKACT(UUID playerID, JsonObject jsonMessage){
-        int pawnID = jsonMessage.get("FAMILYMEMBER_ID").asInt();
-        int actionValue = GameRegistry.getInstance().getPlayerFromID(playerID)
-                                                    .getFamilyMember()[pawnID].getActionValue();
+        JsonValue pawnID = jsonMessage.get("FAMILYMEMBER_ID");
+        int actionValue;
+        boolean isStandardMove = (pawnID != null);
+        if(isStandardMove){
+            actionValue = GameRegistry.getInstance().getPlayerFromID(playerID)
+                                                    .getFamilyMember()[pawnID.asInt()]
+                                                    .getActionValue();
+        } else {
+            actionValue = jsonMessage.asObject().get("BONUSACTIONVALUE").asInt();
+        }
 
         int regionID = jsonMessage.get("REGIONID").asInt();
         int spaceID = jsonMessage.get("SPACEID").asInt();
         String actionType = jsonMessage.get("ACTIONTYPE").asString();
 
         Action action = new Action(actionType,actionValue, spaceID, regionID);
-        action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
+        action.setAdditionalInfo(new JsonObject());
         action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
-        action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
         action.getAdditionalInfo().add("BONUSFLAG", Json.value(false));
+        if(isStandardMove){
+            action.getAdditionalInfo().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt());
+            action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
+        } else {
+            action.getAdditionalInfo().add("BONUSFLAG", Json.value(true));
+        }
         return action;
     }
 }
