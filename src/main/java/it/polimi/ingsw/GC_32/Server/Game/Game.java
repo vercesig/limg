@@ -256,6 +256,8 @@ public class Game implements Runnable{
 				break;
 		}
 		
+		System.out.println("dopo azione:\n"+ player.toString());
+		
 	}
 	
 	public TurnManager getTurnManager(){

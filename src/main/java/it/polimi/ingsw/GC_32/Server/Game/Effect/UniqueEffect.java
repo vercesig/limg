@@ -8,7 +8,7 @@ public class UniqueEffect {
 	static Effect noTowerActionSpaceBonus = (b, p, a, cm) ->{
 		if(a.getRegionId() != b.getMarketRegion().getRegionID()){
 			ResourceSet bonus =b.getRegion(a.getRegionId()).getActionSpace(a.getActionSpaceId()).getBonus();
-			if(bonus!=null) //la carta è su un actionSpace senza bonus
+			if(bonus!=null) //la carta è su un actionSpace con bonus
 				p.getResources().subResource(bonus);
 		}
 	};

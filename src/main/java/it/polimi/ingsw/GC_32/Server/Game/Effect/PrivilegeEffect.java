@@ -22,7 +22,6 @@ public class PrivilegeEffect {
 			Effect e = (Board b, Player p, Action a, ContextManager cm) ->	{
 				
 				boolean isCostPrivilege = false;
-				boolean isValid = true;
 				ResourceSet cost = null;
 				JsonValue jCost = payload.asObject().get("COST");
 				if(jCost != null){
@@ -41,16 +40,17 @@ public class PrivilegeEffect {
 
 				while(true){
 					JsonArray response = cm.waitForContextReply().asArray();
+					System.out.println(response.toString());
 					if(response.size() != number || !isSet(response)){
 						cm.setContextAck(false, p);
+						return;
 					} else {
 						for(JsonValue val: response){
-							if(val.isNumber()) // to check if the client has type 'n' (only for privilege with cost)
-								p.getResources().addResource(new ResourceSet(Json.parse(val.asString()).asObject()));
-							else
-								isValid = false; // cost privilege effect has been cancelled
+							System.out.println("+++++++++++ PRIVILEGE: "+val.toString());
+							p.getResources().addResource(new ResourceSet(Json.parse(val.asString()).asObject()));
 						}
-						if(isCostPrivilege&&isValid){
+						if(isCostPrivilege){
+							System.out.println("+++++++++++++++++++ PRIVILEGE COST: "+cost.toString());
 							p.getResources().subResource(cost);
 						}
 						cm.setContextAck(true, p);

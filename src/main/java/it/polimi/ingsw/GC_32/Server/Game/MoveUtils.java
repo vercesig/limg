@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import com.eclipsesource.json.Json;
@@ -145,7 +146,7 @@ public class MoveUtils {
     public static boolean checkCoinForTribute(Board board, Player player, Action action){  // change the state
     	if(action.getRegionId() < 4 || 										   	//Not a tower action
     	   !(board.getTowerRegion()[action.getRegionId() - 4].isTowerBusy()) || //Tower is empty
-    	   player.isFlagged("NOTRIBUTE")){										// Leader Card
+    	   player.isFlagged("NOTRIBUTE")){// Leader Card
     		return true;
     	}
     	player.getResources().subResource("COINS", 3);
@@ -218,11 +219,14 @@ public class MoveUtils {
 		    LOGGER.log(Level.INFO, "COST: %s", cost);
 		    
 		    if(action.getAdditionalInfo() != null &&
-		       action.getAdditionalInfo().asObject().get("BONUSACTIONVALUE") != null){ // only for ACTION effect
+		       action.getAdditionalInfo().asObject().get("BONUSRESOURCE") != null){ // only for ACTION effect
 		    	ResourceSet bonusResource = new ResourceSet(action.getAdditionalInfo().asObject()
-		    	                                                  .get("BONUSACTIONVALUE").asObject());
-		    	if(card.getCost().get(costIndex.asInt()).contains(bonusResource)){
-		    		cost.subResource(bonusResource);
+		    	                                                  .get("BONUSRESOURCE").asObject());
+		    	
+		    	for(Entry<String,Integer> resource : bonusResource.getResourceSet().entrySet()){
+		    		if(cost.hasResource(resource.getKey())){
+		    			cost.subResource(resource.getKey(), resource.getValue());
+		    		}
 		    	}
 		    }
 		    player.getResources().subResource(cost);

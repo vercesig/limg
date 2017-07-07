@@ -59,6 +59,9 @@ public class MessageHandler{
         
         LOGGER.info("INIZIO CHECK: ");
         LOGGER.info("STATO PRIMA DELL'ESECUZIONE:");
+        
+        System.out.println("inizion check, stato prima esecuzione\n"+action.toString()+"\n"+player.toString());
+        
         LOGGER.info(action::toString);
         LOGGER.info(player::toString);
         if(game.getMoveChecker().checkMove(game, player, action, game.getContextManager())){
@@ -178,7 +181,8 @@ public class MessageHandler{
 					else 
 						LOGGER.info("Non ha effetti instantanei!");
 					if(!card.getPermanentEffect().isEmpty()){
-						game.getPlayerList().get(playerIndex).addEffect(card.getPermanentEffect().get(0));
+						excommPlayer.addEffect(card.getPermanentEffect().get(0));
+						System.out.println("------------------------- aggiunto effetto scomunica al player");
 					}
 					else
 						LOGGER.info("Non ha effetti permanenti!");

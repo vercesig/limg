@@ -35,7 +35,7 @@ public class MainClient{
 	private String gameUUID;
 	
 	// timer management
-	private int ACTIONTIMEOUT = 60000;
+	private final int ACTIONTIMEOUT = 1200000;
 	private long startTimeout = 0;
 	private boolean actionRunningFlag = false;
 	
@@ -132,7 +132,7 @@ public class MainClient{
 				
 				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
 					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
-				//	client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
+					client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 					client.actionRunningFlag=false;
 				}
 				
@@ -154,7 +154,7 @@ public class MainClient{
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					String playerID;
 					
-					System.out.println(message.toString());
+					//System.out.println(message.toString());
 					
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":

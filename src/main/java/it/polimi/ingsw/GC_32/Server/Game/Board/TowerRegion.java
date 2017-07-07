@@ -31,7 +31,12 @@ public class TowerRegion extends Region {
 	}
 	
 	public boolean isTowerBusy(){
-		return this.towerBusy;
+		for(int i=0; i<this.towerLayers.length; i++){
+			if(towerLayers[i].getActionSpace().isBusy()){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public TowerLayer[] getTowerLayers(){
@@ -43,7 +48,7 @@ public class TowerRegion extends Region {
 		for(TowerLayer layer : towerLayers){
 			ArrayList<FamilyMember> occupants = layer.getActionSpace().getOccupants();
 			if(!occupants.isEmpty()){
-				if(occupants.get(0).getColor() == familyMember.getColor())
+				if(occupants.get(0).getColor().equals(familyMember.getColor()));
 				return false;
 			}
 		}
@@ -53,13 +58,11 @@ public class TowerRegion extends Region {
 	public boolean placeFamilyMember(FamilyMember familyMember, int layer){
 		if(canIPlaceFamilyMember(familyMember)){
 			towerLayers[layer].getActionSpace().addFamilyMember(familyMember);
-			if(!this.towerBusy){
 				this.towerBusy = true;
-			}
+				System.out.println("TOWER *************************************************"+towerBusy);
 			return true;
-		} else {
+		} else
 			return false;
-		}
 	}
 	
 	// rimuove carte e familiari sulla torre

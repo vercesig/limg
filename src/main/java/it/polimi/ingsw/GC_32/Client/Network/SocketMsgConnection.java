@@ -33,8 +33,9 @@ public class SocketMsgConnection implements MsgConnection, KillableRunnable{
 		System.out.println("partito");
 		while(!stop){
 			try {
-				if(socket.getInputStream().available()!=0){
+				if(socket.getInputStream().available()>0){
 					receivedMessageQueue.add(in.nextLine());
+					//System.out.println("ricevuto");
 				}
 			} catch (IOException e) {
 				break;

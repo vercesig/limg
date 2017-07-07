@@ -50,10 +50,7 @@ public class TurnManager {
 		}
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
 			tmpPlayerList.forEach(UUID -> turnOrderQueue.add(UUID));
-		}
-		
-		System.out.println(turnOrderQueue.toString());
-		
+		}		
 	}
 	
 	public int getTurnID(){
@@ -126,7 +123,7 @@ public class TurnManager {
 		ArrayList<FamilyMember> councilRegionState = game.getBoard().getCouncilRegion().getOccupants();
 		ArrayList<Player> newTurnOrder = new ArrayList<Player>();
 		
-		//aggiorno stato dell'ordine di turno quardando i familiari in councilRegion
+		//aggiorno stato dell'ordine di turno guardando i familiari in councilRegion
 		for(FamilyMember f : councilRegionState){
 			if(!newTurnOrder.contains(f.getOwner())){
 				newTurnOrder.add(f.getOwner());
@@ -139,8 +136,12 @@ public class TurnManager {
 			}
 		}
 		
+		LinkedList<UUID> newTurnOrderQueue = new LinkedList<UUID>();
+		
 		for(int i=0; i<game.getPlayerList().get(0).getFamilyMember().length; i++){
-			newTurnOrder.forEach(player -> turnOrderQueue.add(player.getUUID()));
+			newTurnOrder.forEach(player -> newTurnOrderQueue.add(player.getUUID()));
 		}
+		
+		this.turnOrderQueue = newTurnOrderQueue;
 	}	
 }
