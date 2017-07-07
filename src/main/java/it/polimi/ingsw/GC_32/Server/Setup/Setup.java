@@ -10,23 +10,28 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
 
 /**
- * allows to configure all the elements of the game in their initial state. For example the preparation of the decks and the consequently associations of them
- * to the Board.
+ * this class is responsable of all the intial load of configuration files, so the configuration file loading is performed only once time and all the information 
+ * parsed by those configuration files are loaded into the singleton class GameConfig.
  * 
- * <p>
+ * configuration files are formatted in JSON.
  * 
- * @see Game
- * @author alessandro 
+ * 
+ * @see GameConfig
  */
 public class Setup {
 	
 	private final static Logger LOGGER = Logger.getLogger(Setup.class.getName());
+	
+	/**
+	 * given the file name, loadCard import the file to parse
+	 * @param path the file name
+	 * @throws IOException
+	 */
 	
 	public void loadCard(String path) throws IOException{
 		this.loadCard(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path)));
@@ -110,6 +115,13 @@ public class Setup {
 		CardRegistry.getInstance().registerDeck(leaderDeck);
 	}
 	
+	/**
+	 * this method load the personalBonusTile from an external JSON file and then load it into the GameConfig class
+	 * 
+	 * @see GameConfig
+	 * @param path the file name
+	 * @throws IOException
+	 */
 	public void loadBonusTile(String path) throws IOException{
 		Reader bonusTileReader = new InputStreamReader(this.getClass()
 													 .getClassLoader()
@@ -117,6 +129,14 @@ public class Setup {
 		GameConfig.getInstance().registerBonusTile(JsonImporter.importPersonalBonusTile(bonusTileReader));
 	}
 	
+	
+	/**
+	 * this method load all the configurable action spaces' bonuses from an external JSON file and then load it into the GameConfig class
+	 * 
+	 * @see GameConfig
+	 * @param path the file name
+	 * @throws IOException
+	 */
 	public void loadBonusSpace(String path) throws IOException {
 		Reader bonusSpaceReader =  new InputStreamReader(this.getClass()
 													  .getClassLoader()
@@ -124,6 +144,14 @@ public class Setup {
 		GameConfig.getInstance().registerBonusSpace(JsonImporter.importBonusSpace((bonusSpaceReader)));
 	}
 	
+	
+	/**
+	 * this method load the configuration of victory points on the faith track from an external JSON file and then load it into the GameConfig class
+	 * 
+	 * @see GameConfig
+	 * @param path the file name
+	 * @throws IOException
+	 */
 	public void loadExcommunicationTrack(String path) throws IOException {
 		Reader fileReader = new InputStreamReader(this.getClass()
 															.getClassLoader()
@@ -132,6 +160,14 @@ public class Setup {
 																.importExcommunicationTrack(fileReader));
 	}
 	
+	
+	/**
+	 * this method load all the rules applied for the final score calculation from an external JSON file and then load it into the GameConfig class
+	 * 
+	 * @see GameConfig
+	 * @param path the file name
+	 * @throws IOException
+	 */
 	public void loadConversionPoints(String path) throws IOException {
 		Reader fileReader = new InputStreamReader(this.getClass()
 															.getClassLoader()

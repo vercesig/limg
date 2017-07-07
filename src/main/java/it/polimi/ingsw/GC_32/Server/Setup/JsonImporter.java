@@ -16,8 +16,10 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 /**
- * allows to import and parse (from JSON files) external file like card description's file or game configuration file.
- * @author alessandro
+ * allows to import and parse (from JSON files) external file like card description's file or game configuration files. The utilities here implemented are used
+ * from Setup to load cards or configuration file into the GameConfig class
+ * 
+ * @see Setup
  */
 
 
@@ -72,6 +74,15 @@ public class JsonImporter {
 		return cardList;
 	}
 	
+	
+	/**
+	 * method which return a list of leader cards from an external file correctly formatted. The method accept a FileReader object as parameter, 
+	 * then parse it and finally returns the list of card (which can be passed to the Deck's constructor to generate an effectively deck structure)
+	 * 
+	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 * @return the list of the cards generated from the JSON external file
+	 * @throws IOException
+	 */
 	public static List<LeaderCard> importLeaderCards(Reader fileReader) throws IOException{
 		
 		ArrayList<LeaderCard> cardList = new ArrayList<LeaderCard>();
@@ -99,6 +110,15 @@ public class JsonImporter {
 		return cardList;
 	}
 	
+	/**
+	 * allows to parse a single card from an external JSON file
+	 * 
+	 * @param fileReader contains the FileReader object relative to the external file to parse
+	 * @param cardName the name of the card to parse
+	 * @return the JsonValue representig this card
+	 * @throws IOException
+	 */
+	
 	public static JsonValue importSingleCard(Reader fileReader, String cardName) throws IOException{
 		JsonArray JsonCardList = Json.parse(fileReader).asArray();
 		for(JsonValue item : JsonCardList){
@@ -110,6 +130,14 @@ public class JsonImporter {
 		return null;
 	}
 	
+	/**
+	 * parse from an external file correctly formatted the information about personalBonusTiles and then return a list of them 
+	 * 
+	 * @param fileReader contains the FileReader object relative to the external file to parse
+	 * @return an ArrayList of PersonalBonusTile
+	 * @see PersonalBonusTile
+	 * @throws IOException
+	 */
 	public static ArrayList<PersonalBonusTile> importPersonalBonusTile(Reader fileReader) throws IOException{
 		
 			JsonArray personalBonusTileList = Json.parse(fileReader).asArray();
@@ -127,15 +155,23 @@ public class JsonImporter {
 		}
 	
 	/**
-	 * perform the parsing of the configuration file
+	 * perform the parsing of the action space bonus' configuration file
+	 * 
 	 * @param fileReader  contains the FileReader object relative to the external file to parse
+	 * @return a JsonArray representing the different bonus of all the action space of the board
 	 * @throws IOException 
 	 */
 	public static JsonArray importBonusSpace(Reader fileReader) throws IOException{
 		return Json.parse(fileReader).asArray();
 	}
 	
-	//import ExcommunicationTrack
+	/**
+	 * perform the parsing of the victory points configuration relative to the faith track.
+	 * 
+	 * @param fileReader contains the FileReader object relative to the external file to parse 
+	 * @return an HashMap which contains, for all the faith points value of the track, the correspondending value of victory points
+	 * @throws IOException
+	 */
 	public static HashMap<Integer, Integer> importExcommunicationTrack(Reader fileReader) throws IOException{
 		HashMap<Integer, Integer> track = new HashMap <Integer, Integer> ();
 		JsonObject jsonTrack = Json.parse(fileReader).asObject();
@@ -144,7 +180,14 @@ public class JsonImporter {
 		return track;
 	}
 	
-	//import pointsConversion
+	/**
+	 * perform the parsing of the point conversion rules applied for the final score calculation.
+	 * 
+	 * @param fileReader contains the FileReader object relative to the external file to parse 
+	 * @return an HashMap which map for for each rule (for example the number of cards or the victory points to assign to the first and second player on the
+	 *  military track) the corresponding value (as a JsonValue)
+	 * @throws IOException
+	 */
 	public static HashMap <String, JsonValue> importPointsConversion(Reader fileReader) throws IOException{
 		HashMap<String, JsonValue> pointsConversion = new HashMap <String, JsonValue> ();
 		JsonObject jsonPointsConversion = Json.parse(fileReader).asObject();
@@ -152,6 +195,13 @@ public class JsonImporter {
 		return pointsConversion;
 	}
 	
+	/**
+	 * perform the parsing of a single development card
+	 * 
+	 * @param jCard the JsonValue representing the card to parse
+	 * @see DevelopmentCard, Tuple, EffectRegistry
+	 * @return the DevelopmentCard object obtained from its JsonValue representation
+	 */
 	public static DevelopmentCard parseCard(JsonValue jCard){
 	    JsonObject card = jCard.asObject();
 
@@ -210,6 +260,14 @@ public class JsonImporter {
         return newCard;
 	}
 	
+	/**
+	 * parse the effects of a single card
+	 * 
+	 * @param code the OPCODE representing the general effect type
+	 * @param payload the JsonValue describing the specific effect
+	 * @see Effect
+	 * @return a list of tuple <effectCode, effectPayload>
+	 */
 	private static List<Tuple<JsonValue, JsonValue>> parseEffect(JsonValue code, JsonValue payload){
 	    ArrayList<Tuple<JsonValue, JsonValue>> result = new ArrayList<>();
 	    if(code != null && !code.isNull()){
@@ -226,6 +284,14 @@ public class JsonImporter {
 	    return result;
 	}
 	
+	/**
+	 * given a JsonArray of effect OPCODE of the card and a JsonArray of payload which describes these effects, builds a list of tuple <effectCode, effectPayload> 
+	 * which can be used in the parsing
+	 * 
+	 * @param list a list of tuple <effectCode, effectPayload>
+	 * @param code a JsonArray of effect OPCODE
+	 * @param payload a JsonArray of payload
+	 */
 	private static void addEffectArray(List<Tuple<JsonValue, JsonValue>> list, JsonArray code, JsonArray payload){
 	    if(payload != null){
 	        for(int i = 0; i < code.size(); i++){
@@ -238,6 +304,16 @@ public class JsonImporter {
 	    }
 	}
 	
+	/**
+	 * 
+	 * allows to retrive from the effect registry the specific effect of the card which is under parsing. The OPCODE is needed to call the correct effect builder, while
+	 * the effectPayload will be used from the effect builder to build the exactly effect describing the specific card
+	 * 
+	 * @param effectCode the OPCODE of the effect to load
+	 * @param effectPayload the JsonValue representing the spcific effect to get from the registry
+	 * @see Effect, EffectBuilder
+	 * @return the Effect build on the information passed as parameter
+	 */
 	private static Effect getEffectFromRegistry(String effectCode, JsonValue effectPayload){
 	    Effect regEffect;
 	    if(effectPayload != null){
@@ -250,6 +326,16 @@ public class JsonImporter {
         }
 	    return regEffect;
 	}
+	
+	/**
+	 * 
+	 * this method is responsable of loading the effect into the Card class, given its JSON representation (used to build the effects)
+	 * 
+	 * @see Card, Effect
+	 * @param newCard the card into which the effect must be registered
+	 * @param card the JsonObject representing this card
+	 * 
+	 */
 	
 	private static void registerCardEffects(Card newCard, JsonObject card){
 	    List<Tuple<JsonValue, JsonValue>> instantEffectList = parseEffect(card.get("instantEffect"),
