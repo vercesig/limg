@@ -77,7 +77,7 @@ public class ActionHandler{
                             spaceID = effectAction.asObject().get("SPACEID").asInt();
                             actionType = effectAction.asObject().get("ACTIONTYPE").asString();
         
-                            bonusAction = new Action(actionType,actionValue,regionID,spaceID);
+                            bonusAction = new Action(actionType,actionValue,spaceID,regionID);
                             bonusAction.setAdditionalInfo(new JsonObject());
                             bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));                         
                             bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
