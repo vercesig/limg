@@ -13,6 +13,7 @@ import com.eclipsesource.json.JsonObject.Member;
 
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
+import it.polimi.ingsw.GC_32.Client.GUI.ClientGUI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
@@ -38,7 +39,7 @@ public class MainClient{
 	private int ACTIONTIMEOUT = 60000;
 	private long startTimeout = 0;
 	private boolean actionRunningFlag = false;
-	
+		
 	public MainClient(){
 		this.players = new HashMap<String, ClientPlayer>();		
 		this.sendQueue = new ConcurrentLinkedQueue<String>();
@@ -85,10 +86,11 @@ public class MainClient{
 			this.graphicInterface = new ClientCLI();
 			return true;
 		case "g":
-			// javaFX
+				try {
+					this.graphicInterface = new ClientGUI();
+				} catch (Exception e) {}
 			return true;
 		default: return false;
-		
 		}
 	}
 	
@@ -110,9 +112,12 @@ public class MainClient{
 		
 		System.out.println("welcome in LORENZO IL MAGNIFICO\n");
 		String clientInterfaceType = "";
-		while(!client.setClientInterface(clientInterfaceType)){
+		while(true){
 			System.out.println("before start, choose the graphic interface you want use, type 'c' for Command Line Interface, type 'g' for Graphical User Interface");
 			clientInterfaceType = in.nextLine();
+			if(client.setClientInterface(clientInterfaceType)){
+				break;
+			}
 		}
 		System.out.println("please enter your name");
 		String myName = in.nextLine();
@@ -164,6 +169,7 @@ public class MainClient{
 						client.getPlayers().put(client.myUUID, new ClientPlayer());
 						client.getPlayers().get(client.myUUID).setName(myName);
 						
+						
 						client.graphicInterface.registerPlayerUUID(client.getUUID());
 						client.graphicInterface.registerSendMessageQueue(client.getSendQueue());
 						break;
@@ -191,7 +197,6 @@ public class MainClient{
 						
 						Thread clientInterfaceThread = new Thread(client.getClientInterface());
 						clientInterfaceThread.start();
-						
 						break;
 					case "STATCHNG":
 						playerID = messagePayload.get("PLAYERID").asString();
@@ -212,7 +217,7 @@ public class MainClient{
  						});
 						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());		
 						
-						// update familyMEmberStatus
+						// update familyMemberStatus
 						JsonArray familyStatus = Json.parse(messagePayload.get("FAMILYSTATUS").asString()).asArray();
 						for(int i=0; i<familyStatus.size(); i++){
 							client.getPlayers().get(playerID).getFamilyMembers()[i].setBusyFlag(familyStatus.get(i).asBoolean());
@@ -222,6 +227,7 @@ public class MainClient{
 							client.getPlayers().get(playerID).getTrack()[k].addScore(client.getPlayers().get(playerID).getPlayerResources());
 						}
 						break;
+						
 					case "CHGBOARDSTAT":
 						// notifica cambiamento board
 						if("BOARD".equals(messagePayload.get("TYPE").asString())){
@@ -264,7 +270,6 @@ public class MainClient{
 						System.out.println("TRNBGN");
 						System.out.println(playerUUID.equals(client.getUUID()));
 						System.out.println(playerUUID);
-
 						System.out.println(client.getUUID().equals(playerUUID));
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization

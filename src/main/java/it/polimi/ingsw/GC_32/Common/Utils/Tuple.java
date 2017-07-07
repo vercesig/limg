@@ -17,4 +17,20 @@ public class Tuple<T, U> {
     public U getSecondArg(){
         return secondArg;
     }
+
+    @Override
+    public boolean equals(Object obj) {      
+       if (this == obj)
+          return true;
+       if (obj == null || getClass() != obj.getClass())
+          return false;
+            
+       Tuple <T,U> other = (Tuple <T,U>) obj;
+       if (other.getFirstArg() != null && other.getSecondArg()!= null) {
+    	   return this.getFirstArg().equals(other.getFirstArg()) &&
+       			this.getSecondArg().equals(other.getSecondArg());
+       }
+       else
+       return false;
+    }
 }

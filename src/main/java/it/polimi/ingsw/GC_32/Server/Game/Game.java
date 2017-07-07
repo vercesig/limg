@@ -142,7 +142,7 @@ public class Game implements Runnable{
 		
 	////-------------------------LEADER DISTRIBUTION ----------------////////
 			LOGGER.log(Level.INFO, "giving lock to the first player...");
-			if(true){  // da settare se si vuole giocare con le carte Leader
+			if(false){  // da settare se si vuole giocare con le carte Leader
 				boolean flag = true;
 				while(leaderHandler.getRunning()){ // da settare se si vuole giocare con le carte Leader
 					if(flag){

@@ -176,4 +176,8 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
     public void kill() {
         this.stop = true;
     }
+
+	@Override
+	public void update() { // empty
+	}
 }

@@ -30,6 +30,10 @@ public class ClientFamilyMember {
 		return this.owner;
 	}
 	
+	public int getActionValue(){
+		return this.actionValue;
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		if(busy==true)

@@ -27,4 +27,5 @@ public interface ClientInterface extends Runnable{
 	
 	//Game Change
 	public void waitTurn(boolean flag);
+	public void update();
 }

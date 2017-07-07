@@ -96,7 +96,6 @@ public class TurnManager {
 	}
 	
 	public void goodbyePope(){
-		System.out.println("INVITI CHE MI MANCANO: " + (visitPope -1));
 		this.visitPope --;
 	}
 	

@@ -94,34 +94,36 @@ public class ActionEffectContext extends Context{
 				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
 				System.out.println(card);
 				
-				JsonArray costList = card.get("cost").asArray();
-				if(costList.size() == 1){
-					break;
-				}else{
-					System.out.println("Choose one cost of the card: ");
-					for(JsonValue js : costList){
-							System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
-						}
-					System.out.println("type 0 or 1");
-					while(actionFlag){
-						command = in.nextLine();
-						
-						try{
-							if(Integer.parseInt(command) == 0){
-								indexCost = 0;;
-								break;
-							}	
-							if(Integer.parseInt(command) == 1){
-								indexCost = 1;
-								break;
+				if(card.get("cost")!= null){
+						JsonArray costList = card.get("cost").asArray();
+						if(costList.size() == 1){
+							break;
+						}else{
+							System.out.println("Choose one cost of the card: ");
+							for(JsonValue js : costList){
+								System.out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
 							}
-							else
-								System.out.println("please, type a valid number");
-						} catch(NumberFormatException e){
-							System.out.println("type a valid number");
+						System.out.println("type 0 or 1");
+						while(actionFlag){
+							command = in.nextLine();
+							
+							try{
+								if(Integer.parseInt(command) == 0){
+									indexCost = 0;;
+									break;
+								}	
+								if(Integer.parseInt(command) == 1){
+									indexCost = 1;
+									break;
+								}
+								else
+									System.out.println("please, type a valid number");
+							} catch(NumberFormatException e){
+								System.out.println("type a valid number");
+							}
 						}
 					}
-				}
+				}		
 				System.out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
 				
 				//TODO printare riassunto della mossa

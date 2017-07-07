@@ -106,6 +106,10 @@ public class ClientActionSpace {
 		return new String(tmp);
 	}
 	
+	public boolean isBusy(){
+		return !this.occupants.isEmpty();
+	}
+	
 	public void flushFamilyMember(){
 		this.occupants.clear();
 	}
