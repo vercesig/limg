@@ -181,12 +181,15 @@ public class MessageHandler{
 					}
 					else 
 						LOGGER.info("Non ha effetti instantanei!");
+					
 					if(!card.getPermanentEffect().isEmpty()){
 						excommPlayer.addEffect(card.getPermanentEffect().get(0));
 						System.out.println("------------------------- aggiunto effetto scomunica al player");
 					}
-					else
+					else{
+						System.out.println("no effetti permanenti");
 						LOGGER.info("Non ha effetti permanenti!");
+					}
 				}	
 				else{
 					LOGGER.info("Sostegno alla Chiesa!");
