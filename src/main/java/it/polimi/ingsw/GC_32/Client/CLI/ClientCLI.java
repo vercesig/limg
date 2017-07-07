@@ -11,6 +11,7 @@ import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
+import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 
 public class ClientCLI implements ClientInterface, KillableRunnable{
 
@@ -22,9 +23,7 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	
 	// network management
 	protected ConcurrentLinkedQueue<Object> contextQueue;
-	protected ConcurrentLinkedQueue<String> messageQueue;
-	
-	
+	protected ConcurrentLinkedQueue<String> messageQueue;	
 	private ConcurrentLinkedQueue<String> sendQueue;
 	protected ConcurrentLinkedQueue<String> clientsendQueue;
 	
@@ -75,11 +74,8 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 					System.out.println("inviando messaggio "+response);
 					clientsendQueue.add(response);
 				}
-				try{ //waiting for other context
-					Thread.sleep(500);
-				}catch(InterruptedException e){
-				    Thread.currentThread().interrupt();
-				}
+				
+				Utils.safeSleep(1000);
 				
 				if(contextQueue.isEmpty())
 					idleRun=false;			
@@ -174,6 +170,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 	public void displayMessage(String message){
 		this.messageQueue.add("[server message]-----------------------------\n"+message+""
 									   + "\n---------------------------------------------");
+	}
+	
+	public void setIdleRun(boolean idleRunFlag){
+		this.idleRun = idleRunFlag;
 	}
 	
 	public void displaySendMessage(String playerID, String message){

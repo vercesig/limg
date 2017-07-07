@@ -106,8 +106,7 @@ public class MainClient{
 		
 		MainClient client = new MainClient();
 		Scanner in = new Scanner(System.in);
-		ClientCardRegistry.getInstance().init();
-		
+		ClientCardRegistry.getInstance().init();		
 		ClientCardRegistry.getInstance();
 		
 		System.out.println("welcome in LORENZO IL MAGNIFICO\n");
@@ -131,7 +130,7 @@ public class MainClient{
 			while(true){
 				
 				if(client.startTimeout + client.ACTIONTIMEOUT < System.currentTimeMillis()&&client.actionRunningFlag){
-					System.out.println("[!] YOU HAVE BEEN DISCONETTED FROM THE SERVER!");
+					client.getClientInterface().displayMessage("[!] timeout is ended, you lose this turn");
 					client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.gameUUID, client.getPlayers().get(client.getUUID()).getName()));
 					client.actionRunningFlag=false;
 				}
@@ -139,12 +138,10 @@ public class MainClient{
 				if(!client.getSendQueue().isEmpty()){
 					String message = client.getSendQueue().poll();				
 					JsonObject JsonMessage = Json.parse(message).asObject();					
-					JsonMessage.add("GameID", client.gameUUID);
-					
+					JsonMessage.add("GameID", client.gameUUID);					
 					if("ASKACT".equals(JsonMessage.get("MESSAGETYPE").asString())){
 						client.actionRunningFlag=false;
-					}
-					
+					}					
 					client.network.sendMessage(JsonMessage.toString());
 				}	
 				
@@ -153,8 +150,6 @@ public class MainClient{
 					JsonObject message = Json.parse(network.getMessage()).asObject();
 					JsonObject messagePayload = Json.parse(message.get("PAYLOAD").asString()).asObject();
 					String playerID;
-					
-					//System.out.println(message.toString());
 					
 					switch(message.get("MESSAGETYPE").asString()){					
 					case "CHGNAME":
@@ -264,13 +259,9 @@ public class MainClient{
 						});	
 						break;
 					case "TRNBGN":
+						client.getClientInterface().setIdleRun(false); // fa partire zero level (excommunication disabilita lo zero level context su CLI)
 						client.getClientInterface().leaderStartPhaseEnd();
 						String playerUUID = messagePayload.get("PLAYERID").asString();
-						System.out.println("TRNBGN");
-						System.out.println(playerUUID.equals(client.getUUID()));
-						System.out.println(playerUUID);
-
-						System.out.println(client.getUUID().equals(playerUUID));
 						if(playerUUID.equals(client.getUUID())){
 							// timer inizialization
 							client.startTimeout = System.currentTimeMillis();
@@ -293,7 +284,7 @@ public class MainClient{
 						boolean result = messagePayload.get("RESULT").asBoolean();
 						if(!result){
 							client.graphicInterface.displayMessage("> THE ACTION IS NOT VALID!\n "
-												+ "please type a valid action.");
+																 + "please type a valid action.");
 						}
 						else{
 							if(!messagePayload.get("BONUSACTION").asBoolean())
@@ -350,9 +341,9 @@ public class MainClient{
 						StringBuilder display = new StringBuilder();
 						for( String key: client.getPlayers().keySet()){
 							display.append(client.getPlayers().get(key).getName() +": " +
-											messagePayload.get(key).asInt());
+											messagePayload.get(key).asInt()+"\n");
 						}	
-						client.getClientInterface().displayMessage(new String(display));
+						client.getClientInterface().displayMessage("END OF THE GAME!\nthe final score is:\n"+new String(display));
 						
 						in.close();
 						break;

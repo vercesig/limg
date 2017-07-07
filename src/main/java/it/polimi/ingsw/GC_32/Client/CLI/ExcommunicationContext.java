@@ -32,7 +32,7 @@ public class ExcommunicationContext extends Context{
 		
 		
 		if(playerID.equals(client.getPlayerUUID())){
-			//client.setZeroLevelFlag(false);
+			client.setIdleRun(true);
 			out.println("=============================== EXCOMMUNICATION PHASE ==============================="
 					+ "\n >You have "+playerFaithPoints+ " faith points.\nFor this period you need to spend "+faithPointsNeeded+" to support the Church.\n"
 					+ "you can choose if support it, and spend all your faith points, or to not support it. In this case you whill suffer the excommunication"
@@ -63,7 +63,7 @@ public class ExcommunicationContext extends Context{
 			}
 		}
 		else{
-			//client.setZeroLevelFlag(false);
+			client.setIdleRun(true);
 			out.println("=============================== EXCOMMUNICATION PHASE ===============================\n"
 					+ "excommunication phase ... waiting "+client.getPlayerList().get(playerID).getName());
 			return "";

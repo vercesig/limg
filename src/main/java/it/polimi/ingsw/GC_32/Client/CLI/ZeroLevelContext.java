@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
+import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 
 public class ZeroLevelContext extends Context implements Runnable{
     private Logger LOGGER = Logger.getLogger(this.getClass().toString());
@@ -70,13 +71,13 @@ public class ZeroLevelContext extends Context implements Runnable{
     				break;
     				
     			case "leader":
-    				String leaderResponse = leaderDialog.open(object);
-    				if(leaderResponse!=null&&!"".equals(leaderResponse))
-    					client.getSendQueue().add(leaderResponse);
-    				try{ //waiting for other context
-    					Thread.sleep(200);
-    				}catch(InterruptedException e){
-    					Thread.currentThread().interrupt();
+    				if(!client.isWaiting()){
+	    				String leaderResponse = leaderDialog.open(object);
+	    				if(leaderResponse!=null&&!"".equals(leaderResponse))
+	    					client.getSendQueue().add(leaderResponse);
+						Utils.safeSleep(300);
+    				}else{
+    					out.println("isn't your turn");
     				}
     				break;	
     				
@@ -89,11 +90,7 @@ public class ZeroLevelContext extends Context implements Runnable{
     					String response = askAct.open(object);
     					if(response!=null&&!"".equals(response))
     						client.getSendQueue().add(response);
-    					try{ //waiting for other context
-    						Thread.sleep(200);
-    					}catch(InterruptedException e){
-    						Thread.currentThread().interrupt();
-    					}
+    					Utils.safeSleep(300);
     				}else{
     					out.println("isn't your turn");
     				}

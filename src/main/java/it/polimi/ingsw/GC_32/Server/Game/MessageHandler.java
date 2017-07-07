@@ -13,6 +13,7 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
+import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
@@ -132,12 +133,10 @@ public class MessageHandler{
         LOGGER.log(Level.INFO, "PERIOD ID: %s", turnManager.getPeriod());
         LOGGER.log(Level.INFO, "TURN ID: %s", turnManager.getTurnID());
         
-        if(turnManager.isGameEnd()){
-            LOGGER.log(Level.INFO, "Game end");
-            game.getEndPhaseHandler().endGame();
-            return;
-        }
-   
+        System.out.println("ROUND ID :"+ turnManager.getRoundID());
+        System.out.println("period ID :"+ turnManager.getPeriod());
+        System.out.println("turn ID :"+ turnManager.getTurnID());
+        
         LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
         if(turnManager.isRoundEnd()){ // cambio round
             LOGGER.info("ROUND FINITO!");
@@ -147,12 +146,9 @@ public class MessageHandler{
                 turnManager.distributeVaticanReport();
             }       
             turnManager.setToUpdate(true);
-        }   
-        try { // wait for TRNBGN message
-            Thread.sleep(500);
-        } catch(InterruptedException e){
-            Thread.currentThread().interrupt();
         }
+         // wait for TRNBGN message
+         Utils.safeSleep(500);
                 
         if(turnManager.doesPopeWantToSeeYou()){ 
         	
@@ -181,12 +177,15 @@ public class MessageHandler{
 					}
 					else 
 						LOGGER.info("Non ha effetti instantanei!");
+					
 					if(!card.getPermanentEffect().isEmpty()){
 						excommPlayer.addEffect(card.getPermanentEffect().get(0));
 						System.out.println("------------------------- aggiunto effetto scomunica al player");
 					}
-					else
+					else{
+						System.out.println("no effetti permanenti");
 						LOGGER.info("Non ha effetti permanenti!");
+					}
 				}	
 				else{
 					LOGGER.info("Sostegno alla Chiesa!");
@@ -210,6 +209,16 @@ public class MessageHandler{
 				}
 				turnManager.goodbyePope();
 			});	
+        }
+        
+        System.out.println("g ROUND ID :"+ turnManager.getRoundID());
+        System.out.println("g period ID :"+ turnManager.getPeriod());
+        System.out.println("g turn ID :"+ turnManager.getTurnID());
+        
+        if(turnManager.isGameEnd()){
+            LOGGER.log(Level.INFO, "Game end");
+            game.getEndPhaseHandler().endGame();
+            return;
         }
         
         if(turnManager.isToUpdate() && !turnManager.doesPopeWantToSeeYou()){

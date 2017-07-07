@@ -39,7 +39,6 @@ public class SocketMsgConnection implements MsgConnection, KillableRunnable{
 			try {
 				if(socket.getInputStream().available()>0){
 					receivedMessageQueue.add(in.nextLine());
-					//System.out.println("ricevuto");
 				}
 			} catch (IOException e) {
 			    LOGGER.log(Level.INFO, "Connection cloased unexpectedly", e);
@@ -61,18 +60,14 @@ public class SocketMsgConnection implements MsgConnection, KillableRunnable{
 	
 	public void sendMessage(String message){
 		this.sendMessageQueue.add(message);
-		//out.println(message);
-		//out.flush();
 	}
 	
 	public String getMessage(){
 		return this.receivedMessageQueue.poll();
-		//return in.nextLine();
 	}
 	
 	public boolean hasMessage() throws IOException{
 		return !this.receivedMessageQueue.isEmpty();
-		//return socket.getInputStream().available() > 0;
 	}
 	
 	@Override

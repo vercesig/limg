@@ -26,6 +26,7 @@ public interface ClientInterface extends Runnable{
 	
 	public void leaderStartPhaseEnd();
 	public Context[] getContextList();
+	public void setIdleRun(boolean idleRunFlag);
 	
 	//Game Change
 	public void waitTurn(boolean flag);
