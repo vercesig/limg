@@ -66,7 +66,7 @@ public class JsonImporter {
 			int period = card.get("period").asInt();
 			
 			ExcommunicationCard newCard = new ExcommunicationCard(name, period);		
-			registerSingleEffect(newCard, card);
+			registerCardEffects(newCard, card);
 			cardList.add(newCard);
 		}
 		return cardList;
@@ -85,7 +85,7 @@ public class JsonImporter {
 			
 			LeaderCard newCard = new LeaderCard(name, requirements);
 			
-			registerSingleEffect(newCard, card);
+			registerCardEffects(newCard, card);
 			List<Tuple<JsonValue, JsonValue>> flagEffectList = parseEffect(card.get("flagEffect"),
 			                                                               card.get("flagPayload"));
 			if(!flagEffectList.isEmpty()){
@@ -251,7 +251,7 @@ public class JsonImporter {
 	    return regEffect;
 	}
 	
-	private static void registerSingleEffect(Card newCard, JsonObject card){
+	private static void registerCardEffects(Card newCard, JsonObject card){
 	    List<Tuple<JsonValue, JsonValue>> instantEffectList = parseEffect(card.get("instantEffect"),
                                                                           card.get("instantPayload"));
 	    if(!instantEffectList.isEmpty()){
@@ -260,8 +260,8 @@ public class JsonImporter {
 	                                                            instantEffect.getSecondArg()));
 	    }
 
-	    List<Tuple<JsonValue, JsonValue>> permanentEffectList = parseEffect(card.get("instantEffect"),
-                                                                            card.get("instantPayload"));
+	    List<Tuple<JsonValue, JsonValue>> permanentEffectList = parseEffect(card.get("permanentEffect"),
+                                                                            card.get("permanentPayload"));
 	    if(!permanentEffectList.isEmpty()){
             Tuple<JsonValue, JsonValue> permanentEffect = instantEffectList.get(0);
             newCard.registerPermanentEffect(getEffectFromRegistry(permanentEffect.getFirstArg().asString(),
