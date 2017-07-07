@@ -216,7 +216,7 @@ public class Game implements Runnable{
 				LOGGER.log(Level.FINEST, "InterruptedException when taking packet", e);
 			}
 
-			if(message != null){
+			if(message != null && message.getPlayerUUID().equals(getLock())){
 				messageHandler.handleMessage(message);
 			}
 		}
