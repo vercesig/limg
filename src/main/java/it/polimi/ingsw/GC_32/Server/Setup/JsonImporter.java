@@ -263,7 +263,7 @@ public class JsonImporter {
 	    List<Tuple<JsonValue, JsonValue>> permanentEffectList = parseEffect(card.get("permanentEffect"),
                                                                             card.get("permanentPayload"));
 	    if(!permanentEffectList.isEmpty()){
-            Tuple<JsonValue, JsonValue> permanentEffect = instantEffectList.get(0);
+            Tuple<JsonValue, JsonValue> permanentEffect = permanentEffectList.get(0);
             newCard.registerPermanentEffect(getEffectFromRegistry(permanentEffect.getFirstArg().asString(),
 	                                                              permanentEffect.getSecondArg()));
 	    }

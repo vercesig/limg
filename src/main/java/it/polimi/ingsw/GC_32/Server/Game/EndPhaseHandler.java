@@ -96,12 +96,12 @@ public class EndPhaseHandler{
 				if(militaryScore.getFirst().getUUID().equals(player.getUUID())){
 					score = score + firstMilitary;
 					} 
-				else
+				else{
 					if(militaryScore.getLast().getUUID().equals(player.getUUID())){
 				
 						score = score + secondMilitary;
 					}
-				
+				}
 				//resource
 				int resource = player.getResources().getResource("COINS");
 				resource += player.getResources().getResource("WOOD");
@@ -117,7 +117,7 @@ public class EndPhaseHandler{
 				
 				//perdi un punto vittoria per ogni 5 punti vittoria
 				if(player.isFlagged("LESSFORVICTORY")){
-					score -= score/5;
+					score -= player.getResources().getResource("VICTORY_POINTS")/5;
 				}
 				
 				//perdi un punto vittoria per ogni punto militare

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +14,6 @@ import it.polimi.ingsw.GC_32.Common.Network.ContextType;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
-import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
@@ -47,8 +45,7 @@ public class ActionHandler{
                 JsonValue effectAction = contextManager.waitForContextReply();
                 contextManager.setContextAck(true, player);
                 
-                if(effectAction!=null){
-                    int index = game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(UUID.fromString(effectAction.asObject().get("PLAYERID").asString())));
+                if(effectAction!=null&&!effectAction.asObject().get("NULLACTION").asBoolean()){
                     int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
 
                     int regionID = effectAction.asObject().get("REGIONID").asInt();
@@ -62,12 +59,18 @@ public class ActionHandler{
                     //action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());                    
                     Player bonusPlayer = player;
                     
+                    boolean cancel = false;
+                    
                     while(!game.getMoveChecker().checkMove(game, bonusPlayer, bonusAction, contextManager)){ // se l'azione non è valida 
                     	System.out.println("ritento");
                         MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, bonusPlayer, bonusAction, false));                                
                         effect.apply(board, player, action, contextManager);
                         effectAction = contextManager.waitForContextReply();
-                        contextManager.setContextAck(true, player);                             
+                        contextManager.setContextAck(true, player);
+                        if(effectAction.asObject().get("NULLACTION").asBoolean()){ // azione annullata
+                        	cancel = true;
+                        	break;
+                        }
                         if(!(effectAction==null)){
                             actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
                             regionID = effectAction.asObject().get("REGIONID").asInt();
@@ -80,10 +83,12 @@ public class ActionHandler{
                             bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
                             //action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());                               
                         }                               
-                    } 
-                    game.makeMove(bonusPlayer, bonusAction);
-                    // notifiche server
-                    MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, bonusPlayer, bonusAction, true));                 
+                    }
+                    if(!cancel){ // can be setted true only from inside the while loop
+	                    game.makeMove(bonusPlayer, bonusAction);
+	                    // notifiche server
+	                    MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, bonusPlayer, bonusAction, true));
+                    }
                 }
             });
         }

@@ -33,9 +33,9 @@ public class ActionEffectContext extends Context{
 		if(!Jsonpayload.get("FLAGREGION").isNull())
 			flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
 		
-		payload.remove("TYPE");
+		/*payload.remove("TYPE");
 		payload.remove("REGIONID");
-		payload.remove("FLAGREGION");
+		payload.remove("FLAGREGION");*/
 		
 		int choosedRegionID = 0;
 		int choosedSpaceID = 0;

@@ -21,29 +21,37 @@ public class UniqueEffect {
 	
 	//Excommunicate card 1-7
 		static Effect lessDice = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() != 0){
-				a.setActionValue(a.getActionValue() - 1);
+			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() != 0){
+					a.setActionValue(a.getActionValue() - 1);
+				}
 			}
 		};
 		
 		//Sigismondo
 		static Effect greyFamily = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() == 0){
-				a.setActionValue(a.getActionValue() + 3);
+			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() == 0){
+					a.setActionValue(a.getActionValue() + 3);
+				}
 			}
 		};
 		
 		//Ludovico il Moro
 		static Effect familyColodDice = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
-				a.setActionValue(5);
+			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
+					a.setActionValue(5);
+				}
 			}
 		};
 		
 		//Lucrezia Borgia
 		static Effect familyColorBonus = (b, p, a, cm)->{
-			if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
-				a.setActionValue(a.getActionValue() + 2);
+			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
+					a.setActionValue(a.getActionValue() + 2);
+				}
 			}
 		};
 		
@@ -66,7 +74,7 @@ public class UniqueEffect {
 			EffectRegistry.getInstance().registerEffect("FAMILYCOLORDICE", familyColodDice);
 			EffectRegistry.getInstance().registerEffect("FAMILYCOLORBONUS", familyColorBonus);
 			
-			EffectRegistry.getInstance().registerEffect("JOLLT", jolly);
+			EffectRegistry.getInstance().registerEffect("JOLLY", jolly);
 			EffectRegistry.getInstance().registerEffect("FAMILYSIXVALOR", familySixValor);
 
 		}

@@ -33,15 +33,7 @@ public class PermanentEffect {
 			flag = false;
 		
 		Effect e = (Board b, Player p, Action a, ContextManager cm) -> {
-			
-			System.out.println("attivato permanent");
-			System.out.println(a.getActionType());
-			System.out.println(actionType);
-			System.out.println(a.getActionType().equals(actionType));
-			System.out.println(a.getRegionId());
-			System.out.println(regionID);
-			System.out.println(a.getRegionId()==regionID);
-			
+						
 			if((a.getActionType().equals(actionType) && a.getRegionId()==regionID)) { // Action a is not the ActionType of the permanentEffect  
 				System.out.println("ATTIVATO EFFETTO PERMANENTE");
 				System.out.println(a.getActionValue() + " + " + actionValueBonus);
