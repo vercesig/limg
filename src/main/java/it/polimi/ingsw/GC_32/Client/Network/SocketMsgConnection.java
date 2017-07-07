@@ -5,14 +5,19 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 
 import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
+import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
+import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
-public class SocketMsgConnection implements MsgConnection, Runnable{
-
+public class SocketMsgConnection implements MsgConnection, KillableRunnable{
+    private Logger LOGGER = Logger.getLogger(this.getClass().getName());
+    
 	private Socket socket;
 	private Scanner in;
 	private PrintWriter out;
+	private boolean stop = false;
 	
 	private ConcurrentLinkedQueue<String> sendMessageQueue;
 	private ConcurrentLinkedQueue<String> receivedMessageQueue;
@@ -28,13 +33,16 @@ public class SocketMsgConnection implements MsgConnection, Runnable{
 	}
 	
 	public void run(){
-		while(true){
+		
+		while(!stop){
+			
 			try {
 				if(socket.getInputStream().available()>0){
 					receivedMessageQueue.add(in.nextLine());
 					//System.out.println("ricevuto");
 				}
 			} catch (IOException e) {
+			    LOGGER.log(Level.INFO, "Connection cloased unexpectedly", e);
 				break;
 			}
 			
@@ -65,5 +73,10 @@ public class SocketMsgConnection implements MsgConnection, Runnable{
 	public boolean hasMessage() throws IOException{
 		return !this.receivedMessageQueue.isEmpty();
 		//return socket.getInputStream().available() > 0;
-	}		
+	}
+	
+	@Override
+	public void kill(){
+	    this.stop = true;
+	}
 }

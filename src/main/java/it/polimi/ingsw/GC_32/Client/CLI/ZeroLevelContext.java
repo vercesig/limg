@@ -1,8 +1,12 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
 public class ZeroLevelContext extends Context implements Runnable{
+    private Logger LOGGER = Logger.getLogger(this.getClass().toString());
 
 	private ShowCardDialog showCard;
 	private AskActDialog askAct;
@@ -40,62 +44,63 @@ public class ZeroLevelContext extends Context implements Runnable{
 					Thread.sleep(200);
 				}
 				command = reader.readLine();
-			}catch(Exception e){}
+			}catch(Exception e){
+			    LOGGER.log(Level.FINEST, "Cambio di contesto", e);
+			}
 			
 			switch(command){
-			
-			case "board":
-				out.println(this.client.getBoard().toString());
-				break;
-			
-			case "players":
-				this.client.getPlayerList().forEach((UUID, client) -> System.out.println(client.toString()));
-				break;
-				
-			case "show card":
-				showCard.open(object);
-				break;	
-					
-			case "chat room":
-				try {
-					chatRoom.openChat();
-				} catch (InterruptedException e) {
-				    Thread.currentThread().interrupt();
-				}
-				break;
-				
-			case "leader":
-				String leaderResponse = leaderDialog.open(object);
-				if(leaderResponse!=null&&!"".equals(leaderResponse))
-					client.getSendQueue().add(leaderResponse);
-				try{ //waiting for other context
-					Thread.sleep(200);
-				}catch(InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
-				break;	
-				
-			case "change name":
-				chatRoom.openChangeName();
-				break;
-					
-			case "action":		
-				if(!client.isWaiting()){
-					String response = askAct.open(object);
-					if(response!=null&&!"".equals(response))
-						client.getSendQueue().add(response);
-					try{ //waiting for other context
-						Thread.sleep(200);
-					}catch(InterruptedException e){
-						Thread.currentThread().interrupt();
-					}
-				}else{
-					out.println("isn't your turn");
-				}
-				break;
-			case "end turn":
-				client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.getGameUUID(), client.getPlayerList().get(client.getPlayerUUID()).getName()));	
-				break;
+    			case "board":
+    				out.println(this.client.getBoard().toString());
+    				break;
+    			
+    			case "players":
+    				this.client.getPlayerList().forEach((UUID, client) -> System.out.println(client.toString()));
+    				break;
+    				
+    			case "show card":
+    				showCard.open(object);
+    				break;	
+    					
+    			case "chat room":
+    				try {
+    					chatRoom.openChat();
+    				} catch (InterruptedException e) {
+    				    Thread.currentThread().interrupt();
+    				}
+    				break;
+    				
+    			case "leader":
+    				String leaderResponse = leaderDialog.open(object);
+    				if(leaderResponse!=null&&!"".equals(leaderResponse))
+    					client.getSendQueue().add(leaderResponse);
+    				try{ //waiting for other context
+    					Thread.sleep(200);
+    				}catch(InterruptedException e){
+    					Thread.currentThread().interrupt();
+    				}
+    				break;	
+    				
+    			case "change name":
+    				chatRoom.openChangeName();
+    				break;
+    					
+    			case "action":		
+    				if(!client.isWaiting()){
+    					String response = askAct.open(object);
+    					if(response!=null&&!"".equals(response))
+    						client.getSendQueue().add(response);
+    					try{ //waiting for other context
+    						Thread.sleep(200);
+    					}catch(InterruptedException e){
+    						Thread.currentThread().interrupt();
+    					}
+    				}else{
+    					out.println("isn't your turn");
+    				}
+    				break;
+    			case "end turn":
+    				client.getSendQueue().add(ClientMessageFactory.buildTRNENDmessage(client.getGameUUID(), client.getPlayerList().get(client.getPlayerUUID()).getName()));	
+    				break;
 			}
 		}
 		return null;

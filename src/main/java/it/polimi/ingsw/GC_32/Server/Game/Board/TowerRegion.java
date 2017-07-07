@@ -49,7 +49,7 @@ public class TowerRegion extends Region {
 			ArrayList<FamilyMember> occupants = layer.getActionSpace().getOccupants();
 			if(!occupants.isEmpty()){
 				if(occupants.get(0).getColor().equals(familyMember.getColor()));
-				return false;
+					return false;
 			}
 		}
 		return true;

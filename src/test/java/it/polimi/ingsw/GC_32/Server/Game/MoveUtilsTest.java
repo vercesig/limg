@@ -125,7 +125,7 @@ public class MoveUtilsTest{
 	    b.getTowerRegion()[1].getTowerLayers()[3].setCard(bonusCard);
 	    p.getResources().setResource("WOOD", 2);
 	    Action bonusAction = new Action("TEST", 3, 3, 5);
-	    bonusAction.setAdditionalInfo(new JsonObject().add("BONUSACTIONVALUE", new JsonObject().add("WOOD", 1)));
+	    bonusAction.setAdditionalInfo(new JsonObject().add("BONUSRESOURCE", new JsonObject().add("WOOD", 1)));
 	    assertEquals(true, MoveUtils.checkCardCost(b, p, bonusAction));
 	    assertEquals(1, p.getResources().getResource("WOOD"));
 	}
