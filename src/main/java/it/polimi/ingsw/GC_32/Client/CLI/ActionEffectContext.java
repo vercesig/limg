@@ -15,7 +15,6 @@ public class ActionEffectContext extends Context{
 	}
 	
 	public String open(Object object){
-		
 		runFlag = true;
 		JsonObject payload = (JsonObject) object;
 		JsonObject Jsonpayload = payload.get("PAYLOAD").asObject();
@@ -50,106 +49,106 @@ public class ActionEffectContext extends Context{
 			out.println("the action will also apply this discount on the cost of the card you will take\n"+bonusResource.toString());
 		
 		while(runFlag){
-				sendFlag = true;
-				if(flagRegion){
-					out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
-					actionFlag = true;
-					while(actionFlag){
-						command = in.nextLine();
-						try{
-							if(!(Integer.parseInt(command)>=4&&Integer.parseInt(command)<=7)){
-								out.println("please, type a valid regionID");
-							}else{
-								choosedRegionID = Integer.parseInt(command);
-								actionFlag = false;
-							}
-						}catch(NumberFormatException e){
-							System.out.println("type a valid number");
-						}
-					}
-				}else{
-					out.println("you can perform the action only on the region number "+regionID);
-					choosedRegionID = regionID;
-				}
+			sendFlag = true;
+			if(flagRegion){
+				out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
 				actionFlag = true;
-				out.println("ok, now type the spaceID where you would place your pawn");
 				while(actionFlag){
 					command = in.nextLine();
 					try{
-						if(Integer.parseInt(command)>3 || Integer.parseInt(command)<0){
-							out.println("action space with that id does not exist\ntype a number between 0-3");
+						if(!(Integer.parseInt(command)>=4&&Integer.parseInt(command)<=7)){
+							out.println("please, type a valid regionID");
 						}else{
-							choosedSpaceID = Integer.parseInt(command);
+							choosedRegionID = Integer.parseInt(command);
 							actionFlag = false;
 						}
 					}catch(NumberFormatException e){
 						System.out.println("type a valid number");
 					}
-				}				
-				actionFlag = true;
-				
-				out.println("Development card on this tower layer: ");				
-				String cardName = this.client.getBoard().getRegionList().get(choosedRegionID)
-						.getActionSpaceList().get(choosedSpaceID).getCardName();
-											
-				JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
-				
-				if(card==null){
-					out.println("no card on this tower layer");
-					sendFlag = false;
-					break;
 				}
-				out.println(CardCli.print(cardName, card));
-
-				if(card.get("cost")!=null){
-					JsonArray costList = card.get("cost").asArray();
-					if(costList.size() == 1){
-						break;
+			}else{
+				out.println("you can perform the action only on the region number "+regionID);
+				choosedRegionID = regionID;
+			}
+			actionFlag = true;
+			out.println("ok, now type the spaceID where you would place your pawn");
+			while(actionFlag){
+				command = in.nextLine();
+				try{
+					if(Integer.parseInt(command)>3 || Integer.parseInt(command)<0){
+						out.println("action space with that id does not exist\ntype a number between 0-3");
 					}else{
-						out.println("Choose one cost of the card: ");
-						for(JsonValue js : costList){
-								out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
-							}
-						out.println("type 0 or 1");
-						while(actionFlag){
-							command = in.nextLine();
-							
-							try{
-								if(Integer.parseInt(command) == 0){
-									indexCost = 0;
-									break;
-								}	
-								if(Integer.parseInt(command) == 1){
-									indexCost = 1;
-									break;
-								}
-								else
-									out.println("please, type a valid number");
-							} catch(NumberFormatException e){
-								System.out.println("type a valid number");
-							}
-						}
+						choosedSpaceID = Integer.parseInt(command);
+						actionFlag = false;
 					}
+				}catch(NumberFormatException e){
+					System.out.println("type a valid number");
 				}
-				if(sendFlag){
-					out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");				
-					actionFlag = true;
+			}				
+			actionFlag = true;
+			
+			out.println("Development card on this tower layer: ");				
+			String cardName = this.client.getBoard().getRegionList().get(choosedRegionID)
+					.getActionSpaceList().get(choosedSpaceID).getCardName();
+										
+			JsonObject card = ClientCardRegistry.getInstance().getDetails(cardName);
+			
+			if(card==null){
+				out.println("no card on this tower layer");
+				//sendFlag = false;
+				break;
+			}
+			out.println(CardCli.print(cardName, card));
+
+			if(card.get("cost")!=null){
+				JsonArray costList = card.get("cost").asArray();
+				if(costList.size() == 1){
+					break;
+				}else{
+					out.println("Choose one cost of the card: ");
+					for(JsonValue js : costList){
+							out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
+						}
+					out.println("type 0 or 1");
 					while(actionFlag){
 						command = in.nextLine();
-						switch(command){
-						case "y":
-							actionFlag = false;
-							close();
-							break;
-						case "n":
-							actionFlag = false;
-							break;
-						default:
-							out.println("please, type a valid letter");
+						
+						try{
+							if(Integer.parseInt(command) == 0){
+								indexCost = 0;
+								break;
+							}	
+							if(Integer.parseInt(command) == 1){
+								indexCost = 1;
+								break;
+							}
+							else
+								out.println("please, type a valid number");
+						} catch(NumberFormatException e){
+							System.out.println("type a valid number");
 						}
 					}
 				}
 			}
+			if(sendFlag){
+				out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");				
+				actionFlag = true;
+				while(actionFlag){
+					command = in.nextLine();
+					switch(command){
+					case "y":
+						actionFlag = false;
+						close();
+						break;
+					case "n":
+						actionFlag = false;
+						break;
+					default:
+						out.println("please, type a valid letter");
+					}
+				}
+			}
+		}
 		out.println("action sent to the server... waiting for response");
 		
 		JsonObject CONTEXTREPLY = new JsonObject();

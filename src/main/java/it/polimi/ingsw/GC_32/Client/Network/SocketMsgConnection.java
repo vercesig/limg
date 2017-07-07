@@ -7,12 +7,14 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
+import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
 
-public class SocketMsgConnection implements MsgConnection, Runnable{
+public class SocketMsgConnection implements MsgConnection, KillableRunnable{
 
 	private Socket socket;
 	private Scanner in;
 	private PrintWriter out;
+	private boolean stop = false;
 	
 	private ConcurrentLinkedQueue<String> sendMessageQueue;
 	private ConcurrentLinkedQueue<String> receivedMessageQueue;
@@ -29,7 +31,7 @@ public class SocketMsgConnection implements MsgConnection, Runnable{
 	
 	public void run(){
 		System.out.println("partito");
-		while(true){
+		while(!stop){
 			try {
 				if(socket.getInputStream().available()!=0){
 					receivedMessageQueue.add(in.nextLine());
@@ -66,5 +68,10 @@ public class SocketMsgConnection implements MsgConnection, Runnable{
 	public boolean hasMessage() throws IOException{
 		return !this.receivedMessageQueue.isEmpty();
 		//return socket.getInputStream().available() > 0;
-	}		
+	}
+	
+	@Override
+	public void kill(){
+	    this.stop = true;
+	}
 }

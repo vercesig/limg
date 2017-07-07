@@ -56,14 +56,15 @@ public class MessageManager {
 			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
 			return;
 		}		
-		if(message.getOpcode().equals("CONTEXTREPLY")&&message.getMessage().asObject().get("CONTEXT_TYPE").asString().equals("EXCOMMUNICATION")){ // excommunication messages are lock independent
+		if("CONTEXTREPLY".equals(message.getOpcode()) && "EXCOMMUNICATION".equals(message.getMessage().asObject().get("CONTEXT_TYPE").asString())){ // excommunication messages are lock independent
 			this.gameReceiveQueueList.get(message.getGameID()).add(message);
-		}
-		else if(message.getPlayerUUID().equals(GameRegistry.getInstance()
-													  .getGame(message.getGameID())
-													  .getLock())){			
-			this.gameReceiveQueueList.get(message.getGameID()).add(message);
-			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
+		} else {
+		    if(message.getPlayerUUID().equals(GameRegistry.getInstance()
+		                                                  .getGame(message.getGameID())
+		                                                  .getLock())){			
+    			this.gameReceiveQueueList.get(message.getGameID()).add(message);
+    			LOGGER.log(Level.INFO, "add new message ("+message.getOpcode()+") to recivedQueue");
+		    }
 		}
 	}
 	

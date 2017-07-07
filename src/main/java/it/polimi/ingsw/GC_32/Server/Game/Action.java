@@ -53,7 +53,7 @@ public class Action{
     	this.isValid = false;
     }
     
-    	// to String
+    @Override
     public String toString(){
     	
     	StringBuilder stringBuilder = new StringBuilder();
@@ -63,13 +63,5 @@ public class Action{
     					" actionRegionId:" + actionRegionId +
     					" additionalInfo:"+ ((additionalInfo != null) ? additionalInfo.toString() : ""));
     	return stringBuilder.toString();
-    }
-    
-    public boolean equals(Action otherAction){
-        return (this.actionValue == otherAction.getActionValue() &&
-                this.actionSpaceId == otherAction.getActionSpaceId() &&
-                this.actionRegionId == otherAction.getRegionId() &&
-                this.type == otherAction.getActionType() &&
-                this.additionalInfo.equals(otherAction.getAdditionalInfo()));
     }
 }  
