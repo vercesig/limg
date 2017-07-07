@@ -12,6 +12,20 @@ import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
+/**
+* network thread responsable of the management of RMI connections. After RMIServer has opened a RMI connection, RMIListener perform the sending of 
+ * messages to the clients on a RMI connection
+ * 
+ * <ul>
+ * <li>{@link #rmiQueue}: : ConcurrentHashMap which associate each player connected thoroght RMI to a queue of messages used by the server to send message</li>
+ * <li>{@link #rmiRegistry}: the RMI registry</li>
+ * <li>{@link #server}: the RMI server</li>
+ * <li>{@link #stop}: flag used to stop this thread</li>
+ * </ul>
+ * 
+ *  @see RMIServer
+ *
+ */
 public class RMIListener implements Runnable{
 	Registry rmiRegistry;
 	RMIServer server;
@@ -35,6 +49,9 @@ public class RMIListener implements Runnable{
 		}
 	}
 
+	/**
+	 * run method handels the sending of messages by the server putting messages into the corresponding client sendQueue (taken from the rmiQueue HashMap of this class)
+	 */
 	@Override
 	public void run() {
 		while(!stop){
@@ -47,6 +64,13 @@ public class RMIListener implements Runnable{
 		}
 	}
 	
+	/**
+	 * send the message to the client, putting the message in the corresponding client sendQueue, looking to the UUID of the player inside the GameMessage object
+	 * sendMessage() method is called by run()
+	 * 
+	 * @see GameMessage
+	 * @param message the GameMessage to send
+	 */
 	private void sendMessage(GameMessage message){
 	    if(!message.isBroadcast() && this.rmiQueue.get(message.getPlayerUUID()) != null){
 	        this.rmiQueue.get(message.getPlayerUUID()).add(message.toJson().toString());

@@ -61,7 +61,7 @@ public class SocketListener implements Runnable{
 	/**
 	 * the run method stay on listening of new connection from clients on the port used into the class constructor. When a new connection is opened a new Player is created
 	 * and then registered in the GameRegistry, specifiing his connection mode. a SocketInfoContainer is createrd as well and the player is finally associated with it into
-	 * the socketPlayerRegistry
+	 * the socketPlayerRegistry. A CONNEST message is sent as well.
 	 */
 	public void run(){
 		LOGGER.log(Level.INFO, "launching socketsentinel");
