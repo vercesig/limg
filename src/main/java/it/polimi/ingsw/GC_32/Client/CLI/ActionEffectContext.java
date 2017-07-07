@@ -223,9 +223,9 @@ public class ActionEffectContext extends Context{
 		
 		CONTEXTREPLYpayloadinfo.add("PLAYERID",client.getPlayerUUID());
 		CONTEXTREPLYpayloadinfo.add("ACTIONTYPE", actionType);
-		CONTEXTREPLYpayloadinfo.add("REGIONID", choosedSpaceID);
+		CONTEXTREPLYpayloadinfo.add("REGIONID", choosedRegionID);
 		CONTEXTREPLYpayloadinfo.add("COSTINDEX", indexCost);
-		CONTEXTREPLYpayloadinfo.add("SPACEID", choosedRegionID);
+		CONTEXTREPLYpayloadinfo.add("SPACEID", choosedSpaceID);
 		CONTEXTREPLYpayloadinfo.add("JSONPAYLOAD", payload);
 		CONTEXTREPLYpayloadinfo.add("BONUSACTIONVALUE", bonusActionValue);
 		if(bonusResource!=null)
@@ -233,6 +233,8 @@ public class ActionEffectContext extends Context{
 		CONTEXTREPLYpayloadinfo.add("NULLACTION", nullAction);
 		
 		CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
+		
+		System.out.println(CONTEXTREPLY.toString());
 		
 		return CONTEXTREPLY.toString();
 	}

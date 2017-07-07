@@ -17,8 +17,18 @@ public class ChangeEffectContext extends Context{
 		runFlag = true;
 		JsonObject JsonPayload = (JsonObject) object;
 		
-		JsonArray CHANGEcardName = JsonPayload.get("NAME").asArray();
-		JsonArray CHANGEresourcePayload = JsonPayload.get("RESOURCE").asArray();
+		JsonArray CHANGEcardName = new JsonArray();
+		JsonArray CHANGEresourcePayload = new JsonArray();
+		
+		if(JsonPayload.get("NAME").isArray())
+			CHANGEcardName = JsonPayload.get("NAME").asArray();
+		else
+			CHANGEcardName.add(JsonPayload.get("NAME"));
+		
+		if(JsonPayload.get("RESOURCE").isArray())
+			CHANGEresourcePayload = JsonPayload.get("RESOURCE").asArray();
+		else
+			CHANGEresourcePayload.add(JsonPayload.get("RESOURCE"));
 		
 		System.out.println("your PRODUCTION action has triggered some CHANGE effect:");
 		

@@ -43,25 +43,27 @@ public class ActionHandler{
         }
         if(!card.getInstantEffect().isEmpty()){
             card.getInstantEffect().forEach(effect -> {
-                effect.apply(board, player, action, contextManager); // only ACTION effect doesn't close the context
+                effect.apply(board, player, action, contextManager); // only ACTION effect doesn't close the context               
                 JsonValue effectAction = contextManager.waitForContextReply();
                 contextManager.setContextAck(true, player);
-                if(effectAction!=null&&!effectAction.asObject().get("NULLACTION").asBoolean()){
+                
+                if(effectAction!=null){
                     int index = game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(UUID.fromString(effectAction.asObject().get("PLAYERID").asString())));
                     int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
 
                     int regionID = effectAction.asObject().get("REGIONID").asInt();
                     int spaceID = effectAction.asObject().get("SPACEID").asInt();
                     String actionType = effectAction.asObject().get("ACTIONTYPE").asString();
-
-                    Action bonusAction = new Action(actionType,actionValue,regionID,spaceID);
+                    
+                    Action bonusAction = new Action(actionType,actionValue,spaceID,regionID);
                     bonusAction.setAdditionalInfo(new JsonObject());
                     bonusAction.getAdditionalInfo().add("BONUSFLAG", Json.value(true));                         
                     bonusAction.getAdditionalInfo().add("COSTINDEX", effectAction.asObject().get("COSTINDEX").asInt()); // Cost Index
-                    //action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());
-                    
+                    //action.getAdditionalInfo().add("CARDNAME", effectAction.asObject().get("CARDNAME").asString());                    
                     Player bonusPlayer = player;
-                    while(!game.getMoveChecker().checkMove(game, bonusPlayer, bonusAction, contextManager)){ // se l'azione non è valida                       
+                    
+                    while(!game.getMoveChecker().checkMove(game, bonusPlayer, bonusAction, contextManager)){ // se l'azione non è valida 
+                    	System.out.println("ritento");
                         MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, bonusPlayer, bonusAction, false));                                
                         effect.apply(board, player, action, contextManager);
                         effectAction = contextManager.waitForContextReply();

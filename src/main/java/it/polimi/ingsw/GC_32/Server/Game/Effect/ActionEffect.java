@@ -15,8 +15,6 @@ public class ActionEffect {
 	static EffectBuilder actionEffectBuilder = (JsonValue payload) -> {
 		
 		Effect actionEffect = (Board b, Player p, Action a, ContextManager cm) -> {
-			/*payload.asObject().add("ACTIONID", a.getRegionId());
-			payload.asObject().add("SPACEID", a.getActionSpaceId());*/
 			cm.openContext(ContextType.ACTION, p, a, (JsonObject) payload);
 		};
 		return actionEffect;

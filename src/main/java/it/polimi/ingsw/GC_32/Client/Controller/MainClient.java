@@ -213,7 +213,7 @@ public class MainClient{
  						cardListIterator.forEachRemaining(cards -> {
  							JsonArray cardListArray = cards.getValue().asArray();
  							if(!cardListArray.isNull())
- 								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString()));
+ 								cardListArray.forEach(card -> client.getPlayers().get(playerID).addCard(cards.getName(), card.asString())); // cards.getName is the type of the card
  						});
 						client.getPlayers().get(playerID).setPersonalBonusTile(messagePayload.get("BONUSTILE").asString());		
 						

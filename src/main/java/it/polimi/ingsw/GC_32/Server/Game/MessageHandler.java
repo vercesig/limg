@@ -38,7 +38,8 @@ public class MessageHandler{
         switch(message.getOpcode()){
             case "ASKACT":
                 LOGGER.log(Level.INFO, "processing ASKACT message from ", message.getPlayerID());
-                handleASKACT(message, jsonMessage);
+                if(!jsonMessage.asObject().getBoolean("NULLACTION",false)) // se l'azione bonus viene annulata non deve essere lanciato handleASKACT
+                	handleASKACT(message, jsonMessage);
                 break;
             case "ASKLDRACT":
                 handleASKLDRACT(message, jsonMessage);

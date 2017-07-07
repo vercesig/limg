@@ -183,7 +183,7 @@ public class AskActDialog extends Context{
 			
 		}
 		out.println("action sent to the server... waiting for response");		
-		return ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, spaceID, regionID, indexCost, cardName);
+		return ClientMessageFactory.buildASKACTmessage(actionType, familyMemberIndex, regionID, spaceID, indexCost, cardName);
 	}
 }
 

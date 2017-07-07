@@ -92,6 +92,7 @@ public class ContextManager{
 	public JsonValue waitForContextReply(){
 		GameMessage message = null;
 		if(isThereAnyOpenContext()){ // non attendere se non ci sono context aperti
+			System.out.println("sto attendendo... "+this.waitingContextResponse);
 			while(true){
 				try{
 					message = MessageManager.getInstance().getQueueForGame(game.getUUID()).take();
