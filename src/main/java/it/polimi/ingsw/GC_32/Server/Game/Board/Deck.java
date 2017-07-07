@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -70,11 +71,14 @@ public class Deck<T> {
 	}
 	
 	// pesca i primi numberOfElementsToDraw elementi dalla cima del mazzo
-	public List<T> drawManyElements(int numberOfElementsToDraw){
+	@SuppressWarnings("unchecked")
+    public List<T> drawManyElements(int numberOfElementsToDraw){
 		List<T> drewElements = new ArrayList<T>();
+		ArrayList<T> tmpList = (ArrayList<T>) deck.clone();
+		Collections.shuffle(tmpList);
 		for(int i=0; i<numberOfElementsToDraw; i++){
-			drewElements.add(deck.get(0));
-			deck.remove(0);
+			drewElements.add(tmpList.get(0));
+			tmpList.remove(0);
 		}
 		return drewElements;
 	}

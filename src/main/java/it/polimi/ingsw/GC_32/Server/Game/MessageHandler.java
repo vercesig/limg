@@ -53,21 +53,8 @@ public class MessageHandler{
     
     protected void handleASKACT(GameMessage message, JsonObject jsonMessage){
         int index = game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
-        int pawnID = jsonMessage.get("FAMILYMEMBER_ID").asInt();
-        int actionValue = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())
-                                                    .getFamilyMember()[pawnID].getActionValue();
-
-        int regionID = jsonMessage.get("REGIONID").asInt();
-        int spaceID = jsonMessage.get("SPACEID").asInt();
-        String actionType = jsonMessage.get("ACTIONTYPE").asString();
-
-        Action action = new Action(actionType,actionValue,regionID,spaceID);
-        action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
-        action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
-        action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
-        action.getAdditionalInfo().add("BONUSFLAG", Json.value(false));
-        
         Player player = game.getPlayerList().get(index);
+        Action action = parseASKACT(player.getUUID(), jsonMessage);
         memoryAction.put(player.getUUID(), action);
         
         LOGGER.info("INIZIO CHECK: ");
@@ -146,17 +133,17 @@ public class MessageHandler{
         
         if(turnManager.isGameEnd()){
             LOGGER.log(Level.INFO, "Game end");
-            EndPhase.endGame(game);
+            game.getEndPhaseHandler().endGame();
             return;
-        }   
-            
+        }
+   
         LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
         if(turnManager.isRoundEnd()){ // cambio round
             LOGGER.info("ROUND FINITO!");
             LOGGER.log(Level.INFO, "round end");
             if(turnManager.isPeriodEnd()){ //cambio periodo
                 LOGGER.info("PERIODO FINITO!");
-                this.turnManager.distributeVaticanReport();
+                turnManager.distributeVaticanReport();
             }       
             turnManager.setToUpdate(true);
         }   
@@ -166,7 +153,7 @@ public class MessageHandler{
             Thread.currentThread().interrupt();
         }
                 
-        if(turnManager.DoesPopeWantToSeeYou()){ 
+        if(turnManager.doesPopeWantToSeeYou()){ 
         	
         	LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
 			int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 	
@@ -183,12 +170,10 @@ public class MessageHandler{
 				boolean answer = excommMessage.get("ANSWER").asBoolean();
 				int playerIndex= game.getPlayerList().indexOf(excommPlayer); 
 				if(answer){ 
-					
 					//ATTIVAZIONE CARTA SCOMUNICA
 					LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
-					ExcommunicationCard card = game.getExcommunicationCard(this.turnManager.getPeriod()-1); // periodi sono shiftati di 1
-					LOGGER.info("Attivo effetto carta: " +card.getName());
-					System.out.println("Attivo effetto carta: " +card.getName());
+					ExcommunicationCard card = game.getExcommunicationCard(this.turnManager.getPeriod() - 1); // periodi sono shiftati di 1
+					LOGGER.log(Level.INFO, "Attivo effetto carta: %s", card.getName());
 					
 					if(!card.getInstantEffect().isEmpty()){
 						card.getInstantEffect().get(0).apply(game.getBoard(), excommPlayer, null, null);
@@ -207,10 +192,10 @@ public class MessageHandler{
 					int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");	
 					LOGGER.log(Level.INFO, "Punti Fede Giocatore: %d", faithScore);
 					
-					game.getPlayerList().get(playerIndex).getResources().addResource("FAITH_POINTS", -faithScore); //azzera punteggio player
+					game.getPlayerList().get(playerIndex).getResources().setResource("FAITH_POINTS", 0); //azzera punteggio player
 					int victoryPointsConverted = 0;
 					
-					if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore)!=null){
+					if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore) != null){
 						victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
 					}
 					else
@@ -226,7 +211,7 @@ public class MessageHandler{
 			});	
         }
         
-        if(turnManager.isToUpdate() && !turnManager.DoesPopeWantToSeeYou()){
+        if(turnManager.isToUpdate() && !turnManager.doesPopeWantToSeeYou()){
             
             // reset board
             board.flushBoard();
@@ -254,5 +239,22 @@ public class MessageHandler{
         game.setLock(nextPlayer);
         LOGGER.log(Level.INFO, "player %s has the lock", game.getLock());
         MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(game, game.getLock()));
+    }
+    
+    public Action parseASKACT(UUID playerID, JsonObject jsonMessage){
+        int pawnID = jsonMessage.get("FAMILYMEMBER_ID").asInt();
+        int actionValue = GameRegistry.getInstance().getPlayerFromID(playerID)
+                                                    .getFamilyMember()[pawnID].getActionValue();
+
+        int regionID = jsonMessage.get("REGIONID").asInt();
+        int spaceID = jsonMessage.get("SPACEID").asInt();
+        String actionType = jsonMessage.get("ACTIONTYPE").asString();
+
+        Action action = new Action(actionType,actionValue, spaceID, regionID);
+        action.setAdditionalInfo(new JsonObject().add("FAMILYMEMBER_ID", jsonMessage.get("FAMILYMEMBER_ID").asInt()));
+        action.getAdditionalInfo().add("COSTINDEX", jsonMessage.get("COSTINDEX").asInt()); // Cost Index
+        action.getAdditionalInfo().add("CARDNAME", jsonMessage.get("CARDNAME").asString());
+        action.getAdditionalInfo().add("BONUSFLAG", Json.value(false));
+        return action;
     }
 }

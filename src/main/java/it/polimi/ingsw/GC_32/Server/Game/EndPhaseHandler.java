@@ -12,9 +12,12 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
-public class EndPhase {
-
-	public EndPhase(){}
+public class EndPhaseHandler{
+    private Game game;
+    
+	public EndPhaseHandler(Game game){
+	    this.game = game;
+	}
 	
 	public static int countBuildingCost(ResourceSet cost){
 		int wood = 0;
@@ -28,8 +31,7 @@ public class EndPhase {
 		return wood + stone;
 	}
 	
-	public static void endGame(Game game){
-		
+	public void endGame(){
 			HashMap <String, JsonValue> json = GameConfig.getInstance().getPointsConversion();
 			JsonObject finalScore = new JsonObject();
 			int firstMilitary = json.get("FIRSTMILITARY").asInt();

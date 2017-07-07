@@ -30,7 +30,7 @@ public class CardRegistry {
 		this.developmentCardDecks.put(deckType, deck);
 	}
 	
-	public void registerDeck(Deck <LeaderCard> deck){
+	public void registerDeck(Deck<LeaderCard> deck){
 		this.leaderDeck = deck;
 	}
 	
