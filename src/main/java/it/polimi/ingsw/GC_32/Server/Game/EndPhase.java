@@ -51,6 +51,14 @@ public class EndPhase {
 			for(int i=0; i < militaryScore.size()-2; i++){
 				militaryScore.removeLast(); // ipotizzando che il sort abbia ordinato in modo crescente.
 			}
+			
+			game.getPlayerList().forEach(player -> { // aggiungo i faith points dei player (solo quelli che non hanno mostrato 
+													 // la propria fede al papa hanno faithPoints diversi da 0)
+				int faithPoints = player.getResources().getResource("FAITH_POINTS");
+				player.getResources().addResource("VICTORY_POINTS", faithPoints);
+				player.getResources().setResource("FAITH_POINTS", 0);
+			});
+			
 			game.getPlayerList().forEach( player -> {
 				
 				// carte impresa

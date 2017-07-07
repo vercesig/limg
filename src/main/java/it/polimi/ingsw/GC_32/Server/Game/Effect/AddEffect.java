@@ -47,6 +47,7 @@ public class AddEffect {
 						});
 					}
 				}
+			System.out.println(resourceSet.toString());
 			p.getResources().addResource(resourceSet);
 			
 			//Santa Rita

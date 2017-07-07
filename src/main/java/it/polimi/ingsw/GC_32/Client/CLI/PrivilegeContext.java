@@ -63,7 +63,7 @@ public class PrivilegeContext extends Context{
 				return CONTEXTREPLY.toString();
 			}		
 			try{
-				switch(Integer.parseInt(command)){
+				/*switch(Integer.parseInt(command)){
 				case 0:
 					CONTEXTREPLYpayloadinfo.add(values[0]);
 					break;
@@ -82,21 +82,28 @@ public class PrivilegeContext extends Context{
 				default:
 					System.out.println("type a valid number");
 					break;
+				}*/
+				if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=4){
+					if(!choosedResources.contains(command)){
+						CONTEXTREPLYpayloadinfo.add(values[Integer.parseInt(command)]);
+						numberOfPrivilege--;
+						choosedResources.add(command);
+						out.println(numberOfPrivilege+" elapsed");
+					}
+					else{
+						out.println("you can't choose the same resource two times, please enter"
+								+ " a different choise");
+					}
 				}
+				else{
+					out.println("type a valid command");
+				}
+				if(numberOfPrivilege==0)
+					close();
 			}catch(NumberFormatException e){
 				out.println("type a valid number");
 			}
-			if(!choosedResources.contains(command)){
-				numberOfPrivilege--;
-				choosedResources.add(command);
-				out.println(numberOfPrivilege+" elapsed");
-			}
-			else{
-				out.println("you can't choose the same resource two times, please enter"
-						+ " a different choise");
-			}
-			if(numberOfPrivilege==0)
-				close();
+			
 		}
 		return CONTEXTREPLY.toString();
 	}	

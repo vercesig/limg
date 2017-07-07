@@ -46,7 +46,7 @@ public class ActionHandler{
                 effect.apply(board, player, action, contextManager); // only ACTION effect doesn't close the context
                 JsonValue effectAction = contextManager.waitForContextReply();
                 contextManager.setContextAck(true, player);
-                if(!(effectAction==null)){
+                if(effectAction!=null&&!effectAction.asObject().get("NULLACTION").asBoolean()){
                     int index = game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(UUID.fromString(effectAction.asObject().get("PLAYERID").asString())));
                     int actionValue = effectAction.asObject().get("BONUSACTIONVALUE").asInt();
 
@@ -137,7 +137,7 @@ public class ActionHandler{
     }
     
     public void handleHarvest(Player player, Action action){
-        player.getResources().addResource(player.getPersonalBonusTile().getPersonalProductionBonus()); 
+        player.getResources().addResource(player.getPersonalBonusTile().getPersonalHarvestBonus()); 
         contextManager.openContext(ContextType.SERVANT, player, action, null);
         
         JsonValue SERVANTHarvestresponse = contextManager.waitForContextReply();
