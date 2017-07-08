@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
@@ -29,14 +30,16 @@ public class GameRegistry {
 	private ConcurrentHashMap<UUID, ConnectionType> playerConnectionMode;
 	private ConcurrentHashMap<UUID, Player> playerTranslationTable;
 	private ConcurrentHashMap<UUID, Game> gameRegistry;
+	private ConcurrentLinkedQueue<Player> newPlayers;
 	
 	/**
-	 * inizilize the GameRegistry
+	 * initialize the GameRegistry
 	 */
 	private GameRegistry(){
 		playerConnectionMode = new ConcurrentHashMap<>();
 		playerTranslationTable = new ConcurrentHashMap<>();
 		gameRegistry = new ConcurrentHashMap<>();
+		newPlayers = new ConcurrentLinkedQueue<Player>();
 	}
 	
 	/**
@@ -59,6 +62,7 @@ public class GameRegistry {
 	public void registerPlayer(Player player, ConnectionType connectionMode){
 		this.playerConnectionMode.put(player.getUUID(), connectionMode);
 		this.playerTranslationTable.put(player.getUUID(), player);
+		this.newPlayers.offer(player);
 	}
 	
 	/**
@@ -122,13 +126,34 @@ public class GameRegistry {
 	 * return the list of player that are not connected to a game
 	 * @return a player list containing players who are not connected to a game
 	 */
-	public List<Player> getPlayerNotInGame(){
-	    ArrayList<Player> playerList = new ArrayList<>();
-	    playerTranslationTable.forEach( (uuid, player) -> {
-	       if(player.getGameID() == null){
-	           playerList.add(player);
-	       }
-	    });
-	    return playerList;
+	public List<Player> getPlayersNotInGame(){
+	    ArrayList<Player> tmpList = new ArrayList<>();
+	    tmpList.addAll(this.newPlayers);
+	    return tmpList;
 	}
+	
+	/**
+	 * Tells how many players are not in a game
+	 */
+	public int queuedPlayersCount(){
+	    return this.newPlayers.size();
+	}
+	
+	/**
+	 * Returns at most maxPlayers that are not in a game
+	 * @param maxPlayers maximum number of players to return
+	 * @return
+	 */
+    public List<Player> getNewPlayers(int maxPlayers) {
+        ArrayList<Player> tmpList = new ArrayList<>();
+        for(int i = 0; i < maxPlayers; i++){
+            Player player = this.newPlayers.poll();
+            if(player != null){
+                tmpList.add(player);
+            } else {
+                break;
+            }
+        }
+        return tmpList;
+    }
 }
