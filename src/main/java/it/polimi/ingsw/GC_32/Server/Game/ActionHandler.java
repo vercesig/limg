@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
@@ -105,7 +106,7 @@ public class ActionHandler{
         JsonValue SERVANTProductionresponse = contextManager.waitForContextReply();
         contextManager.setContextAck(true, player);
         action.setActionValue(action.getActionValue() +
-                              SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
+                              SERVANTProductionresponse.asObject().get("CHOSEN_SERVANTS").asInt());
         
         JsonArray CHANGEcontextPayload = new JsonArray();
         JsonArray CHANGEnameCardArray = new JsonArray();
@@ -216,15 +217,16 @@ public class ActionHandler{
      * @param effect the effect which has triggered the bonus action
      * @param effectAction a JsonValue used to handle the context response
      */
-    public void handleActionEffect(Player player, Action action, Effect effect, JsonValue effectAction){
+    public void handleActionEffect(Player player, Action action, Effect effect, JsonValue jEffect){
         contextManager.setContextAck(true, player);
-        Action bonusAction = game.getMessageHandler().parseASKACT(player.getUUID(), effectAction.asObject());                       
+        JsonObject effectAction = jEffect.asObject();
+        Action bonusAction = game.getMessageHandler().parseASKACT(player.getUUID(), effectAction);                       
         Player bonusPlayer = player;
         
         while(!game.getMoveChecker().checkMove(game, bonusPlayer, bonusAction, contextManager)){ // se l'azione non è valida 
             MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, bonusPlayer, bonusAction, false));                                
             effect.apply(board, player, action, contextManager);
-            effectAction = contextManager.waitForContextReply();
+            effectAction = contextManager.waitForContextReply().asObject();
             contextManager.setContextAck(true, player);                             
             if(effectAction != null){
                 bonusAction = game.getMessageHandler().parseASKACT(player.getUUID(), effectAction.asObject());

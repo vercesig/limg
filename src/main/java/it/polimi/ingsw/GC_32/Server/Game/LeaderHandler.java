@@ -19,7 +19,7 @@ public class LeaderHandler {
 	int turnId;
 	boolean running;
 	
-	ArrayList <List<LeaderCard>> collection;
+	ArrayList <List<LeaderCard>> cardCollection;
 	List<LeaderCard> listOne;
 	List<LeaderCard> listTwo;
 	List<LeaderCard> listThree;
@@ -28,50 +28,40 @@ public class LeaderHandler {
 	public LeaderHandler(Game game){
 		
 		this.game = game;
-		this.collection = new ArrayList<List<LeaderCard>>();
+		this.cardCollection = new ArrayList<List<LeaderCard>>();
 
 		Deck<LeaderCard> deck = CardRegistry.getInstance().getLeaderDeck();
 		deck.shuffleDeck();
 		
+		int drawMultiplier;
 		switch(game.getPlayerList().size()){
-		case 3:
-			listOne = deck.drawManyElements(4);
-			listTwo = deck.drawManyElements(4);
-			listThree = deck.drawManyElements(4);
-			collection.add(listOne);
-			collection.add(listTwo);
-			collection.add(listThree);
-			break;
-		case 4:
-			listOne = deck.drawManyElements(4);
-			listTwo = deck.drawManyElements(4);
-			listThree = deck.drawManyElements(4);
-			listFour = deck.drawManyElements(4);
-			collection.add(listOne);
-			collection.add(listTwo);
-			collection.add(listThree);
-			collection.add(listFour);
-			break;
-		default:
-			listOne = deck.drawManyElements(4);
-			listTwo = deck.drawManyElements(4);
-			collection.add(listOne);
-			collection.add(listTwo);
+    		case 3:
+    		    drawMultiplier = 3;
+    			break;
+    		case 4:
+    		    drawMultiplier = 4;
+    			break;
+    		default:
+    		    drawMultiplier = 2;
+		}
+		List<LeaderCard> tmpDeck = deck.drawManyElements(4*drawMultiplier);
+		for(int i = 0; i < drawMultiplier; i++){
+		    cardCollection.add(tmpDeck.subList(0, 4));
 		}
 		running = true;
 		turnId = 0;
 	}
 	
-	public List <LeaderCard> getList(Player player){	
+	public List<LeaderCard> getList(Player player){	
 		List<LeaderCard> list;
 		if(getIndex(player) - turnId < 0){
 			if ((game.getPlayerList().size() +(getIndex(player) - turnId))<0){ //modulo! // a partire da turno 3
-				list = collection.get(-(game.getPlayerList().size() +(getIndex(player) - turnId)));
+				list = cardCollection.get(-(game.getPlayerList().size() +(getIndex(player) - turnId)));
 			} else {
-				list = collection.get(game.getPlayerList().size() +(getIndex(player) - turnId)); // prendo lista 4 per player 1;
+				list = cardCollection.get(game.getPlayerList().size() +(getIndex(player) - turnId)); // prendo lista 4 per player 1;
 			}
 		} else { 
-			list = collection.get(getIndex(player) - turnId ); // esemp
+			list = cardCollection.get(getIndex(player) - turnId ); // esemp
 		}
 		return list;
 	}
@@ -79,13 +69,13 @@ public class LeaderHandler {
 	public void setList(Player player, List <LeaderCard> list){
 		if(getIndex(player) - turnId < 0){
 			if ((game.getPlayerList().size() +(getIndex(player) - turnId))<0){ //modulo! // a partire da turno 3
-				collection.set(-(game.getPlayerList().size() +(getIndex(player) - turnId)),list);
+				cardCollection.set(-(game.getPlayerList().size() +(getIndex(player) - turnId)),list);
 			}
 			else
-				collection.set(game.getPlayerList().size() +(getIndex(player) - turnId), list); // prendo lista 4 per player 1;
+				cardCollection.set(game.getPlayerList().size() +(getIndex(player) - turnId), list); // prendo lista 4 per player 1;
 		}
 		else 
-			collection.set(getIndex(player) - turnId, list); // esemp
+			cardCollection.set(getIndex(player) - turnId, list); // esemp
 	}
 	
 	public void setList(Player player, JsonArray json){
@@ -112,11 +102,7 @@ public class LeaderHandler {
 	}
 	
 	public int getIndex(Player player){
-		for (int i=0; i < game.getPlayerList().size(); i++){
-			if(player.getUUID().equals(game.getPlayerList().get(i).getUUID())){
-				return i;
-			}
-		}return 0;
+	    return game.getPlayerList().indexOf(player);
 	}
 	
 	public void addTurn(){

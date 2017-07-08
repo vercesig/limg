@@ -15,7 +15,6 @@ import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
-import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
 import it.polimi.ingsw.GC_32.Server.Game.Card.LeaderCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;

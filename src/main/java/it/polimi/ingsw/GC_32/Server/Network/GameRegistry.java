@@ -115,7 +115,7 @@ public class GameRegistry {
 	 * @return the set of player UUID associated with the given game
 	 */
 	public HashSet<UUID> getPlayerFromGameID(UUID gameID){
-		HashSet<UUID> tmp = new HashSet<UUID>();
+		HashSet<UUID> tmp = new HashSet<>();
 		gameRegistry.get(gameID)
 		  			.getPlayerList()
 		  			.iterator().forEachRemaining(player -> tmp.add(player.getUUID()));
