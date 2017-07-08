@@ -9,6 +9,14 @@ import it.polimi.ingsw.GC_32.Server.Network.RMIListener;
 import it.polimi.ingsw.GC_32.Server.Network.SocketListener;
 import it.polimi.ingsw.GC_32.Server.Setup.Setup;
 
+/**
+ * the main method of the program. Calling the main method of the Main class will start server to execute. In particular Main class perform the Setup phase, import the
+ * information from all the configuration file (load the card, the bonus tiles, the bonus relative to all the action spaces of the board, the conversion rule used 
+ * for compute the final score and the bonus given by the faith track). After this main inizilize networks thread, both socket and RMI thread. 
+ * When network is up, main launch GameLobby thread which will be ready to instantiate new games.
+ *
+ */
+
 public class Main {
 	
 	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());

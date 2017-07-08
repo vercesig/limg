@@ -15,11 +15,22 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 
+/**
+ * this class contains utilities used during the check to check the validity of the action
+ *
+ */
 public class MoveUtils {
     private static Logger LOGGER = Logger.getLogger(MoveUtils.class.toString());
     
 	private MoveUtils(){}
 	
+	/**
+	 * check if the region ID contained into the action is a valid region ID
+	 * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
+	 */
 	static public boolean checkValidRegionID(Board board, Player player, Action action){	
 		if(board.getRegion(action.getRegionId()) == null){		
 			return false;
@@ -27,6 +38,13 @@ public class MoveUtils {
 		return true;
 	}
 
+	/**
+	 * check if the action space ID contained into the action is a valid action space ID
+	 * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
+	 */
 	static public boolean checkValidActionSpaceID(Board board, Player player, Action action){
 		if(board.getRegion(action.getRegionId())
 				.getActionSpace(action.getActionSpaceId()) == null){
@@ -35,12 +53,11 @@ public class MoveUtils {
 		return true;
 	}
 
-    /** checks if the action value is greater than or equal
-     * to the actionspace value
-     * @param board
-     * @param player
-     * @param action
-     * @return
+    /** checks if the action value is greater than or equal to the actionspace value
+	 * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
      */
     static public boolean checkActionValue(Board board, Action action){
     	return (board.getRegion(action.getRegionId())
@@ -49,7 +66,10 @@ public class MoveUtils {
     }
  
     /** checks if the region is already occupied by a familiar of the same color
-     * @return false if the region has a same-color familiar, false otherwise
+     * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return false if the region has a same-color familiar, false otherwise
      */
     public static boolean familyColor(Board board, Player player, Action action){
     	if(action.getRegionId() == 2 || action.getRegionId() == 3){
@@ -68,11 +88,11 @@ public class MoveUtils {
       	return true;
     }
 
-    /** Checks if the actionspace is free
-     * @param board
-     * @param player
-     * @param action
-     * @return
+    /** checks if the actionspace is free
+	 * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
      */
     public static boolean isFreeSingleSpace(Board board, Player player, Action action){
     	if(player.isFlagged("FAMILYOCCUPY")){
@@ -82,8 +102,9 @@ public class MoveUtils {
     			 board.getRegion(action.getRegionId()).getActionSpace(action.getActionSpaceId()).isBusy());
     }
     
-    /** CheckBlockedSpace: checks player count and the presence of additional
-     *  production/harvest/market spaces
+    /** checks player count and the presence of additional production/harvest/market spaces
+	 * @param numberofPlayers the number of players registered to the game
+	 * @param action the action performed by the player
      * @return true if the action is on a blocked area, false otherwise
      */
     public static boolean checkBlockedZone(int numberOfPlayer, Action action){	
@@ -107,8 +128,9 @@ public class MoveUtils {
 
     /**
      * Checks that the actionspace actually has a card
-     * @return false if the actionspace should have a card and doesn't,
-     * true otherwise
+     * @param board the board of the game
+	 * @param action the action performed by the player
+     * @return false if the actionspace should have a card and doesn't, true otherwise
      */
     public static boolean checkNotFoundCard(Board board, Action action){
     	if(action.getRegionId() < 4){
@@ -120,9 +142,11 @@ public class MoveUtils {
     }
 
     /** checks if the player has enough servants to meet the actionspace requirements
+     * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
      * @return true if the player has enough servants, false otherwise
      */
-    //TODO: maybe split this
     public static boolean checkServants(Board board, Player player, Action action){ // change the state
     	if(checkActionValue(board, action)){
     		return true;
@@ -142,6 +166,10 @@ public class MoveUtils {
     }
     
     /** checks if the tower is already occupied and if so, if the player can pay the 3 coin tribute
+     * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
      */
     public static boolean checkCoinForTribute(Board board, Player player, Action action){  // change the state
     	if(action.getRegionId() < 4 || 										   	//Not a tower action
@@ -154,6 +182,10 @@ public class MoveUtils {
     }
     
     /** checks if the card can be inserted into the personalBoard
+     * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
+	 * @return true if the check is passed
      */
     public static boolean checkPersonalBoardRequirement(Board board, Player player, Action action){
     	DevelopmentCard card =((TowerRegion) board.getRegion(action.getRegionId()))
@@ -187,6 +219,9 @@ public class MoveUtils {
     }
     
     /** Checks if the player can buy the card
+     * @param board the board of the game
+	 * @param player the player who has performed the action
+	 * @param action the action performed by the player
      * @return true if the card can be bought, false if not
      */
     public static boolean checkCardCost(Board board, Player player, Action action){
@@ -235,18 +270,40 @@ public class MoveUtils {
 		return false;
     }
     
+    /**
+     * apply the effect contained in the effect list of the player
+     * @param board the board of the game
+     * @param player the player who has performed the action
+     * @param action the action performed by the player
+     * @param cm instance of the context manager, maybe effects can open contexts
+     */
     public static void applyEffects(Board board, Player player, Action action, ContextManager cm){
     	for(Effect buff : player.getEffectList()){
 			buff.apply(board, player, action, cm);
     	}
 	}
 	
+    /**
+     * apply the effect contained in the effect list of the player, in the simultation of the move
+     * @param board the board of the game
+     * @param playerCopy the copy of the player who has performed the action
+     * @param player the player who has performed the action
+     * @param action the action performed by the player
+     * @param cm instance of the context manager, maybe effects can open contexts
+     */
 	public static void cloneApplyEffects(Board board, Player playerCopy, Player player, Action action, ContextManager cm){
 		for(Effect buff : player.getEffectList()){
 			buff.apply(board, playerCopy, action, cm);
 		}
 	}
 	
+	/**
+	 * add the bonus contained into the action space to the resources of the player. If the player is flagged by a LESSRESOURCE excommunication effect, the effect its
+	 * applied for every ind of resource taken
+     * @param board the board of the game
+     * @param player the player who has performed the action
+     * @param action the action performed by the player
+	 */
 	public static void addActionSpaceBonus(Board board, Player player, Action action){
 		ResourceSet bonus = board.getRegion(action.getRegionId())
 				  				 .getActionSpace(action.getActionSpaceId())

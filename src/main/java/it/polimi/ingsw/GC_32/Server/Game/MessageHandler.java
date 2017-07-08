@@ -22,6 +22,20 @@ import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
+/**
+ * class responsable of handling all the messages received, when Game recive a new message it is passed to one of the MessageHandler methods which will manage the 
+ * processing of the message
+ * 
+ * <ul>
+ * <li>{@link #game}: the game handled by this instance of MessageHandler</li>
+ * <li>{@link #board}: the board of the game</li>
+ * <li>{@link #turnManager}: the turn manager of the game, required by the processing of TRNEND messages</li>
+ * <li>{@link #memoryAction}: HashMap which can be used to memorize the status of an action</li>
+ * </ul>
+ *
+ * @See TurnManager, Game, Board, Action
+ */
+
 public class MessageHandler{
     private static Logger LOGGER = Logger.getLogger(MessageHandler.class.toString());
     private Game game;
@@ -29,6 +43,10 @@ public class MessageHandler{
     private Board board;
     private HashMap<UUID, Action> memoryAction;
     
+    /**
+     * setup the MessageHandler, initializing the memory structures and assigning the game to handle
+     * @param game the game to handle
+     */
     public MessageHandler(Game game){
         this.game = game;
         this.turnManager = game.getTurnManager();
@@ -36,6 +54,10 @@ public class MessageHandler{
         this.memoryAction = new HashMap<>();
     }
 
+    /**
+     * given a message, based on its opcode, call the correct routine to process that message
+     * @param message the message to process
+     */
     public void handleMessage(GameMessage message){
         JsonObject jsonMessage = message.getMessage().asObject();
         switch(message.getOpcode()){
@@ -55,6 +77,12 @@ public class MessageHandler{
         }
     }
     
+    /**
+     * process ASKACT messages, building the action from the message and then passing it to the moveChecker, if the action is valid it is finally applied to the real 
+     * state of the game
+     * @param message the message containing the ASKACT payload, is taken directly from the MessageManager
+     * @param jsonMessage the JsonObject containing the ASKACT message
+     */
     protected void handleASKACT(GameMessage message, JsonObject jsonMessage){
         int index = game.getPlayerList().indexOf(GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID())); 
         Player player = game.getPlayerList().get(index);
@@ -81,7 +109,12 @@ public class MessageHandler{
             MessageManager.getInstance().sendMessge(ServerMessageFactory.buildACTCHKmessage(game, player, action, false));
         }
     }
-        
+    
+    /**
+     * process ASKLDRACT messages, appling the correct logic based on the choose of the client
+     * @param message the message containing the ASKLDRACT payload, is taken directly from the MessageManager
+     * @param jsonMessage the JsonObject containing the ASKLDRACT message
+     */
     protected void handleASKLDRACT(GameMessage message, JsonObject jsonMessage){
         String cardName = jsonMessage.get("LEADERCARD").asString();
         String decision = jsonMessage.get("DECISION").asString();
@@ -118,6 +151,14 @@ public class MessageHandler{
                                   .buildASKLDRACKmessage(game, p, cardName, decision, result));      
     }
     
+    
+    /**
+     * process TRNEND messages, calling the correct routines of the TurnManager instance. Turn manager will pass the lock to the next player in the turn order queue
+     * and if the condtions are satisfied the escommunication phase is handled. When the game is end, the reception of a TRNEND messag trigger the activation of
+     * the EndPhaseHandler routine to compute the final score
+     * @param message the message containing the TRNEND payload, is taken directly from the MessageManager
+     * @param jsonMessage the JsonObject containing the TRNEND message
+     */
     protected void handleTRNEND(GameMessage message){
         MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(game, board));
         MessageManager.getInstance().sendMessge(ServerMessageFactory
@@ -136,20 +177,12 @@ public class MessageHandler{
         }
         
         memoryAction.remove(game.getLock());
-        
-        LOGGER.info("ricevo turn end [GAME]");
-        LOGGER.log(Level.INFO, "ROUND ID: %s", turnManager.getRoundID());
-        LOGGER.log(Level.INFO, "PERIOD ID: %s", turnManager.getPeriod());
-        LOGGER.log(Level.INFO, "TURN ID: %s", turnManager.getTurnID());
-        
+                
         System.out.println("ROUND ID :"+ turnManager.getRoundID());
         System.out.println("period ID :"+ turnManager.getPeriod());
         System.out.println("turn ID :"+ turnManager.getTurnID());
         
-        LOGGER.log(Level.INFO, message.getPlayerID()+" has terminated his turn");
         if(turnManager.isRoundEnd()){ // cambio round
-            LOGGER.info("ROUND FINITO!");
-            LOGGER.log(Level.INFO, "round end");
             if(turnManager.isPeriodEnd()){ //cambio periodo
                 LOGGER.info("PERIODO FINITO!");
                 turnManager.distributeVaticanReport();
@@ -161,7 +194,6 @@ public class MessageHandler{
                 
         if(turnManager.doesPopeWantToSeeYou()){ 
         	
-        	LOGGER.log(Level.INFO, "period "+(turnManager.getPeriod()-1) + " finished");
 			int excommunicationLevel = 3 + turnManager.getPeriod()-2; //calcolo punti fede richiesti 	
         	
         	game.getPlayerList().forEach(excommPlayer -> {
@@ -177,33 +209,20 @@ public class MessageHandler{
 				int playerIndex= game.getPlayerList().indexOf(excommPlayer); 
 				if(answer){ 
 					//ATTIVAZIONE CARTA SCOMUNICA
-					LOGGER.info("FIGLIOLO...IL PAPA TI HA SCOMUNICATO, MI SPIACE");
 					ExcommunicationCard card = game.getExcommunicationCard(this.turnManager.getPeriod() - 1); // periodi sono shiftati di 1
-					LOGGER.log(Level.INFO, "Attivo effetto carta: %s", card.getName());
 					
 					if(!card.getInstantEffect().isEmpty()){
 						card.getInstantEffect().get(0).apply(game.getBoard(), excommPlayer, null, null);
 					}
-					else 
-						LOGGER.info("Non ha effetti instantanei!");
 					
 					if(!card.getPermanentEffect().isEmpty()){
 						excommPlayer.addEffect(card.getPermanentEffect().get(0));
-						System.out.println("------------------------- aggiunto effetto scomunica al player");
-					}
-					else{
-						System.out.println("no effetti permanenti");
-						LOGGER.info("Non ha effetti permanenti!");
-					}
-				}	
+						}
+				}
 				else{
-					LOGGER.info("Sostegno alla Chiesa!");
-					int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");	
-					LOGGER.log(Level.INFO, "Punti Fede Giocatore: %d", faithScore);
-					
+					int faithScore = game.getPlayerList().get(playerIndex).getResources().getResource("FAITH_POINTS");						
 					game.getPlayerList().get(playerIndex).getResources().setResource("FAITH_POINTS", 0); //azzera punteggio player
-					int victoryPointsConverted = 0;
-					
+					int victoryPointsConverted = 0;					
 					if(GameConfig.getInstance().getExcommunicationTrack().get(faithScore) != null){
 						victoryPointsConverted += GameConfig.getInstance().getExcommunicationTrack().get(faithScore);
 					}
@@ -213,7 +232,6 @@ public class MessageHandler{
 					if(game.getPlayerList().get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
 						victoryPointsConverted += 5;
 					}
-					LOGGER.log(Level.INFO, "Punti Vittoria convertiti Giocatore: %d", victoryPointsConverted);
 					game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 				}
 				turnManager.goodbyePope();
@@ -260,6 +278,12 @@ public class MessageHandler{
         MessageManager.getInstance().sendMessge(ServerMessageFactory.buildTRNBGNmessage(game, game.getLock()));
     }
     
+        /**
+         * given an ASKACT message this routine perform the parsing to build the action from the JSON message recived
+         * @param playerID the player who has sent the ASKACT message
+         * @param jsonMessage JsonObject containing the ASKACT message information
+         * @return the action build from the ASKACT message passed as argument
+         */
     public Action parseASKACT(UUID playerID, JsonObject jsonMessage){
         JsonValue pawnID = jsonMessage.get("FAMILYMEMBER_ID");
         int actionValue;

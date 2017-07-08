@@ -9,6 +9,21 @@ import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
 import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 
+/**
+ * thread responsable of starting new games when the maximum number of players has been achieved or the start game timeout is finished
+ *
+ *<ul>
+ *<li>{@link #game}: the game which must be registered into the GameRegistry and then started</li>
+ *<li>{@link GameLobby#MAX_PLAYERS}: the maximum number of game players</li>
+ *<li>{@link #MIN_PLAYERS}: the minimum number of game players</li>
+ *<li>{@link #startGameTimeout}: the timeout beyond which the game is started, indipendently on the number of players connected (the minimum number of players 
+ * must have been achieved)</li>
+ *<li>{@link #stop}: used to stop this thread</li>
+ *</ul>
+ *
+ * @see Game
+ */
+
 public class GameLobby implements KillableRunnable{
 	
 	private final static Logger LOGGER = Logger.getLogger(GameLobby.class.getName());
@@ -19,10 +34,17 @@ public class GameLobby implements KillableRunnable{
 	private Game game;
 	private boolean stop;
 	
+	/**
+	 * initialize the GameLobby
+	 * @throws IOException
+	 */
 	public GameLobby() throws IOException{
 	    this.stop = false;
 	}
 
+	/**
+	 * run method wait for new players that are just connected and then start a new game when the right condition are satisfied.
+	 */
     @Override
     public void run() {
         LOGGER.log(Level.INFO, "GameLobby start, waiting for players");
@@ -48,11 +70,17 @@ public class GameLobby implements KillableRunnable{
         }
     }
 
+    /**
+     * stop this thread
+     */
     @Override
     public void kill() {
         stop = true;
     }
     
+    /**
+     * create a new game, associating to it a UUID and registering it into the GameRegistry. finally the new Game thread is launched and the match can start
+     */
     public void startGame(){
         UUID newGameId = UUID.randomUUID();
         game = new Game(GameRegistry.getInstance().getNewPlayers(MAX_PLAYERS), newGameId);
