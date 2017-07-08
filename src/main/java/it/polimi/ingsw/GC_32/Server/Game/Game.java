@@ -3,6 +3,7 @@ package it.polimi.ingsw.GC_32.Server.Game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -13,6 +14,7 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
+import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Deck;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
@@ -55,7 +57,7 @@ public class Game implements Runnable{
 	
 	private boolean runGameFlag = true;
 	
-	public Game(ArrayList<Player> players, UUID uuid){
+	public Game(List<Player> players, UUID uuid){
 		this.gameUUID = uuid;
 		this.mv = new MoveChecker();
 		this.cm = new ContextManager(this);
@@ -64,7 +66,8 @@ public class Game implements Runnable{
 		contextInfoContainer = new HashMap<String, JsonValue>();
 		
 		LOGGER.log(Level.INFO, "setting up game...");
-		this.playerList = players;
+		this.playerList = new ArrayList<Player>();
+		this.playerList.addAll(players);
 		this.board = new Board();
 		board.blockZone(playerList.size());
 		this.turnManager = new TurnManager(this);
@@ -131,11 +134,7 @@ public class Game implements Runnable{
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-		    Thread.currentThread().interrupt();
-		}
+		Utils.safeSleep(200);
 		
 	////-------------------------LEADER DISTRIBUTION ----------------////////
 			LOGGER.log(Level.INFO, "giving lock to the first player...");

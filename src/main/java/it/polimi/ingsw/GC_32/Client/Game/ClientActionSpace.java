@@ -64,7 +64,7 @@ public class ClientActionSpace {
 		infoContainer[3] = single.toString();
 		infoContainer[4] = blocked.toString();
 		if(bonus!=null){		
-			// soluzione orrenda per mettere una rapida pezza al toString ClientBoard
+			
 			HashMap<String,String> tmp = bonus.getDecomposedResourceSetString();
 			StringBuilder tmpStringBuilder = new StringBuilder();
 			for(Entry<String,String> entry : tmp.entrySet()){

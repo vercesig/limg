@@ -32,9 +32,6 @@ public class LeaderHandler {
 
 		Deck<LeaderCard> deck = CardRegistry.getInstance().getLeaderDeck();
 		deck.shuffleDeck();
-		System.out.println(deck.toString());
-		System.out.println(game.getPlayerList().size());
-
 		
 		switch(game.getPlayerList().size()){
 		case 3:
@@ -93,11 +90,7 @@ public class LeaderHandler {
 	
 	public void setList(Player player, JsonArray json){
 		
-		List <LeaderCard> list = getList(player);
-		System.out.println("PRIMA DEL SET");
-		System.out.println("JSON ARRAY:" + json);
-		System.out.println("LISTA:" + list);
-		
+		List <LeaderCard> list = getList(player);	
 		List <LeaderCard> newlist = new ArrayList<LeaderCard>();
 		
 		for(LeaderCard ld : list){
@@ -106,16 +99,11 @@ public class LeaderHandler {
 					newlist.add(ld);
 				}
 			}
-		}
-		System.out.println("DOPO DEL SET");
-		System.out.println("JSON ARRAY:" + json);
-		System.out.println("LISTA:" + newlist);
-		
+		}	
 		//aggiungo la carta al player
 		list.forEach(leaderCard ->{
 			if(!newlist.contains(leaderCard)){
 				player.getPersonalBoard().addCardLeader(leaderCard);
-				System.out.println("AGGIUNGO: " + leaderCard.getName());
 			}
 		});
 		

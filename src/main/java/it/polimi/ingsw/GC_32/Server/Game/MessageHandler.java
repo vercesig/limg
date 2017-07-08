@@ -15,7 +15,9 @@ import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
+import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;
 import it.polimi.ingsw.GC_32.Server.Game.Card.ExcommunicationCard;
+import it.polimi.ingsw.GC_32.Server.Game.Card.LeaderCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
@@ -97,6 +99,13 @@ public class MessageHandler{
                 LOGGER.info("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(game.getLock()));
                 GameRegistry.getInstance().getPlayerFromID(game.getLock()).getResources().addResource("COINS", 1);
                 GameRegistry.getInstance().getPlayerFromID(game.getLock()).getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
+                LeaderCard card = null;
+                for (LeaderCard leader: p.getPersonalBoard().getLeaderCards()){
+                	if(leader.getName().equals(cardName)){
+                		card = leader;
+                	}
+                }
+                GameRegistry.getInstance().getPlayerFromID(game.getLock()).getPersonalBoard().getLeaderCards().remove(card);
                 LOGGER.info("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(game.getLock()));
             }
         }
