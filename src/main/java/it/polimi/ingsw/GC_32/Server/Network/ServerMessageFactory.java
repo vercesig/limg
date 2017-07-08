@@ -20,10 +20,25 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.Card;
 
+/**
+ * this class allows to simply generate all the messages used on the server side of the game in their JSON format. ServerMessageFactory offers a multitude of different
+ * static method which returns a GameMessage which will be passed to the MessageManager and then send to the correct client.
+ * 
+ * For more details on the network protocol see the wiki.
+ * 
+ * @see GameMessage, Game
+ *
+ */
 public class ServerMessageFactory {
 	
 	private final static Logger LOGGER = Logger.getLogger(ServerMessageFactory.class.getName());
 	
+	/**
+	 * allows to generate a GMSTRT message
+	 * 
+	 * @param game the game object used to build this GMSTRT message
+	 * @return the GameMessage representing this GMSTRT message
+	 */
 	public static GameMessage buildGMSTRTmessage(Game game){
 		JsonObject GMSTRT = new JsonObject();
 		JsonArray GMSTRTplayers = new JsonArray();
@@ -145,6 +160,13 @@ public class ServerMessageFactory {
 		return GMSTRTmessage;
 	}
 	
+	/**
+	 * allows to generate a STATCHNG message relative to a specific player
+	 * 
+	 * @param game the game object used to build this STATCHNG message
+	 * @param player the player which will be described by this STATCHNG message
+	 * @return the GameMessage representing this STATCHNG message
+	 */
 	public static GameMessage buildSTATCHNGmessage(Game game, Player player){
 		JsonObject STATCHNG = new JsonObject();
  		JsonObject STATCHNGCardpayload = new JsonObject();
@@ -177,8 +199,16 @@ public class ServerMessageFactory {
  		GameMessage STATCHNGmessage = new GameMessage(game.getUUID(), player.getUUID(), "STATCHNG", STATCHNG);
  		STATCHNGmessage.setBroadcast();
  		return STATCHNGmessage;
-}
+	}
 	
+	/**
+	 * allows to generate a NAMECHG message for the 
+	 * 
+	 * @param game the game object used to build this NAMECHG message
+	 * @param playerUUID the UUID of the player
+	 * @param name the new name of this player
+	 * @return the GameMessage representing this NAMECHG message
+	 */
 	public static GameMessage buildNAMECHGmessage(Game game, String playerUUID, String name){
 		JsonObject NAMECHG = new JsonObject();
 		NAMECHG.add("PLAYERID",playerUUID);
@@ -188,6 +218,16 @@ public class ServerMessageFactory {
 		return NAMECHGmessage;
 	}
 	
+	/**
+	 * allows to generate a ASKLDRACK message
+	 * 
+	 * @param game the game object used to build this ASKLDRACK message
+	 * @param player the recipient of the message
+	 * @param leaderCard the name of the leader card used in the leader action
+	 * @param decision the type of action which specify this leader action
+	 * @param result the result of the action, this flag show to the client if the action has been assessed as valid or not
+	 * @return the GameMessage representing this ASKLDRACK message
+	 */
 	public static GameMessage buildASKLDRACKmessage(Game game, Player player, String leaderCard, String decision, boolean result){
 
 		JsonObject ASKLDRACK = new JsonObject();
@@ -206,6 +246,14 @@ public class ServerMessageFactory {
 		return ASKLDRACKmessage;
 	}
 	
+	/**
+	 * allows to generate a CHGBOARDSTAT message, describing a variation of the entire board (the card layout)
+	 * 
+	 * @param game the game object used to build this CHGBOARDSTAT message
+	 * @param board the board which will be represented into this packet
+	 * @see Board
+	 * @return the GameMessage representing this CHGBOARDSTAT message
+	 */
 	public static GameMessage buildCHGBOARDSTATmessage(Game game, Board board){
  		JsonObject CHGBOARDSTAT = new JsonObject();
  		CHGBOARDSTAT.add("TYPE", "BOARD");
@@ -231,6 +279,15 @@ public class ServerMessageFactory {
  		return CHGBOARDSTATmessage;
 	}
 	
+	/**
+	 * allows to generate a CHGBOARDSTAT message, describing a variation of a family member position on the board
+	 * 
+	 * @param game the game object used to build this CHGBOARDSTAT message
+	 * @param playerUUID the player that has made the action
+	 * @param action the action which has caused the variation of family member position
+	 * @see Action
+	 * @return the GameMessage representing this CHGBOARDSTAT message
+	 */
 	public static GameMessage buildCHGBOARDSTATmessage(Game game, String playerUUID, Action action){
 		JsonObject CHGBOARDSTAT = new JsonObject();
 		CHGBOARDSTAT.add("TYPE", "FAMILY");
@@ -246,6 +303,13 @@ public class ServerMessageFactory {
 		return CHGBOARDSTATmessage;
 	}
 	
+	/**
+	 * allows to generate a CHGBOARDSTAT message, telling the client to flush his board
+	 * 
+	 * @param game the game object used to build this CHGBOARDSTAT message
+	 * @param turnEndFlag if settet true, the client must flush his board
+	 * @return the GameMessage representing this CHGBOARDSTAT message
+	 */
 	public static GameMessage buildCHGBOARDSTATmessage(Game game, boolean turnEndFlag){
 		JsonObject CHGBOARDSTAT = new JsonObject();
 		CHGBOARDSTAT.add("TYPE", "FLUSHFAMILY");
@@ -258,6 +322,15 @@ public class ServerMessageFactory {
 		return CHGBOARDSTATmessage;
 	}
 	
+	/**
+	 * allows to generate a CONTEXT message
+	 * 
+	 * @param game the game object used to build this CONTEXT message
+	 * @param player the recipient of the message
+	 * @param type the type of context to open
+	 * @param payload the additional information used to customize the context
+	 * @return the GameMessage representing this CONTEXT message
+	 */
 	public static GameMessage buildCONTEXTmessage(Game game, Player player, ContextType type, Object...payload){
 		JsonObject CONTEXT = new JsonObject();
 		CONTEXT.add("CONTEXTID", type.getContextID());	
@@ -298,12 +371,30 @@ public class ServerMessageFactory {
 		return CONTEXTmessage;			
 	}
 	
+	/**
+	 * allows to build a CONTEXTACK message
+	 * 
+	 * @param game the game object used to build this CONTEXTACK message
+	 * @param player the recipient of the message
+	 * @param accepted flag used to tell the client if the response followed by a CONTEXT is valid or not
+	 * @return the GameMessage representing this CONTEXTACK message
+	 */
 	public static GameMessage buildCONTEXTACKMessage(Game game, Player player, boolean accepted) {
 		JsonObject CONTEXTACK = new JsonObject();
 		CONTEXTACK.add("ACCEPTED", Json.value(accepted));		
 		return new GameMessage(game.getUUID(), player.getUUID(), "CONTEXTACK", CONTEXTACK); 
 	} 
 	
+	
+	/**
+	 * allows to build a ACTCHK message
+	 * 
+	 * @param game the game object used to build this CONTEXTACK message
+	 * @param player the recipient of the message
+	 * @param action the action which has been applied
+	 * @param result the result of the action, this flag tells the client if his action has been applied or not
+	 * @return the GameMessage representing this ACTCHK message
+	 */
 	public static GameMessage buildACTCHKmessage(Game game, Player player, Action action, boolean result) {
 		JsonObject payload = new JsonObject();
 		if(result){
@@ -318,7 +409,15 @@ public class ServerMessageFactory {
 		return new GameMessage(game.getUUID(), player.getUUID(), "ACTCHK", payload);
 	} 
 	
-	
+	/**
+	 * allows to build a DECIROLL message
+	 * 
+	 * @param game the game object used to build this DICEROLL message
+	 * @param blackDice the value of the black dice
+	 * @param whiteDice the value of the white dice
+	 * @param orangeDice the value of the orange dice
+	 * @return the GameMessage representing this DICEROLL message
+	 */
 	public static GameMessage buildDICEROLLmessage(Game game, int blackDice, int whiteDice, int orangeDice){
 		JsonObject DICEROLL = new JsonObject();
 		DICEROLL.add("BLACKDICE", blackDice);
@@ -330,6 +429,13 @@ public class ServerMessageFactory {
 		return DICEROLLmessage;
 	}
 	
+	/**
+	 * allows to build a TRNBGN message
+	 * 
+	 * @param game the game object used to build this TRNBGN message
+	 * @param uuid the player which has the lock. i.e. the player which must perform the action
+	 * @return the GameMessage representing this TRNBGN message
+	 */
 	public static GameMessage buildTRNBGNmessage(Game game, UUID uuid){
 		JsonObject TRNBGN = new JsonObject();
 		TRNBGN.add("PLAYERID", uuid.toString());
@@ -338,12 +444,24 @@ public class ServerMessageFactory {
 		return TRNBGNmessage;
 	}
 	
+	/**
+	 * allows to build a ENDGAME message
+	 * 
+	 * @param game the game object used to build this ENDGAME message
+	 * @param ENDGAME the JsonObject containing all the info on the final score of the game
+	 * @return the GameMessage representing this ENDGAME message
+	 */
 	public static GameMessage buildENDGAMEmessage(Game game, JsonObject ENDGAME){
 		GameMessage ENDGAMEmessage = new GameMessage(game.getUUID(), null, "ENDGAME", ENDGAME);
 		ENDGAMEmessage.setBroadcast();
 		return ENDGAMEmessage;
 	}
-
+	/**
+	 * allows to build a CONNEST message
+	 * 
+	 * @param playerId the player UUID of the client connected
+	 * @return the GameMessage representing this CONNEST message
+	 */
 	public static GameMessage buildCONNESTmessage(UUID playerId){
 		JsonObject CONNEST = new JsonObject();
 		CONNEST.add("PLAYERID", playerId.toString());

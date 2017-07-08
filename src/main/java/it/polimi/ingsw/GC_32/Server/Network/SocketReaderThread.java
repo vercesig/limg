@@ -9,17 +9,38 @@ import java.util.logging.Level;
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
+/**
+ * 
+ * network thread responsable of the management of socket connections. After SocketListener has opened a socket connection, SocketReaderThread perform the sending of 
+ * messages to the clients and the reception of messages from the clients on a socket connection
+ * 
+ * @see SocketListener
+ *
+ */
 public class SocketReaderThread implements Runnable{
-
+	
 	private final static Logger LOGGER = Logger.getLogger(SocketReaderThread.class.getName());
 	
 	private SocketListener socketListener;
 	
+	/**
+	 * 
+	 * inizialize the thread in oreder to make available all the socket connection opened
+	 * 
+	 * @param target the SocketListener this SocketReaderThread must manage, a reference to SocketListener is used to retrive all the open socket connections
+	 */
 	public SocketReaderThread(SocketListener target){
 		this.socketListener = target;
 		LOGGER.log(Level.INFO, "start");
 	}
 	
+	/**
+	 * run method perform the sending and the reception of messages on all the opened socket connections. It also perform broadcast sending message, sending a specific
+	 * message on all the socket connection relative to a specific game session. On the reception side, when a message is recived it is memorized into the MessageManger
+	 * as a GameMessage.
+	 * 
+	 * @see GameMessage, MessageManager, GameRegistry
+	 */
 	public void run(){
 		LOGGER.log(Level.INFO, "ready to recive and send message");
 		while(true){		

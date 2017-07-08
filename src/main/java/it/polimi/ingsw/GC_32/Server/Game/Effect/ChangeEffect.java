@@ -10,8 +10,19 @@ import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
+/**
+ * generate an CHANGE effect. CHANGE effect allow the player to change some resources for another type of resources. To do this, change effect take an index from
+ * an extra field into the action passed as argument to the apply function, choosed by the player throught a context precedently opened, and then perform the change
+ * 
+ * @see EffectRegistry
+ */
 public class ChangeEffect {
 
+	/**
+	 * generate a CHANGE effect. CHANGE effect allow the player to change resources
+	 * 
+	 * @see EffectRegistry
+	 */
 	static EffectBuilder changeEffectBuilder = (JsonValue payload) -> {
 
 		Effect changeEffect = (Board b, Player p, Action a, ContextManager cm) -> {
@@ -32,7 +43,9 @@ public class ChangeEffect {
 			};	
 		return changeEffect;
 	};
-	
+	/**
+	 * load the builder into the EffectRegistry with flag "CHANGE"
+	 */
 	public static void loadBuilder(){
 		EffectRegistry.getInstance().registerBuilder("CHANGE", changeEffectBuilder);
 	}

@@ -12,7 +12,6 @@ import com.eclipsesource.json.JsonValue;
  *  <li> {@link #registry}: an hashmap which map each effect with a specific OPCODE.
  *  <li> {@link #builderRegistry}: an hashmap which map each effectBuilder with a specific OPCODE. 
  * </ul>
- * @author alessandro
  *
  */
 public class EffectRegistry{

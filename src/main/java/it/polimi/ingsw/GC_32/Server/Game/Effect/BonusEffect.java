@@ -18,6 +18,12 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
  */
 public class BonusEffect {
 	
+	/**
+	 * builder used to generate BONUS type effects. ActionEffectBuilder are loaded into the EffectRegistry under the flag "BONUS"
+	 * 
+	 * @param JsonValue representing the effect 
+	 * @return the effect obtained by the payload passed as argument
+	 */
 	static EffectBuilder bonusEffectBuilder = (JsonValue payload) -> {
 		JsonValue type = payload.asObject().get("TYPE");
 		JsonValue forEach = payload.asObject().get("FOREACH");
@@ -37,6 +43,9 @@ public class BonusEffect {
 		return bonusEffect;		
 	};	
 
+	/**
+	 * load the builder into the EffectRegistry with flag "BONUS"
+	 */
 	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("BONUS", bonusEffectBuilder);
 	}	
