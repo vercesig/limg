@@ -21,9 +21,10 @@ public class Track {
 		}
 	}
 
-	//TO-DO
 	public String toString(){
-		return "";
+		StringBuilder tmp = new StringBuilder();
+		tmp.append(type + " :" + score + '\n');	
+		return new String(tmp);
 	}
 
 }

@@ -80,6 +80,9 @@ public class ClientPlayer {
 	
 	public void addResources(ResourceSet resources){
 		this.playerResources.addResource(resources);
+		this.track[0].addScore(resources);
+		this.track[1].addScore(resources);
+		this.track[2].addScore(resources);
 	}
 	
 	private void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
@@ -125,8 +128,16 @@ public class ClientPlayer {
 		tmp.append(" BONUS TILE ");
 		fillWith(tmp, numberOfDashes, "-");
 		tmp.append(bonusTile);
-		fillWith(tmp, x, "-");
+		tmp.append("\n");
+		numberOfDashes = (x - "TRACK".length() - 2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" TRACK ");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append("\n");
+		for(Track t : this.getTrack()){
+			tmp.append(t);
+			tmp.append("\n");
+		}
 		return new String(tmp);
 	}
-	
 }
