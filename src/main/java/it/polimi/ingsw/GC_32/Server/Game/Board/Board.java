@@ -167,6 +167,10 @@ public class Board {
 		return (MarketRegion) this.region.get(3);
 	}
 	
+	/**
+	 * given a game, from which the cards are retrived, place the cards on the TowerRegion of this board
+	 * @param game the game from which the cards must be drew
+	 */
 	public void placeCards(Game game){
 		LOGGER.log(Level.INFO, "placing cards on tower regions...");
 		for(TowerRegion towerRegion : this.getTowerRegion()){
@@ -176,11 +180,19 @@ public class Board {
 		}	
 	}
 	
+	/**
+	 * flush the board, calling the flushRegion() method of Region class on each Region of this board
+	 * 
+	 * @see Region
+	 */
 	public void flushBoard(){
 		LOGGER.log(Level.INFO, "flushing board");
 		region.forEach(region -> region.flushRegion());
 	}
 	
+	/**
+	 * set the configuration of bonuses of action spaces of this board, retriving the information from the GameConfig singleton class
+	 */
 	public void setupBonus(){
 		GameConfig.getInstance().getBonusSpace().forEach( js -> {
 			int regionID = js.asObject().get("RegionID").asInt();
@@ -194,6 +206,10 @@ public class Board {
 		});
 	}
 	
+	/**
+	 * dependent on the value of playerNumber arguments, block the actionSpaces of the region according to the game rules
+	 * @param playerNumber the number of players in the game
+	 */
 	public void blockZone(int playerNumber) {
 		if(playerNumber <3){
 			region.get(0).getActionSpace(1).setBlock(true); //production

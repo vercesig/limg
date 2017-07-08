@@ -5,7 +5,11 @@ import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 /**
  * represents a set of ActionSpace in which the Player can place its FamilyMember.
- * <p>
+ * 
+ * <ul>
+ * <li>{@link #regionID}: the ID of this region</li>
+ * <li>{@link #track}: the array of action spaces which compose this region</li>
+ * </ul>
  * 
  * @see ActionSpace, FamilyMember, Player
  * @author VaporUser
@@ -15,11 +19,20 @@ public class Region {
 	private final int regionID;
 	private ActionSpace[] track;
 	
+	/**
+	 * initialize the Region with the given regionID and the given number of action spaces
+	 * @param regionID the ID of this region 
+	 * @param numberOfActionSpaces the number of action spaces which compose this region
+	 */
 	public Region(int regionID, int numberOfActionSpaces){
 		this.regionID = regionID;
 		this.track = new ActionSpace[numberOfActionSpaces];
 	}
 	
+	/**
+	 * initialize this region with the given regionID
+	 * @param regionID the ID of this region
+	 */
 	public Region(int regionID){
 		this.regionID = regionID;
 	}
@@ -90,6 +103,9 @@ public class Region {
 		return this.track;
 	}
 	
+	/**
+	 * flush this region, calling the flushActionSpace() method on all the action spaces which compose the region
+	 */
 	public void flushRegion(){
 		for(int i=0; i<track.length; i++){
 			track[i].flushActionSpace();

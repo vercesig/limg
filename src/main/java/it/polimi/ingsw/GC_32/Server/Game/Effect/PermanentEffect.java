@@ -10,8 +10,19 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
 import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 
+/**
+ * Permanent effect are used to increase the action value of a specific action when the permanent effect of the card is activated. This class contains the 
+ * effectbuilder relative to this type of effect
+ * 
+ * @see EffectBuilder, Effect
+ *
+ */
 public class PermanentEffect {
 	
+	/**
+	 * the builder of this effect. Given a JsonObject, taken from the JSON representation of the card, the builder generates the correct permanent effect which
+	 * will be loaded into the Card object
+	 */
 	static EffectBuilder bonusPermanentEffect = (JsonValue payload) -> {
 		
 		String actionType = payload.asObject().get("TYPE").asString();
@@ -46,7 +57,6 @@ public class PermanentEffect {
 									.getCard();
 					card.discountCard(bonusDiscount);
 				}
-				//open a context if flag == true
 			}
 			else 
 				return;
@@ -54,6 +64,9 @@ public class PermanentEffect {
 		return e;
 	};
 	
+	/**
+	 * load the builder into the EffectRegistry with key "PERMANENT"
+	 */
 	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("PERMANENT", bonusPermanentEffect);
 	}	
