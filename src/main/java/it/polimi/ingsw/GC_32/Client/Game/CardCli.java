@@ -2,6 +2,7 @@ package it.polimi.ingsw.GC_32.Client.Game;
 
 import java.util.ArrayList;
 
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
@@ -19,42 +20,32 @@ public class CardCli {
 	}
 	
 	private static void loadEffect(ArrayList<String> array, String key, JsonObject json){
-		
 		if(json.get(key)!= null){
-			if(json.get(key).isArray()){  // example [{"COINS":1},{"WOOD":1}]
-				for(JsonValue js : json.get(key).asArray()){  
-					if(js.isObject()){
-						for(Member m : js.asObject()){
-							if(m.getValue().isNumber()){
-								array.add(m.getName() +": " + m.getValue().asInt());
-							}
-							if(m.getValue().isString()){
-								array.add(m.getName() +": " + m.getValue().asString());
-							}
+		    JsonArray parseArray;
+		    if(json.get(key).isObject()){
+		        parseArray = new JsonArray().add(json.get(key).asObject()); // example {"COINS":1, "FAITH_POINT":1}
+		    } else {
+		        parseArray = json.get(key).asArray(); // example [{"COINS":1},{"WOOD":1}]
+		    }
+			for(JsonValue js : parseArray){  
+				if(js.isObject()){
+					for(Member m : js.asObject()){
+						if(m.getValue().isNumber()){
+							array.add(m.getName() +": " + m.getValue().asInt());
+						}
+						if(m.getValue().isString()){
+							array.add(m.getName() +": " + m.getValue().asString());
 						}
 					}
-					if(js.isString()){
-						array.add(key + ": " + js.asString());
-				
-					}
-				}	
-			}
-			if(json.get(key).isObject()){ // example {"COINS":1, "FAITH_POINT":1}
-				for(Member m : json.get(key).asObject()){
-					if(m.getValue().isNumber()){
-						array.add(m.getName() +": " + m.getValue().asInt());
-					}
-					if(m.getValue().isString()){
-						array.add(m.getName() +": " + m.getValue().asString());
-					}
+				}
+				if(js.isString()){
+					array.add(key + ": " + js.asString());
+			
 				}
 			}
-			if(json.get(key).isString()){
-				array.add(key + ": " + json.get(key).asString());
-			}
-		} 
-		else
+		} else {
 			array.add(key + ": none");
+		}
 	}
 	
 	private static void printImage(StringBuilder stringBuilder, int length, int height){
@@ -109,7 +100,7 @@ public class CardCli {
 	
 		StringBuilder card = new StringBuilder();
 		
-		if(json.isNull()){
+		if(json.isEmpty()){
 			card.append("EMPTY");
 			return new String(card);
 		}

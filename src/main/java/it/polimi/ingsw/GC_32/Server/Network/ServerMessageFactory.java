@@ -456,6 +456,7 @@ public class ServerMessageFactory {
 		ENDGAMEmessage.setBroadcast();
 		return ENDGAMEmessage;
 	}
+
 	/**
 	 * allows to build a CONNEST message
 	 * 

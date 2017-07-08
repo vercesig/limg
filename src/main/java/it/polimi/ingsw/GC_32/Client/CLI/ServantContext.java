@@ -28,7 +28,7 @@ public class ServantContext extends Context{
 			command = in.nextLine();
 			try{
 				if(Integer.parseInt(command)<=numberOfServants){
-					CONTEXTREPLYpayloadinfo.add("CHOOSEN_SERVANTS", Integer.parseInt(command));
+					CONTEXTREPLYpayloadinfo.add("CHOSEN_SERVANTS", Integer.parseInt(command));
 					CONTEXTREPLY.add("PAYLOAD", CONTEXTREPLYpayload);
 					return CONTEXTREPLY.toString();
 				}else{

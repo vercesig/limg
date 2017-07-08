@@ -47,9 +47,9 @@ public class TowerRegion extends Region {
 		// c'è già un familiare del mio stesso colore sulla torre
 		for(TowerLayer layer : towerLayers){
 			ArrayList<FamilyMember> occupants = layer.getActionSpace().getOccupants();
-			if(!occupants.isEmpty()){
-				if(occupants.get(0).getColor().equals(familyMember.getColor()));
-					return false;
+			if(!occupants.isEmpty() &&
+			   occupants.get(0).getColor().equals(familyMember.getColor())){
+			    return false;
 			}
 		}
 		return true;

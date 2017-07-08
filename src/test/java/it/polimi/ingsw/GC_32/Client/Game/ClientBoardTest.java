@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 
 
 public class ClientBoardTest {
@@ -13,10 +15,19 @@ public class ClientBoardTest {
 	public ClientBoard cb;
 	
 	@Before
-	public void initTest(){		
-		String boardPacket = "{\"region\":\"[{\\\"BONUS\\\":\\\"#\\\",\\\"REGIONID\\\":0,\\\"SPACEID\\\":0,\\\"SINGLE\\\":true},"
-				+ "{\\\"BONUS\\\":\\\"#\\\",\\\"REGIONID\\\":1,\\\"SPACEID\\\":0,\\\"SINGLE\\\":false}]\"}";
-		this.cb = new ClientBoard(Json.parse(boardPacket).asObject());
+	public void initTest(){
+		String boardPacket = "{\"region\":\"[{\\\"BONUS\\\":\\\"#\\\",\\\"REGIONID\\\":0,\\\"SPACEID\\\":0,\\\"SINGLE\\\":true}," +
+		                     "{\\\"BONUS\\\":\\\"#\\\",\\\"REGIONID\\\":1,\\\"SPACEID\\\":0,\\\"SINGLE\\\":false}]\"}";
+		JsonObject boardObject = new JsonObject();
+		this.cb = new ClientBoard(boardObject.add("Market", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 0).add("SPACEID", 0).add("SINGLE", true))
+		                                                                   .add(new JsonObject().add("BONUS", "#").add("REGIONID", 0).add("SPACEID", 1).add("SINGLE", true)).toString())
+		                                     .add("Harvest", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 1).add("SPACEID", 0).add("SINGLE", true))
+		                                                                    .add(new JsonObject().add("BONUS", "#").add("REGIONID", 1).add("SPACEID", 1).add("SINGLE", false)).toString())
+		                                     .add("Production", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 2).add("SPACEID", 0).add("SINGLE", true)).toString())
+		                                     .add("Priviledge", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 3).add("SPACEID", 0).add("SINGLE", false)).toString())
+		                                     .add("Tower1", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 4).add("SPACEID", 0).add("SINGLE", true)).toString())
+		                                     .add("Tower2", new JsonArray().add(new JsonObject().add("BONUS", "#").add("REGIONID", 5).add("SPACEID", 0).add("SINGLE", true)).toString())
+		                         );
 	}
 	
 	@Test
@@ -54,5 +65,10 @@ public class ClientBoardTest {
 	@Test
 	public void checkGetRegionList(){
 		assertNotNull(cb.getRegionList());
+	}
+	
+	@Test
+	public void checkToStringNotNull(){
+	    assertNotNull(cb.toString());
 	}
 }
