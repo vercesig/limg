@@ -59,7 +59,7 @@ public class ActionHandler{
         JsonValue SERVANTProductionresponse = contextManager.waitForContextReply();
         contextManager.setContextAck(true, player);
         action.setActionValue(action.getActionValue() +
-                              SERVANTProductionresponse.asObject().get("CHOSEN_SERVANTS").asInt());
+                              SERVANTProductionresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
         
         JsonArray CHANGEcontextPayload = new JsonArray();
         JsonArray CHANGEnameCardArray = new JsonArray();

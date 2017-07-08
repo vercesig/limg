@@ -32,6 +32,10 @@ public class ClientPlayer {
 		track[1] = new Track("FAITH_POINTS");
 		track[2] = new Track("VICTORY_POINTS");
 		
+		for(int i=0; i<this.track.length; i++){
+			track[i].registerResourceSet(this.playerResources);
+		}
+		
 		for(int i=0; i<familyMembers.length; i++){
 			familyMembers[i] = new ClientFamilyMember();
 		}
@@ -99,7 +103,7 @@ public class ClientPlayer {
 		tmp.append(" RESOURCES -");
 		fillWith(tmp, numberOfDashes, "-");
 		tmp.append("\n");
-		tmp.append(playerResources.toString()+"\n\n");
+		tmp.append(playerResources.toStringPlayer()+"\n\n");
 		numberOfDashes = (x - "FAMILY MEMBERS".length() -2)/2;
 		fillWith(tmp, numberOfDashes, "-");
 		tmp.append(" FAMILY MEMBERS ");
@@ -125,8 +129,16 @@ public class ClientPlayer {
 		tmp.append(" BONUS TILE ");
 		fillWith(tmp, numberOfDashes, "-");
 		tmp.append(bonusTile);
-		fillWith(tmp, x, "-");
+		tmp.append("\n");
+		numberOfDashes = (x - "TRACK".length() - 2)/2;
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append(" TRACK ");
+		fillWith(tmp, numberOfDashes, "-");
+		tmp.append("\n");
+		for(Track t : this.getTrack()){
+			tmp.append(t);
+			tmp.append("\n");
+		}
 		return new String(tmp);
 	}
-	
 }

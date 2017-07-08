@@ -218,9 +218,9 @@ public class MainClient{
 							client.getPlayers().get(playerID).getFamilyMembers()[i].setBusyFlag(familyStatus.get(i).asBoolean());
 						}
 						
-						for(int k=0; k<client.getPlayers().get(playerID).getTrack().length; k++){
-							client.getPlayers().get(playerID).getTrack()[k].addScore(client.getPlayers().get(playerID).getPlayerResources());
-						}
+					//	for(int k=0; k<client.getPlayers().get(playerID).getTrack().length; k++){
+					//		client.getPlayers().get(playerID).getTrack()[k].addScore(client.getPlayers().get(playerID).getPlayerResources());
+					//	}
 						break;
 					case "CHGBOARDSTAT":
 						// notifica cambiamento board
@@ -292,10 +292,10 @@ public class MainClient{
 							
 							client.graphicInterface.displayMessage("> THE ACTION IS VALID!\n");
 
-							for(int k=0; k<client.getPlayers().get(client.getUUID()).getTrack().length; k++){
-								client.getPlayers().get(client.getUUID()).getTrack()[k].addScore(
-										client.getPlayers().get(client.getUUID()).getPlayerResources());
-							}
+				//			for(int k=0; k<client.getPlayers().get(client.getUUID()).getTrack().length; k++){
+				//				client.getPlayers().get(client.getUUID()).getTrack()[k].addScore(
+				//						client.getPlayers().get(client.getUUID()).getPlayerResources());
+				//			}
 							client.graphicInterface.waitTurn(true);
 						}	
 						break;
