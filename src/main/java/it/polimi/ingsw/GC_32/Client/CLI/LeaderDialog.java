@@ -48,6 +48,10 @@ public class LeaderDialog extends Context{
 				}
 			}
 			optionSelected = false;
+			if(player.getCards().get("LEADER")==null){
+				out.println("No leader cards found");
+				return "";
+			}
 			out.println("Choose one of the following card: ");
 			for(int i=0; i<player.getCards().get("LEADER").size(); i++){
 				System.out.println(i + "]" + player.getCards().get("LEADER").get(i));
@@ -57,9 +61,9 @@ public class LeaderDialog extends Context{
 					command = in.nextLine();	
 					
 					if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=3){
-						if(player.getCards().get("LEADER").size()<Integer.parseInt(command)){
+						if(player.getCards().get("LEADER").size()-1<Integer.parseInt(command)){
 							out.println("type a valid index");
-							break;
+							return "";
 						} 
 						index = Integer.parseInt(command);
 						out.println("You choose the card: " + player.getCards().get("LEADER").get(index));
@@ -75,6 +79,7 @@ public class LeaderDialog extends Context{
 		}
 		close();
 		}
+		
 	return ClientMessageFactory.buildASKLDRACTmessage(client.getGameUUID(),player.getCards().get("LEADER").get(index), decision);
 	}
 }
