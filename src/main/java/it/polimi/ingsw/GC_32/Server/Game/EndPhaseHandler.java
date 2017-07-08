@@ -12,13 +12,29 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.DevelopmentCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
+/**
+ * class which handle the final score calculation, according to the game rules and the configuration file
+ *
+ *<ul>
+ *<li>{@link #game}: the Game of which the scores must be computed</li>
+ *</ul>
+ */
 public class EndPhaseHandler{
     private Game game;
     
+    /**
+     * initialize the EndPhaseHandler
+     * @param game the game of whitch the final score must be computed
+     */
 	public EndPhaseHandler(Game game){
 	    this.game = game;
 	}
 	
+	/**
+	 * used to compute the cost penality suffered by the player, if he has been excommunicated (and flagged LESSFORBUILDING)
+	 * @param cost the ResourceSet of the building card of which the penality must be computed
+	 * @return the int value of the penality
+	 */
 	public static int countBuildingCost(ResourceSet cost){
 		int wood = 0;
 		int stone = 0;
@@ -31,6 +47,12 @@ public class EndPhaseHandler{
 		return wood + stone;
 	}
 	
+	/**
+	 * method which handle the final computation of the final score for the game object passed into the EndPhaseHandler constructor. the calculations performed by this
+	 * method are in line with the game rules and consider the effects of evenutally excommunications gained by the player as well.
+	 * 
+	 * the method ends whit the sending of a ENDGAME message, which tells the client the end of the game
+	 */
 	public void endGame(){
 			HashMap <String, JsonValue> json = GameConfig.getInstance().getPointsConversion();
 			JsonObject finalScore = new JsonObject();
