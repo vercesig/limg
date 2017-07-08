@@ -147,4 +147,11 @@ public class ResourceSetTest{
 		resourceSet2.addResource("WOOD", 10);
 		assertEquals(resourceSet2.hashCode(), this.resourceSet.hashCode());
 	}
+	
+	
+	@Test
+	public void checkStringContructor(){
+	    this.resourceSet = new ResourceSet("{\"WOOD\":1}");
+	    assertEquals(1, this.resourceSet.getResource(ResourceTypes.WOOD));
+	}
 }

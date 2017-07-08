@@ -216,7 +216,7 @@ public class Game implements Runnable{
 				LOGGER.log(Level.FINEST, "InterruptedException when taking packet", e);
 			}
 
-			if(message != null){
+			if(message != null && message.getPlayerUUID().equals(getLock())){
 				messageHandler.handleMessage(message);
 			}
 		}
@@ -350,5 +350,9 @@ public class Game implements Runnable{
 	
 	protected void sendDICEROLL(){
 	    MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
+	}
+	
+	protected MessageHandler getMessageHandler(){
+	    return this.messageHandler;
 	}
 }
