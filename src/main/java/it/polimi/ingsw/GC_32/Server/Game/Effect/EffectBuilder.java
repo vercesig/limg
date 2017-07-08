@@ -8,7 +8,6 @@ import com.eclipsesource.json.JsonValue;
  * necessary to build the effect. EffectBuilder returns an Effect (which will be associated to the card which has generated such effect).
  * 
  * @extends Function<JsonValue, Effect>
- * @author alessandro
  *
  */
 public interface EffectBuilder extends Function<JsonValue,Effect>{}
