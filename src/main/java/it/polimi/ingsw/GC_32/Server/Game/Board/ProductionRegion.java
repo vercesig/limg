@@ -1,7 +1,7 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 /**
- * ProductionRegion is a specific Region of the {@link Game} in which can be placed a FamilyMember and performed a ProductionAction.
+ * ProductionRegion is a specific Region of the {@link Game} into which can be placed a FamilyMember and performed a ProductionAction.
  * In the ProductionRegion there are informations about:
  * <ul>
  *  <li> {@link #regionID}: Region id of this Region.

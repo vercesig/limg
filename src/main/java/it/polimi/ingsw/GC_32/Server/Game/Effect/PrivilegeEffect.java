@@ -14,8 +14,17 @@ import it.polimi.ingsw.GC_32.Server.Game.ContextManager;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 
+/**
+ * allow to generate a privilege effect, i.e. an effect which give a council privilege. Privilege effects will open a context on the client screen, after that the effect
+ * wait for the reply from the client and then, according to the response, apply the effect (which will be a normal ADD effect) 
+ *
+ */
 public class PrivilegeEffect {
 
+	/**
+	 * the builder of this effect, it takes the number of privilege to open from the JSON representation of the card, than open the context on the client screen and wait
+	 * for a reponse. finally apply the choise
+	 */
 	static EffectBuilder buildPrivilege = (JsonValue payload) -> {
 			int number = payload.asObject().get("NUMBER").asInt();
 					 
@@ -60,7 +69,10 @@ public class PrivilegeEffect {
 			};
 			return e;
 		};
-		
+	
+		/**
+		 * load the builder into the EffectRegistry whit key "PRIVILEGE"
+		 */
 	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("PRIVILEGE", buildPrivilege);
 	}

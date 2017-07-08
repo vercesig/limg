@@ -14,6 +14,7 @@ import it.polimi.ingsw.GC_32.Server.Game.Player;
  *  <li> {@link ActionSpace#single}: boolean attribute if it is a single ActionSpace in which it can be placed only one FamilyMember
  *  <li> {@link ActionSpace#actionValue}: a number of the actionValue needed to place a FamilyMember on it.
  *  <li> {@link #bonus}: a ResourceSet of bonus resources that a Player obtains when he places a FamilyMember on this ActionSpace. 
+ *  <li>{@link #blocked}: a flag representing if tha action space is blocked or not</li>
  * </ul>
  * <p>
  * ActionSpace's regionID and actionSpaceID are final and all the ActionSpace of the game are
@@ -219,10 +220,17 @@ public class ActionSpace{
 		return new String(tmp);
 	}
 	
+	/**
+	 * get the occupants of the action space, as a List of the FamilyMember which are positionated on tt
+	 * @return an ArrayList of FamilyMEmber
+	 */
 	public ArrayList<FamilyMember> getOccupants(){
 		return this.occupants;
 	}
 	
+	/**
+	 * free this actionSpace, removing all the family members on it
+	 */
 	public void flushActionSpace(){
 		this.occupants.forEach(familyMember -> {
 			familyMember.removeFromBoard();
@@ -230,10 +238,18 @@ public class ActionSpace{
 		this.occupants.clear();
 	}
 	
+	/**
+	 * specify if the action value is blocked or not. An action space can be blocked if the correct umber of players hasn't been achieved for activate that action space 
+	 * @param blockValue the value of the blocked flag
+	 */
 	public void setBlock(boolean blockValue){
 		this.blocked = blockValue;
 	}
 	
+	/**
+	 * allows to retrive the value of the blocked flag
+	 * @return the value of blocked flag
+	 */
 	public boolean isBlocked(){
 		return this.blocked;
 	}

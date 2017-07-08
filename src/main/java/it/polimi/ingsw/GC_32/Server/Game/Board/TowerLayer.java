@@ -78,12 +78,19 @@ public class TowerLayer {
 		this.card = card;
 	}
 	
+	/**
+	 * take the DevelopmentCard placed on this tower layer
+	 * @return the DevelopmentCard on this towerLayer
+	 */
 	public DevelopmentCard takeCard(){
 		DevelopmentCard takenCard = this.card;
 		this.card = null;
 		return takenCard;
 	}
 
+	/**
+	 * flush this tower layer, calling the flushActionSpace() method on the action space which compose this tower layer and setting as null the card field.
+	 */
 	public void flushTowerLayer(){
 		this.card = null;
 		actionSpace.flushActionSpace();
