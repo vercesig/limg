@@ -33,8 +33,8 @@ public class LeaderCard extends Card{
 		return this.abilityToken;
 	}
 	
-	public void turnCard(){
-		abilityToken = false;
+	public void turnCard(boolean flag){
+		abilityToken = flag;
 	}
 	
 	public void playCard(){
