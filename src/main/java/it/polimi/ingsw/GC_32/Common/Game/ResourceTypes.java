@@ -1,5 +1,9 @@
 package it.polimi.ingsw.GC_32.Common.Game;
 
+/**
+ * define all the resource types handled into the game
+ */
+
 public class ResourceTypes{
     public static final String WOOD = "WOOD";
     public static final String STONE = "STONE";

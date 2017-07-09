@@ -40,6 +40,7 @@ public class ActionEffectContext extends Context{
 		int choosedRegionID = 0;
 		int choosedSpaceID = 0;
 		int indexCost = 0;
+		int servants = 0; // new
 		
 		boolean actionFlag = true;
 		boolean sendFlag;
@@ -165,6 +166,28 @@ public class ActionEffectContext extends Context{
 							System.out.println("type a valid number");
 						}
 					}
+					if(Jsonpayload.get("CHOSESERVANT")!=null){  // new feature
+						actionFlag = true;
+						out.println("ok, How many servant do you use?");
+						while(actionFlag&&!nullAction){	
+							command = in.nextLine();
+							try{
+								if(Integer.parseInt(command) > client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().getResourceSet().get("SERVANTS")
+								|| Integer.parseInt(command)<0){
+									out.println("type a valid number or you don't have these servants");
+								}else{
+									servants = Integer.parseInt(command);
+									actionFlag = false;
+								}
+							}catch(NumberFormatException e){
+								if("q".equals(command)){
+									nullAction = true;
+									break;
+								}
+								System.out.println("type a valid number");
+							}		
+						}
+					}	
 					break;
 				case "PRODUCTION":
 					choosedRegionID = 0;
@@ -186,9 +209,31 @@ public class ActionEffectContext extends Context{
 							System.out.println("type a valid number");
 						}
 					}
+					if(Jsonpayload.get("CHOSESERVANT")!=null){  // new feature
+						actionFlag = true;
+						out.println("ok, How many servant do you use?");
+						while(actionFlag&&!nullAction){	
+							command = in.nextLine();
+							try{
+								if(Integer.parseInt(command) > client.getPlayerList().get(client.getPlayerUUID()).getPlayerResources().getResourceSet().get("SERVANTS")
+								|| Integer.parseInt(command)<0){
+									out.println("type a valid number or you don't have these servants");
+								}else{
+									servants = Integer.parseInt(command);
+									actionFlag = false;
+								}
+							}catch(NumberFormatException e){
+								if("q".equals(command)){
+									nullAction = true;
+									break;
+								}
+								System.out.println("type a valid number");
+							}		
+						}
+					}	
 					break;
+				
 				}
-
 				if(sendFlag){
 					if(nullAction){
 						close();
@@ -228,6 +273,7 @@ public class ActionEffectContext extends Context{
 		CONTEXTREPLYpayloadinfo.add("SPACEID", choosedSpaceID);
 		CONTEXTREPLYpayloadinfo.add("JSONPAYLOAD", payload);
 		CONTEXTREPLYpayloadinfo.add("BONUSACTIONVALUE", bonusActionValue);
+		CONTEXTREPLYpayloadinfo.add("CHOSESERVANT", servants); //new
 		if(bonusResource!=null)
 			CONTEXTREPLYpayloadinfo.add("BONUSRESOURCE", bonusResource.toJson());
 		CONTEXTREPLYpayloadinfo.add("NULLACTION", nullAction);

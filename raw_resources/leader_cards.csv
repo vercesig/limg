@@ -1,21 +1,21 @@
 name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType,exclusivePermanentEffect,flagEffect,flagPayload
-Francesco Sforza,,{“CARDTYPE”:{“VENTURECARD”: 5}},ACTION,"{“TYPE”: “HARVEST”,  “REGIONID”: 1, “BONUSACTIONVALUE”:1, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",,,,,,,,
-Ludovico Ariosto,,{“CARDTYPE”:{“CHARACTERCARD”: 5}},,,,,,,,,FLAG,[“FAMILYOCCUPY”]
-Filippo Brunelleschi,,{“CARDTYPE”:{“BUILDINGCARD”: 5}},,,,,,,,,FLAG,[“NOTRIBUTE”]
+Francesco Sforza,,{“CARDTYPE”:{“VENTURECARD”: 5}},ACTION,"{“TYPE”: “HARVEST”,  “REGIONID”: 1, “BONUSACTIONVALUE”:1, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null, “CHOSESERVANT”: true}",,,,,,,,
+Ludovico Ariosto,,{“CARDTYPE”:{“CHARACTERCARD”: 5}},,,,,,,,,FLAG,FAMILYOCCUPY
+Filippo Brunelleschi,,{“CARDTYPE”:{“BUILDINGCARD”: 5}},,,,,,,,,FLAG,NOTRIBUTE
 Sigismondo Malatesta,,"{“RESOURCE”:{“MILITARY_POINTS”: 7, “FAITH_POINTS”:3}}",,,GREYFAMILY,,,,,,,
 Girolamo Savonarola,,{“RESOURCE”:{“COINS”: 18}},ADD,{“FAITH_POINTS”:1},,,,,,,,
 Michelangelo Buonarroti,,{“RESOURCE”:{“STONE”: 10}},ADD,{“COINS”:3},,,,,,,,
 Giovanni delle Bande Nere,,{“RESOURCE”:{“MILITARY_POINTS”: 12}},ADD,"{“STONE” :1, “WOOD”: 1, “COINS”: 1}",,,,,,,,
-Leonardo da Vinci,,"{“CARDTYPE”:{“CHARACTERCARD”: 4, “TERRITORYCARD”: 2}}",ACTION,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”:0, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null}",,,,,,,,
+Leonardo da Vinci,,"{“CARDTYPE”:{“CHARACTERCARD”: 4, “TERRITORYCARD”: 2}}",ACTION,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”:0, “BONUSRESOURCE”: null, “EXCLUSIVEBONUS”: null, “FLAGREGION”: null, “CHOSESERVANT”: true}",,,,,,,,
 Sandro Botticelli,,{“RESOURCE”:{“WOOD”: 10}},ADD,"{“MILITARY_POINTS”: 2, “VICTORY_POINTS”:1}",,,,,,,,
-Ludovico il Moro,,"{“CARDTYPE”:{“VENTURECARD”: 2, “CHARACTERCARD”:2, “BUILDINGCARD”:2, “TERRYTORYCARD”:2}}",,,FAMILYCOLORDICE,,,,,,,
-Lucrezia Borgia,,"{“CARDTYPE”:[{“VENTURECARD”: 6}, {“CHARACTERCARD”:6}, {“BUILDINGCARD”:6}, {“TERRYTORYCARD”:6}]}",,,FAMILYCOLORBONUS,,,,,,,
+Ludovico il Moro,,"{“CARDTYPE”:{“VENTURECARD”: 2, “CHARACTERCARD”:2, “BUILDINGCARD”:2, “TERRITORYCARD”:2}}",,,FAMILYCOLORDICE,,,,,,,
+Lucrezia Borgia,,"{“CARDTYPE”:[{“VENTURECARD”: 6}, {“CHARACTERCARD”:6}, {“BUILDINGCARD”:6}, {“TERRITORYCARD”:6}]}",,,FAMILYCOLORBONUS,,,,,,,
 Federico da Montefeltro,,{“CARDTYPE”:{“TERRITORYCARD”: 5}},FAMILYSIXVALOR,,,,,,,,,
 Lorenzo de’ Medici,,{“RESOURCE”:{“VICTORY_POINTS”: 35}},,,JOLLY,,,,,,,
-Sisto IV,,"{“RESOURCE”:{“STONE” :6, “WOOD”: 6, “COINS”: 6, “SERVANTS”:6}}",,,,,,,,,FLAG,[“MOREFAITH”]
-Cesare Borgia,,"{“CARDTYPE”:{“BUILDINGCARD”: 3}, “RESOURCE”:{“COINS”:12, “FAITH_POINTS”:2}}",,,,,,,,,FLAG,[“NOMILITARYRULE”]
-Santa Rita,,{“RESOURCE”:{“FAITH_POINTS”:8}},,,,,,,,,FLAG,[“DOUBLE”]
+Sisto IV,,"{“RESOURCE”:{“STONE” :6, “WOOD”: 6, “COINS”: 6, “SERVANTS”:6}}",,,,,,,,,FLAG,MOREFAITH
+Cesare Borgia,,"{“CARDTYPE”:{“BUILDINGCARD”: 3}, “RESOURCE”:{“COINS”:12, “FAITH_POINTS”:2}}",,,,,,,,,FLAG,NOMILITARYRULE
+Santa Rita,,{“RESOURCE”:{“FAITH_POINTS”:8}},,,,,,,,,FLAG,DOUBLE
 Cosimo de’ Medici,,"{“CARDTYPE”:{“BUILDINGCARD”: 4, “CHARACTERCARD”:2}}",ADD,"{“SERVANTS”:3, “VICTORY_POINTS”:1}",,,,,,,,
 Bartolomeo Colleoni,,"{“CARDTYPE”:{“TERRITORYCARD”: 4, “VENTURECARD”:2}}",ADD,{“VICTORY_POINTS”:4},,,,,,,,
-Ludovico III Gonzaga,,{“RESOURCE”:{“SERVANTS”: 15}},PRIVILEGE,"{“NUMBER”:1, “COST”: null}",,,,,,,,
+Ludovico III Gonzaga,,{“RESOURCE”:{“SERVANTS”: 15}},PRIVILEGE,{“NUMBER”:1},,,,,,,,
 Pico della Mirandola,,"{“CARDTYPE”:{“BUILDINGCARD”: 2, “VENTURECARD”:4}}",,,PERMANENT,"{“TYPE”: “TOWER”,“REGIONID”: 7, “BONUSACTIONVALUE”:0, “BONUSRESOURCE”: {“COINS”:3}, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,,,,,
