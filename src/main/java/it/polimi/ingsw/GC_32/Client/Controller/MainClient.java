@@ -112,23 +112,25 @@ public class MainClient{
 	/**
 	 * handle the menu for chose the network interface, Socket or RMI
 	 * @param type the response send by the client
-	 * @return true if the selected type has been assessd valid, false otherwise
+	 * @param address the network address to connect to, 'localhost' if blank
 	 * @throws IOException
 	 */
-	private boolean setNetwork(String type) throws IOException{
+	private void setNetwork(String type, String address) throws IOException{
+	    String connectAddress;
+        if("".equals(address)){
+            connectAddress = "localhost";
+        } else {
+            connectAddress = address;
+        }
 		switch(type){
 		case "s":
 			this.network = new SocketMsgConnection();
 			Thread socketMsgConnectionThread = new Thread((Runnable) this.network);
-			this.network.open("localhost", 9500);
+			this.network.open(connectAddress, 9500);
 			socketMsgConnectionThread.start();
-			return true;
 		case "r":
 			this.network = new RMIMsgConnection();
-			this.network.open("localhost", 1099);
-			return true;
-		default:
-			return false;
+			this.network.open(connectAddress, 1099);
 		}
 	}
 	
@@ -139,6 +141,7 @@ public class MainClient{
 	 * @throws IOException
 	 */
 	private boolean setClientInterface(String type){
+
 		switch(type){
 		case "c":
 			this.graphicInterface = new ClientCLI();
@@ -190,11 +193,18 @@ public class MainClient{
 		System.out.println("please enter your name");
 		String myName = in.nextLine();
 		String networkType = "";
-		while(!client.setNetwork(networkType)){
+		boolean correctNetwork = false;
+		while(!correctNetwork){
 			System.out.println(myName+" choose the network tecnology you want use: type 's' for SOCKET connection, 'r' for RMI connection");
 			networkType = in.nextLine();
+			if("s".equals(networkType) || "r".equals(networkType)){
+			    correctNetwork = true;
+			}
 		}
 		
+		System.out.println(myName+" enter the ip address of the server, or leave blank for 'localhost'");
+        String networkAddress = in.nextLine();
+		client.setNetwork(networkType, networkAddress);
 		MsgConnection network = client.getNetwork();
 		
 		System.out.println("ok, now we are ready to play");		
