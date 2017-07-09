@@ -4,12 +4,24 @@ import java.util.ArrayList;
 
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
+/**
+ * ChatDialag manage a very simple chat. When a chat message must be sent a MSG message is generated and then sent to the server.  
+ * 
+ * @see Context
+ *
+ */
+
 public class ChatDialog extends Context {
 	
 	public ChatDialog(ClientCLI client){
 		super(client);
 	}
 	
+	/**
+	 * because chat doesn't return any message to the ClientCLI thread, open() can't be used. openChat() substitute open() method. It manage the chat interaction and
+	 * is responsable of sending messages itself, putting the messsages directly into the client sendQueue.
+	 * @throws InterruptedException
+	 */
 	public void openChat() throws InterruptedException{
 		String name = null;
 		String uuidReceiver = null;

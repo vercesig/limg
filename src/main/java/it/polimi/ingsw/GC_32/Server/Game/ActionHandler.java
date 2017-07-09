@@ -162,7 +162,7 @@ public class ActionHandler{
         
         JsonValue SERVANTHarvestresponse = contextManager.waitForContextReply();
         contextManager.setContextAck(true, player);
-        action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOOSEN_SERVANTS").asInt());
+        action.setActionValue(action.getActionValue() + SERVANTHarvestresponse.asObject().get("CHOSEN_SERVANTS").asInt());
         
         player.getPersonalBoard().getCardsOfType("TERRITORYCARD").forEach(card -> {
             if(card.getMinimumActionvalue() <= action.getActionValue()){ 

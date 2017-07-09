@@ -3,6 +3,13 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 
+/**
+ * ExcommunicationContext handles the excommunication phase, i.e. the phase during which the clients must decide if support the church or not. 
+ * Context ends with the sending of a CONTEXTREPLY message.
+ * 
+ * @see Context
+ *
+ */
 
 public class ExcommunicationContext extends Context{
 

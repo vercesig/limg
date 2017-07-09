@@ -1,6 +1,5 @@
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
-import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Circle;
 

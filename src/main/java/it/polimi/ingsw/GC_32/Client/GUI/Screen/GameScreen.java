@@ -1,20 +1,10 @@
 
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
-import java.util.ArrayList;
-
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
-import it.polimi.ingsw.GC_32.Client.GUI.ClientGUI;
 
-import javafx.application.Platform;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class GameScreen extends BorderPane{
@@ -27,8 +17,6 @@ public class GameScreen extends BorderPane{
 	private CentralScreen board;
 	private MenuScreen menuScreen;
 	private ExtraScreen extraScreen;
-	
-	private boolean action;
 	//private ArrayList <LeaderCardGUI>
 	
 	public GameScreen(ClientCLI client)  {

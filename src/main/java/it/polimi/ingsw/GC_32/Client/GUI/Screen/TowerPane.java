@@ -1,13 +1,9 @@
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import it.polimi.ingsw.GC_32.Common.Utils.Tuple;
 import javafx.scene.Group;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 public class TowerPane {
 

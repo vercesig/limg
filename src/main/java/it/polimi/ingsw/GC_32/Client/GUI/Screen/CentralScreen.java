@@ -1,26 +1,6 @@
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
-import java.net.URI;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import it.polimi.ingsw.GC_32.Client.GUI.ClientGUI;
-import it.polimi.ingsw.GC_32.Client.Game.ClientActionSpace;
-import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Path;
 
 public class CentralScreen{
 	

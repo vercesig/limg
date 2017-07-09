@@ -4,10 +4,7 @@ package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 public class BoardPane {
 	

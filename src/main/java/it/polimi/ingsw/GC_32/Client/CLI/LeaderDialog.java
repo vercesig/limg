@@ -3,6 +3,14 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
+/**
+ * LeaderDialaog manage the menu for the leader actions. Client can discard a leader card, activate it or play it. According to the choise made by the client the context
+ * ends whit the sending of an ASKLDRACK message.
+ * 
+ * @see Context
+ *
+ */
+
 public class LeaderDialog extends Context{
 	
 	public LeaderDialog(ClientCLI client){ // command Friendly per inviare azione leader da client

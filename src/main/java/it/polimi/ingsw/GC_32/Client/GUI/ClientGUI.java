@@ -9,7 +9,6 @@ import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 import it.polimi.ingsw.GC_32.Client.CLI.Context;
 import it.polimi.ingsw.GC_32.Client.GUI.Screen.GameScreen;
-import it.polimi.ingsw.GC_32.Client.GUI.Screen.GameUtils;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 import javafx.application.Application;

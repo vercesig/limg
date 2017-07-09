@@ -3,9 +3,7 @@ package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
 import java.util.ArrayList;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
 
 public class MenuButton extends Button{
 

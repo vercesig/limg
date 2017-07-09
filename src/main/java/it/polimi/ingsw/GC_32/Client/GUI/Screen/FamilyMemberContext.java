@@ -1,30 +1,13 @@
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
-import javafx.geometry.Pos;
-import javafx.scene.AmbientLight;
-import javafx.scene.Camera;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.DrawMode;
 import javafx.stage.Stage;
 
 public class FamilyMemberContext {
@@ -68,7 +51,7 @@ public class FamilyMemberContext {
 	
 		}
 		
-	
+	/*
 		public static void chooseFamilyContext(AskActGUI scene, GameScreen game){
 			
 			int index = 1;
@@ -108,7 +91,7 @@ public class FamilyMemberContext {
 				
 				setEvent(scene, game, stage, button, pawn);
 			}
-		}		
+		}		*/
 	
 		private static void shift(VBox vbox, double scale, int factor){
 			vbox.setScaleX(scale);
@@ -129,7 +112,7 @@ public class FamilyMemberContext {
 
 		}
 			
-		private static void setEvent(AskActGUI scene, GameScreen game, Stage stage, Button button, FamilyMemberGUI pawn){
+		/*private static void setEvent(AskActGUI scene, GameScreen game, Stage stage, Button button, FamilyMemberGUI pawn){
 			
 			button.setOnMouseClicked(click -> {
 				scene.setIndex(game.getBoard().getPersonalPane().getFamily().indexOf(pawn));
@@ -137,5 +120,5 @@ public class FamilyMemberContext {
 				game.setDisable(false);
 				stage.close();
 			});
-		}		
+		}		*/
 }

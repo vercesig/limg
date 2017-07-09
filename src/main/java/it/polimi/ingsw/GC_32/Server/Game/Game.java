@@ -180,12 +180,8 @@ public class Game implements Runnable{
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 		
 		// do tempo ai thread di rete di spedire i messaggi in coda
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) {
-		    Thread.currentThread().interrupt();
-		}
-		LOGGER.log(Level.INFO, "done");	
+		Utils.safeSleep(200);
+		LOGGER.log(Level.INFO, "done");
 		
 		LOGGER.log(Level.INFO, "ready to play");
 		this.board.placeCards(this);
@@ -255,11 +251,7 @@ public class Game implements Runnable{
 			}
 			
 			playerList.forEach(player -> MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(this, player)));
-			try{
-				Thread.sleep(500);
-			}catch(InterruptedException e){
-				Thread.currentThread().interrupt();
-			}
+			Utils.safeSleep(500);
 			
 			setLock(turnManager.nextPlayer());
 			LOGGER.log(Level.INFO, "player "+getLock()+" has the lock");
