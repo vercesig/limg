@@ -12,12 +12,12 @@ import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Utils.Tuple;
 
-public class ClientActionHandler{
+public class ClientActionEffectHandler{
     private ActionEffectContext actionContext;
     private PrintWriter out;
     private Scanner in;
     
-    public ClientActionHandler(ActionEffectContext actionContext){
+    public ClientActionEffectHandler(ActionEffectContext actionContext){
         this.actionContext = actionContext;
         this.out = actionContext.out;
         this.in = actionContext.in;
@@ -27,22 +27,24 @@ public class ClientActionHandler{
         String command;
         int chosenRegionID = 0;
         int chosenSpaceID = 0;
+        int newIndexCost = indexCost;
         boolean nullAction = false;
         if(flagRegion){
+            boolean haveResponse = false;
             out.println("you can select any one tower\nenter the regionID where you want to perform your bonus action. [4-7]");
-            while(true){
+            while(!haveResponse){
                 command = in.nextLine();
                 try{
                     if(Integer.parseInt(command) < 4 && Integer.parseInt(command) > 7){
                         out.println("please, type a valid regionID");
                     }else{
                         chosenRegionID = Integer.parseInt(command);
-                        break;
+                        haveResponse = true;
                     }
                 }catch(NumberFormatException e){
                     if("q".equals(command)){
                         nullAction = true;
-                        break;
+                        haveResponse = true;
                     }
                     System.out.println("type a valid number");
                 }
@@ -50,6 +52,9 @@ public class ClientActionHandler{
         } else {
             out.println("you can perform the action only on the region number "+regionID);
             chosenRegionID = regionID;
+        }
+        if(nullAction){
+            return makeContextPayload(chosenRegionID, chosenSpaceID, indexCost, 0, nullAction);
         }
         Tuple<Integer, Boolean> spaceResponse = getActionSpaceID(chosenSpaceID, 0, 3);
         chosenSpaceID = spaceResponse.getFirstArg();
@@ -72,33 +77,33 @@ public class ClientActionHandler{
             if(card.get("cost")!=null){
                 JsonArray costList = card.get("cost").asArray();
                 if(costList.size() == 1){
-                    indexCost = 0;
+                    newIndexCost = 0;
                 } else {
                     out.println("Choose one cost of the card: ");
                     for(JsonValue js : costList){
                             out.println("> "+new ResourceSet(js.asObject()).toString() + " ");
                         }
                     out.println("type 0 or 1");
-                    indexCost = getIntWithQuit(costList.size()).getFirstArg();
+                    newIndexCost = getIntWithQuit(costList.size()).getFirstArg();
                 }
             }
         }
-        return makeContextPayload(chosenRegionID, chosenSpaceID, indexCost, 0, nullAction);
+        return makeContextPayload(chosenRegionID, chosenSpaceID, newIndexCost, 0, nullAction);
     }
     
     public JsonObject handleHarvest(boolean chooseServants, int maxServants){
         int chosenRegionID = 1;
         int chosenSpaceID = 0;
         int servants = 0;
-        boolean nullAction = false;
+        boolean nullAction;
         Tuple<Integer, Boolean> spaceResponse = getActionSpaceID(chosenSpaceID, 0, 1);
         chosenSpaceID = spaceResponse.getFirstArg();
         nullAction = spaceResponse.getSecondArg();
         if(chooseServants && !nullAction){
             out.println("ok, How many servant do you use?");
             Tuple<Integer, Boolean> servantResponse = getIntWithQuit(maxServants);
-            servants = spaceResponse.getFirstArg();
-            nullAction = spaceResponse.getSecondArg();
+            servants = servantResponse.getFirstArg();
+            nullAction = servantResponse.getSecondArg();
         }
         return makeContextPayload(chosenRegionID, chosenSpaceID, 0, servants, nullAction);
     }
@@ -106,7 +111,7 @@ public class ClientActionHandler{
     public JsonObject handleProduction(boolean chooseServants, int maxServants){
         int chosenRegionID = 0;
         int chosenSpaceID = 0;
-        boolean nullAction = false;
+        boolean nullAction;
         int servants = 0;
         Tuple<Integer, Boolean> spaceResponse = getActionSpaceID(chosenSpaceID, 0, 1);
         chosenSpaceID = spaceResponse.getFirstArg();
@@ -114,8 +119,8 @@ public class ClientActionHandler{
         if(chooseServants && !nullAction){  // new feature
             out.println("ok, How many servant do you use?");
             Tuple<Integer, Boolean> servantResponse = getIntWithQuit(maxServants);
-            servants = spaceResponse.getFirstArg();
-            nullAction = spaceResponse.getSecondArg();
+            servants = servantResponse.getFirstArg();
+            nullAction = servantResponse.getSecondArg();
         }   
         return makeContextPayload(chosenRegionID, chosenSpaceID, 0, servants, nullAction);
     }
@@ -124,20 +129,21 @@ public class ClientActionHandler{
         String command;
         int chosenSpaceID = defaultSpaceID;
         boolean nullAction = false;
+        boolean haveResponse = false;
         out.println("ok, now type the spaceID where you would place your pawn");
-        while(true){
+        while(!haveResponse){
             command = in.nextLine();
             try{
                 if(Integer.parseInt(command) < min || Integer.parseInt(command) > max){
                     out.println("action space with that id does not exist\ntype a number between " + min + "-" + max);
                 }else{
                     chosenSpaceID = Integer.parseInt(command);
-                    break;
+                    haveResponse = true;
                 }
             }catch(NumberFormatException e){
                 if("q".equals(command)){
                     nullAction = true;
-                    break;
+                    haveResponse = true;
                 } else {
                     out.println("type a valid number");
                 }
@@ -160,7 +166,8 @@ public class ClientActionHandler{
     
     public Tuple<Integer, Boolean> getIntWithQuit(int max){
         String command;
-        while(true){
+        boolean haveResponse = false;
+        while(!haveResponse){
             command = in.nextLine();
             try{
                 if(Integer.parseInt(command) < 0 || Integer.parseInt(command) > max){
@@ -176,5 +183,6 @@ public class ClientActionHandler{
                 }
             }
         }
+        return null;
     }
 }

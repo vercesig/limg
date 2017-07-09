@@ -4,11 +4,11 @@ import com.eclipsesource.json.JsonObject;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
 public class ActionEffectContext extends Context{
-    private ClientActionHandler actionHandler;
+    private ClientActionEffectHandler actionHandler;
 
 	public ActionEffectContext(ClientCLI client){
 		super(client);
-		this.actionHandler = new ClientActionHandler(this);
+		this.actionHandler = new ClientActionEffectHandler(this);
 	}
 	
 	public String open(Object object){
@@ -61,13 +61,16 @@ public class ActionEffectContext extends Context{
 					close();
 				} else {
 					out.println("action is ready to be sent to the server. Type 'y' if you want ask the server to apply your action, otherwise type 'n'");
-					while(true){
+					boolean haveResponse = false;
+					while(!haveResponse){
 						command = in.nextLine();
 						switch(command){
 							case "y":
 								close();
+								haveResponse = true;
 								break;
 							case "n":
+								haveResponse = true;
 								break;
 							default:
 								out.println("please, type a valid letter");
