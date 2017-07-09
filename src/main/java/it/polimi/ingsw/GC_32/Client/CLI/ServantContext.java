@@ -2,6 +2,14 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import com.eclipsesource.json.JsonObject;
 
+/**
+ * ServantContext is used every time the server must ask the client id he wants to spend its SERVANTS to increase the action value of his action. 
+ * Context ends with the sending of a CONTEXTREPLY message.
+ * 
+ * @see Context
+ *
+ */
+
 public class ServantContext extends Context{
 
 	public ServantContext(ClientCLI client){

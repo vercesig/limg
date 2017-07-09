@@ -29,15 +29,7 @@ public class ClientPlayerTest{
 		assertEquals(2, this.clientPlayer.getCards().get("TEST").size());
 		assertTrue(this.clientPlayer.getCards().get("TEST").contains("TESTCARD2"));
 	}
-	
-	@Test
-	public void checkAddResource(){
-		ResourceSet rs = new ResourceSet();
-		rs.addResource("WOOD", 10);
-		this.clientPlayer.addResources(rs);
-		assertEquals(10, this.clientPlayer.getPlayerResources().getResource("WOOD"));
-	}
-	
+		
 	@Test
 	public void checkToString(){
 		this.clientPlayer.addCard("TEST", "TESTCARD");

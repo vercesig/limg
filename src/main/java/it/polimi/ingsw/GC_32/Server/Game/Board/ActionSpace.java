@@ -32,8 +32,7 @@ public class ActionSpace{
 	private final int actionSpaceID;
 	private boolean blocked;
 	
-	/**If returns true, this is a single ActionSpace and only one FamilyMember is permitted.
-	 * If returns false, this is a multiple ActionSpace and there is no limit of FamilyMember that can occupy this ActionSpace
+	/**
 	 * builds an ActionSpace object with the specific parameters passed.  
 	 * <p>
 	 * An actionSpace that has to be used in the Game, must have actionSpaceID and regionID 

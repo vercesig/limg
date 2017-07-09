@@ -8,6 +8,14 @@ import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
+/**
+ * PrivilegeContext manage council privileges. When a council privilege is gained by the client, server must ask to him what resources he wants take from his privilege.
+ * This context is responsable of the client interaction during this choise. Context ends with the sending of a CONTEXTREPLY message.
+ * 
+ * @see Context
+ *
+ */
+
 public class PrivilegeContext extends Context{
 	
 	public PrivilegeContext(ClientCLI client){
@@ -63,26 +71,6 @@ public class PrivilegeContext extends Context{
 				return CONTEXTREPLY.toString();
 			}		
 			try{
-				/*switch(Integer.parseInt(command)){
-				case 0:
-					CONTEXTREPLYpayloadinfo.add(values[0]);
-					break;
-				case 1:
-					CONTEXTREPLYpayloadinfo.add(values[1]);
-					break;
-				case 2:
-					CONTEXTREPLYpayloadinfo.add(values[2]);
-					break;
-				case 3:
-					CONTEXTREPLYpayloadinfo.add(values[3]);
-					break;
-				case 4:
-					CONTEXTREPLYpayloadinfo.add(values[4]);
-					break;
-				default:
-					System.out.println("type a valid number");
-					break;
-				}*/
 				if(Integer.parseInt(command)>=0&&Integer.parseInt(command)<=4){
 					if(!choosedResources.contains(command)){
 						CONTEXTREPLYpayloadinfo.add(values[Integer.parseInt(command)]);

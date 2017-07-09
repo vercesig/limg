@@ -4,9 +4,15 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Client.Game.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
+/**
+ * ActionEffectContext handles bonus action.
+ * 
+ * @see Context
+ *
+ */
 
 public class ActionEffectContext extends Context{
 
@@ -32,10 +38,6 @@ public class ActionEffectContext extends Context{
 		boolean flagRegion = false;
 		if(!Jsonpayload.get("FLAGREGION").isNull())
 			flagRegion = Jsonpayload.get("FLAGREGION").asBoolean();
-		
-		/*payload.remove("TYPE");
-		payload.remove("REGIONID");
-		payload.remove("FLAGREGION");*/
 		
 		int choosedRegionID = 0;
 		int choosedSpaceID = 0;

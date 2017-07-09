@@ -4,11 +4,18 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Client.Game.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientFamilyMember;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
+/**
+ * AskActDialaog manage the interaction with the player when a standard action must be performed, i.e. action triggered by the reception of a TRNEND message.
+ * Context ends with the sending of a ASKACT message.
+ * 
+ * @see Context
+ *
+ */
 
 public class AskActDialog extends Context{
 

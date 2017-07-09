@@ -7,6 +7,14 @@ import com.eclipsesource.json.JsonObject;
 
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 
+/**
+ * LeaderSetContext handles the leader phase when the game starts, allowing players to choise what leader card they want take. Until server doesn't close this phase, this
+ * context is open, and a LDRSET message is sent for every choise made by the client.
+ * 
+ * @see Context
+ *
+ */
+
 public class LeaderSetContext extends Context{
 
 	public  LeaderSetContext(ClientCLI client){ // context aperto nella distribuzione delle carte leader
