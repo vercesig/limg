@@ -6,10 +6,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 public class SocketMsgConnection implements MsgConnection, KillableRunnable{
     private Logger LOGGER = Logger.getLogger(this.getClass().getName());

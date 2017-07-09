@@ -5,9 +5,9 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 /**
  * 

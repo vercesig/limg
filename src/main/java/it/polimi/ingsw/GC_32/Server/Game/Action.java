@@ -39,6 +39,7 @@ public class Action{
     	this.actionRegionId = actionRegionId;
     	this.additionalInfo = new JsonObject();
     	this.isValid = true;
+    	this.additionalInfo = new JsonObject();
     }
     
     /**

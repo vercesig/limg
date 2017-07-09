@@ -2,13 +2,13 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import java.util.Map.Entry;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerLayer;
 import it.polimi.ingsw.GC_32.Server.Game.Board.TowerRegion;
