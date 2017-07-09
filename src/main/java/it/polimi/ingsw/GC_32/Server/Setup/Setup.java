@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+
 import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 import it.polimi.ingsw.GC_32.Server.Game.Board.*;
 import it.polimi.ingsw.GC_32.Server.Game.Card.*;
@@ -174,5 +177,18 @@ public class Setup {
 															.getResourceAsStream(path));
 		GameConfig.getInstance().registerPointsConversion(JsonImporter
 																.importPointsConversion((fileReader)));
+	}
+	
+	/**
+	 * Loads the new game timeout and max players from a config file
+	 * @see GameConfig
+	 * @throws IOException
+	 */
+	public void loadConfig(String path) throws IOException{
+	    Reader fileReader = new InputStreamReader(this.getClass()
+                                                      .getClassLoader()
+                                                      .getResourceAsStream(path));
+	    JsonObject jConfig = Json.parse(fileReader).asObject();
+	    GameConfig.getInstance().setConfig(jConfig.get("NEWGAME_TIMEOUT").asLong(), jConfig.get("MAX_PLAYERS").asInt());
 	}
 }

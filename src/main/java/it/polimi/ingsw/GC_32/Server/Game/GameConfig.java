@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 
+import it.polimi.ingsw.GC_32.Common.Utils.Tuple;
 import it.polimi.ingsw.GC_32.Server.Game.Board.PersonalBonusTile;
 
 /**
@@ -29,6 +30,7 @@ public class GameConfig {
 	private HashMap <Integer, Integer> excommunicationTrack;
 	private HashMap <String, JsonValue> pointsConversion;
 	private static GameConfig instance;
+	private Tuple<Long, Integer> gameConfig;
 	
 	private GameConfig(){}
 	
@@ -105,5 +107,22 @@ public class GameConfig {
 	 */
 	public HashMap <String, JsonValue> getPointsConversion(){
 		return this.pointsConversion;
+	}
+	
+	/**
+	 * Sets the game config options
+	 * @param newGameTimeout the timeout before a 2-player game starts
+	 * @param maxPlayers the maximum ammount of players
+	 */
+	public void setConfig(long newGameTimeout, int maxPlayers){
+	    this.gameConfig = new Tuple<>(newGameTimeout, maxPlayers);
+	}
+	
+	/**
+	 * returns the game config options
+	 * @return a tuple containing the game options (timeout, maxPlayers)
+	 */
+	public Tuple<Long, Integer> getConfig(){
+	    return this.gameConfig;
 	}
 }

@@ -24,6 +24,7 @@ public class Main {
     public static void main( String[] args ) throws IOException, InterruptedException{
     	LOGGER.log(Level.INFO, "starting main");
 		Setup setup = new Setup();
+	    setup.loadConfig("gameConfig.json");
 		setup.loadCard("cards.json");
 		setup.loadBonusTile("bonus_tile.json");
 		setup.loadBonusSpace("bonus_space.json");
