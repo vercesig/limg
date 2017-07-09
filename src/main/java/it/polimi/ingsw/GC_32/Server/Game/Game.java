@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
-
 import it.polimi.ingsw.GC_32.Common.Network.GameMessage;
 import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
@@ -83,9 +81,6 @@ public class Game implements Runnable{
 	private MessageHandler messageHandler;
 	private ActionHandler actionHandler;
     private EndPhaseHandler endPhaseHandler;
-	
-	// context management
-	private HashMap<String, JsonValue> contextInfoContainer;
 
 	private final UUID gameUUID;
 	
@@ -101,8 +96,6 @@ public class Game implements Runnable{
 		this.moveChecker = new MoveChecker();
 		this.contextManager = new ContextManager(this);
 		MessageManager.getInstance().registerGame(this);
-		
-		contextInfoContainer = new HashMap<String, JsonValue>();
 		
 		LOGGER.log(Level.INFO, "setting up game...");
 		this.playerList = new ArrayList<Player>();
@@ -271,19 +264,14 @@ public class Game implements Runnable{
 	 * @param action the action performed by the player
 	 */
 	public void makeMove(Player player, Action action){
-		LOGGER.info(() -> Boolean.toString(contextInfoContainer.isEmpty()));
-		
 		LOGGER.log(Level.INFO, "PRIMA DEGLI EFFETTI PERMANENTI:\n%s", action.toString());
-		System.out.println("prima effetti permanenti\n"+action.toString());
 		MoveUtils.applyEffects(this.board, player, action, contextManager);
 		LOGGER.log(Level.INFO, "DOPO GLI EFFETTI PERMANENTI:\n%s", action.toString());
-		System.out.println("dopo effetti permanenti\n"+action.toString());
 		LOGGER.log(Level.INFO, "PRIMA DEL BONUS:\n%s", player.toString());
-		System.out.println("PRIMA DEL BONUS:\n"+ player.toString());
 		MoveUtils.addActionSpaceBonus(this.board, player, action);
 		LOGGER.log(Level.INFO, "DOPO DEL BONUS:\n%s", player.toString());
-		System.out.println("dopo DEL BONUS:\n"+ player.toString());
-		if(!action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
+		if(action.getAdditionalInfo().asObject().get("BONUSFLAG") != null &&
+		   action.getAdditionalInfo().asObject().get("BONUSFLAG").asBoolean()) // da attivare solo per azioni non bonus
 			moveFamiliar(this.board, player, action);
 		
 		switch(action.getActionType()){
@@ -304,7 +292,7 @@ public class Game implements Runnable{
 				break;
 		}
 		
-		System.out.println("dopo azione:\n"+ player.toString());
+		LOGGER.log(Level.FINE, "dopo azione: %s\n", player.toString());
 		
 	}
 	
@@ -461,5 +449,13 @@ public class Game implements Runnable{
 	 */
 	protected MessageHandler getMessageHandler(){
 	    return this.messageHandler;
+	}
+	
+	/** 
+	 * replaces the current actionHandler with the one provided
+	 * @param actionHandler
+	 */
+	protected void setActionHandler(ActionHandler actionHandler){
+	    this.actionHandler = actionHandler;
 	}
 }
