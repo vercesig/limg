@@ -71,7 +71,63 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>Server</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <classifier>Server</classifier>
+                            <includes>
+                                <include>it/polimi/ingsw/GC_32/Server/**/*</include>
+                                <include>it/polimi/ingsw/GC_32/Common/**/*</include>
+                                <include>*.json</include>
+                            </includes>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.GC_32.Server.Main</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>limg_server_GC_32</finalName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Client</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <classifier>Client</classifier>
+                            <includes>
+                                <include>it/polimi/ingsw/GC_32/Client/**/*</include>
+                                <include>it/polimi/ingsw/GC_32/Common/**/*</include>
+                                <include>*.json</include>
+                                <include>css/**/*</include>
+                                <include>images/**/*</include>
+                            </includes>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.GC_32.Client.Controller.MainClient</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>limg_client_GC_32</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 </project>
