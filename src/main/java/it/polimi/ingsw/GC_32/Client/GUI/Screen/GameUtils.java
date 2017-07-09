@@ -21,7 +21,7 @@ public class GameUtils {
 	
 	public static void updateCardButton(String cardName, BoardButton button){
 		
-		if(!cardName.equals("EMPTY")){
+		if(!"EMPTY".equals(cardName)){
 			String path = "/images/cards/" + ClientCardRegistry.getInstance()
 																.getDetails(cardName)
 																.get("path").asString();		
@@ -40,7 +40,7 @@ public class GameUtils {
 	
 	private static void updatePersonalCard(ClientPlayer player, GameScreen game){
 		for(String key: player.getCards().keySet()){
-			if(!key.equals("LEADER")){
+			if(!"LEADER".equals(key)){
 				ArrayList <String> cardNames = player.getCards().get(key);
 				ArrayList <BoardButton> buttonSet = game.getBoard().getPersonalPane().getCards().get(key);
 				for(int i=0; i<cardNames.size(); i++){

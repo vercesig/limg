@@ -41,12 +41,12 @@ public class BonusEffect {
 			p.getResources().addResource(increase.asString(), increasingQuantity.asInt()*howManyTimes.apply(p));
 		};
 		return bonusEffect;		
-	};	
+	};
 
 	/**
 	 * load the builder into the EffectRegistry with flag "BONUS"
 	 */
 	public static void loadBuilder() {
 		EffectRegistry.getInstance().registerBuilder("BONUS", bonusEffectBuilder);
-	}	
+	}
 }

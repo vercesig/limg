@@ -20,7 +20,7 @@ public class FamilyMemberGUI extends Cylinder{
 		super(radius, height);
 		PhongMaterial colored = new PhongMaterial(color);
 		this.setMaterial(colored);
-		this.setTranslateX(x + factor);
+		this.setTranslateX(0.0 + x + factor);
 		this.setTranslateY(y);
 		this.setTranslateZ(z);
 		this.setDrawMode(DrawMode.FILL);

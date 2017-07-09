@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class FamilyMemberContext {
 	 
-	public FamilyMemberContext(){};
+	public FamilyMemberContext(){}
 	
 	public static void showFamily(ArrayList <FamilyMemberGUI> familiar){ 
 		
@@ -98,7 +98,7 @@ public class FamilyMemberContext {
 			vbox.setScaleY(scale);
 
 			vbox.setTranslateY(-80);
-			vbox.setTranslateX(factor - 50);
+			vbox.setTranslateX(factor - 50.0);
 			vbox.setTranslateZ(0);
 
 		}
@@ -107,7 +107,7 @@ public class FamilyMemberContext {
 			button.setScaleX(scale);
 			button.setScaleY(scale);
 			button.setTranslateY(100);
-			button.setTranslateX(factor+100);
+			button.setTranslateX(factor + 100.0);
 			button.setTranslateZ(0);
 
 		}

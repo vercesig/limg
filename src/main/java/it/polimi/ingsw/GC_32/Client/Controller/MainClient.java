@@ -143,12 +143,9 @@ public class MainClient{
 		case "c":
 			this.graphicInterface = new ClientCLI();
 			return true;
-		case "g": 
-			try {
-				ClientGUI.initClientGui();
-				this.graphicInterface = ClientGUI.getClientGui();
-				
-			}catch (Exception e) {}
+		case "g":
+		    ClientGUI.initClientGui();
+			this.graphicInterface = ClientGUI.getClientGui();
 			return true;
 		default: return false;
 		

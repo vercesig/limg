@@ -116,7 +116,7 @@ public class ResourcePane {
 		VBox set = new VBox();
 		set.setAlignment(Pos.CENTER);
 		set.getChildren().addAll(string, value);
-		set.setLayoutX(10 + factor);
+		set.setLayoutX(10.0 + factor);
 		set.setLayoutY(0);
 		this.resourceSet.add(value);
 		this.bot.getChildren().add(set);
