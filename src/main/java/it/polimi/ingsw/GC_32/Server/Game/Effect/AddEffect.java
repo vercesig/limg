@@ -59,7 +59,7 @@ public class AddEffect {
 				resourceSet.getResourceSet().remove("FAITH_POINTS");
 				resourceSet.getResourceSet().remove("VICTORY_POINTS");
 				resourceSet.getResourceSet().remove("MILITARY_POINTS");
-				
+				System.out.println("ATTIVATO DOPPIO EFFETTO");
 				p.getResources().addResource(resourceSet); // doppie risorse!!!
 			}
 		};

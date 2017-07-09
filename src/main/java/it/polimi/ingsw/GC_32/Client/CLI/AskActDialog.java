@@ -81,7 +81,7 @@ public class AskActDialog extends Context{
 			while(actionFlag){
 				command = in.nextLine();
 				try{
-					if(Integer.parseInt(command)>7 || Integer.parseInt(command)<0){
+					if(Integer.parseInt(command)>3 || Integer.parseInt(command)<0){
 						out.println(">action space with that id does not exist");
 						out.println("type a number between 0-3");
 					}else{

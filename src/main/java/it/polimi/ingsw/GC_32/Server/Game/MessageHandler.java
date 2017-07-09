@@ -120,9 +120,14 @@ public class MessageHandler{
         LOGGER.log(Level.INFO, "LEADERCARD: %s", cardName);
         LOGGER.log(Level.INFO, "DECISION: %s", decision);
         Player p = GameRegistry.getInstance().getPlayerFromID(message.getPlayerUUID());
+        LeaderCard card = null;
+        for (LeaderCard leader: p.getPersonalBoard().getLeaderCards()){
+        	if(leader.getName().equals(cardName)){
+        		card = leader;
+        	}
+        }
         boolean result;
-        if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision)){
-            LOGGER.info("ATTIVATO!");
+        if(LeaderUtils.checkLeaderMove(p.getUUID(), cardName, decision, this.board, this.game.getContextManager())){            
             result = true;
             if("DISCARD".equals(decision)){ //GUADAGNA UN PRIVILEGIO
                 game.getContextManager().openContext(ContextType.PRIVILEGE, p, null, Json.value(1));
@@ -131,12 +136,6 @@ public class MessageHandler{
                 LOGGER.info("PRIMA DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(game.getLock()));
                 GameRegistry.getInstance().getPlayerFromID(game.getLock()).getResources().addResource("COINS", 1);
                 GameRegistry.getInstance().getPlayerFromID(game.getLock()).getResources().addResource( new ResourceSet(Json.parse(COUNCILPRIVILEGEresponse.asArray().get(0).asString()).asObject()));
-                LeaderCard card = null;
-                for (LeaderCard leader: p.getPersonalBoard().getLeaderCards()){
-                	if(leader.getName().equals(cardName)){
-                		card = leader;
-                	}
-                }
                 GameRegistry.getInstance().getPlayerFromID(game.getLock()).getPersonalBoard().getLeaderCards().remove(card);
                 LOGGER.info("DOPO DEL PRIVILEGE:\n" + GameRegistry.getInstance().getPlayerFromID(game.getLock()));
             }
@@ -147,7 +146,13 @@ public class MessageHandler{
         }
         MessageManager.getInstance()
                       .sendMessge(ServerMessageFactory
-                                  .buildASKLDRACKmessage(game, p, cardName, decision, result));      
+                                  .buildASKLDRACKmessage(game, p, cardName, decision, result));    
+        if(result){
+            MessageManager.getInstance().sendMessge(ServerMessageFactory.buildCHGBOARDSTATmessage(game, game.getBoard()));
+            game.getPlayerList().forEach(gamePlayer ->
+            MessageManager.getInstance().sendMessge(ServerMessageFactory.buildSTATCHNGmessage(game, gamePlayer))
+            );
+        }
     }
     
     
@@ -229,7 +234,7 @@ public class MessageHandler{
 						victoryPointsConverted = faithScore*2; // caso faithPoints > 15
 					
 					if(game.getPlayerList().get(playerIndex).isFlagged("MOREFAITH")){  // Sisto IV
-						victoryPointsConverted += 5;
+						victoryPointsConverted =+ 5;
 					}
 					game.getPlayerList().get(playerIndex).getResources().addResource("VICTORY_POINTS", victoryPointsConverted);
 				}

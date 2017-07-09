@@ -94,6 +94,10 @@ task convertCards {
             executable 'python3'
             args 'utils/card_converter.py', 'raw_resources/excom_cards.csv', 'src/main/resources/excom_cards.json'
         }
+        exec {
+            executable 'python3'
+            args 'utils/card_converter.py', 'raw_resources/leader_cards.csv', 'src/main/resources/leader_cards.json'
+        }
     }
     description = "Convert the cards from csv to json format"
 }
