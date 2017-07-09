@@ -29,8 +29,8 @@ public class GameLobby implements KillableRunnable{
 	private final static Logger LOGGER = Logger.getLogger(GameLobby.class.getName());
 	
 	private int MIN_PLAYERS = 2;
-	private int MAX_PLAYERS = 4;
-	private int startGameTimeout = 1000;
+	private int MAX_PLAYERS = GameConfig.getInstance().getConfig().getSecondArg();
+	private long startGameTimeout = GameConfig.getInstance().getConfig().getFirstArg();
 	private Game game;
 	private boolean stop;
 	

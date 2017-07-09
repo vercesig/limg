@@ -60,7 +60,7 @@ jar {
     include ''
 }
 
-task clientJar(type: Jar) {  
+task clientJar(type: Jar) {
     from(sourceSets.main.output) {
         include 'it/polimi/ingsw/GC_32/Client/**/*.class'
         include 'it/polimi/ingsw/GC_32/Common/**/*.class'
@@ -69,6 +69,18 @@ task clientJar(type: Jar) {
         include '*'
     }
     baseName 'limg_client'
+    manifest {
+        attributes(
+            'Implementation-Title': project.name + '_client',
+            'Main-Class': 'it.polimi.ingsw.GC_32.Client.Controller.MainClient'
+        )
+    }
+    from { 
+        configurations.compile.collect { 
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
 }
 tasks.jar.dependsOn(clientJar)
 
@@ -81,6 +93,18 @@ task serverJar(type: Jar) {
         include '*'
     }
     baseName 'limg_server'
+    manifest {
+        attributes(
+            'Implementation-Title': project.name + '_server',
+            'Main-Class': 'it.polimi.ingsw.GC_32.Server.Main'
+        )
+    }
+    from { 
+        configurations.compile.collect { 
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
 }
 tasks.jar.dependsOn(serverJar)
 
