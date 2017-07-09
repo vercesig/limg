@@ -174,11 +174,8 @@ public class MessageHandler{
                                                                                                   game.getLock().toString(), 
                                                                                                   memoryAction.get(game.getLock())));
         }
-        try{ // wait for TRNBGN message
-            Thread.sleep(500);
-        } catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+        
+        Utils.safeSleep(500); // wait for TRNBGN message
         
         memoryAction.remove(game.getLock());
                 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
