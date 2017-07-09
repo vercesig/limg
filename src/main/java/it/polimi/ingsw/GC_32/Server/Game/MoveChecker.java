@@ -2,7 +2,6 @@ package it.polimi.ingsw.GC_32.Server.Game;
 
 import com.rits.cloning.Cloner;
 
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Effect.Effect;
 import it.polimi.ingsw.GC_32.Server.Game.MoveUtils;

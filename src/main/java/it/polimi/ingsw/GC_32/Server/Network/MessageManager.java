@@ -81,7 +81,7 @@ public class MessageManager {
 	 * 
 	 * @param message the message to put into the receivedQueue
 	 */
-	synchronized public void putRecivedMessage(GameMessage message){
+	public synchronized void putRecivedMessage(GameMessage message){
 		if(chatMessageTypeSet.contains(message.getOpcode())){
 			message.setBroadcast();
 			commonReceiveQueue.add(message);

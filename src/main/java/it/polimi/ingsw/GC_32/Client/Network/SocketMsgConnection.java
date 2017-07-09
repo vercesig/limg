@@ -6,10 +6,10 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.MsgConnection;
 import it.polimi.ingsw.GC_32.Common.Utils.KillableRunnable;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 
 /**
  * client-side network thread which handles the socket connection. It has some interal queues to avoid possibly loss of packets of out-of-sequence receptions.

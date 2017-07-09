@@ -12,10 +12,24 @@ import it.polimi.ingsw.GC_32.Server.Game.Board.Board;
 import it.polimi.ingsw.GC_32.Server.Game.Card.LeaderCard;
 import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 
+/**
+ *	Class used to manage the logic of the leader cards. it has static methods for utilities 
+*/
+
 public class LeaderUtils {
 	
 	public LeaderUtils(){}
 	
+	/**
+	 * Checks if a client request to make a leader action it is possible. 
+	 *
+	 * @param playerUIID of the player who sent the message
+	 * @param name of the leader card used for an action
+	 * @param type of the action
+	 * @param board instance used to apply effects
+	 * @param context manager instance used to specific context
+	 * @return boolean value of the check
+	 */
 	public static boolean checkLeaderMove(UUID playerUUID, String nameCard, String decision, Board board, ContextManager cm){
 		
 		Player p = GameRegistry.getInstance().getPlayerFromID(playerUUID);
@@ -75,6 +89,13 @@ public class LeaderUtils {
 		}
 	}
 
+	/**
+	 * It checks if the requirements of a leader cards are meet for a player
+	 * @param playerUUID of the player
+	 * @param leader card object of the card used for the leader action
+	 * @return boolean value of this test
+	 */
+	
 	private static boolean hasRequirements(UUID playerUUID, LeaderCard leader){
 		Player player = GameRegistry.getInstance().getPlayerFromID(playerUUID);
 		JsonObject requirements = leader.getRequirements();

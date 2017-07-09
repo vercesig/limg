@@ -2,9 +2,9 @@ package it.polimi.ingsw.GC_32.Server.Game.Board;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.GameConfig;
 import it.polimi.ingsw.GC_32.Server.Game.Card.CardRegistry;

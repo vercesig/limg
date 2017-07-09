@@ -1,8 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game;
 
-import java.util.logging.Level;
-
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Board.ActionSpace;
 
 /**
@@ -109,10 +106,9 @@ public class FamilyMember{
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("actionValue :"+this.actionValue+"\nposition :");
-		try{
+		if(this.position != null){
 			tmp.append(this.position.toString());
-		}catch(NullPointerException e){
-			Logger.getLogger("").log(Level.SEVERE, "context", e);
+		} else {
 			tmp.append("la pedina non è stata ancora piazzata");
 		}
 		return new String(tmp);
