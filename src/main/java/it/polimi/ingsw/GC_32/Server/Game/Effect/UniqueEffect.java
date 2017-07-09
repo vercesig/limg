@@ -18,64 +18,70 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
  */
 public class UniqueEffect {
 
-	// annulla il bonus. Da usare su board deepCopiata e non dovra' sostituire la board Originale.
-	static Effect noTowerActionSpaceBonus = (b, p, a, cm) ->{
-		if(a.getRegionId() != b.getMarketRegion().getRegionID()){
-			ResourceSet bonus =b.getRegion(a.getRegionId()).getActionSpace(a.getActionSpaceId()).getBonus();
-			if(bonus!=null) //la carta è su un actionSpace con bonus
-				p.getResources().subResource(bonus);
-		}
-	};
-	// Excommunicate card 2-5
-	static Effect noMarketAction = (b, p, a, cm) -> {
-		if(a.getRegionId() == b.getMarketRegion().getRegionID()){
-			a.invalidate();
-		}
-	};
 	
-	//Excommunicate card 1-7
-		static Effect lessDice = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
-				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() != 0){
-					a.setActionValue(a.getActionValue() - 1);
-				}
+		static Effect noTowerActionSpaceBonus = (b, p, a, cm) ->{
+			if(a.getRegionId() != b.getMarketRegion().getRegionID()){
+				ResourceSet bonus =b.getRegion(a.getRegionId()).getActionSpace(a.getActionSpaceId()).getBonus();
+				if(bonus!=null) 
+					p.getResources().subResource(bonus);
+			}
+		};
+		// Excommunicate card 2-5
+		static Effect noMarketAction = (b, p, a, cm) -> {
+			if(a.getRegionId() == b.getMarketRegion().getRegionID()){
+				a.invalidate();
 			}
 		};
 		
-		//Sigismondo
-		static Effect greyFamily = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
-				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() == 0){
-					a.setActionValue(a.getActionValue() + 3);
+		//Excommunicate card 1-7
+			static Effect lessDice = (b, p, a, cm) -> {
+				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+					if(a.getAdditionalInfo().get("FAMILYMEMBER_ID").asInt() != 0){
+						a.setActionValue(a.getActionValue() - 1);
+					}
 				}
-			}
-		};
-		
-		//Ludovico il Moro
-		static Effect familyColodDice = (b, p, a, cm) -> {
-			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
-				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
-					a.setActionValue(5);
+			};
+			
+			//Sigismondo
+			static Effect greyFamily = (b, p, a, cm) -> {
+				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+					if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() == 0){
+						System.out.println("ATTIVO SIGISMONDO");
+						a.setActionValue(a.getActionValue() + 3);
+					}
 				}
-			}
-		};
-		
-		//Lucrezia Borgia
-		static Effect familyColorBonus = (b, p, a, cm)->{
-			if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
-				if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
-					a.setActionValue(a.getActionValue() + 2);
+			};
+			
+			//Ludovico il Moro
+			static Effect familyColodDice = (b, p, a, cm) -> {
+				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+					if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
+						System.out.println("ATTIVO MORO");
+						a.setActionValue(5);
+					}
 				}
-			}
-		};
-		
-		//Lorenzo de Medici
-		static Effect jolly = (b, p, a, cm)->{ // BALZA
-		};
-		
-		//Federico Montefeltro
-		static Effect familySixValor = (b, p, a, cm)->{  //BALZA
-		};
+			};
+			
+			//Lucrezia Borgia
+			static Effect familyColorBonus = (b, p, a, cm)->{
+				if(a.getAdditionalInfo().get("FAMILYMEMBER_ID")!=null){ // if effect is triggered by an ACTION effect
+					if(a.getAdditionalInfo().asObject().get("FAMILYMEMBER_ID").asInt() != 0){
+						System.out.println("LUVREZIA BORGIA");
+						a.setActionValue(a.getActionValue() + 2);
+					}
+				}
+			};
+			
+			//Lorenzo de Medici
+			static Effect jolly = (b, p, a, cm)->{ 
+				System.out.println("ATTIVO LORENZO MEDICI");
+
+			};
+			
+			//Federico Montefeltro
+			static Effect familySixValor = (b, p, a, cm)->{  
+				System.out.println("ATTIVO FEDERICO MONTEFELTRO");
+			};
 		
 		/**
 		 * load the custom effects into the EffectRegistry

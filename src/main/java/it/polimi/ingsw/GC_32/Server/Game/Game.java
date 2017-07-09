@@ -144,9 +144,35 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("FAITH_POINTS", 0);
 			playerList.get(i).getResources().setResource("VICTORY_POINTS", 0);
 			playerList.get(i).getResources().setResource("MILITARY_POINTS", 0);
-	
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
+		
+			//cheats
+/*			playerList.get(i).registerGame(this.gameUUID);
+			playerList.get(i).getResources().setResource("WOOD", 100);
+			playerList.get(i).getResources().setResource("STONE", 100);
+			playerList.get(i).getResources().setResource("SERVANTS", 100);
+			playerList.get(i).getResources().setResource("COINS", 100 + i);
+			playerList.get(i).getResources().setResource("FAITH_POINTS", 100);
+			playerList.get(i).getResources().setResource("VICTORY_POINTS", 100);  
+			playerList.get(i).getResources().setResource("MILITARY_POINTS", 100);
+			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));*/
 		}
+			//cheats
+/*		Deck <DevelopmentCard> deck01 = CardRegistry.getInstance().getDeck("VENTURECARD");
+		Deck <DevelopmentCard> deck02 = CardRegistry.getInstance().getDeck("BUILDINGCARD");
+		Deck <DevelopmentCard> deck03 = CardRegistry.getInstance().getDeck("CHARACTERCARD");
+		Deck <DevelopmentCard> deck04 = CardRegistry.getInstance().getDeck("TERRITORYCARD");
+		
+		for(int k=0; k<5; k++){
+			playerList.get(0).getPersonalBoard().addCard(deck01.getDeck().get(k));
+			playerList.get(0).getPersonalBoard().addCard(deck02.getDeck().get(k));
+			playerList.get(0).getPersonalBoard().addCard(deck03.getDeck().get(k));
+			playerList.get(0).getPersonalBoard().addCard(deck04.getDeck().get(k));
+			playerList.get(1).getPersonalBoard().addCard(deck01.getDeck().get(k));
+			playerList.get(1).getPersonalBoard().addCard(deck02.getDeck().get(k));
+			playerList.get(1).getPersonalBoard().addCard(deck03.getDeck().get(k));
+			playerList.get(1).getPersonalBoard().addCard(deck04.getDeck().get(k));
+		}*/		
 		LOGGER.log(Level.INFO, "done");
 	}
 	
