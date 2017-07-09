@@ -453,7 +453,6 @@ public class Game implements Runnable{
 	
 	/** 
 	 * replaces the current actionHandler with the one provided
-	 * @param actionHandler
 	 */
 	protected void setActionHandler(ActionHandler actionHandler){
 	    this.actionHandler = actionHandler;

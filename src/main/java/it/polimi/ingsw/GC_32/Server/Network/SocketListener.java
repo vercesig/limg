@@ -6,9 +6,9 @@ import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
 
 /**

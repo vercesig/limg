@@ -160,10 +160,11 @@ public class ResourceSet implements Comparable<ResourceSet> {
 	public String toStringPlayer(){
 		StringBuilder tmp = new StringBuilder();
 		for(Entry<String, Integer> element : resourceSet.entrySet()){
-			if(!element.getKey().equals("MILITARY_POINTS") && 
-			   !element.getKey().equals("VICTORY_POINTS") &&
-		       !element.getKey().equals("FAITH_POINTS"))
-			tmp.append(" "+element.getKey()+" :"+element.getValue().toString());
+			if(!"MILITARY_POINTS".equals(element.getKey()) && 
+			   !"VICTORY_POINTS".equals(element.getKey()) &&
+		       !"FAITH_POINTS".equals(element.getKey())){
+			    tmp.append(" "+element.getKey()+" :"+element.getValue().toString());
+			}
 		}
 		return new String(tmp);
 	}

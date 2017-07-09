@@ -1,8 +1,5 @@
 package it.polimi.ingsw.GC_32.Server.Game.Board;
 
-import java.util.logging.Level;
-import it.polimi.ingsw.GC_32.Common.Utils.Logger;
-
 /**
  * represents a set of ActionSpace in which the Player can place its FamilyMember.
  * 
@@ -68,17 +65,13 @@ public class Region {
 	 * @see 		Region, TowerRegion, ProductionRegion, HarverstRegion, CouncilRegion, MarketRegion, ActionSpace
 	 */
 	public ActionSpace getActionSpace(int id){
-		try{
-			for (ActionSpace actionSpace: track){
-				if(actionSpace.getActionSpaceID() == id)
-					return actionSpace;
+		for(ActionSpace actionSpace: track){
+			if(actionSpace != null &&
+			   actionSpace.getActionSpaceID() == id){
+				return actionSpace;
 			}
-			return null;
 		}
-		catch(NullPointerException e){
-			Logger.getLogger("").log(Level.SEVERE, "context", e);
-			return null;
-		}
+		return null;
 	}
 	
 	/**
