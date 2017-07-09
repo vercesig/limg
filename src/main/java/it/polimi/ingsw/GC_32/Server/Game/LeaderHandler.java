@@ -13,6 +13,19 @@ import it.polimi.ingsw.GC_32.Server.Game.Card.LeaderCard;
 import it.polimi.ingsw.GC_32.Server.Network.MessageManager;
 import it.polimi.ingsw.GC_32.Server.Network.ServerMessageFactory;
 
+/**
+* class used to handle the first phase of the game in which the leader cards are distributed.
+* 
+* <ul>
+* <li>{@link #game}: the game instance</li>
+* <li>{@link #turnId}: the integer used to calculate turn of the distribution </li>
+* <li>{@link #running}: boolean flag to set true to start the phase</li>
+* <li>{@link #cardCollection}: collection of the leader card used in this game</li>
+* </ul>
+*
+* @See Game, LeaderCard, LeaderUtils
+*/
+
 public class LeaderHandler {
 	
 	Game game;
@@ -24,6 +37,11 @@ public class LeaderHandler {
 	List<LeaderCard> listTwo;
 	List<LeaderCard> listThree;
 	List<LeaderCard> listFour;
+	
+	/**
+     * setup the LeaderHandler, initializing the memory structures and assigning the game to handle
+     * @param game the game to handle
+     */
 	
 	public LeaderHandler(Game game){
 		
@@ -52,6 +70,13 @@ public class LeaderHandler {
 		turnId = 0;
 	}
 	
+	
+	/**
+     * get a list of leader cards for a player. He/She will receive a list of card based on the turn id
+     * @param player 
+ 	 * @return the list card of the turn
+     */
+	
 	public List<LeaderCard> getList(Player player){	
 		List<LeaderCard> list;
 		if(getIndex(player) - turnId < 0){
@@ -66,6 +91,12 @@ public class LeaderHandler {
 		return list;
 	}
 	
+	/**
+     * sets the card collection to a specified leader card. 
+     * @param player of the list card needed to get the correct sublist in the card collection
+ 	 * @param list of leader cards used to modify the card collection;
+	*/
+	
 	public void setList(Player player, List <LeaderCard> list){
 		if(getIndex(player) - turnId < 0){
 			if ((game.getPlayerList().size() +(getIndex(player) - turnId))<0){ //modulo! // a partire da turno 3
@@ -78,6 +109,12 @@ public class LeaderHandler {
 			cardCollection.set(getIndex(player) - turnId, list); // esemp
 	}
 	
+	/**
+     * creates a new list of cards to substitute the old list of cards in memory. 
+     * @param player of the list card needed to get the correct sublist in the card collection
+ 	 * @param json of the card names used to fill the new list and to add the card reference int he player instance
+	*/	
+
 	public void setList(Player player, JsonArray json){
 		
 		List <LeaderCard> list = getList(player);	
@@ -101,25 +138,53 @@ public class LeaderHandler {
 		setList(player, newlist);
 	}
 	
+	/**
+     * returns the index of a player in the player list instance in this game
+     * @param player of a player list
+ 	 * @return the integer index of the current player
+	*/	
+
 	public int getIndex(Player player){
 	    return game.getPlayerList().indexOf(player);
 	}
 	
+	/**
+	 * increments the turn id in this LeaderHandler object
+ 	*/	
+	
 	public void addTurn(){
 		this.turnId++;
 	}
+
+	/**
+	 * returns the turn id of this LeaderHandler object
+	 * @return integer of the turn id
+	*/
 	
 	public int getTurn(){
 		return this.turnId;
 	}
 	
+	/**
+	 * returns the attribute running on this LeaderHandler
+	 * @return boolean. true if this phase is running, false otherwise.
+	*/
 	public boolean getRunning(){
 		return this.running;
 	}
 	
+	/**
+	 * ends this phase
+	*/
+	
 	public void setInactive(){
 		this.running = false;
 	}
+	
+	/**
+	 * send a message to the client and opens a context message in which the client can choose the leader card he/she wants 
+	 * @param player of a player list
+	*/
 	
 	public  void leaderPhase(Player player){
 		List <LeaderCard> list = getList(player);
