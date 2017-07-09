@@ -1,0 +1,120 @@
+#container{
+		-fx-background-image: url('../images/other/lay_01.png'); 
+        -fx-background-size: stretch;
+        -fx-background-position: top;
+		-fx-background-repeat: no-repeat;
+		 
+		-fx-min-width: 620;
+		-fx-min-height: 750;
+
+		-fx-max-width: 620;
+		-fx-max-height: 750;
+		
+}
+
+#production_set{
+		-fx-background-image: url('../images/BuildingCard.jpg'), url('../images/other/line.png'); 
+        -fx-background-size: stretch, 100% 5%;
+        -fx-background-position: null, top;
+        -fx-background-repeat: no-repeat, no-repeat;
+
+        -fx-min-width: 620;
+		-fx-max-width: 620;
+		
+		-fx-min-height: 150;
+		-fx-max-height: 300;
+}
+
+#venture_set{
+		-fx-background-image: url('../images/VentureCard.jpg'), url('../images/other/line.png'); 
+        -fx-background-size: stretch, 100% 5%;
+        -fx-background-position: null, top;
+        -fx-background-repeat: no-repeat, no-repeat;
+       
+        -fx-min-width: 620;
+		-fx-max-width: 620;
+        
+	   -fx-min-height: 150;
+		-fx-max-height: 300;
+}
+
+#territory_set{
+		-fx-background-image: url('../images/TerritoryCard.jpg'), url('../images/other/line.png'); 
+        -fx-background-size: stretch, 100% 5%;
+        -fx-background-position:null, bottom;
+        -fx-background-repeat: no-repeat, no-repeat;
+        
+		-fx-max-width: 620;
+        -fx-min-width: 620;
+		
+		-fx-min-height: 150;
+		-fx-max-height: 300;
+}
+
+#character_set{
+		-fx-background-image: url('../images/CharacterCard.jpg'), url('../images/other/line.png'); 
+        -fx-background-size: stretch, 100% 5%;
+        -fx-background-position: null, bottom;
+        -fx-background-repeat: no-repeat, no-repeat;
+        
+        -fx-min-width: 620;
+        -fx-max-width: 620;
+		
+		-fx-min-height: 150;
+		-fx-max-height: 300;
+}
+
+
+
+
+#banner_idle{
+		-fx-background-image: url('../images/other/banner.png'); 
+		 -fx-background-size: 85 20;
+        -fx-background-position: 2px 10px;
+		-fx-background-repeat: no-repeat;
+		
+		 -fx-font:  9 px;	
+		-fx-opacity: 0.9;
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		
+}
+
+#value{
+	-fx-background-color: lightgrey;
+	
+	-fx-effect: dropshadow(gaussian, white, 10, 0.3, 0, 0);
+	-fx-max-width: 50px;
+	-fx-pref-height: 10px;
+	-fx-opacity: 0.2;
+}
+
+#banner_blink{
+		-fx-background-image: url('../images/other/banner.png'); 
+		 -fx-background-size: 85 20;
+        -fx-background-position: 2px 10px;
+		-fx-background-repeat: no-repeat;
+		 
+		 -fx-effect: innershadow(gaussian, white, 10, 0.4, 0, 0);
+			 -fx-font:  9 px;	
+		-fx-opacity: 0.9;
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#resource_set{
+		-fx-background-image: url('../images/ResourceSet.jpg'), url('../images/other/line.png'); 
+        -fx-background-size: contain, auto;
+        -fx-background-position: top, bottom;
+        -fx-background-repeat: no-repeat, no-repeat;
+       
+       	-fx-max-width: 620;
+        -fx-min-width: 620;
+		-fx-min-height: 200;
+	
+}
+ 

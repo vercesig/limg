@@ -1,0 +1,57 @@
+#extra{
+		-fx-background-image:  url('../images/other/lay_01.png');
+		-fx-background-size: stretch;
+		 -fx-background-repeat: no-repeat;
+		 -fx-background-position: center;
+		 
+		  -fx-min-width: 350;
+		 -fx-min-height: 580;
+		  -fx-max-height: 600;
+		  -fx-max-width: 350;
+		  
+		  -fx-border-style: solid;
+		 -fx-border-width: 2px;
+	 	 -fx-border-color: #808080;
+}
+
+#idle{
+		 -fx-background-image:  url('../images/other/line.png');
+		 -fx-background-size: auto;
+		 -fx-background-repeat: no-repeat;
+		 -fx-background-position: bottom;
+		 
+		 -fx-min-width: 350;
+		 -fx-min-height: 350;
+		 -fx-max-height: 350;
+		 -fx-max-width: 350;
+		
+		 -fx-border-style: solid;
+		 -fx-border-width: 2px;
+	 	 -fx-border-color: #808080;
+}
+
+#chat{
+		-fx-background-image: url('../images/other/lay_01.png'), url('../images/other/line.png');
+		 -fx-background-size: stretch, auto;
+		 -fx-background-repeat: no-repeat, no-repeat;
+		 -fx-background-position: center, bottom;
+		 -fx-opacity: 0.3 ;
+		 
+		 -fx-min-width: 350;
+		 -fx-min-height: 350;
+		 -fx-max-height: 350;
+		 -fx-max-width: 350;
+		 
+		 -fx-border-style: solid;
+		 -fx-border-width: 2px;
+	 	 -fx-border-color: grey;
+}
+
+#chat_message{
+	
+		-fx-graphic: url('../images/other/flag.png');
+		-fx-font:  9 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}

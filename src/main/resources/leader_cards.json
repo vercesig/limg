@@ -183,6 +183,10 @@
     {
         "name": "Cesare Borgia",
         "requirements": {
+            "RESOURCE": {
+                "FAITH_POINTS": 2,
+                "COINS": 12
+            },
             "CARDTYPE": {
                 "BUILDINGCARD": 3
             },

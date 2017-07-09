@@ -148,6 +148,10 @@ public class ClientActionSpace {
 		return infoContainer;
 	}
 	
+	public boolean isBusy(){
+		return !this.getOccupants().isEmpty();
+	}
+	
 	/**
 	 * return a string representation of this action space
 	 */

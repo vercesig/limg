@@ -310,6 +310,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 				   +"| ===========================================\n");	
 	}
 	
+	public boolean getLeaderStartPhase(){
+		return this.leaderStartPhase;
+	}
+	
 	/**
 	 * change the value to the wait boolean flag
 	 * @param flag the value of the wait flag

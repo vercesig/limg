@@ -1,0 +1,90 @@
+#territoryButton{
+	-fx-background-color: lightgreen;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.5;
+
+}
+
+#characterButton{
+	-fx-background-color: cyan;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.5;
+}
+
+#buildingButton{
+	-fx-background-color: yellow;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.5;
+}
+
+#ventureButton{
+	-fx-background-color: purple;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.5;
+	
+}
+
+#territoryCard{
+	-fx-background-color: lightgreen;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 85px;
+	-fx-min-height: 130px;
+	-fx-opacity: 0.5;
+}
+
+#characterCard{
+	-fx-background-color: cyan;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 85px;
+	-fx-min-height: 130px;
+	-fx-opacity: 0.5;
+}
+
+#buildingCard{
+	-fx-background-color: yellow;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 85px;
+	-fx-min-height:130px;
+	-fx-opacity: 0.5;
+}
+
+#ventureCard{
+	-fx-background-color: purple;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 85px;
+	-fx-min-height: 130px;
+	-fx-opacity: 0.5;
+}
+
+#neutral{
+	
+	-fx-background-color: white;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.3, 0, 0);
+	-fx-min-width: 95px;
+	-fx-min-height: 130px;	
+	-fx-opacity: 0.4;
+}
+
+#TowerRegion{
+		-fx-background-image: url('../images/TowerLayer_01.jpg');
+		-fx-background-size: contain;
+		-fx-background-repeat: no-repeat;
+		-fx-background-position: 0px 10px;
+		
+		-fx-min-width: 620;
+		-fx-min-height: 800;
+		 
+		-fx-max-width: 620;
+		-fx-max-height: 800;
+
+		-fx-grid-lines-visible: true;  
+	
+}

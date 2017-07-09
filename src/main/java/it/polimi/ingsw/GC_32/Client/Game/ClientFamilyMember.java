@@ -67,6 +67,10 @@ public class ClientFamilyMember {
 		return this.owner;
 	}
 	
+	public int getActionValue(){
+		return this.actionValue;
+	}
+	
 	/**
 	 * return a string representation of this family member
 	 */

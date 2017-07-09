@@ -1,0 +1,40 @@
+#menu{
+		-fx-background-image:  url('../images/other/lay_01.png'), url('../images/other/line.png');
+		-fx-background-size: stretch, auto;
+		 -fx-background-repeat: no-repeat, no-repeat;
+		 -fx-background-position: center, top;
+		  -fx-border-style: solid;
+		 -fx-border-width: 2px;
+	 	-fx-border-color: #808080;
+		
+		   -fx-min-width: 350;
+		 -fx-min-height: 580;
+		  -fx-max-height: 580;
+		  -fx-max-width: 380;
+}	
+
+#master{
+		-fx-background-image:  url('../images/other/lay_02.png');
+		-fx-background-size: auto;
+		 -fx-background-repeat: repeat;
+		 -fx-background-position: center;
+}
+
+#gridButton{
+	 -fx-background-image: url('../images/other/line.png'),  url('../images/other/line.png') ;
+	 -fx-background-size: auto, auto;
+	-fx-background-position: top, bottom;
+	
+	 -fx-background-repeat: no-repeat, no-repeat;
+	 -fx-background-attachment: scroll, fixed;
+	 
+	 -fx-border-style: solid;
+	 -fx-border-width: 2px;
+	 -fx-border-color: #808080;
+	 -fx-effect: dropshadow(gaussian, #d3d3d3,10, 0.5, 0, 0);
+	 
+	 -fx-grid-lines-visible: false;
+	 -fx-vgap: 15px;
+	 
+	
+}

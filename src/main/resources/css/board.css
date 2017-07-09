@@ -1,0 +1,77 @@
+#boardRegion{
+		-fx-background-image: url('../images/OtherRegion_01.jpg'); 
+        -fx-background-size: contain;
+        -fx-background-repeat: no-repeat;
+		-fx-background-position: 0px 10px;
+		
+		  -fx-min-width: 620;
+		 -fx-min-height: 800;
+		  -fx-max-width: 620;
+		 -fx-max-height: 800;
+}
+
+#excomunication_idle{
+	-fx-background-color: white;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 45px;
+	-fx-min-height: 95px;
+
+	-fx-opacity: 0.5;
+}
+
+#production_idle{
+	-fx-background-color: lightyellow;
+	-fx-effect: dropshadow(gaussian, lightyellow, 10, 0.8, 0, 0);
+	-fx-min-width: 40px;
+	-fx-min-height: 40px;
+
+	-fx-opacity: 0.5;
+}
+
+#multi_production_idle{
+	-fx-background-color: lightyellow;
+	-fx-effect: dropshadow(gaussian, lightyellow, 10, 0.8, 0, 0);
+	-fx-min-width: 140px;
+	-fx-min-height: 50px;
+		
+	-fx-opacity: 0.5;
+}
+
+#harvest_idle{
+	-fx-background-color: lightgreen;
+	-fx-effect: dropshadow(gaussian, lightgreen, 10, 0.8, 0, 0);
+
+	-fx-min-width: 40px;
+	-fx-min-height: 40px;
+	
+	-fx-opacity: 0.5;
+}
+
+#multi_harvest_idle{
+	-fx-background-color: lightgreen;
+	-fx-effect: dropshadow(gaussian, lightgreen, 10, 0.8, 0, 0);
+	-fx-opacity: 0.5;
+	-fx-min-width: 140px;
+	-fx-min-height: 50px;
+
+	-fx-opacity: 0.5;
+}
+
+#council_idle{
+	-fx-background-color: sienna;
+	-fx-effect: dropshadow(gaussian, sienna, 10, 0.8, 0, 0);
+
+	-fx-min-width: 180px;
+	-fx-min-height: 70px;
+	
+	-fx-opacity: 0.5;
+}
+
+#market_idle{
+	-fx-background-color: orangered;
+	-fx-effect: dropshadow(gaussian, orangered, 10, 0.8, 0, 0);
+
+	-fx-min-width: 40px;
+	-fx-min-height: 40px;
+	-fx-opacity: 0.5;
+}
