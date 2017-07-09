@@ -7,6 +7,21 @@ import java.util.Map.Entry;
 import it.polimi.ingsw.GC_32.Client.Track;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
+/**
+ * this class is the client-side representation of the server-side concept of Player. Because client only show information on the screen, the information contained into 
+ * this class (like all the classes of the client-side game model) is really less then the server-side equivalent class.
+ * 
+ * <ul>
+ * <li>{@link ClientPlayer#playerResources}: resources of this player</li>
+ * <li>{@link #cards}: cards owned by the player (only the card name is memorized)</li>
+ * <li>{@link #name}: the name of this player</li>
+ * <li>{@link #familyMembers}: the family memebers owned by the player</li>
+ * <li>{@link #bonusTile}: string representation of bonus tile</li>
+ * <li>{@link #track}: the position of this player on the score tracks, each track contains the points quantity owned by the player</li> 
+ * </ul>
+ *
+ * @see ResourceSet, ClientFamilyMember, Track
+ */
 public class ClientPlayer {
 
 	private ResourceSet playerResources;
@@ -16,6 +31,9 @@ public class ClientPlayer {
 	private String bonusTile;
 	private Track[] track = new Track[3];
 	
+	/**
+	 * set up the player
+	 */
 	public ClientPlayer(){
 		this.playerResources = new ResourceSet();
 		this.cards = new HashMap<String, ArrayList<String>>();
@@ -41,7 +59,11 @@ public class ClientPlayer {
 		}
 		
 	}
-		
+	
+	/**
+	 * register the player name
+	 * @param name the name of the player to be registered
+	 */
 	public void setName(String name){
 		this.name = name;
 		for(int i=0; i<familyMembers.length; i++){
@@ -49,26 +71,51 @@ public class ClientPlayer {
 		}
 	}
 	
+	/**
+	 * register the string representation of the bonus tile
+	 * @param bonusTile the bonus tile owned by this player
+	 */
 	public void setPersonalBonusTile(String bonusTile){
 			this.bonusTile = "\n"+bonusTile+"\n";
 		}
 	
+	/**
+	 * get the player name
+	 * @return the player name
+	 */
 	public String getName(){
 		return this.name;
 	}
 	
+	/**
+	 * allows to retrive the player ResourceSet 
+	 * @return the ResourceSet owned by this player
+	 */
 	public ResourceSet getPlayerResources(){
 		return this.playerResources;
 	}
 	
+	/**
+	 * allows to retrive the player family member list 
+	 * @return the list of family members owned by this player
+	 */
 	public ClientFamilyMember[] getFamilyMembers(){
 		return this.familyMembers;
 	}
 	
+	/**
+	 * allows to retrive the track array
+	 * @return an array of track
+	 */
 	public Track[] getTrack(){
 		return this.track;
 	}
 	
+	/**
+	 * add card to the card of this player
+	 * @param cardType the type of card to add
+	 * @param card the name of the card to add
+	 */
 	public void addCard(String cardType, String card){
 		if(cards.containsKey(cardType)){
 			this.cards.get(cardType).add(card);
@@ -78,20 +125,23 @@ public class ClientPlayer {
 		}
 	}
 	
+	/**
+	 * allows to retrive all the cards owned by this player
+	 * @return the HashMap representing all the cards owned by the player PersonalBoard
+	 */
 	public HashMap<String,ArrayList<String>> getCards(){
 		return this.cards;
 	}
-	
-	public void addResources(ResourceSet resources){
-		this.playerResources.addResource(resources);
-	}
-	
+		
 	private void fillWith(StringBuilder stringBuilder, int howManyTimes, String string){
 		for(int i=0; i<howManyTimes; i++){
 			stringBuilder.append(string);
 		}
 	}
 	
+	/**
+	 * return a string representation of the player objectS
+	 */
 	public String toString(){
 		int x = 100;
 		StringBuilder tmp = new StringBuilder();

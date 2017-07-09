@@ -14,7 +14,7 @@ import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
  *  <li>{@link #familyColorBonus}: Your colored Family Members have a bonus of +2 on their value. (Lucrezia Borgia)</li>
  *  </ul>
  *
- *@see Effect
+ * @see Effect
  */
 public class UniqueEffect {
 

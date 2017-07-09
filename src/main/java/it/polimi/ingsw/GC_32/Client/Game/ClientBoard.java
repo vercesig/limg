@@ -9,6 +9,21 @@ import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
+/**
+ * this class is the client-side representation of the server-side concept of Board. Because client only show information on the screen, the information contained into 
+ * this class (like all the classes of the client-side game model) is really less then the server-side equivalent class.
+ * 
+ * <ul>
+ * <li>{@link #region}: the list of region contained into the board</li>
+ * <li>{@link #excommunicationCards}: excommunication cards of the game</li>
+ * <li>{@link #blackDice}: the black dice value</li>
+ * <li>{@link #whiteDice}: the white dice value</li>
+ * <li>{@link #orangeDice}: the orange dice value</li>
+ * </ul>
+ *
+ * @see ClientRegion
+ */
+
 public class ClientBoard {
 
 	private ArrayList<ClientRegion> region;
@@ -17,6 +32,11 @@ public class ClientBoard {
 	int whiteDice;
 	int orangeDice;
 	
+	/**
+	 * initialize the board whit the information contained into the JsonObject passed as argument, which is retrived from the GMSTRT message sent by the server when the 
+	 * game starts
+	 * @param boardPacket the JSON representation of the client-side board
+	 */
 	public ClientBoard(JsonObject boardPacket){
 		this.region = new ArrayList<ClientRegion>();
 		this.excommunicationCards =  new ArrayList<String>();
@@ -29,26 +49,47 @@ public class ClientBoard {
 		});	
 	}
 
+	/**
+	 * allows to retrive the name of the excommunication card of the game
+	 * @return
+	 */
 	public ArrayList<String> getExcommunicationCards(){
 		return this.excommunicationCards;
 	}
 	
+	/**
+	 * flush the board calling the flushFamilyMember() method on each region which compose the board
+	 */
 	public void flushFamilyMember(){
 		region.forEach(region -> region.flushFamilyMember());
 	}
 	
+	/**
+	 * register the excommunication card of the game
+	 * @param jsonList a JsonArray containing the excommunication card's name
+	 */
 	public void setExcommunicationCards(JsonValue jsonList){
 		jsonList.asArray().forEach(card ->{
 			excommunicationCards.add(card.asString());
 		});	
 	}
 	
+	/**
+	 * register the value of the dices
+	 * @param blackValue the black dice value
+	 * @param whiteValue the white dice value
+	 * @param orangeValue the orange dice value
+	 */
 	public void setDiceValue(int blackValue, int whiteValue, int orangeValue){
 		this.blackDice = blackValue;
 		this.whiteDice = whiteValue;
 		this.orangeDice = orangeValue;
 	}
 	
+	/**
+	 * allows to retrive all the dice values
+	 * @return an array of int which contains all the dice values
+	 */
 	public int[] getDiceValue(){
 		return new int[]{blackDice,whiteDice,orangeDice};
 	}
@@ -59,6 +100,9 @@ public class ClientBoard {
 		}
 	}
 	
+	/**
+	 * return a string representation of the board, nicely formatted
+	 */
 	public String toString(){
 		ArrayList<ClientRegion> towerList = new ArrayList<ClientRegion>(region.subList(4, region.size()));
 		// dimensione delle torri
@@ -198,6 +242,10 @@ public class ClientBoard {
 		return new String(boardString);
 	}
 	
+	/**
+	 * allows to retrive the list of region which compose this board
+	 * @return an ArrayList of ClientRegion
+	 */
 	public ArrayList<ClientRegion> getRegionList(){
 		return this.region;
 	}

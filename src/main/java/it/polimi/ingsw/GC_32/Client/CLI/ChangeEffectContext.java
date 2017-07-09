@@ -6,6 +6,14 @@ import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 
+/**
+ * ChangeEffectContext handles the interaction with the client when CHANGE effects are triggered (after a PRODUCTION action has triggered permanent effect of building
+ * cards with CHANGE effect). Context ends with the sending of a CONTEXTREPLY message.
+ * 
+ * @see Context
+ *
+ */
+
 public class ChangeEffectContext extends Context{
 
 	public ChangeEffectContext(ClientCLI client){

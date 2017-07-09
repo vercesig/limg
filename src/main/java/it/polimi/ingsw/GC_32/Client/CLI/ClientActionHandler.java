@@ -7,7 +7,7 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
-import it.polimi.ingsw.GC_32.Client.Game.CardCli;
+import it.polimi.ingsw.GC_32.Client.CLI.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
 import it.polimi.ingsw.GC_32.Common.Utils.Tuple;

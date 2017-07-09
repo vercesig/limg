@@ -2,10 +2,16 @@ package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.ArrayList;
 
-import it.polimi.ingsw.GC_32.Client.Game.CardCli;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
 
+/**
+ * ShowCardDialaog allow the players to see details of cards on the board, or to see what excommunication tiles have been extracted for this game. It offer
+ * a very simple menù to hadle all this feature. 
+ * 
+ * @see Context
+ *
+ */
 
 public class ShowCardDialog extends Context{
 	

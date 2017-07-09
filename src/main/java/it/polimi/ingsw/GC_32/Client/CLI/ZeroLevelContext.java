@@ -6,6 +6,23 @@ import java.util.logging.Logger;
 import it.polimi.ingsw.GC_32.Client.Network.ClientMessageFactory;
 import it.polimi.ingsw.GC_32.Common.Utils.Utils;
 
+/**
+ * ZeroLevelContext is the context which is open every time the client hasn't an action to perform or there isn't any active context. It is implemented as a Thread to
+ * stop when a CONTEXT message has been received, and then to reactivate when the context has ended its functionality.
+ * 
+ * The main action can be performed from the ZeroLevelContext are
+ * 
+ * open the show card dialog
+ * open the chat room
+ * open the context which allows the client to change his name
+ * open the leader action handler context
+ * open the action context
+ * allows to end the turn without perform any action
+ * 
+ * @see Context
+ *
+ */
+
 public class ZeroLevelContext extends Context implements Runnable{
     private Logger LOGGER = Logger.getLogger(this.getClass().toString());
 

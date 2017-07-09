@@ -9,6 +9,8 @@ import org.junit.Test;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 
+import it.polimi.ingsw.GC_32.Client.CLI.CardCli;
+
 public class ClientCliTest{
     
     private JsonObject jObject;

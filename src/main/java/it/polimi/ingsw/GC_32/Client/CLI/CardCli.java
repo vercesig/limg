@@ -1,4 +1,4 @@
-package it.polimi.ingsw.GC_32.Client.Game;
+package it.polimi.ingsw.GC_32.Client.CLI;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,10 @@ import com.eclipsesource.json.JsonObject.Member;
 import com.eclipsesource.json.JsonValue;
 
 import it.polimi.ingsw.GC_32.Common.Game.ResourceSet;
+
+/**
+ * CardCli offers a nice print() method to print cards on command line in a very nice look.
+ */
 
 public class CardCli {
 	
@@ -96,6 +100,11 @@ public class CardCli {
 		}
 	}
 	
+	/**
+	 * return a string representation of the card, which can be printed on screen to show the card in a very nice look.
+	 * @param name the name of the card
+	 * @param json the JsonObject, retrived by the ClientCardRegistry, containing all the information about the card
+	 */
 	public static String print(String name, JsonObject json){
 	
 		StringBuilder card = new StringBuilder();
