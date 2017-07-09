@@ -194,6 +194,10 @@ public class ClientCLI implements ClientInterface, KillableRunnable{
 				   +"| ===========================================\n");	
 	}
 	
+	public boolean getLeaderStartPhase(){
+		return this.leaderStartPhase;
+	}
+	
 	@Override
 	public void waitTurn(boolean flag) {
 		this.wait = flag;

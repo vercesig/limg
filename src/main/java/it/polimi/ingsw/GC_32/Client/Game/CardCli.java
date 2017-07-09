@@ -21,11 +21,15 @@ public class CardCli {
 	
 	private static void loadEffect(ArrayList<String> array, String key, JsonObject json){
 		if(json.get(key)!= null){
-		    JsonArray parseArray;
+		    JsonArray parseArray = new JsonArray();
+		    if(json.get(key).isString()){
+		    	array.add(key + ": " + json.get(key).asString());
+		    }
 		    if(json.get(key).isObject()){
-		        parseArray = new JsonArray().add(json.get(key).asObject()); // example {"COINS":1, "FAITH_POINT":1}
-		    } else {
-		        parseArray = json.get(key).asArray(); // example [{"COINS":1},{"WOOD":1}]
+		        parseArray.add(json.get(key).asObject()); // example {"COINS":1, "FAITH_POINT":1}
+		    } 
+		    if(json.get(key).isArray()){
+		    	parseArray = json.get(key).asArray(); // example [{"COINS":1},{"WOOD":1}]
 		    }
 			for(JsonValue js : parseArray){  
 				if(js.isObject()){
@@ -40,7 +44,6 @@ public class CardCli {
 				}
 				if(js.isString()){
 					array.add(key + ": " + js.asString());
-			
 				}
 			}
 		} else {

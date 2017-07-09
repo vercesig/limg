@@ -1,0 +1,170 @@
+#button_idle{
+		-fx-graphic: url('../images/other/flag.png');
+		-fx-pref-width: 250px;
+		-fx-pref-height: 40px;
+		-fx-alignement: center;
+		
+		-fx-background-color: radial-gradient( center 40% 40%, radius 100%, reflect, white, lightgrey 70%, dimgray);
+		-fx-text-fill: radial-gradient(radius 20%, white 10%, black);
+		-fx-font:  12 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		-fx-effect: dropshadow(gaussian, dimgray, 10, 0.8, 0, 0);
+		 
+} 
+
+#button_Entered{
+		-fx-graphic: url('../images/other/flag.png');
+		-fx-pref-width: 250px;
+		-fx-pref-height: 40px;
+		-fx-alignement: center;
+		
+		-fx-background-color: radial-gradient( center 40% 40%, radius 100%, reflect, white, lightgrey 70%, dimgray);
+		-fx-text-fill: radial-gradient(radius 20%, white 10%, black);
+		-fx-font:  12 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		
+		-fx-effect: innershadow(gaussian, white, 10, 0.4, 0, 0);
+		 
+}
+
+#button_Clicked{
+		-fx-graphic: url('../images/other/flag.png');
+		-fx-pref-width: 250px;
+		-fx-pref-height: 40px;
+		-fx-alignement: center;
+		
+		-fx-background-color: radial-gradient( center 40% 40%, radius 100%, reflect, silver, lightgrey 70%, dimgray);
+		-fx-text-fill: radial-gradient(radius 20%, white 10%, black);
+		-fx-font:  12 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		-fx-effect: dropshadow(gaussian, dimgray, 10, 0.8, 0, 0);
+}
+
+#lorenzo_idle{
+		-fx-background-image:  url('../images/other/banner.png'), url('../images/other/lorenzo_02.png');
+		-fx-background-size: 90% 30, 55% 55%;
+		  -fx-background-position: center, center;
+		 -fx-background-repeat: no-repeat, no-repeat; 
+		 -fx-opacity: 0.9;
+		 
+		 -fx-min-width: 350;
+		 -fx-min-height: 200;
+		 
+		 -fx-label-padding: 150px 100px 0px 100px, 0;
+		-fx-font:  24 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		-fx-effect: dropshadow(gaussian, white, 10, 0.7, 0, 0);
+		
+}
+
+#lorenzo_Entered{
+		-fx-background-image:  url('../images/other/banner.png'), url('../images/other/lorenzo_02.png');
+		-fx-background-size: 90% 30, 50% 50%;
+		  -fx-background-position: center, center;
+		 -fx-background-repeat: no-repeat, no-repeat; 
+		 -fx-opacity: 1;
+		 
+		 -fx-min-width: 350;
+		 -fx-min-height: 200;
+		 
+		 -fx-label-padding: 150px 100px 0px 100px, 0;
+		-fx-font:  24 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		
+		-fx-effect: dropshadow(gaussian, grey, 10, 0.5, 0, 0);
+		
+}
+
+#next_idle{
+		-fx-background-image: url('../images/other/arrow_right.png'); 
+		-fx-background-size: contain;
+		-fx-background-position: 0px 10px;
+		
+		-fx-background-repeat: no-repeat;
+		 -fx-font:  12 px;	
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#next_pressed{
+		-fx-background-image: url('../images/other/arrow_right.png'); 	
+		-fx-background-size: contain;
+		-fx-background-position: 0px 10px;
+		
+		-fx-background-repeat: no-repeat;
+		-fx-effect: innershadow(gaussian, white, 10, 0.4, 0, 0);
+		-fx-font:  12 px;	
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#prev_idle{
+		-fx-background-image: url('../images/other/arrow_left.png'); 
+		-fx-background-size: contain;
+		-fx-background-position: 0px 10px;
+		
+		-fx-background-repeat: no-repeat;
+		 -fx-font:  12 px;	
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#prev_pressed{
+		-fx-background-image: url('../images/other/arrow_left.png'); 	
+		-fx-background-size: contain;
+		-fx-background-position: 0px 10px;
+		
+		-fx-background-repeat: no-repeat;
+		-fx-effect: innershadow(gaussian, white, 10, 0.4, 0, 0);
+		-fx-font:  12 px;	
+		-fx-label-padding: 12px 20px;
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#chat_button_idle{
+	
+		-fx-background-image: url('../images/other/button_01.png'); 
+		-fx-background-size: stretch;
+		
+		fx-background-repeat: no-repeat;
+		-fx-background-color: radial-gradient( center 40% 40%, radius 100%, reflect, silver, lightgrey 70%, dimgray);
+		-fx-text-fill: radial-gradient(radius 20%, white 10%, black);
+		-fx-font:  12 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		-fx-effect: dropshadow(gaussian, dimgray, 10, 0.8, 0, 0);
+}
+
+#chat_button_pressed{
+		
+		-fx-background-image: url('../images/other/button_01.png'); 
+		-fx-background-size: stretch;
+		
+		fx-background-repeat: no-repeat;
+		-fx-background-color: radial-gradient( center 40% 40%, radius 100%, reflect, silver, lightgrey 70%, dimgray);
+		-fx-text-fill: radial-gradient(radius 20%, white 10%, black);
+		-fx-font:  12 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+		-fx-effect: innershadow(gaussian, white, 10, 0.4, 0, 0);
+}

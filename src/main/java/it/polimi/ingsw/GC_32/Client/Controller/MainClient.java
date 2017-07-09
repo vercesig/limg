@@ -13,6 +13,7 @@ import com.eclipsesource.json.JsonObject.Member;
 
 import it.polimi.ingsw.GC_32.Client.ClientInterface;
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
+import it.polimi.ingsw.GC_32.Client.GUI.ClientGUI;
 import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
@@ -86,8 +87,12 @@ public class MainClient{
 		case "c":
 			this.graphicInterface = new ClientCLI();
 			return true;
-		case "g":
-			// javaFX
+		case "g": 
+			try {
+				ClientGUI.initClientGui();
+				this.graphicInterface = ClientGUI.getClientGui();
+				
+			}catch (Exception e) {}
 			return true;
 		default: return false;
 		

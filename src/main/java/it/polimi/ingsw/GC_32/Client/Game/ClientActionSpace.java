@@ -90,6 +90,10 @@ public class ClientActionSpace {
 		return infoContainer;
 	}
 	
+	public boolean isBusy(){
+		return !this.getOccupants().isEmpty();
+	}
+	
 	public String toString(){
 		StringBuilder tmp = new StringBuilder();
 		tmp.append("regionID :"+this.regionID+"\nactionSpaceID :"+this.actionSpaceID+"\nactionValue :"
