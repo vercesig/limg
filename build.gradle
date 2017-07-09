@@ -42,7 +42,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'it.polimi.ingsw'
             artifactId 'GC_32'
-            version '0.0.1-SNAPSHOT'
+            version '0.9.8'
 
             from components.java
         }
