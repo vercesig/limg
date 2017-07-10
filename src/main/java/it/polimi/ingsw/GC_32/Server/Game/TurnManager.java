@@ -126,9 +126,8 @@ public class TurnManager {
 	 * @return true if the round is finished, false otherwise
 	 */
 	public boolean isRoundEnd(){
-	//if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
-	//		   	game.getPlayerList().size())) == 0){
-		if(turnID == 2){
+	if((turnID-(game.getPlayerList().get(0).getFamilyMember().length*
+			   	game.getPlayerList().size())) == 0){
 			LOGGER.log(Level.INFO, "updating turn order");
 			updateTurnOrder();
 			turnID=0;

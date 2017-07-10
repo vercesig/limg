@@ -36,7 +36,6 @@ public class FamilyMemberGUI extends Cylinder{
 	
 	public void setInfo(){
 		this.info = new GridPane();
-	//	info.setId("family_info");
 		addInfo("Index:", index, 0);
 		addInfo("Action Value:", family.getActionValue(), 1);
 	}
@@ -51,8 +50,6 @@ public class FamilyMemberGUI extends Cylinder{
 		Label label = new Label(string);
 		TextField text = new TextField(value.toString());
 		text.setEditable(false);
-	//	label.setId("table_key");
-	//	text.setId("table_value");
 		hbox.getChildren().addAll(label, text);
 		this.info.add(hbox, 0, x);
 	}

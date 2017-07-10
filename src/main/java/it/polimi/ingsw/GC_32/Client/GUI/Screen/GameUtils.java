@@ -60,9 +60,7 @@ public class GameUtils {
 	
 	private static void updateOccupiedSpace(ClientActionSpace space, BoardButton button, GameScreen game){
 		game.getUsers().forEach((key, value) ->{
-			System.out.println(value.getClientPlayer().getName());
 			for(int i=0; i<space.getOccupants().size(); i++){
-				System.out.println(space.getOccupants().get(i));
 				if(value.getClientPlayer().getName().equals(space.getOccupants().get(i).getOwner())){
 					updateButtonWithColor(button, value);
 				}		
@@ -110,9 +108,6 @@ public class GameUtils {
 		updateResource(player, game, "WOOD", 1);
 		updateResource(player, game, "STONE", 2);
 		updateResource(player, game, "SERVANTS", 3);
-		//updateResource(player, game, "FAITH_POINTS", 1);
-		//updateResource(player, game, "MILITARY_POINTS", 2);
-		//updateResource(player, game, "VICTORY_POINTS", 3);
 		updatePersonalCard(player, game);
 	}
 	
@@ -165,7 +160,7 @@ public class GameUtils {
 		ClientPlayer player = game.getClient().getPlayerList().get(game.getClient().getPlayerUUID());
 		createFamily(game, player, 0, Color.PERU);
 		for(int i=1; i<player.getFamilyMembers().length; i++){
-			createFamily(game, player, i, Color.RED);
+			createFamily(game, player, i, Color.RED); // default player one color
 		}
 	}
 	
@@ -209,7 +204,6 @@ public class GameUtils {
 	}
 	
 	public static void update(GameScreen game){
-
 		updateTowerCard(game);
 		updateBoard(game);
 		updatePersonalBoard(game);

@@ -118,7 +118,7 @@ public class Game implements Runnable{
 		
 		LOGGER.log(Level.INFO, "setting up players resources");
 
-		// assegnazione casuale bonusTile
+		//Bonus tile distribution
 		ArrayList<PersonalBonusTile> bonusTile = GameConfig.getInstance().getBonusTileList();
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int k=0; k<bonusTile.size(); k++){
@@ -131,41 +131,13 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("WOOD", 2);
 			playerList.get(i).getResources().setResource("STONE", 2);
 			playerList.get(i).getResources().setResource("SERVANTS", 3);
-			// in base all'ordine di turno assegno le monete iniziali
 			playerList.get(i).getResources().setResource("COINS", 5 + i);
-			// setta punteggi a 0
+
 			playerList.get(i).getResources().setResource("FAITH_POINTS", 0);
 			playerList.get(i).getResources().setResource("VICTORY_POINTS", 0);
 			playerList.get(i).getResources().setResource("MILITARY_POINTS", 0);
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
-		
-			//cheats
-/*			playerList.get(i).registerGame(this.gameUUID);
-			playerList.get(i).getResources().setResource("WOOD", 100);
-			playerList.get(i).getResources().setResource("STONE", 100);
-			playerList.get(i).getResources().setResource("SERVANTS", 100);
-			playerList.get(i).getResources().setResource("COINS", 100 + i);
-			playerList.get(i).getResources().setResource("FAITH_POINTS", 100);
-			playerList.get(i).getResources().setResource("VICTORY_POINTS", 100);  
-			playerList.get(i).getResources().setResource("MILITARY_POINTS", 100);
-			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));*/
-		}
-			//cheats
-/*		Deck <DevelopmentCard> deck01 = CardRegistry.getInstance().getDeck("VENTURECARD");
-		Deck <DevelopmentCard> deck02 = CardRegistry.getInstance().getDeck("BUILDINGCARD");
-		Deck <DevelopmentCard> deck03 = CardRegistry.getInstance().getDeck("CHARACTERCARD");
-		Deck <DevelopmentCard> deck04 = CardRegistry.getInstance().getDeck("TERRITORYCARD");
-		
-		for(int k=0; k<5; k++){
-			playerList.get(0).getPersonalBoard().addCard(deck01.getDeck().get(k));
-			playerList.get(0).getPersonalBoard().addCard(deck02.getDeck().get(k));
-			playerList.get(0).getPersonalBoard().addCard(deck03.getDeck().get(k));
-			playerList.get(0).getPersonalBoard().addCard(deck04.getDeck().get(k));
-			playerList.get(1).getPersonalBoard().addCard(deck01.getDeck().get(k));
-			playerList.get(1).getPersonalBoard().addCard(deck02.getDeck().get(k));
-			playerList.get(1).getPersonalBoard().addCard(deck03.getDeck().get(k));
-			playerList.get(1).getPersonalBoard().addCard(deck04.getDeck().get(k));
-		}*/		
+			
 		LOGGER.log(Level.INFO, "done");
 	}
 	
@@ -179,7 +151,7 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "notifying connected players on game settings...");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildGMSTRTmessage(this));
 		
-		// do tempo ai thread di rete di spedire i messaggi in coda
+		// sleep for threads
 		Utils.safeSleep(200);
 		LOGGER.log(Level.INFO, "done");
 		
@@ -192,22 +164,21 @@ public class Game implements Runnable{
 		LOGGER.log(Level.INFO, "dice rolled");
 		MessageManager.getInstance().sendMessge(ServerMessageFactory.buildDICEROLLmessage(this, blackDice, whiteDice, orangeDice));
 		
-		// do tempo ai thread di rete di spedire i messaggi in coda
 		Utils.safeSleep(200);
 		
 	////-------------------------LEADER DISTRIBUTION ----------------////////
 			LOGGER.log(Level.INFO, "giving lock to the first player...");
-			if(true){  // da settare se si vuole giocare con le carte Leader
+			if(true){  
 				boolean flag = true;
-				while(leaderHandler.getRunning()){ // da settare se si vuole giocare con le carte Leader
+				while(leaderHandler.getRunning()){ 
 					if(flag){
 						LOGGER.log(Level.INFO, "leader rule activated. Distribuiting card");
 						Player firstPlayer = this.playerList.get(0);
 						setLock(firstPlayer.getUUID());
 						leaderHandler.leaderPhase(firstPlayer);
-						flag = false; // blocca l'accesso al primo send
+						flag = false; // cancel the first try
 					}
-					//ricezione messaggi
+					
 					GameMessage message = null;
 					
 					try{

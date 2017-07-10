@@ -50,38 +50,6 @@ public class TowerPane {
 					BoardButton.createSquareButton(regionId, 3-i, 25+factor, 45+ i*(130), card));
 		}
 	}
-
-	/*public void setEffect(){
-		this.towerButtons.forEach(button->{
-			if(button.getRegionID()==4){		
-				button.setOnMouseEntered(click -> button.setId("territoryButton_mouse"));
-				button.setOnMouseExited(click -> button.setId("territoryButton"));	
-			}
-			if(button.getRegionID()==5){		
-				button.setOnMouseEntered(click -> button.setId("characterButton_mouse"));
-				button.setOnMouseExited(click -> button.setId("characterButton"));	
-			}
-			if(button.getRegionID()==6){		
-				button.setOnMouseEntered(click -> button.setId("buildingButton_mouse"));
-				button.setOnMouseExited(click -> button.setId("buildingButton"));	
-			}
-			if(button.getRegionID()==7){		
-				button.setOnMouseEntered(click -> button.setId("ventureButton_mouse"));
-				button.setOnMouseExited(click -> button.setId("ventureButton"));	
-			}
-		});*/
-	/*
-		this.cardButtons.forEach(card->{
-			card.setOnMouseClicked(click ->{
-		  ClientActionSpace space = this.central.getGame().getClient().getBoard().getRegionList()
-					.get(card.getRegionID())
-					.getActionSpaceList()
-									.get(card.getSpaceId());
-		  this.central.getGame().getExtraScreen().showCard(space.getCardName(), (BoardButton)
-				  this.central.getGame().getExtraScreen().getShowCard().getChildren().get(1));
-			});
-		});	
-	}*/
 	
 	public void set(){
 		for(int j=4; j<8; j++){ 		// REGION ID
@@ -106,7 +74,6 @@ public class TowerPane {
 	}
 	
 	public void setColumn(int regionId, int spaceId){
-		//	HBox set = new HBox();
 			BoardButton button = null;
 			BoardButton card = null;
 			
