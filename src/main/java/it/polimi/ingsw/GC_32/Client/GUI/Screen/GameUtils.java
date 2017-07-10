@@ -26,8 +26,10 @@ public class GameUtils {
 		button.setStyle("-fx-graphic: url('"+path+"');" +
 					  "-fx-background-size: auto;" +
 					  "-fx-background-color: transparent;" +
-					  "-fx-scale-x: 0.6;"+
-					  "-fx-scale-y: 0.6;"+
+					  "-fx-translate-x: -30;"+
+					  "-fx-translate-y: -50;" +
+					  "-fx-scale-x: 0.5;"+
+					  "-fx-scale-y: 0.5;"+
 					  "-fx-opacity: 1;" +
 					  "-fx-effect: dropshadow(gaussian,"+color+", 10, 0.5, 0, 0);");
 	}
