@@ -1,0 +1,198 @@
+[
+    {
+        "name": "Malus Military Points",
+        "instantEffect": "LESSRESOURCE",
+        "instantPayload": [
+            "MILITARY_POINTS"
+        ],
+        "period": 1,
+        "path": "excomm_1_1.png"
+    },
+    {
+        "name": "Malus Coins",
+        "instantEffect": "LESSRESOURCE",
+        "instantPayload": [
+            "COINS"
+        ],
+        "period": 1,
+        "path": "excomm_1_2.png"
+    },
+    {
+        "name": "Malus Servants",
+        "instantEffect": "LESSRESOURCE",
+        "instantPayload": [
+            "SERVANTS"
+        ],
+        "period": 1,
+        "path": "excomm_1_3.png"
+    },
+    {
+        "name": "Malus Stone or Wood",
+        "instantEffect": "LESSRESOURCE",
+        "instantPayload": [
+            "STONE",
+            "WOOD"
+        ],
+        "period": 1,
+        "path": "excomm_1_4.png"
+    },
+    {
+        "name": "Malus Harvest Action",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "HARVEST",
+            "REGIONID": 1,
+            "BONUSACTIONVALUE": -3,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "path": "excomm_1_5.png"
+    },
+    {
+        "name": "Malus Production Action",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "PRODUCTION",
+            "REGIONID": 0,
+            "BONUSACTIONVALUE": -3,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "path": "excomm_1_6.png"
+    },
+    {
+        "name": "Malus Color Familiar",
+        "permanentEffect": "LESSDICE",
+        "period": 1,
+        "path": "excomm_1_7.png"
+    },
+    {
+        "name": "Malus Tower Green",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 4,
+            "BONUSACTIONVALUE": -4,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "path": "excomm_2_1.png"
+    },
+    {
+        "name": "Malus Tower Yellow",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 6,
+            "BONUSACTIONVALUE": -4,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "path": "excomm_2_2.png"
+    },
+    {
+        "name": "Malus Tower Blue",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 5,
+            "BONUSACTIONVALUE": -4,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "path": "excomm_2_3.png"
+    },
+    {
+        "name": "Malus Tower Purple",
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 7,
+            "BONUSACTIONVALUE": -4,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "path": "excomm_2_4.png"
+    },
+    {
+        "name": "No Market Action",
+        "permanentEffect": "NO_MARKET_ACTION",
+        "period": 2,
+        "path": "excomm_2_5.png"
+    },
+    {
+        "name": "Malus Double Servant ",
+        "instantEffect": "FLAG",
+        "instantPayload": "DOUBLESERVANTS",
+        "period": 2,
+        "path": "excomm_2_6.png"
+    },
+    {
+        "name": "Skip Turn",
+        "instantEffect": "FLAG",
+        "instantPayload": "SKIPTURN",
+        "period": 2,
+        "path": "excomm_2_7.png"
+    },
+    {
+        "name": "No Victory Points Blue",
+        "instantEffect": "FLAG",
+        "instantPayload": "NOENDBLUE",
+        "period": 3,
+        "path": "excomm_3_1.png"
+    },
+    {
+        "name": "No Victory Points Purple",
+        "instantEffect": "FLAG",
+        "instantPayload": "NOENDPURPLE",
+        "period": 3,
+        "path": "excomm_3_2.png"
+    },
+    {
+        "name": "No Victory Points Green",
+        "instantEffect": "FLAG",
+        "instantPayload": "NOENDGREEN",
+        "period": 3,
+        "path": "excomm_3_3.png"
+    },
+    {
+        "name": "Less Points for Victory",
+        "instantEffect": "FLAG",
+        "instantPayload": "LESSFORVICTORY",
+        "period": 3,
+        "path": "excomm_3_4.png"
+    },
+    {
+        "name": "Less Points for Military",
+        "instantEffect": "FLAG",
+        "instantPayload": "LESSFORMILITARY",
+        "period": 3,
+        "path": "excomm_3_5.png"
+    },
+    {
+        "name": "Less Points for Cost",
+        "instantEffect": "FLAG",
+        "instantPayload": "LESSFORBUILDING",
+        "period": 3,
+        "path": "excomm_3_6.png"
+    },
+    {
+        "name": "Less Points for Resource",
+        "instantEffect": "FLAG",
+        "instantPayload": "LESSFORRESOURCE",
+        "period": 3,
+        "path": "excomm_3_7.png"
+    }
+]

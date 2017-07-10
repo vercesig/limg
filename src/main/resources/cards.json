@@ -1,0 +1,2261 @@
+[
+    {
+        "name": "Commercial Hub",
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 1
+        },
+        "minimumActionValue": 1,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_1.png"
+    },
+    {
+        "name": "Woods",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "WOOD": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "WOOD": 1
+        },
+        "minimumActionValue": 2,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_2.png"
+    },
+    {
+        "name": "Village",
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 1,
+            "SERVANTS": 1
+        },
+        "minimumActionValue": 3,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_3.png"
+    },
+    {
+        "name": "Gravel Pit",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "STONE": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "STONE": 2
+        },
+        "minimumActionValue": 4,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_4.png"
+    },
+    {
+        "name": "Forest",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "WOOD": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "WOOD": 3
+        },
+        "minimumActionValue": 5,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_5.png"
+    },
+    {
+        "name": "Monastery",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 1,
+            "MILITARY_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "FAITH_POINTS": 1,
+            "STONE": 1
+        },
+        "minimumActionValue": 6,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_6.png"
+    },
+    {
+        "name": "Citadel",
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "MILITARY_POINTS": 2,
+            "STONE": 1
+        },
+        "minimumActionValue": 5,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_7.png"
+    },
+    {
+        "name": "City",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 3
+        },
+        "permanentEffect": "PRIVILEGE",
+        "permanentPayload": {
+            "NUMBER": 1
+        },
+        "minimumActionValue": 6,
+        "period": 1,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_8.png"
+    },
+    {
+        "name": "Gold Mine",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 2
+        },
+        "minimumActionValue": 1,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_9.png"
+    },
+    {
+        "name": "Mountain Town",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "MILITARY_POINTS": 1,
+            "WOOD": 2
+        },
+        "minimumActionValue": 3,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_10.png"
+    },
+    {
+        "name": "Mining Town",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 2,
+            "STONE": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "SERVANTS": 1,
+            "STONE": 2
+        },
+        "minimumActionValue": 4,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_11.png"
+    },
+    {
+        "name": "Rock Pit",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "WOOD": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "STONE": 3
+        },
+        "minimumActionValue": 3,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_12.png"
+    },
+    {
+        "name": "Estate",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 2,
+            "WOOD": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 1,
+            "WOOD": 2
+        },
+        "minimumActionValue": 4,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_13.png"
+    },
+    {
+        "name": "Hermitage",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "FAITH_POINTS": 1
+        },
+        "minimumActionValue": 2,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_14.png"
+    },
+    {
+        "name": "Manor House",
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "SERVANTS": 2,
+            "MILITARY_POINTS": 2
+        },
+        "minimumActionValue": 5,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_15.png"
+    },
+    {
+        "name": "Dukedom",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 4
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 1,
+            "WOOD": 2,
+            "STONE": 1
+        },
+        "minimumActionValue": 6,
+        "period": 2,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_16.png"
+    },
+    {
+        "name": "Trading Town",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 1,
+            "COINS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 3
+        },
+        "minimumActionValue": 1,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_17.png"
+    },
+    {
+        "name": "Farm",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 1,
+            "WOOD": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 2,
+            "WOOD": 2
+        },
+        "minimumActionValue": 3,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_18.png"
+    },
+    {
+        "name": "Colony",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "MILITARY_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4,
+            "WOOD": 1
+        },
+        "minimumActionValue": 5,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_19.png"
+    },
+    {
+        "name": "Marble Pit",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 1,
+            "STONE": 2
+        },
+        "minimumActionValue": 2,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_20.png"
+    },
+    {
+        "name": "Province",
+        "instantEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "STONE": 1
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4,
+            "STONE": 1
+        },
+        "minimumActionValue": 6,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_21.png"
+    },
+    {
+        "name": "Sanctuary",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 1,
+            "FAITH_POINTS": 1
+        },
+        "minimumActionValue": 1,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_22.png"
+    },
+    {
+        "name": "Castle",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 2,
+            "COINS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "SERVANTS": 1,
+            "MILITARY_POINTS": 3
+        },
+        "minimumActionValue": 4,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_23.png"
+    },
+    {
+        "name": "Fortified Town",
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 1,
+            "MILITARY_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "SERVANTS": 2,
+            "MILITARY_POINTS": 1
+        },
+        "minimumActionValue": 2,
+        "period": 3,
+        "cardType": "TERRITORYCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_24.png"
+    },
+    {
+        "name": "Mint",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "permanentEffect": "BONUS",
+        "permanentPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "BUILDINGCARD",
+            "QUANTITY": 1,
+            "INCREASE": "COINS",
+            "INCREASINGQUANTITY": 1
+        },
+        "minimumActionValue": 5,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_25.png"
+    },
+    {
+        "name": "Tax Office",
+        "cost": [
+            {
+                "WOOD": 3,
+                "STONE": 1
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "permanentEffect": "BONUS",
+        "permanentPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "TERRITORYCARD",
+            "QUANTITY": 1,
+            "INCREASE": "COINS",
+            "INCREASINGQUANTITY": 1
+        },
+        "minimumActionValue": 5,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_26.png"
+    },
+    {
+        "name": "Triumphal Arch",
+        "cost": [
+            {
+                "COINS": 2,
+                "STONE": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 6
+        },
+        "permanentEffect": "BONUS",
+        "permanentPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "VENTURECARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 1
+        },
+        "minimumActionValue": 6,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_27.png"
+    },
+    {
+        "name": "Theater",
+        "cost": [
+            {
+                "COINS": 2,
+                "WOOD": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 6
+        },
+        "permanentEffect": "BONUS",
+        "permanentPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "CHARACTERCARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 1
+        },
+        "minimumActionValue": 6,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_28.png"
+    },
+    {
+        "name": "Carpenter's Shop",
+        "cost": [
+            {
+                "COINS": 1,
+                "WOOD": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "WOOD": 1
+                },
+                "RESOURCEOUT": {
+                    "COINS": 3
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "WOOD": 2
+                },
+                "RESOURCEOUT": {
+                    "COINS": 5
+                }
+            }
+        ],
+        "minimumActionValue": 4,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_29.png"
+    },
+    {
+        "name": "Stonemason's Shop",
+        "cost": [
+            {
+                "COINS": 1,
+                "STONE": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 2
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "STONE": 1
+                },
+                "RESOURCEOUT": {
+                    "COINS": 3
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "STONE": 2
+                },
+                "RESOURCEOUT": {
+                    "COINS": 5
+                }
+            }
+        ],
+        "minimumActionValue": 3,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_30.png"
+    },
+    {
+        "name": "Chapel",
+        "cost": [
+            {
+                "WOOD": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "FAITH_POINTS": 1
+            },
+            "RESOURCEIN": {
+                "COINS": 1
+            }
+        },
+        "minimumActionValue": 2,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_31.png"
+    },
+    {
+        "name": "Residence",
+        "cost": [
+            {
+                "STONE": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 1
+        },
+        "permanentEffect": "PRIVILEGE",
+        "permanentPayload": {
+            "COST": {
+                "COINS": 1
+            },
+            "NUMBER": 1
+        },
+        "minimumActionValue": 1,
+        "period": 1,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_32.png"
+    },
+    {
+        "name": "Marketplace",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 1
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "WOOD": 2,
+                "STONE": 2
+            },
+            "RESOURCEIN": {
+                "COINS": 3
+            }
+        },
+        "minimumActionValue": 3,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_33.png"
+    },
+    {
+        "name": "Treasury",
+        "cost": [
+            {
+                "WOOD": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "COINS": 1
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 3
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "COINS": 2
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 5
+                }
+            }
+        ],
+        "minimumActionValue": 3,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_34.png"
+    },
+    {
+        "name": "Painters' Guild",
+        "cost": [
+            {
+                "WOOD": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "WOOD": 1
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 3
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "WOOD": 3
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 7
+                }
+            }
+        ],
+        "minimumActionValue": 4,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_35.png"
+    },
+    {
+        "name": "Sculptors' Guild",
+        "cost": [
+            {
+                "STONE": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 6
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "STONE": 1
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 3
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "STONE": 3
+                },
+                "RESOURCEOUT": {
+                    "VICTORY_POINTS": 7
+                }
+            }
+        ],
+        "minimumActionValue": 5,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_36.png"
+    },
+    {
+        "name": "Stonemasons' Guild",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "VICTORY_POINTS": 6
+            },
+            "RESOURCEIN": {
+                "SERVANTS": 1,
+                "STONE": 1,
+                "WOOD": 1
+            }
+        },
+        "minimumActionValue": 4,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_37.png"
+    },
+    {
+        "name": "Baptistery",
+        "cost": [
+            {
+                "STONE": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 2,
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "VICTORY_POINTS": 2,
+                "COINS": 2
+            },
+            "RESOURCEIN": {
+                "FAITH_POINTS": 1
+            }
+        },
+        "minimumActionValue": 2,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_38.png"
+    },
+    {
+        "name": "Barracks",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 1
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "MILITARY_POINTS": 3
+            },
+            "RESOURCEIN": {
+                "SERVANTS": 1
+            }
+        },
+        "minimumActionValue": 1,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_39.png"
+    },
+    {
+        "name": "Stronghold",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 2,
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 8
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 2,
+            "MILITARY_POINTS": 2
+        },
+        "minimumActionValue": 6,
+        "period": 2,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_40.png"
+    },
+    {
+        "name": "Bank",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 3,
+                "COINS": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 7
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "COINS": 5
+        },
+        "minimumActionValue": 2,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_41.png"
+    },
+    {
+        "name": "Fair",
+        "cost": [
+            {
+                "COINS": 4,
+                "WOOD": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 8
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "WOOD": 3,
+                "STONE": 3
+            },
+            "RESOURCEIN": {
+                "COINS": 4
+            }
+        },
+        "minimumActionValue": 4,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_42.png"
+    },
+    {
+        "name": "Garden",
+        "cost": [
+            {
+                "WOOD": 4,
+                "STONE": 2,
+                "SERVANTS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 10
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "minimumActionValue": 1,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_43.png"
+    },
+    {
+        "name": "Fortress",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 4,
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 9
+        },
+        "permanentEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "permanentPayload": [
+            {
+                "VICTORY_POINTS": 2
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "minimumActionValue": 5,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "FALSE",
+        "path": "devcards_f_en_c_44.png"
+    },
+    {
+        "name": "Palace",
+        "cost": [
+            {
+                "WOOD": 3,
+                "STONE": 1,
+                "COINS": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 9
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "VICTORY_POINTS": 4,
+                "SERVANTS": 2
+            },
+            "RESOURCEIN": {
+                "COINS": 1
+            }
+        },
+        "minimumActionValue": 6,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_45.png"
+    },
+    {
+        "name": "Church",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 5,
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": [
+            {
+                "RESOURCEIN": {
+                    "STONE": 1
+                },
+                "RESOURCEOUT": {
+                    "FAITH_POINTS": 2
+                }
+            },
+            {
+                "RESOURCEIN": {
+                    "WOOD": 1
+                },
+                "RESOURCEOUT": {
+                    "FAITH_POINTS": 2
+                }
+            }
+        ],
+        "minimumActionValue": 1,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_46.png"
+    },
+    {
+        "name": "Military Academy",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 2,
+                "SERVANTS": 1
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 7
+        },
+        "permanentEffect": "CHANGE",
+        "permanentPayload": {
+            "RESOURCEOUT": {
+                "VICTORY_POINTS": 1,
+                "MILITARY_POINTS": 3
+            },
+            "RESOURCEIN": {
+                "SERVANTS": 1
+            }
+        },
+        "minimumActionValue": 3,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_47.png"
+    },
+    {
+        "name": "Cathedral",
+        "cost": [
+            {
+                "WOOD": 4,
+                "STONE": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "VICTORY_POINTS": 7,
+            "FAITH_POINTS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 1
+        },
+        "minimumActionValue": 2,
+        "period": 3,
+        "cardType": "BUILDINGCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_48.png"
+    },
+    {
+        "name": "Warlord",
+        "cost": [
+            {
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "MILITARY_POINTS": 3
+        },
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 4,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_49.png"
+    },
+    {
+        "name": "Stonemason",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 6,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": {
+                "STONE": 1,
+                "WOOD": 1
+            },
+            "EXCLUSIVEBONUS": true,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_50.png"
+    },
+    {
+        "name": "Dame",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 5,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": {
+                "COINS": 1
+            },
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_51.png"
+    },
+    {
+        "name": "Knight",
+        "cost": [
+            {
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "PRIVILEGE",
+        "instantPayload": {
+            "NUMBER": 1
+        },
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 7,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_52.png"
+    },
+    {
+        "name": "Farmer",
+        "cost": [
+            {
+                "COINS": 3
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "HARVEST",
+            "REGIONID": 1,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_53.png"
+    },
+    {
+        "name": "Artisan",
+        "cost": [
+            {
+                "COINS": 3
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "PRODUCTION",
+            "REGIONID": 0,
+            "BONUSACTIONVALUE": 2,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_54.png"
+    },
+    {
+        "name": "Preacher",
+        "cost": [
+            {
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 4
+        },
+        "permanentEffect": "NO_TOWER_BONUS",
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_55.png"
+    },
+    {
+        "name": "Abbess",
+        "cost": [
+            {
+                "COINS": 3
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "ACTION"
+        ],
+        "instantPayload": [
+            {
+                "FAITH_POINTS": 1
+            },
+            {
+                "TYPE": "TOWER",
+                "REGIONID": null,
+                "BONUSACTIONVALUE": 4,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": true
+            }
+        ],
+        "period": 1,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_56.png"
+    },
+    {
+        "name": "Captain",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "ACTION"
+        ],
+        "instantPayload": [
+            {
+                "MILITARY_POINTS": 2
+            },
+            {
+                "TYPE": "TOWER",
+                "REGIONID": 4,
+                "BONUSACTIONVALUE": 6,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": null
+            }
+        ],
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_57.png"
+    },
+    {
+        "name": "Architect",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 6,
+            "BONUSACTIONVALUE": 6,
+            "BONUSRESOURCE": {
+                "STONE": 1,
+                "WOOD": 1
+            },
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_58.png"
+    },
+    {
+        "name": "Patron",
+        "cost": [
+            {
+                "COINS": 3
+            }
+        ],
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "TOWER",
+            "REGIONID": 5,
+            "BONUSACTIONVALUE": 6,
+            "BONUSRESOURCE": {
+                "COINS": 2
+            },
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_59.png"
+    },
+    {
+        "name": "Hero",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "instantEffect": [
+            "ACTION",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "TYPE": "TOWER",
+                "REGIONID": 7,
+                "BONUSACTIONVALUE": 6,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": null
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_60.png"
+    },
+    {
+        "name": "Peasant",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "HARVEST",
+            "REGIONID": 1,
+            "BONUSACTIONVALUE": 3,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_61.png"
+    },
+    {
+        "name": "Scholar",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "permanentEffect": "PERMANENT",
+        "permanentPayload": {
+            "TYPE": "PRODUCTION",
+            "REGIONID": 0,
+            "BONUSACTIONVALUE": 3,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_62.png"
+    },
+    {
+        "name": "Papal Messenger",
+        "cost": [
+            {
+                "COINS": 5
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 3
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_63.png"
+    },
+    {
+        "name": "Royal Messenger",
+        "cost": [
+            {
+                "COINS": 5
+            }
+        ],
+        "instantEffect": "PRIVILEGE",
+        "instantPayload": {
+            "NUMBER": 3
+        },
+        "period": 2,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_64.png"
+    },
+    {
+        "name": "Noble",
+        "cost": [
+            {
+                "COINS": 6
+            }
+        ],
+        "instantEffect": "BONUS",
+        "instantPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "TERRITORYCARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 2
+        },
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_65.png"
+    },
+    {
+        "name": "Governor",
+        "cost": [
+            {
+                "COINS": 6
+            }
+        ],
+        "instantEffect": "BONUS",
+        "instantPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "BUILDINGCARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 2
+        },
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_66.png"
+    },
+    {
+        "name": "Paramour",
+        "cost": [
+            {
+                "COINS": 7
+            }
+        ],
+        "instantEffect": "BONUS",
+        "instantPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "CHARACTERCARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 2
+        },
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_67.png"
+    },
+    {
+        "name": "Herald",
+        "cost": [
+            {
+                "COINS": 6
+            }
+        ],
+        "instantEffect": "BONUS",
+        "instantPayload": {
+            "TYPE": "CARD",
+            "FOREACH": "VENTURECARD",
+            "QUANTITY": 1,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 2
+        },
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_68.png"
+    },
+    {
+        "name": "Cardinal",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "ACTION"
+        ],
+        "instantPayload": [
+            {
+                "FAITH_POINTS": 2
+            },
+            {
+                "TYPE": "HARVEST",
+                "REGIONID": 1,
+                "BONUSACTIONVALUE": 4,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": null
+            }
+        ],
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_69.png"
+    },
+    {
+        "name": "Bishop",
+        "cost": [
+            {
+                "COINS": 5
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "ACTION"
+        ],
+        "instantPayload": [
+            {
+                "FAITH_POINTS": 1
+            },
+            {
+                "TYPE": "PRODUCTION",
+                "REGIONID": 0,
+                "BONUSACTIONVALUE": 4,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": null
+            }
+        ],
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_70.png"
+    },
+    {
+        "name": "General",
+        "cost": [
+            {
+                "COINS": 5
+            }
+        ],
+        "instantEffect": "BONUS",
+        "instantPayload": {
+            "TYPE": "RESOURCE",
+            "FOREACH": "MILITARY_POINTS",
+            "QUANTITY": 2,
+            "INCREASE": "VICTORY_POINTS",
+            "INCREASINGQUANTITY": 1
+        },
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_71.png"
+    },
+    {
+        "name": "Ambassador",
+        "cost": [
+            {
+                "COINS": 6
+            }
+        ],
+        "instantEffect": [
+            "ACTION",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "TYPE": "TOWER",
+                "REGIONID": null,
+                "BONUSACTIONVALUE": 7,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": true
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "period": 3,
+        "cardType": "CHARACTERCARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_72.png"
+    },
+    {
+        "name": "Hiring Recruits",
+        "cost": [
+            {
+                "COINS": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "MILITARY_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_73.png"
+    },
+    {
+        "name": "Repairing the Church",
+        "cost": [
+            {
+                "WOOD": 1,
+                "STONE": 1,
+                "COINS": 1
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_74.png"
+    },
+    {
+        "name": "Building the Walls",
+        "cost": [
+            {
+                "STONE": 3
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "MILITARY_POINTS": 2
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_75.png"
+    },
+    {
+        "name": "Raising a Statue",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 2
+            }
+        ],
+        "instantEffect": "PRIVILEGE",
+        "instantPayload": {
+            "NUMBER": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_76.png"
+    },
+    {
+        "name": "Military Campaign",
+        "cost": [
+            {
+                "MILITARY_POINTS": 2
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 3
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_77.png"
+    },
+    {
+        "name": "Hosting Panhandlers",
+        "cost": [
+            {
+                "WOOD": 3
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 4
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_78.png"
+    },
+    {
+        "name": "Fighting Heresies",
+        "cost": [
+            {
+                "MILITARY_POINTS": 3
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 5
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_79.png"
+    },
+    {
+        "name": "Support to the Bishop ",
+        "cost": [
+            {
+                "MILITARY_POINTS": 2
+            },
+            {
+                "WOOD": 1,
+                "STONE": 1,
+                "COINS": 2
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 4
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 1
+        },
+        "minimumActionValue": 0,
+        "period": 1,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_80.png"
+    },
+    {
+        "name": "Hiring Soldiers",
+        "cost": [
+            {
+                "COINS": 6
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "MILITARY_POINTS": 6
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_81.png"
+    },
+    {
+        "name": "Repairing the Abbey",
+        "cost": [
+            {
+                "WOOD": 2,
+                "STONE": 2,
+                "COINS": 2
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 6
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_82.png"
+    },
+    {
+        "name": "Building the Bastions",
+        "cost": [
+            {
+                "STONE": 4
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "MILITARY_POINTS": 3
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 2
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_83.png"
+    },
+    {
+        "name": "Support to the King",
+        "cost": [
+            {
+                "MILITARY_POINTS": 3
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 6
+        },
+        "instantEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "COINS": 5
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_84.png"
+    },
+    {
+        "name": "Improving the Canals",
+        "cost": [
+            {
+                "SERVANTS": 2,
+                "COINS": 3
+            }
+        ],
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "HARVEST",
+            "REGIONID": 1,
+            "BONUSACTIONVALUE": 4,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_85.png"
+    },
+    {
+        "name": "Hosting Foreigners",
+        "cost": [
+            {
+                "WOOD": 4
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "SERVANTS": 5
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_86.png"
+    },
+    {
+        "name": "Crusade",
+        "cost": [
+            {
+                "MILITARY_POINTS": 4
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 8
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "COINS": 5,
+            "FAITH_POINTS": 1
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_87.png"
+    },
+    {
+        "name": "Support to the Cardinal",
+        "cost": [
+            {
+                "MILITARY_POINTS": 4
+            },
+            {
+                "WOOD": 2,
+                "STONE": 2,
+                "COINS": 3
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 7
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 2,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_88.png"
+    },
+    {
+        "name": "Hiring Mercenaries",
+        "cost": [
+            {
+                "COINS": 8
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "MILITARY_POINTS": 7
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 6
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_89.png"
+    },
+    {
+        "name": "Repairing the Cathedral",
+        "cost": [
+            {
+                "WOOD": 3,
+                "STONE": 3,
+                "COINS": 3
+            }
+        ],
+        "instantEffect": [
+            "ACTION",
+            "ADD"
+        ],
+        "instantPayload": [
+            {
+                "TYPE": "TOWER",
+                "REGIONID": null,
+                "BONUSACTIONVALUE": 7,
+                "BONUSRESOURCE": null,
+                "EXCLUSIVEBONUS": null,
+                "FLAGREGION": true
+            },
+            {
+                "FAITH_POINTS": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_90.png"
+    },
+    {
+        "name": "Building the Towers",
+        "cost": [
+            {
+                "STONE": 6
+            }
+        ],
+        "instantEffect": [
+            "ADD",
+            "PRIVILEGE"
+        ],
+        "instantPayload": [
+            {
+                "MILITARY_POINTS": 4
+            },
+            {
+                "NUMBER": 1
+            }
+        ],
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 4
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_91.png"
+    },
+    {
+        "name": "Promoting Sacred Art",
+        "cost": [
+            {
+                "WOOD": 6
+            }
+        ],
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 3
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_92.png"
+    },
+    {
+        "name": "Military Conquest",
+        "cost": [
+            {
+                "MILITARY_POINTS": 6
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 12
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "WOOD": 3,
+            "STONE": 3,
+            "COINS": 3
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 7
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_93.png"
+    },
+    {
+        "name": "Improving the Roads",
+        "cost": [
+            {
+                "SERVANTS": 3,
+                "COINS": 4
+            }
+        ],
+        "instantEffect": "ACTION",
+        "instantPayload": {
+            "TYPE": "PRODUCTION",
+            "REGIONID": 0,
+            "BONUSACTIONVALUE": 3,
+            "BONUSRESOURCE": null,
+            "EXCLUSIVEBONUS": null,
+            "FLAGREGION": null
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 5
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_94.png"
+    },
+    {
+        "name": "Sacred War",
+        "cost": [
+            {
+                "MILITARY_POINTS": 8
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 15
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 4
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 8
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_95.png"
+    },
+    {
+        "name": "Support to the Pope**",
+        "cost": [
+            {
+                "MILITARY_POINTS": 5
+            },
+            {
+                "WOOD": 3,
+                "STONE": 3,
+                "COINS": 4
+            }
+        ],
+        "requirements": {
+            "MILITARY_POINTS": 10
+        },
+        "instantEffect": "ADD",
+        "instantPayload": {
+            "FAITH_POINTS": 2
+        },
+        "permanentEffect": "ADD",
+        "permanentPayload": {
+            "VICTORY_POINTS": 10
+        },
+        "minimumActionValue": 0,
+        "period": 3,
+        "cardType": "VENTURECARD",
+        "exclusivePermanentEffect": "TRUE",
+        "path": "devcards_f_en_c_96.png"
+    }
+]
