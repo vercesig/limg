@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import it.polimi.ingsw.GC_32.Common.Network.ConnectionType;
 import it.polimi.ingsw.GC_32.Server.Game.Game;
 import it.polimi.ingsw.GC_32.Server.Game.Player;
@@ -32,7 +30,7 @@ public class GameRegistry {
 	private ConcurrentHashMap<UUID, Player> playerTranslationTable;
 	private ConcurrentHashMap<UUID, Game> gameRegistry;
 	private ConcurrentLinkedQueue<Player> newPlayers;
-	private AtomicInteger newPlayersCount;
+	private int newPlayersCount;
 	
 	/**
 	 * initialize the GameRegistry
@@ -42,7 +40,7 @@ public class GameRegistry {
 		playerTranslationTable = new ConcurrentHashMap<>();
 		gameRegistry = new ConcurrentHashMap<>();
 		newPlayers = new ConcurrentLinkedQueue<Player>();
-		newPlayersCount = new AtomicInteger();
+		newPlayersCount = 0;
 	}
 	
 	/**
@@ -66,7 +64,7 @@ public class GameRegistry {
 		this.playerConnectionMode.put(player.getUUID(), connectionMode);
 		this.playerTranslationTable.put(player.getUUID(), player);
 		this.newPlayers.offer(player);
-		this.newPlayersCount.incrementAndGet();
+		incrNewPlayers();
 	}
 	
 	/**
@@ -140,7 +138,7 @@ public class GameRegistry {
 	 * Tells how many players are not in a game
 	 */
 	public int queuedPlayersCount(){
-	    return this.newPlayersCount.get();
+	    return this.newPlayersCount;
 	}
 	
 	/**
@@ -154,11 +152,19 @@ public class GameRegistry {
             Player player = this.newPlayers.poll();
             if(player != null){
                 tmpList.add(player);
-                newPlayersCount.decrementAndGet();
+                decrNewPlayers();
             } else {
                 break;
             }
         }
         return tmpList;
+    }
+    
+    private synchronized void incrNewPlayers(){
+        this.newPlayersCount++;
+    }
+    
+    private synchronized void decrNewPlayers(){
+        this.newPlayersCount--;
     }
 }
