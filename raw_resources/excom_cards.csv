@@ -8,7 +8,7 @@ Malus Production Action,,,,,PERMANENT,"{“TYPE”: “PRODUCTION”,  “REGION
 Malus Color Familiar,,,,,LESSDICE,,,1,,,excomm_1_7.png
 Malus Tower Green,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 4, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_1.png
 Malus Tower Yellow,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 6, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_2.png
-Malus Tower Blue,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_3png
+Malus Tower Blue,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_3.png
 Malus Tower Purple,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 7, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_4.png
 No Market Action,,,,,NO_MARKET_ACTION,,,2,,,excomm_2_5.png
 Malus Double Servant ,,,FLAG,DOUBLESERVANTS,,,,2,,,excomm_2_6.png
