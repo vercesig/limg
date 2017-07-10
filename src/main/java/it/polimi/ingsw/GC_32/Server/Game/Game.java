@@ -137,7 +137,7 @@ public class Game implements Runnable{
 			playerList.get(i).getResources().setResource("VICTORY_POINTS", 0);
 			playerList.get(i).getResources().setResource("MILITARY_POINTS", 0);
 			playerList.get(i).setPersonalBonusTile(bonusTile.get(list.get(j)));
-			
+		}
 		LOGGER.log(Level.INFO, "done");
 	}
 	
