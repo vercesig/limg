@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class LeaderCardContext {
 	
-	public LeaderCardContext(){};
+	public LeaderCardContext(){}
 	
 	public static void showLeaderCard(ArrayList <LeaderCardGUI> leaderList){ 
 		
@@ -67,7 +67,7 @@ public class LeaderCardContext {
 			label.setScaleX(scale);
 			label.setScaleY(scale);
 			label.setTranslateY(100);
-			label.setTranslateX(factor*100+30);
+			label.setTranslateX(factor * 100.0 + 30.0);
 			label.setTranslateZ(-20);
 		}
 }

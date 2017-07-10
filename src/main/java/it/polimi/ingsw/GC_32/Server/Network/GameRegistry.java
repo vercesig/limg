@@ -160,10 +160,16 @@ public class GameRegistry {
         return tmpList;
     }
     
+    /**
+     * thread-safely increases the new players counter
+     */
     private synchronized void incrNewPlayers(){
         this.newPlayersCount++;
     }
     
+    /**
+     * thread-safely decreases the new players counter
+     */
     private synchronized void decrNewPlayers(){
         this.newPlayersCount--;
     }

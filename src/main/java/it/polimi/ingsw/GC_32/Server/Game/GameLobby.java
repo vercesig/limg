@@ -67,6 +67,7 @@ public class GameLobby implements KillableRunnable{
                     Utils.safeSleep(200);
                 }
             }
+            Utils.safeSleep(200);
         }
     }
 

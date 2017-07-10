@@ -12,7 +12,7 @@ public class LeaderCardGUI extends Box {
 	
 	public LeaderCardGUI(int width, int height, int depth, int x, int y, int z, int factor){ //40 100 10
 		super(width, height, depth);
-		this.setTranslateX(x + factor);
+		this.setTranslateX(0.0 + x + factor);
 		this.setTranslateY(y);
 		this.setTranslateZ(z);
 		this.setUknownMesh();
