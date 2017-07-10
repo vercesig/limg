@@ -18,16 +18,11 @@ public class ExtraScreen extends BorderPane {
 	private BorderPane top;
 	private BorderPane bot;
 	
-	//ShowCard
-	private GridPane showCard;
-	
 	//Player Ranking
 	private GridPane playerRank;
 	
 	//Chat
-
 	private GridPane chat;
-
 	
 	//Profile
 	private GridPane profile;
@@ -54,7 +49,6 @@ public class ExtraScreen extends BorderPane {
 		setupPersonalProfile();
 		setupPlayerRank();
 		setupChat();
-		setupShowCard();
 	}
 
 	public ExtraScreen getExtra(){
@@ -83,7 +77,6 @@ public class ExtraScreen extends BorderPane {
 		playerName.setId("text");
 		
 		HBox nameBox = new HBox();
-		//nameBox.setSpacing(20);
 		nameBox.getChildren().addAll(labelName, playerName);
 		
 		ImageView gallery = new ImageView();
@@ -97,17 +90,14 @@ public class ExtraScreen extends BorderPane {
 		right.setId("next_idle");
 		right.setOnMouseClicked(click -> gallery.setImage(UserGUI.getRandom()));
 		HBox buttonSlide = new HBox();
-	//	buttonSlide.setSpacing(20);
-
+	
 		buttonSlide.getChildren().addAll(left, right);
 		
 		
 		Label imageProfile = new Label("Profile Picture:");
 		imageProfile.setId("label");
 		Label color = new Label();
-	//	color.setId("label_color");
-	///	setColor(color, player.getUserColor());
-		
+			
 		VBox galleryElement = new VBox();
 		VBox colorChoserElement = new VBox();
 		HBox galleryColorBox = new HBox();
@@ -118,39 +108,11 @@ public class ExtraScreen extends BorderPane {
 		button.setOnMouseClicked(click -> setRank());
 		HBox ender = new HBox();
 		ender.getChildren().add(button);
-	//	button.setId("label");
 		ender.setId("ender");
 		this.profile.add(label, 0, 0);
 		this.profile.add(nameBox, 0, 1);
 		this.profile.add(galleryColorBox, 0, 2);
 		this.profile.add(ender, 0, 3);
-	}
-	
-	//Show Card
-	public void setupShowCard(){
-		this.showCard = new GridPane();
-		showCard.setId("idle");
-		Label cardName = new Label("Show Card");
-		BoardButton cardImage = new BoardButton(250, 250, "neutral");
-		TextField detail = new TextField();
-		cardName.setId("label");
-		detail.setId("chat");
-		//set(cardName, cardImage, detail);
-		ScrollPane detailShow = new ScrollPane();
-		detailShow.setContent(detail);
-		
-		this.showCard.add(cardName, 0, 0);
-		this.showCard.add(cardImage, 1, 0);
-		this.showCard.add(detailShow, 2, 0);
-	}
-	
-	public void showCard(String cardName, BoardButton button){
-		GameUtils.updateCardButton(cardName, button);
-		this.bot.setCenter(this.showCard);
-	}
-	
-	public GridPane getShowCard(){
-		return this.showCard;
 	}
 	
 	//Player Rank

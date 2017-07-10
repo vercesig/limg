@@ -34,7 +34,6 @@ public class LeaderCardContext {
 			for(int i=0; i<leaderList.size(); i++){
 				VBox vbox = new VBox();
 				Label label = new Label(leaderList.get(i).getName());
-//set style				label.set();
 				vbox.getChildren().add(leaderList.get(i));
 				shift(vbox, 1, i*100);
 				shift(label, 0.5, i);

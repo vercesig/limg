@@ -20,7 +20,6 @@ public class LeaderCardGUI extends Box {
 	}
 	
 	public void set(String cardName){
-		//leader.setOnMouseDragEntered(click -> click);
 		JsonObject path = ClientCardRegistry.getInstance().getDetails(cardName);
 		this.setCardMesh(path.get("path").asString());
 		this.setName(cardName);

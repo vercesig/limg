@@ -82,8 +82,7 @@ public class MenuScreen extends BorderPane{
 			case 5:
 				this.buttons.get(5).getChildren().get(0).setOnMouseClicked(click-> {
 																			this.game.getExtraScreen().resetChat();
-																			GameUtils.update(this.game);});
-																											
+																			GameUtils.update(this.game);});																							
 				break;
 				
 			default:
