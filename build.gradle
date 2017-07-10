@@ -42,7 +42,7 @@ publishing {
         maven(MavenPublication) {
             groupId 'it.polimi.ingsw'
             artifactId 'GC_32'
-            version '0.9.8'
+            version '1.0.0'
 
             from components.java
         }
@@ -127,4 +127,4 @@ task convertCards {
 }
 tasks.processResources.dependsOn(convertCards)
 
-description = 'Prova Finale Ingegneria del software'
+description = 'Prova Finale Ingegneria del software - GC_32'

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.polimi.ingsw</groupId>
 	<artifactId>GC_32</artifactId>
-	<version>0.9.8</version>
+	<version>1.0.0</version>
 	<name>GC_32</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
