@@ -1,0 +1,17 @@
+it.polimi.ingsw.GC_32.Client
+it.polimi.ingsw.GC_32.Client.CLI
+it.polimi.ingsw.GC_32.Client.Controller
+it.polimi.ingsw.GC_32.Client.GUI
+it.polimi.ingsw.GC_32.Client.GUI.Screen
+it.polimi.ingsw.GC_32.Client.Game
+it.polimi.ingsw.GC_32.Client.Network
+it.polimi.ingsw.GC_32.Common.Game
+it.polimi.ingsw.GC_32.Common.Network
+it.polimi.ingsw.GC_32.Common.Utils
+it.polimi.ingsw.GC_32.Server
+it.polimi.ingsw.GC_32.Server.Game
+it.polimi.ingsw.GC_32.Server.Game.Board
+it.polimi.ingsw.GC_32.Server.Game.Card
+it.polimi.ingsw.GC_32.Server.Game.Effect
+it.polimi.ingsw.GC_32.Server.Network
+it.polimi.ingsw.GC_32.Server.Setup
