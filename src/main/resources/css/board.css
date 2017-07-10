@@ -16,7 +16,7 @@
 	-fx-min-width: 45px;
 	-fx-min-height: 95px;
 
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #production_idle{
@@ -25,7 +25,7 @@
 	-fx-min-width: 40px;
 	-fx-min-height: 40px;
 
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #multi_production_idle{
@@ -34,7 +34,7 @@
 	-fx-min-width: 140px;
 	-fx-min-height: 50px;
 		
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #harvest_idle{
@@ -44,7 +44,7 @@
 	-fx-min-width: 40px;
 	-fx-min-height: 40px;
 	
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #multi_harvest_idle{
@@ -54,7 +54,7 @@
 	-fx-min-width: 140px;
 	-fx-min-height: 50px;
 
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #council_idle{
@@ -64,7 +64,7 @@
 	-fx-min-width: 180px;
 	-fx-min-height: 70px;
 	
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #market_idle{
@@ -73,5 +73,5 @@
 
 	-fx-min-width: 40px;
 	-fx-min-height: 40px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }

@@ -1,20 +1,25 @@
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
 import java.util.ArrayList;
+
+import it.polimi.ingsw.GC_32.Client.Game.ClientActionSpace;
 import javafx.scene.Group;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 public class TowerPane {
 
+	private CentralScreen central;
+	
 	private ArrayList <BoardButton> towerButtons;
 	private ArrayList <BoardButton> cardButtons;
 	private BorderPane master;
 	private GridPane grid;
 	private Group root;
 	
-	public TowerPane(BorderPane master){
-		this.master = master;
+	public TowerPane(CentralScreen screen){
+		this.central = screen;
+		this.master = screen.getMaster();
 		this.grid = new GridPane();
 		this.root = new Group();
 		this.root.setManaged(false);
@@ -47,6 +52,38 @@ public class TowerPane {
 		}
 	}
 
+	/*public void setEffect(){
+		this.towerButtons.forEach(button->{
+			if(button.getRegionID()==4){		
+				button.setOnMouseEntered(click -> button.setId("territoryButton_mouse"));
+				button.setOnMouseExited(click -> button.setId("territoryButton"));	
+			}
+			if(button.getRegionID()==5){		
+				button.setOnMouseEntered(click -> button.setId("characterButton_mouse"));
+				button.setOnMouseExited(click -> button.setId("characterButton"));	
+			}
+			if(button.getRegionID()==6){		
+				button.setOnMouseEntered(click -> button.setId("buildingButton_mouse"));
+				button.setOnMouseExited(click -> button.setId("buildingButton"));	
+			}
+			if(button.getRegionID()==7){		
+				button.setOnMouseEntered(click -> button.setId("ventureButton_mouse"));
+				button.setOnMouseExited(click -> button.setId("ventureButton"));	
+			}
+		});*/
+	/*
+		this.cardButtons.forEach(card->{
+			card.setOnMouseClicked(click ->{
+		  ClientActionSpace space = this.central.getGame().getClient().getBoard().getRegionList()
+					.get(card.getRegionID())
+					.getActionSpaceList()
+									.get(card.getSpaceId());
+		  this.central.getGame().getExtraScreen().showCard(space.getCardName(), (BoardButton)
+				  this.central.getGame().getExtraScreen().getShowCard().getChildren().get(1));
+			});
+		});	
+	}*/
+	
 	public void set(){
 		for(int j=4; j<8; j++){ 		// REGION ID
 			for(int i=0; i<4; i++){		// SPACE ID
@@ -86,7 +123,7 @@ public class TowerPane {
 				}
 			}
 			if(button!=null && card != null){
-			//	set.getChildren().addAll(card, button);
+			
 				this.root.getChildren().addAll(button, card);
 			}
 	}

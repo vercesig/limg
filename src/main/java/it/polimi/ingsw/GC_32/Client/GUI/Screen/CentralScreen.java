@@ -19,7 +19,7 @@ public class CentralScreen{
 		this.game = game;
 		
 		this.master= new BorderPane();
-		this.tower = new TowerPane(this.master);
+		this.tower = new TowerPane(this);
 		this.board = new BoardPane(this.master);
 		this.resource = new ResourcePane(this.master);
 		
@@ -51,7 +51,10 @@ public class CentralScreen{
 		return this.master;
 	}
 
-
+	public GameScreen getGame(){
+		return this.game;
+	}
+	
 	public TowerPane getTowerPane(){
 		return this.tower;
 	}

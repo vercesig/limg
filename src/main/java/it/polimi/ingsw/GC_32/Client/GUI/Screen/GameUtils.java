@@ -3,8 +3,10 @@ package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 import java.util.ArrayList;
 
 import it.polimi.ingsw.GC_32.Client.Game.ClientActionSpace;
+import it.polimi.ingsw.GC_32.Client.Game.ClientBoard;
 import it.polimi.ingsw.GC_32.Client.Game.ClientCardRegistry;
 import it.polimi.ingsw.GC_32.Client.Game.ClientPlayer;
+import it.polimi.ingsw.GC_32.Server.Network.GameRegistry;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
@@ -19,8 +21,55 @@ public class GameUtils {
 		resourceSet.setText(value.toString());
 	}
 	
+	
+	private static void setStyleFamiliar(String path, String color, BoardButton button){
+		button.setStyle("-fx-graphic: url('"+path+"');" +
+					  "-fx-background-size: auto;" +
+					  "-fx-background-color: transparent;" +
+					  "-fx-scale-x: 0.6;"+
+					  "-fx-scale-y: 0.6;"+
+					  "-fx-opacity: 1;" +
+					  "-fx-effect: dropshadow(gaussian,"+color+", 10, 0.5, 0, 0);");
+	}
+	
+	private static void updateButtonWithColor(BoardButton button, UserGUI value){
+		String path;
+		switch(value.getUserColor()){
+		case("#FF0000"):
+			path = "/images/pawns/red.png";
+			setStyleFamiliar(path, "#FF0000", button);
+			break;
+		case("#0000FF"):
+			path = "/images/pawns/blue.png";
+			setStyleFamiliar(path, "#0000FF", button);
+			break;
+		case("#008000"):
+			path = "/images/pawns/green.png";
+			setStyleFamiliar(path, "#008000", button);
+			break;
+		case("#FFFF00"):
+			path = "/images/pawns/yellow.png";
+			setStyleFamiliar(path, "#FFFF00", button);
+			break;
+		default:
+			path = "/images/pawns/red.png";
+			setStyleFamiliar(path, "#FF0000", button);
+		}
+	}
+	
+	private static void updateOccupiedSpace(ClientActionSpace space, BoardButton button, GameScreen game){
+		game.getUsers().forEach((key, value) ->{
+			System.out.println(value.getClientPlayer().getName());
+			for(int i=0; i<space.getOccupants().size(); i++){
+				System.out.println(space.getOccupants().get(i));
+				if(value.getClientPlayer().getName().equals(space.getOccupants().get(i).getOwner())){
+					updateButtonWithColor(button, value);
+				}		
+			}		
+		});
+	}
+	
 	public static void updateCardButton(String cardName, BoardButton button){
-		
 		if(!cardName.equals("EMPTY")){
 			String path = "/images/cards/" + ClientCardRegistry.getInstance()
 																.getDetails(cardName)
@@ -77,12 +126,29 @@ public class GameUtils {
 						.getActionSpaceList()
 										.get(button.getSpaceId());
 				if(space.isBusy())
-					button.setId("button_busy");	
+					updateOccupiedSpace(space, button, game);	
 				BoardButton card = game.getBoard().getTowerPane().getCardButtons().get(game.getBoard().getTowerPane().getTowerButtons().indexOf(button));
 				updateCardButton(space.getCardName(), card);
 			
 			}
 		});
+	}
+	
+	public static void updateBoard(GameScreen game){
+		game.getBoard().getBoardPane().getBoardButtons().forEach(button ->{
+			if(game.getClient().getBoard().getRegionList()
+					.get(button.getRegionID())
+					.getActionSpaceList()
+					.get(button.getSpaceId()) != null){
+				ClientActionSpace space = game.getClient().getBoard().getRegionList()
+						.get(button.getRegionID())
+						.getActionSpaceList()
+										.get(button.getSpaceId());
+				if(space.isBusy()){
+					updateOccupiedSpace(space, button, game);	
+				}
+			}
+		});		
 	}
 	
 	public static void createFamily(GameScreen game, ClientPlayer player, int index, Color color){
@@ -101,15 +167,51 @@ public class GameUtils {
 		}
 	}
 	
+	public static void updateExcomunicationCard(GameScreen game){
+		ClientBoard board = game.getClient().getBoard();
+		for(int i=0; i < board.getExcommunicationCards().size(); i++){
+			String cardName = board.getExcommunicationCards().get(i);
+			updateCardButton(cardName, game.getBoard().getBoardPane().getEcomButtons().get(i));
+		}
+	}
+	
+	public static void updateLeaderCard(GameScreen game){
+		ClientPlayer player = game.getClient().getPlayerList().get(game.getClient().getPlayerUUID());
+		ArrayList<LeaderCardGUI> leaderBoxName =  game.getBoard().getPersonalPane().getLeaderCards();
+		if(player.getCards().get("LEADER") == null){
+			return;
+		}
+		ArrayList<String> leaderList = player.getCards().get("LEADER");
+		int index = 0;
+		for(; index<leaderList.size(); index++){
+				leaderBoxName.get(index).set(leaderList.get(index));
+			}	
+		if(leaderBoxName.size()> leaderList.size()){
+			for(;index<leaderBoxName.size(); index++){
+				leaderBoxName.get(index).setEmpty();
+			}
+		}
+	}
+	
+	public static void initUserList(GameScreen game){
+		
+		int index = 1;
+		for(String key: game.getClient().getPlayerList().keySet()){
+			if(key.equals(game.getClient().getPlayerUUID())){
+				game.getUsers().put(0, new UserGUI(game.getClient().getPlayerList().get(game.getClient().getPlayerUUID())));
+				continue;
+			}
+			game.getUsers().put(index, new UserGUI(game.getClient().getPlayerList().get(key), index));
+			index ++;
+		}
+	}
+	
 	public static void update(GameScreen game){
-		System.out.println("STO CHIAMANDO UPDATE");
-//		System.out.println(game.getClient().getBoard());
-	//	System.out.println(game.getClient().getPlayerUUID());
-		//System.out.println(game.getClient().getPlayerList().get(game.getClient().getPlayerUUID()));
-		System.out.println(game.getClient().getSendQueue());
-
 
 		updateTowerCard(game);
+		updateBoard(game);
 		updatePersonalBoard(game);
+		updateLeaderCard(game);
+		updateExcomunicationCard(game);
 	}
 }

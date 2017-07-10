@@ -83,9 +83,9 @@
 }
 
 #value{
-	-fx-background-color: lightgrey;
+	-fx-background-color: white;
 	
-	-fx-effect: dropshadow(gaussian, white, 10, 0.3, 0, 0);
+	-fx-effect: dropshadow(gaussian, lightgrey, 10, 0.3, 0, 0);
 	-fx-max-width: 50px;
 	-fx-pref-height: 10px;
 	-fx-opacity: 0.2;
@@ -110,6 +110,8 @@
 		-fx-background-image: url('../images/ResourceSet.jpg'), url('../images/other/line.png'); 
         -fx-background-size: contain, auto;
         -fx-background-position: top, bottom;
+        fx-background-position: 0px, 0px 250 px;
+        
         -fx-background-repeat: no-repeat, no-repeat;
        
        	-fx-max-width: 620;

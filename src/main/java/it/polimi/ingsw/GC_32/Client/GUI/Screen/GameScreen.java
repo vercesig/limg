@@ -1,6 +1,9 @@
 
 package it.polimi.ingsw.GC_32.Client.GUI.Screen;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import it.polimi.ingsw.GC_32.Client.CLI.ClientCLI;
 
 import javafx.scene.layout.AnchorPane;
@@ -17,21 +20,21 @@ public class GameScreen extends BorderPane{
 	private CentralScreen board;
 	private MenuScreen menuScreen;
 	private ExtraScreen extraScreen;
-	//private ArrayList <LeaderCardGUI>
+	
+	private HashMap<Integer, UserGUI> users;
 	
 	public GameScreen(ClientCLI client)  {
 		super();
-		System.out.println("prima assegmemto su game di client: " + client.getBoard());
 		this.client = client;
 		this.setId("master");
 		this.getStylesheets().add(this.getClass().getResource("/css/scene.css").toExternalForm());
-		System.out.println("Dopo assegmemto su game di client: "+ client.getBoard());
-
-		
+		this.users = new HashMap<Integer, UserGUI>();
+		GameUtils.initUserList(this);
 		MainBar menuBar = new MainBar();
 		this.board = new CentralScreen(this);
 		this.extraScreen = new ExtraScreen(this);
 		this.menuScreen = new MenuScreen(this);
+		
 		
 		this.setTop(menuBar);
 		this.setCenter(board.getMaster());
@@ -41,6 +44,7 @@ public class GameScreen extends BorderPane{
 		GameUtils.update(this);
 		
 	}
+	
 	public VBox getVbox(){
 		return this.vbox;
 	}
@@ -67,5 +71,9 @@ public class GameScreen extends BorderPane{
 	
 	public ClientCLI getClient(){
 		return this.client;
+	}
+
+	public HashMap<Integer, UserGUI> getUsers(){
+		return this.users;
 	}
 }

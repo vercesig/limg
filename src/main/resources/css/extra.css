@@ -5,29 +5,22 @@
 		 -fx-background-position: center;
 		 
 		  -fx-min-width: 350;
-		 -fx-min-height: 580;
-		  -fx-max-height: 600;
+		 -fx-min-height: 750;
+		  -fx-max-height: 750;
 		  -fx-max-width: 350;
 		  
-		  -fx-border-style: solid;
-		 -fx-border-width: 2px;
-	 	 -fx-border-color: #808080;
 }
 
 #idle{
-		 -fx-background-image:  url('../images/other/line.png');
 		 -fx-background-size: auto;
 		 -fx-background-repeat: no-repeat;
-		 -fx-background-position: bottom;
+		 -fx-background-position: center;
 		 
 		 -fx-min-width: 350;
-		 -fx-min-height: 350;
-		 -fx-max-height: 350;
+		-fx-min-height: 400;
+		 -fx-max-height: 400;
 		 -fx-max-width: 350;
-		
-		 -fx-border-style: solid;
-		 -fx-border-width: 2px;
-	 	 -fx-border-color: #808080;
+		 
 }
 
 #chat{
@@ -38,8 +31,9 @@
 		 -fx-opacity: 0.3 ;
 		 
 		 -fx-min-width: 350;
-		 -fx-min-height: 350;
-		 -fx-max-height: 350;
+		 -fx-min-height: 150;
+		 -fx-max-height: 160;
+		 
 		 -fx-max-width: 350;
 		 
 		 -fx-border-style: solid;
@@ -51,6 +45,10 @@
 	
 		-fx-graphic: url('../images/other/flag.png');
 		-fx-font:  9 px;	
+		 -fx-min-width: 130;
+		 -fx-min-height: 20;
+		 -fx-max-height: 20;
+		 -fx-max-width: 130;
 		-fx-font-style: italic;
 		-fx-font-weight: bold;
 		-fx-font-family:"serif";
