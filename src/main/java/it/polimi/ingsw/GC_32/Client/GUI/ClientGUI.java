@@ -30,7 +30,6 @@ public class ClientGUI extends Application implements ClientInterface{
 	public void registerBoard(ClientBoard board){
 		clientGui.getClient().registerBoard(board);
 		if(game != null){
-			System.out.println("registro su game");
 			game.getClient().registerBoard(board); //this ClientCLi is the instance 	
 		}		
 	}
@@ -39,14 +38,12 @@ public class ClientGUI extends Application implements ClientInterface{
 		clientGui.getClient().registerPlayers(playerList);
 		if(game != null){
 			game.getClient().registerPlayers(playerList);
-			System.out.println("registro su game");
 		}
 	}
 	
 	public void registerGameUUID(String UUID){
 		clientGui.getClient().registerGameUUID(UUID);
 		if(game != null){
-			System.out.println("registro su game");
 			game.getClient().registerGameUUID(UUID);
 		}
 	 }
@@ -55,7 +52,6 @@ public class ClientGUI extends Application implements ClientInterface{
 		clientGui.getClient().registerPlayerUUID(UUID);
 		if(game!= null){
 			game.getClient().registerPlayerUUID(UUID);
-			System.out.println("registro su game");
 		}	
 	}
 	
@@ -120,7 +116,6 @@ public class ClientGUI extends Application implements ClientInterface{
 	//static
 	
 	public void run() {
-		System.out.println("BOARd CLIEnt:\n" +  client.getBoard().toString());
 		Thread cliThread = new Thread(clientGui.getClient());
 		cliThread.start();
 		launch();
@@ -128,7 +123,6 @@ public class ClientGUI extends Application implements ClientInterface{
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		System.out.println("BOARd CLIEnt:\n" +  clientGui.getClient());
 		clientGui.setGame(new GameScreen(clientGui.getClient()));	
 		javafxInit(new Stage(), clientGui);
 	}
@@ -138,11 +132,8 @@ public class ClientGUI extends Application implements ClientInterface{
 	    stage.setTitle("Lorenzo il Magnifico");
 	    stage.setScene(scene);
 	    stage.show();
+	    stage.setResizable(false);
 	}
-	
-	/*public static void main(String[] args){
-		launch();
-	}*/
 
 	public static void initClientGui(){
 		clientGui = new ClientGUI();

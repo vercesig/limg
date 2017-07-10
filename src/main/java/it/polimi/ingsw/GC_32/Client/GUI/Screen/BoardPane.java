@@ -88,4 +88,8 @@ public class BoardPane {
 	public  ArrayList <BoardButton> getBoardButtons(){
 		return this.boardButtons;
 	}
+	
+	public ArrayList <BoardButton> getEcomButtons(){
+		return this.excomButtons;
+	}
 }

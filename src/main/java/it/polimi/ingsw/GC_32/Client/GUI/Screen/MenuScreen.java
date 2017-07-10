@@ -28,14 +28,8 @@ public class MenuScreen extends BorderPane{
 		this.setId("menu");
 		this.getStylesheets().add(this.getClass().getResource("/css/board.css").toExternalForm());
 		
-	/*	MenuButton tower = new MenuButton("Tower Regions");
-		tower.setOnAction(action -> this.gameScreen.getBoard().changeToTower());
-		MenuButton otherBoard = new MenuButton("Board");
-		otherBoard.setOnAction(action -> this.gameScreen.getBoard().changeToBoard());*/
-		
 		buildLabel("Main Menu", 100, 100);
 		
-	//	buildButton("Make Action");
 		buildButton("Tower Regions");
 		buildButton("Board");
 		buildButton("Personal Board");
@@ -47,7 +41,6 @@ public class MenuScreen extends BorderPane{
 		setEvent();
 		this.setCenter(this.grid);
 		this.getCenter().setId("gridButton");
-	//	this.getCenter().(this.getClass().getResource("/css/board.css").toExternalForm());
 
 	}
 
@@ -59,10 +52,7 @@ public class MenuScreen extends BorderPane{
 			
 		this.buttons.forEach(button ->{
 			switch(this.buttons.indexOf(button)){
-			
-		/*	case 0:
-				this.buttons.get(0).getChildren().get(0).setOnMouseClicked(click->AskActGUI.start(this.game));
-				break;*/
+		
 
 			case 0:
 				this.buttons.get(0).getChildren().get(0).setOnMouseClicked(click->{ this.game.getBoard().changeToTower();
@@ -91,18 +81,9 @@ public class MenuScreen extends BorderPane{
 				
 			case 5:
 				this.buttons.get(5).getChildren().get(0).setOnMouseClicked(click-> {
-																					/*this.game.getClient().getSendQueue().add
-																					(ClientMessageFactory.buildTRNENDmessage
-																					(this.game.getClient().getGameUUID(),
-																					 this.game.getClient().getPlayerList().get
-																					 (this.game.getClient().getPlayerUUID())
-																							.getName()));
-																					System.out.println(this.game.getClient().getSendQueue());
-																					//	GameUtils.update(this.game);
-																						try {
-																							Thread.sleep(500);
-																						} catch (InterruptedException e) {}*/
-																										});
+																			this.game.getExtraScreen().resetChat();
+																			GameUtils.update(this.game);});
+																											
 				break;
 				
 			default:

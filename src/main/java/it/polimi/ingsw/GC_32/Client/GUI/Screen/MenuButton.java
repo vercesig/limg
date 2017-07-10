@@ -21,7 +21,12 @@ public class MenuButton extends Button{
 
 	public static MenuButton FamilyContextButton(String text, ArrayList <FamilyMemberGUI> familiar){
 		MenuButton button = new MenuButton(text);
-		button.setOnMousePressed(click -> FamilyMemberContext.showFamily(familiar));
+		button.setOnMouseClicked(click -> FamilyMemberContext.showFamily(familiar));
+		return button;
+	}
+	public static MenuButton LeaderContextButton(String text, ArrayList<LeaderCardGUI> leaderList){
+		MenuButton button = new MenuButton(text);
+		button.setOnMouseClicked(click -> LeaderCardContext.showLeaderCard(leaderList));
 		return button;
 	}
 }

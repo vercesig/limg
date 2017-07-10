@@ -3,7 +3,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 50px;
 	-fx-min-height: 50px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 
 }
 
@@ -12,7 +12,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 50px;
 	-fx-min-height: 50px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #buildingButton{
@@ -20,7 +20,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 50px;
 	-fx-min-height: 50px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #ventureButton{
@@ -28,7 +28,40 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 50px;
 	-fx-min-height: 50px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
+	
+}
+#territoryButton_mouse{
+	-fx-background-color: lightgreen;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.3;
+
+}
+
+#characterButton_mouse{
+	-fx-background-color: cyan;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.3;
+}
+
+#buildingButton_mouse{
+	-fx-background-color: yellow;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.3;
+}
+
+#ventureButton_mouse{
+	-fx-background-color: purple;
+	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
+	-fx-min-width: 50px;
+	-fx-min-height: 50px;
+	-fx-opacity: 0.3;
 	
 }
 
@@ -37,7 +70,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 85px;
 	-fx-min-height: 130px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #characterCard{
@@ -45,7 +78,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 85px;
 	-fx-min-height: 130px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #buildingCard{
@@ -53,7 +86,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 85px;
 	-fx-min-height:130px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #ventureCard{
@@ -61,7 +94,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.8, 0, 0);
 	-fx-min-width: 85px;
 	-fx-min-height: 130px;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
 }
 
 #neutral{
@@ -70,7 +103,7 @@
 	-fx-effect: dropshadow(gaussian, white, 10, 0.3, 0, 0);
 	-fx-min-width: 95px;
 	-fx-min-height: 130px;	
-	-fx-opacity: 0.4;
+	-fx-opacity: 0.2;
 }
 
 #TowerRegion{

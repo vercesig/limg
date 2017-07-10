@@ -23,7 +23,7 @@ public class ResourcePane {
 	
 	//family
 	private ArrayList <FamilyMemberGUI> family;
-
+	private ArrayList<LeaderCardGUI> leaderCards;
 	
 	public ResourcePane(BorderPane master){
 		this.master = master;
@@ -37,7 +37,8 @@ public class ResourcePane {
 		this.resourceSet = new ArrayList<TextField> ();
 		this.cards = new HashMap<String, ArrayList<BoardButton>>();
 		this.family = new ArrayList<FamilyMemberGUI>();
-
+		this.leaderCards = new ArrayList<LeaderCardGUI>();
+		
 		root.add(top, 0, 0);
 		root.add(center, 0, 1);
 		root.add(bot, 0, 2);
@@ -53,11 +54,12 @@ public class ResourcePane {
 		setupResource(105, "Wood: ");
 		setupResource(200, "Stone: ");
 		setupResource(295, "Servants: ");
+		setupLeaderCard();
+		
 		setupButton("production_set", "venture_set", "BUILDINGCARD", "VENTURECARD", 20, 120, this.top);
 		setupButton("territory_set", "character_set", "TERRITORYCARD", "CHARACTERCARD", 400, 120, this.center);
-		
-		setupFamilyMemberButton("Family Member", 100, 100);
-		setupLeaderButton("Leader Cards", 100, 200);
+		setupFamilyMemberButton("Family Member", 180, 200);
+		setupLeaderButton("Leader Cards", 180, 250);
 
 	}
 
@@ -95,12 +97,19 @@ public class ResourcePane {
 		
 		 ArrayList<BoardButton> cardSet = new  ArrayList<BoardButton>();
 		for (int i=0; i<6; i++){
-			BoardButton item = BoardButton.createSquareButton(8+factor*i, 12, "neutral"); // posson non memorizzare regionId e spaceID
+			BoardButton item = BoardButton.createSquareButton(8+factor*i, 12, "neutral"); // aceID
 			node.getChildren().add(item);
 			cardSet.add(item);
 		}
 		this.cards.put(cardType, cardSet);
 	}	
+	
+	public void setupLeaderCard(){
+		for(int i=0; i<4; i++){
+			LeaderCardGUI leader = new LeaderCardGUI(40, 100, 5, 0, 40, 0, i*25);
+			this.getLeaderCards().add(leader);
+		}
+	}
 	
 	public void setupResource(int factor, String resource){
 		
@@ -124,7 +133,7 @@ public class ResourcePane {
 
 	public void setupLeaderButton(String text, int x, int y){
 		
-		MenuButton button = new MenuButton(text);
+		MenuButton button = MenuButton.LeaderContextButton(text, this.leaderCards);
 		button.setLayoutX(x);
 		button.setLayoutY(y);
 		this.bot.getChildren().add(button);
@@ -186,5 +195,9 @@ public class ResourcePane {
 	
 	public ArrayList <FamilyMemberGUI> getFamily(){
 		return this.family;
+	}
+	
+	public ArrayList <LeaderCardGUI> getLeaderCards(){
+		return this.leaderCards;
 	}
 }

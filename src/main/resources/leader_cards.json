@@ -15,7 +15,8 @@
             "EXCLUSIVEBONUS": null,
             "FLAGREGION": null,
             "CHOSESERVANT": true
-        }
+        },
+        "path": "leaders_f_c_01.jpg"
     },
     {
         "name": "Ludovico Ariosto",
@@ -25,7 +26,8 @@
             }
         },
         "flagEffect": "FLAG",
-        "flagPayload": "FAMILYOCCUPY"
+        "flagPayload": "FAMILYOCCUPY",
+        "path": "leaders_f_c_02.jpg"
     },
     {
         "name": "Filippo Brunelleschi",
@@ -35,7 +37,8 @@
             }
         },
         "flagEffect": "FLAG",
-        "flagPayload": "NOTRIBUTE"
+        "flagPayload": "NOTRIBUTE",
+        "path": "leaders_f_c_03.jpg"
     },
     {
         "name": "Sigismondo Malatesta",
@@ -45,7 +48,8 @@
                 "FAITH_POINTS": 3
             }
         },
-        "permanentEffect": "GREYFAMILY"
+        "permanentEffect": "GREYFAMILY",
+        "path": "leaders_f_c_14.jpg"
     },
     {
         "name": "Girolamo Savonarola",
@@ -57,7 +61,8 @@
         "instantEffect": "ADD",
         "instantPayload": {
             "FAITH_POINTS": 1
-        }
+        },
+        "path": "leaders_f_c_05.jpg"
     },
     {
         "name": "Michelangelo Buonarroti",
@@ -69,7 +74,8 @@
         "instantEffect": "ADD",
         "instantPayload": {
             "COINS": 3
-        }
+        },
+        "path": "leaders_f_c_08.jpg"
     },
     {
         "name": "Giovanni delle Bande Nere",
@@ -83,7 +89,8 @@
             "STONE": 1,
             "WOOD": 1,
             "COINS": 1
-        }
+        },
+        "path": "leaders_f_c_06.jpg"
     },
     {
         "name": "Leonardo da Vinci",
@@ -102,7 +109,8 @@
             "EXCLUSIVEBONUS": null,
             "FLAGREGION": null,
             "CHOSESERVANT": true
-        }
+        },
+        "path": "leaders_f_c_10.jpg"
     },
     {
         "name": "Sandro Botticelli",
@@ -115,7 +123,8 @@
         "instantPayload": {
             "MILITARY_POINTS": 2,
             "VICTORY_POINTS": 1
-        }
+        },
+        "path": "leaders_f_c_07.jpg"
     },
     {
         "name": "Ludovico il Moro",
@@ -127,7 +136,8 @@
                 "TERRITORYCARD": 2
             }
         },
-        "permanentEffect": "FAMILYCOLORDICE"
+        "permanentEffect": "FAMILYCOLORDICE",
+        "path": "leaders_f_c_16.jpg"
     },
     {
         "name": "Lucrezia Borgia",
@@ -147,7 +157,8 @@
                 }
             ]
         },
-        "permanentEffect": "FAMILYCOLORBONUS"
+        "permanentEffect": "FAMILYCOLORBONUS",
+        "path": "leaders_f_c_13.jpg"
     },
     {
         "name": "Federico da Montefeltro",
@@ -156,7 +167,8 @@
                 "TERRITORYCARD": 5
             }
         },
-        "instantEffect": "FAMILYSIXVALOR"
+        "instantEffect": "FAMILYSIXVALOR",
+        "path": "leaders_f_c_04.jpg"
     },
     {
         "name": "Lorenzo de' Medici",
@@ -165,7 +177,8 @@
                 "VICTORY_POINTS": 35
             }
         },
-        "permanentEffect": "JOLLY"
+        "permanentEffect": "JOLLY",
+        "path": "leaders_f_c_15.jpg"
     },
     {
         "name": "Sisto IV",
@@ -178,7 +191,8 @@
             }
         },
         "flagEffect": "FLAG",
-        "flagPayload": "MOREFAITH"
+        "flagPayload": "MOREFAITH",
+        "path": "leaders_f_c_12.jpg"
     },
     {
         "name": "Cesare Borgia",
@@ -192,7 +206,8 @@
             }
         },
         "flagEffect": "FLAG",
-        "flagPayload": "NOMILITARYRULE"
+        "flagPayload": "NOMILITARYRULE",
+        "path": "leaders_f_c_17.jpg"
     },
     {
         "name": "Santa Rita",
@@ -202,7 +217,8 @@
             }
         },
         "flagEffect": "FLAG",
-        "flagPayload": "DOUBLE"
+        "flagPayload": "DOUBLE",
+        "path": "leaders_f_c_18.jpg"
     },
     {
         "name": "Cosimo de' Medici",
@@ -216,7 +232,8 @@
         "instantPayload": {
             "SERVANTS": 3,
             "VICTORY_POINTS": 1
-        }
+        },
+        "path": "leaders_f_c_19.jpg"
     },
     {
         "name": "Bartolomeo Colleoni",
@@ -229,7 +246,8 @@
         "instantEffect": "ADD",
         "instantPayload": {
             "VICTORY_POINTS": 4
-        }
+        },
+        "path": "leaders_f_c_20.jpg"
     },
     {
         "name": "Ludovico III Gonzaga",
@@ -241,7 +259,8 @@
         "instantEffect": "PRIVILEGE",
         "instantPayload": {
             "NUMBER": 1
-        }
+        },
+        "path": "leaders_f_c_09.jpg"
     },
     {
         "name": "Pico della Mirandola",
@@ -261,6 +280,7 @@
             },
             "EXCLUSIVEBONUS": null,
             "FLAGREGION": null
-        }
+        },
+        "path": "leaders_f_c_11.jpg"
     }
 ]

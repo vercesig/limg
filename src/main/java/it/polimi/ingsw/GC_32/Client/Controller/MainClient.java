@@ -128,9 +128,11 @@ public class MainClient{
 			Thread socketMsgConnectionThread = new Thread((Runnable) this.network);
 			this.network.open(connectAddress, 9500);
 			socketMsgConnectionThread.start();
+			break;
 		case "r":
 			this.network = new RMIMsgConnection();
 			this.network.open(connectAddress, 1099);
+			break;
 		}
 	}
 	
@@ -199,6 +201,8 @@ public class MainClient{
 			networkType = in.nextLine();
 			if("s".equals(networkType) || "r".equals(networkType)){
 			    correctNetwork = true;
+			} else {
+			    System.out.println("Please select a valid network type");
 			}
 		}
 		

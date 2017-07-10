@@ -1,22 +1,22 @@
-name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType,exclusivePermanentEffect
-Malus Military Points,,,LESSRESOURCE,[“MILITARY_POINTS”],,,,1,,
-Malus Coins,,,LESSRESOURCE,[“COINS”],,,,1,,
-Malus Servants,,,LESSRESOURCE,[“SERVANTS”],,,,1,,
-Malus Stone or Wood,,,LESSRESOURCE,"[“STONE”, “WOOD”]",,,,1,,
-Malus Harvest Action,,,,,PERMANENT,"{“TYPE”: “HARVEST”,  “REGIONID”: 1, “BONUSACTIONVALUE”: -3,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,,
-Malus Production Action,,,,,PERMANENT,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”: -3,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,,
-Malus Color Familiar,,,,,LESSDICE,,,1,,
-Malus Tower Green,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 4, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,
-Malus Tower Yellow,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 6, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,
-Malus Tower Blue,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,
-Malus Tower Purple,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 7, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,
-No Market Action,,,,,NO_MARKET_ACTION,,,2,,
-Malus Double Servant ,,,FLAG,DOUBLESERVANTS,,,,2,,
-Skip Turn,,,FLAG,SKIPTURN,,,,2,,
-No Victory Points Blue,,,FLAG,NOENDBLUE,,,,3,,
-No Victory Points Purple,,,FLAG,NOENDPURPLE,,,,3,,
-No Victory Points Green,,,FLAG,NOENDGREEN,,,,3,,
-Less Points for Victory,,,FLAG,LESSFORVICTORY,,,,3,,
-Less Points for Military,,,FLAG,LESSFORMILITARY,,,,3,,
-Less Points for Cost,,,FLAG,LESSFORBUILDING,,,,3,,
-Less Points for Resource,,,FLAG,LESSFORRESOURCE,,,,3,,
+name,cost,requirements,instantEffect,instantPayload,permanentEffect,permanentPayload,minimumActionValue,period,cardType,exclusivePermanentEffect,path
+Malus Military Points,,,LESSRESOURCE,[“MILITARY_POINTS”],,,,1,,,excomm_1_1.png
+Malus Coins,,,LESSRESOURCE,[“COINS”],,,,1,,,excomm_1_2.png
+Malus Servants,,,LESSRESOURCE,[“SERVANTS”],,,,1,,,excomm_1_3.png
+Malus Stone or Wood,,,LESSRESOURCE,"[“STONE”, “WOOD”]",,,,1,,,excomm_1_4.png
+Malus Harvest Action,,,,,PERMANENT,"{“TYPE”: “HARVEST”,  “REGIONID”: 1, “BONUSACTIONVALUE”: -3,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,,,excomm_1_5.png
+Malus Production Action,,,,,PERMANENT,"{“TYPE”: “PRODUCTION”,  “REGIONID”: 0, “BONUSACTIONVALUE”: -3,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,1,,,excomm_1_6.png
+Malus Color Familiar,,,,,LESSDICE,,,1,,,excomm_1_7.png
+Malus Tower Green,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 4, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_1.png
+Malus Tower Yellow,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 6, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_2.png
+Malus Tower Blue,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 5, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_3.png
+Malus Tower Purple,,,,,PERMANENT,"{“TYPE”: “TOWER”,  “REGIONID”: 7, “BONUSACTIONVALUE”: -4,“BONUSRESOURCE”: null, “EXCLUSIVEBONUS”:null, “FLAGREGION”: null}",,2,,,excomm_2_4.png
+No Market Action,,,,,NO_MARKET_ACTION,,,2,,,excomm_2_5.png
+Malus Double Servant ,,,FLAG,DOUBLESERVANTS,,,,2,,,excomm_2_6.png
+Skip Turn,,,FLAG,SKIPTURN,,,,2,,,excomm_2_7.png
+No Victory Points Blue,,,FLAG,NOENDBLUE,,,,3,,,excomm_3_1.png
+No Victory Points Purple,,,FLAG,NOENDPURPLE,,,,3,,,excomm_3_2.png
+No Victory Points Green,,,FLAG,NOENDGREEN,,,,3,,,excomm_3_3.png
+Less Points for Victory,,,FLAG,LESSFORVICTORY,,,,3,,,excomm_3_4.png
+Less Points for Military,,,FLAG,LESSFORMILITARY,,,,3,,,excomm_3_5.png
+Less Points for Cost,,,FLAG,LESSFORBUILDING,,,,3,,,excomm_3_6.png
+Less Points for Resource,,,FLAG,LESSFORRESOURCE,,,,3,,,excomm_3_7.png

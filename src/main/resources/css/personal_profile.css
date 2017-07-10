@@ -1,0 +1,119 @@
+#grid{
+		-fx-background-image:   url('../images/other/lay_01.png');
+		-fx-background-size: stretch;
+		 -fx-background-repeat: no-repeat;
+		 -fx-background-position: center;
+		
+		 -fx-min-width: 350;
+		 -fx-min-height: 350;
+		 -fx-max-height: 350;
+		 -fx-max-width: 350;
+		
+	 
+		 
+	}
+
+#label_Title{
+		-fx-graphic: url('../images/other/banner.png');
+		-fx-min-height: 35;
+		-fx-max-height: 35;
+		-fx-min-width: 100;
+		-fx-max-width: 100;
+		
+		-fx-font:  9 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#label{
+		 -fx-min-width: 100;
+		 -fx-min-height: 35;
+		 -fx-max-height: 35;
+		 -fx-max-width: 100;
+		
+
+		-fx-font:  9 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#labelRank{
+		-fx-min-width: 150;
+		 -fx-min-height: 30;
+		 -fx-max-height: 30;
+		 -fx-max-width: 150;
+		 
+		-fx-font:  9 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#label_color{
+		 -fx-min-width: 20;
+		 -fx-min-height: 20;
+		 -fx-max-height: 20;
+		 -fx-max-width: 20;
+}
+
+#text{
+	
+		-fx-min-width: 70;
+		 -fx-min-height: 20;
+		 -fx-max-height: 20;
+		 -fx-max-width: 70;
+		-fx-font:  9 px;	
+		-fx-font-style: italic;
+		-fx-font-weight: bold;
+		-fx-font-family:"serif";
+}
+
+#prev_idle{
+		-fx-background-image: url('../images/other/arrow_left.png'); 
+		-fx-background-size: contain;
+
+		-fx-background-repeat: no-repeat;
+		
+		-fx-min-width: 50;
+		 -fx-min-height: 20;
+		 -fx-max-height: 20;
+		 -fx-max-width: 50;
+		 
+}
+
+#next_idle{
+		-fx-background-image: url('../images/other/arrow_right.png'); 
+		-fx-background-size: contain;
+		-fx-background-repeat: no-repeat;
+		
+		-fx-min-width: 50;
+		 -fx-min-height: 20;
+		 -fx-max-height: 20;
+		 -fx-max-width: 50;
+		 
+}
+#ender{
+		-fx-background-image:  url('../images/other/lay_02.png');
+		-fx-background-size: stretch;
+		 -fx-background-repeat: no-repeat;
+		 -fx-background-position: bottom;
+		
+		 -fx-min-width: 300;
+		 -fx-min-height: 25;
+		 -fx-max-height: 25;
+		 -fx-max-width: 300;
+}
+
+#gallery{
+			-fx-background-image:   url('../images/other/lay_02.png');
+			-fx-background-size: stretch;
+			-fx-background-position: center;
+			
+			
+			-fx-min-width:100;
+		 -fx-min-height: 100;
+		 -fx-max-height: 100;
+		 -fx-max-width: 100;
+}
